@@ -16,9 +16,9 @@ enum SofaConstants {
         static let bundleIdentifier = Bundle.main.bundleIdentifier ?? "com.sofa"
         static let bundleName = Bundle.main.infoDictionary?[kCFBundleNameKey as String] as? String ?? "Sofa"
         static let displayName = Bundle.main.infoDictionary?["CFBundleDisplayName"] as? String ?? "Sofa"
-        static var shortVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "0.0.0"
-        static var buildNumber = Bundle.main.infoDictionary?[kCFBundleVersionKey as String] as? String ?? "0"
-        static var fullVersion = "v\(shortVersion) (\(buildNumber))"
+        static let shortVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "0.0.0"
+        static let buildNumber = Bundle.main.infoDictionary?[kCFBundleVersionKey as String] as? String ?? "0"
+        static let fullVersion = "v\(shortVersion) (\(buildNumber))"
         static let deviceSystem = [UIDevice.current.systemName, UIDevice.current.systemVersion].joined(separator: " ")
         static let deviceModel = UIDevice.current.model
     }

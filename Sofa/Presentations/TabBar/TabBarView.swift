@@ -47,7 +47,9 @@ struct TabBarView: View {
 
     private func SettingsTab() -> some View {
         NavigationStack {
-            SettingsView()
+            SettingsView(viewModel: SettingsViewModel(
+                storeManager: ServiceLayer.storeManager
+            ))
         }
         .tabItem {
             TabItem(.settings)
