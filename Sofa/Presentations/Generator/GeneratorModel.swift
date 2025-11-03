@@ -11,14 +11,18 @@ enum GeneratorModel {
 
     // MARK: - Story
 
-    enum Story: Hashable, CaseIterable {
+    enum Story: String, Identifiable, Hashable, CaseIterable {
         case green, orange, red
+
+        var id: String {
+            rawValue
+        }
 
         var title: String {
             switch self {
-            case .green: String(localized: "storyGreenTitle")
-            case .orange: String(localized: "storyOrangeTitle")
-            case .red: String(localized: "storyRedTitle")
+            case .green: String(localized: "storyGreenPage1Title")
+            case .orange: String(localized: "storyOrangePage1Title")
+            case .red: String(localized: "storyRedPage1Title")
             }
         }
 

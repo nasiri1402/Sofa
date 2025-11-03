@@ -7,6 +7,23 @@
 
 import SwiftUI
 
+extension View {
+    func navigationBarLeadingButton(icon: ImageResource, action: @escaping () -> Void) -> some View {
+        self
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button {
+                        action()
+                    } label: {
+                        Image(.cross)
+                            .resizable()
+                            .frame(width: 24.fitW, height: 24.fitW)
+                    }
+                }
+            }
+    }
+}
+
 // MARK: - Modifiers
 
 extension View {
