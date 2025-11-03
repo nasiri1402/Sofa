@@ -1,5 +1,5 @@
 //
-//  GeneratorView.swift
+//  InProcessView.swift
 //  Sofa
 //
 //  Created by dukes on 11/3/25.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct GeneratorView: View {
+struct InProcessView: View {
 
     // MARK: - Body
 
@@ -16,7 +16,7 @@ struct GeneratorView: View {
             Color(.black090909)
                 .ignoresSafeArea(edges: .all)
         }
-        .navigationTitle(String(localized: "generator"))
+        .navigationTitle(String(localized: "inProcess"))
         .navigationBarTitleDisplayMode(.large)
     }
 }

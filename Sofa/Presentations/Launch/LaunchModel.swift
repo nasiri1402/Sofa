@@ -6,3 +6,12 @@
 //
 
 import Foundation
+
+enum LaunchModel {
+
+    // MARK: - Stage
+
+    enum Stage {
+        case splash, onboarding, tabBar
+    }
+}

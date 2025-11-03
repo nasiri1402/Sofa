@@ -14,7 +14,8 @@ struct SofaApp: App {
     
     var body: some Scene {
         WindowGroup {
-            LaunchView()
+            LaunchView(viewModel: LaunchViewModel(currentStage: .splash))
+                .preferredColorScheme(.dark)
         }
     }
 }
