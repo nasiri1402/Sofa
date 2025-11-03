@@ -27,7 +27,7 @@ struct TabBarView: View {
 
     private func GeneratorTab() -> some View {
         NavigationStack {
-            GeneratorView()
+            GeneratorView(viewModel: GeneratorViewModel())
         }
         .tabItem {
             TabItem(.generator)
@@ -37,7 +37,7 @@ struct TabBarView: View {
 
     private func InProcessTab() -> some View {
         NavigationStack {
-            InProcessView()
+            InProcessView(viewModel: InProcessViewModel())
         }
         .tabItem {
             TabItem(.inProcess)

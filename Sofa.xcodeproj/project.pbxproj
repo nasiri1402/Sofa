@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		AB76BD2D2EB9298900419E57 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = AB76BD2C2EB9298900419E57 /* Lottie */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		AB6285FB2EB8FA65008669A0 /* Sofa.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sofa.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -36,6 +40,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AB76BD2D2EB9298900419E57 /* Lottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -79,6 +84,7 @@
 			);
 			name = Sofa;
 			packageProductDependencies = (
+				AB76BD2C2EB9298900419E57 /* Lottie */,
 			);
 			productName = Sofa;
 			productReference = AB6285FB2EB8FA65008669A0 /* Sofa.app */;
@@ -110,6 +116,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				AB76B97A2EB8FFBE00419E57 /* XCRemoteSwiftPackageReference "SwiftLint" */,
+				AB76BD2B2EB9298900419E57 /* XCRemoteSwiftPackageReference "lottie-ios" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = AB6285FC2EB8FA65008669A0 /* Products */;
@@ -395,7 +402,23 @@
 				minimumVersion = 0.62.2;
 			};
 		};
+		AB76BD2B2EB9298900419E57 /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-ios";
+			requirement = {
+				kind = upToNextMinorVersion;
+				minimumVersion = 4.5.2;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		AB76BD2C2EB9298900419E57 /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AB76BD2B2EB9298900419E57 /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = AB6285F32EB8FA65008669A0 /* Project object */;
 }

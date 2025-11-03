@@ -26,7 +26,7 @@ struct SettingsView: View {
 
             ScrollView {
                 VStack(spacing: 10.fitW) {
-                    ForEach(viewModel.allFields, id: \.self) { field in
+                    ForEach(viewModel.fields, id: \.self) { field in
                         FieldButton(field)
                             .padding(.bottom, field.needsExtraBottomPadding ? 14.fitW : .zero)
                     }

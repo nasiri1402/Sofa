@@ -14,7 +14,13 @@ final class SettingsViewModel {
 
     // MARK: - Public Properties
 
-    let allFields = SettingsModel.Field.allCases
+    var fields: [SettingsModel.Field] {
+        if storeManager.hasPurchasedProduct() {
+            SettingsModel.Field.allCases.filter { $0 != .pro }
+        } else {
+            SettingsModel.Field.allCases
+        }
+    }
     let supportMessage = SettingsModel.SupportMail(
         email: SofaConstants.AppSupport.email,
         title: String(localized: "supportRequestTitle"),
@@ -50,12 +56,6 @@ final class SettingsViewModel {
 // MARK: - Public Methods
 
 extension SettingsViewModel {
-
-    // MARK: - Output
-
-    func isSubscribed() -> Bool {
-        storeManager.hasPurchasedProduct()
-    }
 
     // MARK: - Input
 
