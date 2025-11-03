@@ -23,6 +23,10 @@ extension GeneratorViewModel {
 
     // MARK: - Input
 
+    func didTapStoryButton(_ story: GeneratorModel.Story) {
+
+    }
+
     func didTapGenerateButton() {
         // TODO: Навигация к новой генерации
     }

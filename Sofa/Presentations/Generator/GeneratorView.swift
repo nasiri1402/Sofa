@@ -40,12 +40,18 @@ struct GeneratorView: View {
         ScrollView(.horizontal) {
             HStack(alignment: .top, spacing: 10.fitW) {
                 ForEach(viewModel.stories, id: \.self) { story in
-                    Text(story.emoji + " " + story.title)
-                        .foregroundStyle(.white)
-                        .padding(20.fitW)
-                        .frame(width: 160.fitW, height: 128.fitW, alignment: .topLeading)
-                        .background(Color(story.color))
-                        .clipShape(.rect(cornerRadius: 24.fitW))
+                    Button {
+                        viewModel.didTapStoryButton(story)
+                    } label: {
+                        Text(story.emoji + " " + story.title)
+                            .foregroundStyle(.white)
+                            .padding(20.fitW)
+                            .frame(width: 160.fitW, height: 128.fitW, alignment: .topLeading)
+                            .background(Color(story.color))
+                            .clipShape(.rect(cornerRadius: 24.fitW))
+                    }
+                    .buttonStyle(.plain)
+                    .hapticFeedback()
                 }
             }
         }
