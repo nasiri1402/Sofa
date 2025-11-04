@@ -1025,13 +1025,13 @@
                   "one" : {
                     "stringUnit" : {
                       "state" : "translated",
-                      "value" : "year"
+                      "value" : "%d year"
                     }
                   },
                   "other" : {
                     "stringUnit" : {
                       "state" : "translated",
-                      "value" : "years"
+                      "value" : "%d years"
                     }
                   }
                 }
