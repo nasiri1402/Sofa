@@ -18,7 +18,8 @@ struct ActivityIndicator: View {
     var body: some View {
         ZStack {
             Color.black
-                .opacity(0.6)
+                .opacity(0.8)
+                .blur(radius: 8.fitW)
                 .ignoresSafeArea()
 
             ProgressView()

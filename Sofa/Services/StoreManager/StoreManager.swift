@@ -127,8 +127,9 @@ final class DefaultStoreManager: StoreManager {
 
     @MainActor
     private func loadProducts() async throws {
-        // TODO: Добавить подписки
-//        products = try await Product.products(for: PaywallModel.Subscription.allCases.map(\.id)).sorted { $0.price > $1.price }
+        products = try await Product.products(
+            for: PaywallModel.Subscription.allCases.map(\.id)
+        ).sorted { $0.price > $1.price }
     }
 
     /// Используется как failsafe против бага при покупке

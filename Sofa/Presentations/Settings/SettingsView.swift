@@ -41,6 +41,9 @@ struct SettingsView: View {
         }
         .navigationTitle(String(localized: "settings"))
         .navigationBarTitleDisplayMode(.large)
+        .fullScreenCover(isPresented: $viewModel.isPaywallPresented) {
+            PaywallCover()
+        }
         .sheet(isPresented: $viewModel.isSafariPresented) {
             if let url = viewModel.safariURL {
                 SafariView(url: url)
@@ -113,5 +116,14 @@ struct SettingsView: View {
         ).replacingOccurrences(of: ":", with: ""))
         .font(.system(size: 17.fitW))
         .foregroundStyle(.white.opacity(0.4))
+    }
+
+    private func PaywallCover() -> some View {
+        PaywallView(viewModel: PaywallViewModel(
+            storeManager: ServiceLayer.storeManager,
+            networkMonitor: ServiceLayer.networkMonitor,
+            analyticsManager: ServiceLayer.analyticsManager,
+            placement: .settings
+        ))
     }
 }
