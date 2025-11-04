@@ -10,12 +10,17 @@ import SwiftData
 
 @Model
 final class ProjectEntity {
+
+    // MARK: - Public Properties
+
     @Attribute(.unique) var id: UUID
     var title: String
     var summary: String
     var emoji: String
     var createdAt: Date
     var updatedAt: Date
+
+    // MARK: - Inits
 
     init(from model: Project) {
         self.id = model.id
@@ -25,6 +30,8 @@ final class ProjectEntity {
         self.createdAt = model.createdAt
         self.updatedAt = model.updatedAt
     }
+
+    // MARK: - Public Methods
 
     func toProject() -> Project {
         Project(

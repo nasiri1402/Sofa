@@ -104,10 +104,11 @@ final class DefaultDataStorage: DataStorage {
 
     @MainActor
     func fetchProfile() throws -> Profile? {
-        guard let context = container?.mainContext else { return nil }
+        // TODO: Временно мок профиль
+        guard let context = container?.mainContext else { return .mock }
         let descriptor = FetchDescriptor<ProfileEntity>(sortBy: [])
         let profiles = try context.fetch(descriptor)
-        return profiles.map { $0.toProfile() }.first
+        return profiles.map { $0.toProfile() }.first ?? .mock
     }
 
     @MainActor

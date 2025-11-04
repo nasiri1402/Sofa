@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Project {
+struct Project: Identifiable {
     let id: UUID
     let title: String
     let summary: String
