@@ -32,6 +32,7 @@ struct MyDataView: View {
             .scrollBounceBehavior(.basedOnSize)
             .contentMargins(.vertical, 24.fitW, for: .scrollContent)
         }
+        .animation(.easeInOut, value: viewModel.profile)
         .navigationTitle(String(localized: "myData"))
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden()
@@ -39,6 +40,9 @@ struct MyDataView: View {
         .navigationBarLeadingButton(icon: .back, action: viewModel.didTapNavigationBarLeadingButton)
         .alert(item: $viewModel.alertItem) { item in
             item.alert()
+        }
+        .onAppear {
+            viewModel.didViewAppear()
         }
     }
 
@@ -57,6 +61,7 @@ struct MyDataView: View {
                 Text(viewModel.getFieldDetails(field))
                     .font(.system(size: 16.fitW))
                     .foregroundStyle(.gray8E8E93)
+                    .lineLimit(1)
             }
             .padding(20.fitW)
             .background(.gray787880.opacity(0.12))

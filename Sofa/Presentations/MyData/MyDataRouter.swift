@@ -8,6 +8,10 @@
 import Foundation
 import SwiftUI
 
+enum MyDataRoute {
+    case name, age, gender, country
+}
+
 final class MyDataRouter: HashableRouter {
 
     // MARK: - Private Properties
@@ -21,6 +25,16 @@ final class MyDataRouter: HashableRouter {
     }
 
     // MARK: - Public Methods
+
+    func route(to route: MyDataRoute) {
+        let router: any Routable = switch route {
+        case .name: NameRouter(navigator: navigator)
+        case .age: AgeRouter(navigator: navigator)
+        case .gender: GenderRouter(navigator: navigator)
+        case .country: CountryRouter(navigator: navigator)
+        }
+        navigator.push(router)
+    }
 
     func back() {
         navigator.pop()

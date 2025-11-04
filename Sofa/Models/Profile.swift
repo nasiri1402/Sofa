@@ -7,19 +7,34 @@
 
 import Foundation
 
-struct Profile: Identifiable {
+struct Profile: Identifiable, Hashable {
     let id: UUID
     let name: String
     let age: Int
     let gender: Gender
     let country: Country
+
+    func copy(
+        name: String? = nil,
+        age: Int? = nil,
+        gender: Gender? = nil,
+        country: Country? = nil
+    ) -> Profile {
+        Profile(
+            id: id,
+            name: name ?? self.name,
+            age: age ?? self.age,
+            gender: gender ?? self.gender,
+            country: country ?? self.country
+        )
+    }
 }
 
 extension Profile {
 
     // MARK: - Gender
 
-    enum Gender: Int {
+    enum Gender: Int, Hashable, CaseIterable {
         case male, female, other
 
         var name: String {
@@ -33,7 +48,7 @@ extension Profile {
 
     // MARK: - Country
 
-    struct Country {
+    struct Country: Hashable {
         let isoCode: String
         let name: String
     }
@@ -44,9 +59,9 @@ extension Profile {
 extension Profile {
     static let mock = Profile(
         id: UUID(),
-        name: "John",
+        name: "Ivan",
         age: 25,
         gender: .male,
-        country: Country(isoCode: "US", name: "United States")
+        country: Country(isoCode: "RU", name: "Russia")
     )
 }

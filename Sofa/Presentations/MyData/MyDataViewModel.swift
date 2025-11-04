@@ -28,8 +28,6 @@ final class MyDataViewModel {
     init(router: MyDataRouter, dataStorage: DataStorage) {
         self.router = router
         self.dataStorage = dataStorage
-
-        fetchProfile()
     }
 }
 
@@ -43,8 +41,17 @@ extension MyDataViewModel {
         router.back()
     }
 
+    func didViewAppear() {
+        fetchProfile()
+    }
+
     func didTapFieldButton(_ field: MyDataModel.Field) {
-        // TODO: навигация к нужному экрану
+        switch field {
+        case .name: router.route(to: .name)
+        case .gender: router.route(to: .gender)
+        case .age: router.route(to: .age)
+        case .country: router.route(to: .country)
+        }
     }
 
     // MARK: - Output
@@ -58,7 +65,6 @@ extension MyDataViewModel {
         case .country: profile.country.name
         }
     }
-
 }
 
 // MARK: - Private Methods

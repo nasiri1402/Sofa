@@ -42,4 +42,10 @@ extension View {
             )
         )
     }
+
+    /// Отслеживает высоту клавиатуры и передает её в замыкание.
+    /// - Parameter onChange: Замыкание, вызываемое при изменении высоты клавиатуры.
+    func onChangeKeyboardHeight(_ onChange: @escaping (CGFloat) -> Void) -> some View {
+        modifier(KeyboardHeightModifier(onChange: onChange))
+    }
 }
