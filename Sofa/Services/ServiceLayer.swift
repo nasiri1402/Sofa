@@ -14,4 +14,5 @@ enum ServiceLayer {
     static let analyticsManager = AnalyticsManager()
     static let storeManager: StoreManager = DefaultStoreManager()
     static let networkMonitor: NetworkMonitor = DefaultNetworkMonitor()
+    static let dataStorage: DataStorage = DefaultDataStorage()
 }
