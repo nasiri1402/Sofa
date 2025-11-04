@@ -17,7 +17,7 @@ enum MyDataModel {
         var title: String {
             switch self {
             case .name: String(localized: "name")
-            case .gender: String(localized: "name")
+            case .gender: String(localized: "gender")
             case .age: String(localized: "age")
             case .country: String(localized: "country")
             }

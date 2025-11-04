@@ -9,9 +9,13 @@ import SwiftUI
 
 struct TabBarView: View {
 
-    // MARK: - State
+    // MARK: - Public Properties
 
-    @State var viewModel: TabBarViewModel
+    @State private(set) var viewModel: TabBarViewModel
+
+    // MARK: - Private Properties
+
+    @State private var settingsRouter = SettingsRouter()
 
     // MARK: - Body
 
@@ -46,10 +50,14 @@ struct TabBarView: View {
     }
 
     private func SettingsTab() -> some View {
-        NavigationStack {
+        NavigationStack(path: $settingsRouter.path) {
             SettingsView(viewModel: SettingsViewModel(
+                router: settingsRouter,
                 storeManager: ServiceLayer.storeManager
             ))
+            .navigationDestination(for: AnyRouter.self) { router in
+                router.makeView()
+            }
         }
         .tabItem {
             TabItem(.settings)

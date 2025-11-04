@@ -15,7 +15,7 @@ extension View {
                     Button {
                         action()
                     } label: {
-                        Image(.cross)
+                        Image(icon)
                             .resizable()
                             .frame(width: 24.fitW, height: 24.fitW)
                     }

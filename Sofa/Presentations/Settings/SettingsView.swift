@@ -36,7 +36,7 @@ struct SettingsView: View {
                 .padding(.horizontal, 16.fitW)
             }
             .scrollIndicators(.hidden)
-            .scrollBounceBehavior(.basedOnSize)
+            .scrollBounceBehavior(.always)
             .contentMargins(.vertical, 24.fitW, for: .scrollContent)
         }
         .navigationTitle(String(localized: "settings"))

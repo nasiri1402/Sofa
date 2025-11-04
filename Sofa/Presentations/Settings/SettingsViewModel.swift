@@ -42,13 +42,15 @@ final class SettingsViewModel {
 
     // MARK: - Private Properties
 
+    private let router: SettingsRouter
     private let storeManager: StoreManager
 
     private let locale: Locale = .current
 
     // MARK: - Inits
 
-    init(storeManager: StoreManager) {
+    init(router: SettingsRouter, storeManager: StoreManager) {
+        self.router = router
         self.storeManager = storeManager
     }
 }
@@ -87,8 +89,7 @@ extension SettingsViewModel {
         case .rateUs:
             reviewTrigger = UUID()
         case .myData:
-            // TODO: Навигация к моим данным
-            break
+            router.route(to: .myData)
         case .language:
             settingsTrigger = UUID()
         }

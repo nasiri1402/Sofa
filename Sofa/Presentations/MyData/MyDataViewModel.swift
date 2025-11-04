@@ -20,11 +20,13 @@ final class MyDataViewModel {
 
     // MARK: - Private Properties
 
+    private let router: MyDataRouter
     private let dataStorage: DataStorage
 
     // MARK: - Inits
 
-    init(dataStorage: DataStorage) {
+    init(router: MyDataRouter, dataStorage: DataStorage) {
+        self.router = router
         self.dataStorage = dataStorage
 
         fetchProfile()
@@ -37,6 +39,10 @@ extension MyDataViewModel {
 
     // MARK: - Input
 
+    func didTapNavigationBarLeadingButton() {
+        router.back()
+    }
+
     func didTapFieldButton(_ field: MyDataModel.Field) {
         // TODO: навигация к нужному экрану
     }
@@ -47,7 +53,7 @@ extension MyDataViewModel {
         guard let profile else { return "" }
         return switch field {
         case .name: profile.name
-        case .gender: profile.name + " (" + profile.gender.name + ")"
+        case .gender: profile.gender.name
         case .age: String(format: String(localized: "yearsPluralFormat"), profile.age)
         case .country: profile.country.name
         }

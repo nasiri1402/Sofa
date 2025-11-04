@@ -34,6 +34,9 @@ struct MyDataView: View {
         }
         .navigationTitle(String(localized: "myData"))
         .navigationBarTitleDisplayMode(.inline)
+        .navigationBarBackButtonHidden()
+        .toolbarVisibility(.hidden, for: .tabBar)
+        .navigationBarLeadingButton(icon: .back, action: viewModel.didTapNavigationBarLeadingButton)
         .alert(item: $viewModel.alertItem) { item in
             item.alert()
         }
