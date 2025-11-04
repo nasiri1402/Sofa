@@ -20,23 +20,18 @@ struct PaywallView: View {
     // MARK: - Body
 
     var body: some View {
-        VStack(alignment: .center, spacing: 24.fitW) {
-//            Image(.paywallLamp)
-//                .resizable()
-//                .frame(width: 115.fitW, height: 150.fitW)
-//                .padding(.bottom, -5.fitW)
-
+        VStack(alignment: .center, spacing: 24.fitH) {
             Spacer(minLength: .zero)
-
             TextTitle()
             FeaturesView()
+            TrialView()
 
-            VStack(spacing: 10.fitW) {
+            VStack(spacing: 10.fitH) {
                 ForEach(viewModel.subscriptions, id: \.id) { subscription in
                     SubscriptionButton(subscription)
                 }
             }
-            VStack(spacing: 10.fitW) {
+            VStack(spacing: 10.fitH) {
                 ContinueButton()
                 CancelAnytimeView()
             }
@@ -48,9 +43,20 @@ struct PaywallView: View {
                 PrivacyButton(title: String(localized: "restore"), onTap: viewModel.didTapRestoreButton)
             }
         }
-        .background(.black090909)
-        .padding(.top, 20.fitW)
-        .padding([.bottom, .horizontal], 16.fitW)
+        .padding(.top, 20.fitH)
+        .padding(.bottom, 16.fitH)
+        .padding(.horizontal, 16.fitW)
+        .background {
+            GeometryReader { proxy in
+                Image(.paywallBackground)
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: proxy.size.width, height: proxy.size.height)
+                    .ignoresSafeArea()
+                    .clipped()
+            }
+            .ignoresSafeArea()
+        }
         .overlay(alignment: .topLeading) {
             CloseButton()
                 .padding(.top, 10.fitW)
@@ -110,6 +116,29 @@ extension PaywallView {
         }
     }
 
+    private func TrialView() -> some View {
+        HStack(spacing: .zero) {
+            Text(String(localized: "notSureYetEnableFreeTrial"))
+                .multilineMinimumScale()
+                .foregroundStyle(viewModel.isTrialOn ? .white : .gray8E8E93)
+                .font(.system(size: 13.fitW))
+
+            Spacer(minLength: 8.fitW)
+
+            Toggle(String(""), isOn: $viewModel.isTrialOn)
+                .toggleStyle(.switch)
+                .tint(.blue007AFF)
+                .scaleEffect(0.93)
+                .fixedSize(horizontal: true, vertical: false)
+                .hapticFeedback()
+        }
+        .padding(.horizontal, 20.fitW)
+        .frame(height: 51.fitW)
+        .background(.gray787880.opacity(0.12))
+        .clipShape(.rect(cornerRadius: 16.fitW))
+        .contentShape(.rect)
+    }
+
     private func SubscriptionButton(_ subscription: PaywallModel.Subscription) -> some View {
         Button {
             viewModel.didTapSubscriptionButton(subscription)
@@ -119,7 +148,7 @@ extension PaywallView {
                 VStack(alignment: .leading, spacing: 2.fitW) {
                     Text(subscription.title + ", " + viewModel.formatPrice(for: subscription))
                         .font(.system(size: 15.fitW, weight: .semibold))
-                        .foregroundStyle(.white)
+                        .foregroundStyle(isSelected ? .white : .gray8E8E93)
                         .frame(height: 20.fitW)
 
                     Text(viewModel.formatPriceDescription(for: subscription))
@@ -145,6 +174,7 @@ extension PaywallView {
                     .opacity(isSelected ? 1 : 0)
             }
         }
+        .animation(.easeInOut, value: viewModel.selectedSubscription)
         .buttonStyle(.plain)
         .hapticFeedback()
     }

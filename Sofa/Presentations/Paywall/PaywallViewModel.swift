@@ -17,12 +17,18 @@ final class PaywallViewModel {
 
     private(set) var products: [Product] = []
     private(set) var subscriptions: [PaywallModel.Subscription] = []
-    private(set) var selectedSubscription: PaywallModel.Subscription = .weekly
+    private(set) var selectedSubscription: PaywallModel.Subscription
     private(set) var isLoading = false
     private(set) var dismissTrigger = UUID()
     private(set) var safariURL: URL?
     var isSafariPresented = false
     var alertItem: AlertItem?
+    var isTrialOn: Bool {
+        didSet {
+            guard oldValue != isTrialOn else { return }
+            selectedSubscription = isTrialOn ? .weekly : .monthly
+        }
+    }
 
     // MARK: - Private Properties
 
@@ -43,6 +49,8 @@ final class PaywallViewModel {
         self.networkMonitor = networkMonitor
         self.analyticsManager = analyticsManager
         self.placement = placement
+        self.selectedSubscription = .monthly
+        self.isTrialOn = false
 
         initialize()
     }
@@ -87,6 +95,7 @@ extension PaywallViewModel {
     func didTapSubscriptionButton(_ subscription: PaywallModel.Subscription) {
         guard selectedSubscription.id != subscription.id else { return }
         selectedSubscription = subscription
+        isTrialOn = subscription.withTrial
     }
 
     func didTapContinueButton() {
