@@ -107,27 +107,18 @@ struct GeneratorView: View {
         ScrollView {
             LazyVStack(spacing: 12.fitW) {
                 ForEach(viewModel.projects, id: \.id) { project in
-                    ProjectButton(project)
-                        .addSwipeAction(edge: .trailing, state: $swipeState) {
-                            Button {
-                                viewModel.didTapDeleteProjectButton(project)
-                            } label: {
-                                RoundedRectangle(cornerRadius: 16.fitW)
-                                    .fill(.redFF3B30)
-                                    .frame(width: 64.fitW)
-                                    .frame(maxHeight: .infinity)
-                                    .overlay {
-                                        Image(.trash)
-                                            .resizable()
-                                            .frame(width: 32.fitW, height: 32.fitW)
-                                            .contentShape(.rect)
-                                    }
+                    if viewModel.projects.count > 1 {
+                        ProjectButton(project)
+                            .addSwipeAction(edge: .trailing, state: $swipeState) {
+                                DeleteProjectButton(project)
                             }
-                            .buttonStyle(.plain)
-                            .padding(.trailing, 16.fitW)
-                        }
-                        .id(project.id)
-                        .transition(.opacity)
+                            .id(project.id)
+                            .transition(.opacity)
+                    } else {
+                        ProjectButton(project)
+                            .id(project.id)
+                            .transition(.opacity)
+                    }
                 }
             }
         }
@@ -156,6 +147,25 @@ struct GeneratorView: View {
             swipeState = .swiped(UUID())
         }
         .hapticFeedback()
+    }
+
+    private func DeleteProjectButton(_ project: Project) -> some View {
+        Button {
+            viewModel.didTapDeleteProjectButton(project)
+        } label: {
+            RoundedRectangle(cornerRadius: 16.fitW)
+                .fill(.redFF3B30)
+                .frame(width: 64.fitW)
+                .frame(maxHeight: .infinity)
+                .overlay {
+                    Image(.trash)
+                        .resizable()
+                        .frame(width: 32.fitW, height: 32.fitW)
+                        .contentShape(.rect)
+                }
+        }
+        .buttonStyle(.plain)
+        .padding(.trailing, 16.fitW)
     }
 
     private func GenerateButton() -> some View {

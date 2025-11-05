@@ -5,6 +5,7 @@
 //  Created by dukes on 11/3/25.
 //
 
+import Lottie
 import SwiftUI
 
 struct InProcessView: View {
@@ -61,8 +62,8 @@ struct InProcessView: View {
 
     private func EmptyStateView(_ state: InProcessModel.EmptyState) -> some View {
         VStack(alignment: .center, spacing: .zero) {
-            // TODO: Временная иконка, нужна лотти анимация тут
-            Image(systemName: "globe")
+            LottieView(animation: .named("empty-loading-state"))
+                .looping()
                 .resizable()
                 .frame(width: 150.fitW, height: 150.fitW)
 

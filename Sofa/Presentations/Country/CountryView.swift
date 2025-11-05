@@ -5,6 +5,7 @@
 //  Created by dukes on 11/4/25.
 //
 
+import Lottie
 import SwiftUI
 
 struct CountryView: View {
@@ -40,7 +41,6 @@ struct CountryView: View {
                     TipView()
                         .padding(.bottom, 16.fitW)
 
-                    // TODO: Добавить плейсхолдер лотти
                     CountriesScrollView()
                 }
                 .padding(.horizontal, 16.fitW)
@@ -108,13 +108,32 @@ struct CountryView: View {
         .clipShape(.rect(cornerRadius: 12.fitW))
     }
 
+    private func EmptyStateView() -> some View {
+        VStack(alignment: .center, spacing: .zero) {
+            LottieView(animation: .named("searching"))
+                .looping()
+                .resizable()
+                .frame(width: 190.fitW, height: 190.fitW)
+
+            Text(String(localized: "nothingFound"))
+                .font(.system(size: 34.fitW, weight: .bold))
+                .foregroundStyle(.white)
+                .multilineTextAlignment(.center)
+        }
+        .transition(.opacity)
+    }
+
     private func CountriesScrollView() -> some View {
         ScrollViewReader { reader in
             ScrollView {
-                VStack(alignment: .leading, spacing: 12.fitW) {
+                VStack(alignment: .center, spacing: 12.fitW) {
                     SearchBar(query: $viewModel.searchInput, isFocused: $isSearchFocused)
                         .padding(.bottom, 4.fitW)
 
+                    if viewModel.displayCountries.isEmpty {
+                        EmptyStateView()
+                            .padding(.top, 46.fitW)
+                    }
                     ForEach(viewModel.displayCountries, id: \.self) { country in
                         CountryButton(country)
                             .id(country.isoCode)
@@ -129,7 +148,7 @@ struct CountryView: View {
                 }
             }
             .scrollIndicators(.hidden)
-            .scrollBounceBehavior(.always)
+            .scrollBounceBehavior(.basedOnSize)
             .contentMargins(.top, 16.fitW, for: .scrollContent)
             .contentMargins(.bottom, keyboardHeight > .zero ? 84.fitW : 115.fitW, for: .scrollContent)
         }
