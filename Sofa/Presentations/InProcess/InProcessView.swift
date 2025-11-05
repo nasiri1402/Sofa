@@ -82,7 +82,7 @@ struct InProcessView: View {
 
     private func PlansScrollView() -> some View {
         ScrollView {
-            VStack(spacing: 12.fitW) {
+            LazyVStack(spacing: 12.fitW) {
                 ForEach(viewModel.plans, id: \.id) { plan in
                     PlanButton(plan: plan) {
                         viewModel.didTapPlanButton(plan)

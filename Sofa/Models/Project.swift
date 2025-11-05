@@ -79,50 +79,52 @@ extension Project.Plan {
 // MARK: - Mocks
 
 extension Project {
-    static let mock = Project(
-        id: UUID(),
-        prompt: "Launch a personal app",
-        summary: "Roadmap to build and launch an iOS app.",
-        plans: [
-            Plan(
-                id: UUID(),
-                title: "Design & Branding",
-                emoji: "🎨",
-                result: "App identity, logo, and UI components ready",
-                difficulty: .easy,
-                steps: [
-                    .init(id: UUID(), title: "Create color palette and typography", isCompleted: true),
-                    .init(id: UUID(), title: "Design app icon and splash screen", isCompleted: false),
-                    .init(id: UUID(), title: "Make UI kit in Figma", isCompleted: false)
-                ]
-            ),
-            Plan(
-                id: UUID(),
-                title: "Core App Development",
-                emoji: "💻",
-                result: "Functional MVP with core features",
-                difficulty: .average,
-                steps: [
-                    .init(id: UUID(), title: "Implement SwiftData models", isCompleted: true),
-                    .init(id: UUID(), title: "Add main UI modules", isCompleted: true),
-                    .init(id: UUID(), title: "Integrate iCloud sync", isCompleted: false),
-                    .init(id: UUID(), title: "Add notifications and background refresh", isCompleted: false)
-                ]
-            ),
-            Plan(
-                id: UUID(),
-                title: "App Store Launch",
-                emoji: "🚀",
-                result: "Live app available on App Store",
-                difficulty: .difficult,
-                steps: [
-                    .init(id: UUID(), title: "Write App Store description and keywords", isCompleted: true),
-                    .init(id: UUID(), title: "Prepare screenshots and preview video", isCompleted: false),
-                    .init(id: UUID(), title: "Submit build and pass review", isCompleted: false)
-                ]
-            )
-        ],
-        createdAt: Date().addingTimeInterval(-86400 * 10),
-        updatedAt: Date()
-    )
+    static var mock: Project {
+        Project(
+            id: UUID(),
+            prompt: "Launch a personal app",
+            summary: "Roadmap to build and launch an iOS app.",
+            plans: [
+                Plan(
+                    id: UUID(),
+                    title: "Design & Branding",
+                    emoji: "🎨",
+                    result: "App identity, logo, and UI components ready",
+                    difficulty: .easy,
+                    steps: [
+                        .init(id: UUID(), title: "Create color palette and typography", isCompleted: true),
+                        .init(id: UUID(), title: "Design app icon and splash screen", isCompleted: false),
+                        .init(id: UUID(), title: "Make UI kit in Figma", isCompleted: false)
+                    ]
+                ),
+                Plan(
+                    id: UUID(),
+                    title: "Core App Development",
+                    emoji: "💻",
+                    result: "Functional MVP with core features",
+                    difficulty: .average,
+                    steps: [
+                        .init(id: UUID(), title: "Implement SwiftData models", isCompleted: true),
+                        .init(id: UUID(), title: "Add main UI modules", isCompleted: true),
+                        .init(id: UUID(), title: "Integrate iCloud sync", isCompleted: false),
+                        .init(id: UUID(), title: "Add notifications and background refresh", isCompleted: false)
+                    ]
+                ),
+                Plan(
+                    id: UUID(),
+                    title: "App Store Launch",
+                    emoji: "🚀",
+                    result: "Live app available on App Store",
+                    difficulty: .difficult,
+                    steps: [
+                        .init(id: UUID(), title: "Write App Store description and keywords", isCompleted: true),
+                        .init(id: UUID(), title: "Prepare screenshots and preview video", isCompleted: false),
+                        .init(id: UUID(), title: "Submit build and pass review", isCompleted: false)
+                    ]
+                )
+            ],
+            createdAt: Date().addingTimeInterval(-86400 * 10),
+            updatedAt: Date()
+        )
+    }
 }

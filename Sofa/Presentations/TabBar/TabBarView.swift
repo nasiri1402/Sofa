@@ -31,7 +31,9 @@ struct TabBarView: View {
 
     private func GeneratorTab() -> some View {
         NavigationStack {
-            GeneratorView(viewModel: GeneratorViewModel())
+            GeneratorView(viewModel: GeneratorViewModel(
+                dataStorage: ServiceLayer.dataStorage
+            ))
         }
         .tabItem {
             TabItem(.generator)

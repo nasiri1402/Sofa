@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		AB76BD2D2EB9298900419E57 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = AB76BD2C2EB9298900419E57 /* Lottie */; };
 		AB76C1C32EB9B06500419E57 /* Adapty in Frameworks */ = {isa = PBXBuildFile; productRef = AB76C1C22EB9B06500419E57 /* Adapty */; };
+		AB76C74F2EBAFB6100419E57 /* SwipeActions in Frameworks */ = {isa = PBXBuildFile; productRef = AB76C74E2EBAFB6100419E57 /* SwipeActions */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +43,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AB76BD2D2EB9298900419E57 /* Lottie in Frameworks */,
+				AB76C74F2EBAFB6100419E57 /* SwipeActions in Frameworks */,
 				AB76C1C32EB9B06500419E57 /* Adapty in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -96,6 +98,7 @@
 			packageProductDependencies = (
 				AB76BD2C2EB9298900419E57 /* Lottie */,
 				AB76C1C22EB9B06500419E57 /* Adapty */,
+				AB76C74E2EBAFB6100419E57 /* SwipeActions */,
 			);
 			productName = Sofa;
 			productReference = AB6285FB2EB8FA65008669A0 /* Sofa.app */;
@@ -129,6 +132,7 @@
 				AB76B97A2EB8FFBE00419E57 /* XCRemoteSwiftPackageReference "SwiftLint" */,
 				AB76BD2B2EB9298900419E57 /* XCRemoteSwiftPackageReference "lottie-ios" */,
 				AB76C1C02EB9B04F00419E57 /* XCRemoteSwiftPackageReference "AdaptySDK-iOS" */,
+				AB76C74D2EBAFB6100419E57 /* XCRemoteSwiftPackageReference "SwipeActions" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = AB6285FC2EB8FA65008669A0 /* Products */;
@@ -430,6 +434,14 @@
 				minimumVersion = 3.12.0;
 			};
 		};
+		AB76C74D2EBAFB6100419E57 /* XCRemoteSwiftPackageReference "SwipeActions" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/c-villain/SwipeActions";
+			requirement = {
+				kind = upToNextMinorVersion;
+				minimumVersion = 0.4.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -442,6 +454,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = AB76C1C02EB9B04F00419E57 /* XCRemoteSwiftPackageReference "AdaptySDK-iOS" */;
 			productName = Adapty;
+		};
+		AB76C74E2EBAFB6100419E57 /* SwipeActions */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AB76C74D2EBAFB6100419E57 /* XCRemoteSwiftPackageReference "SwipeActions" */;
+			productName = SwipeActions;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
