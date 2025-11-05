@@ -15,6 +15,7 @@ final class StepTreeViewModel {
     // MARK: - Public Properties
 
     private(set) var plan: Project.Plan
+    private(set) var selectedWeek: Project.Plan.Week?
     var alertItem: AlertItem?
     var isPaywallPresented = false
 
@@ -29,7 +30,6 @@ final class StepTreeViewModel {
     private let storeManager: StoreManager
 
     private var project: Project
-    private var profile: Profile?
 
     // MARK: - Inits
 
@@ -46,7 +46,7 @@ final class StepTreeViewModel {
         self.project = project
         self.plan = plan
 
-        fetchProfile()
+        initialize()
     }
 }
 
@@ -67,18 +67,40 @@ extension StepTreeViewModel {
         }
         saveProject()
     }
+
+    func didTapWeekButton(_ week: Project.Plan.Week) {
+        guard selectedWeek?.id != week.id else { return }
+        if week.number > 1, !isPro {
+            isPaywallPresented = true
+        } else {
+            selectedWeek = week
+        }
+    }
+
+    func didTapStepButton(_ step: Project.Plan.Step) {
+        guard var week = selectedWeek else { return }
+        if let stepIndex = week.steps.firstIndex(where: { $0.id == step.id }) {
+            week.steps[stepIndex].isCompleted.toggle()
+        }
+        if let weekIndex = plan.weeks.firstIndex(where: { $0.id == week.id }) {
+            plan.weeks[weekIndex] = week
+        }
+        if let planIndex = project.plans.firstIndex(where: { $0.id == plan.id }) {
+            project.plans[planIndex] = plan
+        }
+        selectedWeek = week
+        saveProject()
+    }
 }
 
 // MARK: - Private Methods
 
 extension StepTreeViewModel {
-    private func fetchProfile() {
-        Task { @MainActor in
-            do {
-                profile = try dataStorage.fetchProfile()
-            } catch {
-                alertItem = .error(message: error.localizedDescription)
-            }
+    private func initialize() {
+        selectedWeek = if isPro {
+            plan.weeks.first { !$0.isCompleted } ?? plan.weeks.last
+        } else {
+            plan.weeks.first
         }
     }
 

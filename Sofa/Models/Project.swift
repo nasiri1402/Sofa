@@ -31,28 +31,42 @@ extension Project {
         let budget: Int
         let result: String
         let difficulty: Difficulty
-        let steps: [Step]
+        var weeks: [Week]
         var isFavorite: Bool
+        var allSteps: [Step] {
+            weeks.flatMap(\.steps)
+        }
         var progress: Double {
-            guard !steps.isEmpty else { return .zero }
-            let completedSteps = steps.filter(\.isCompleted)
-            guard !completedSteps.isEmpty else { return .zero }
-            let progress = Double(completedSteps.count) / Double(steps.count)
-            return max(0, min(1, progress))
+            guard !allSteps.isEmpty else { return .zero }
+            let completedSteps = allSteps.filter(\.isCompleted)
+            let ratio = Double(completedSteps.count) / Double(allSteps.count)
+            return max(0, min(1, ratio))
         }
         var isCompleted: Bool {
-            steps.allSatisfy(\.isCompleted)
+            weeks.allSatisfy(\.isCompleted)
         }
     }
 }
 
 extension Project.Plan {
 
+    // MARK: - Week
+
+    struct Week: Identifiable, Hashable {
+        let id: UUID
+        let number: Int
+        var steps: [Step]
+        var isCompleted: Bool {
+            steps.allSatisfy(\.isCompleted)
+        }
+    }
+
     // MARK: - Step
 
     struct Step: Identifiable, Hashable {
         let id: UUID
         let title: String
+        let index: Int
         var isCompleted: Bool
     }
 
@@ -82,61 +96,157 @@ extension Project.Plan {
 // MARK: - Mocks
 
 extension Project {
-    static var mock: Project {
-        Project(
-            id: UUID(),
-            prompt: "Launch a personal app",
-            summary: "Roadmap to build and launch an iOS app.",
-            plans: [
-                Plan(
-                    id: UUID(),
-                    title: "Design & Branding",
-                    emoji: "🎨",
-                    firstResults: "3-4 weeks",
-                    budget: 1000,
-                    result: "App identity, logo, and UI components ready",
-                    difficulty: .easy,
-                    steps: [
-                        .init(id: UUID(), title: "Create color palette and typography", isCompleted: true),
-                        .init(id: UUID(), title: "Design app icon and splash screen", isCompleted: false),
-                        .init(id: UUID(), title: "Make UI kit in Figma", isCompleted: false)
-                    ],
-                    isFavorite: false
-                ),
-                Plan(
-                    id: UUID(),
-                    title: "Core App Development",
-                    emoji: "💻",
-                    firstResults: "2-3 weeks",
-                    budget: 2000,
-                    result: "Functional MVP with core features",
-                    difficulty: .average,
-                    steps: [
-                        .init(id: UUID(), title: "Implement SwiftData models", isCompleted: true),
-                        .init(id: UUID(), title: "Add main UI modules", isCompleted: true),
-                        .init(id: UUID(), title: "Integrate iCloud sync", isCompleted: false),
-                        .init(id: UUID(), title: "Add notifications and background refresh", isCompleted: false)
-                    ],
-                    isFavorite: true
-                ),
-                Plan(
-                    id: UUID(),
-                    title: "App Store Launch",
-                    emoji: "🚀",
-                    firstResults: "2-4 weeks",
-                    budget: 5000,
-                    result: "Live app available on App Store",
-                    difficulty: .difficult,
-                    steps: [
-                        .init(id: UUID(), title: "Write App Store description and keywords", isCompleted: true),
-                        .init(id: UUID(), title: "Prepare screenshots and preview video", isCompleted: false),
-                        .init(id: UUID(), title: "Submit build and pass review", isCompleted: false)
-                    ],
-                    isFavorite: true
-                )
-            ],
-            createdAt: Date().addingTimeInterval(-86400 * 10),
-            updatedAt: Date()
-        )
-    }
+    static let mock = Project(
+        id: UUID(),
+        prompt: "Launch a personal app",
+        summary: "Roadmap to build and launch an iOS app.",
+        plans: [
+            Plan(
+                id: UUID(),
+                title: "Design & Branding",
+                emoji: "🎨",
+                firstResults: "3–4 weeks",
+                budget: 1000,
+                result: "App identity, logo, and UI components ready",
+                difficulty: .easy,
+                weeks: [
+                    .init(
+                        id: UUID(),
+                        number: 1,
+                        steps: [
+                            .init(
+                                id: UUID(),
+                                title: "Create color palette and typography",
+                                index: 1,
+                                isCompleted: true
+                            ),
+                            .init(
+                                id: UUID(),
+                                title: "Design app icon",
+                                index: 2,
+                                isCompleted: false
+                            )
+                        ]
+                    ),
+                    .init(
+                        id: UUID(),
+                        number: 2,
+                        steps: [
+                            .init(
+                                id: UUID(),
+                                title: "Build UI kit in Figma",
+                                index: 1,
+                                isCompleted: false
+                            ),
+                            .init(
+                                id: UUID(),
+                                title: "Design splash screen",
+                                index: 2,
+                                isCompleted: false
+                            )
+                        ]
+                    )
+                ],
+                isFavorite: false
+            ),
+            Plan(
+                id: UUID(),
+                title: "Core App Development",
+                emoji: "💻",
+                firstResults: "2–3 weeks",
+                budget: 2000,
+                result: "Functional MVP with core features",
+                difficulty: .average,
+                weeks: [
+                    .init(
+                        id: UUID(),
+                        number: 1,
+                        steps: [
+                            .init(
+                                id: UUID(),
+                                title: "Implement SwiftData models",
+                                index: 1,
+                                isCompleted: true
+                            ),
+                            .init(
+                                id: UUID(),
+                                title: "Add main UI modules",
+                                index: 2,
+                                isCompleted: true
+                            )
+                        ]
+                    ),
+                    .init(
+                        id: UUID(),
+                        number: 2,
+                        steps: [
+                            .init(
+                                id: UUID(),
+                                title: "Integrate iCloud sync",
+                                index: 0,
+                                isCompleted: false
+                            ),
+                            .init(
+                                id: UUID(),
+                                title: "Add notifications and background refresh",
+                                index: 1,
+                                isCompleted: false
+                            )
+                        ]
+                    )
+                ],
+                isFavorite: true
+            ),
+            Plan(
+                id: UUID(),
+                title: "App Store Launch",
+                emoji: "🚀",
+                firstResults: "2–4 weeks",
+                budget: 5000,
+                result: "Live app available on App Store",
+                difficulty: .difficult,
+                weeks: [
+                    .init(
+                        id: UUID(),
+                        number: 1,
+                        steps: [
+                            .init(
+                                id: UUID(),
+                                title: "Write App Store description",
+                                index: 1,
+                                isCompleted: true
+                            ),
+                            .init(
+                                id: UUID(),
+                                title: "Prepare keywords and metadata",
+                                index: 2,
+                                isCompleted: false
+                            )
+                        ]
+                    ),
+                    .init(
+                        id: UUID(),
+                        number: 2,
+                        steps: [
+                            .init(
+                                id: UUID(),
+                                title: "Prepare screenshots and preview video",
+                                index: 1,
+                                isCompleted: false
+                            ),
+                            .init(
+                                id: UUID(),
+                                title: "Submit build and pass review",
+                                index: 2,
+                                isCompleted: false
+                            )
+                        ]
+                    )
+                ],
+                isFavorite: true
+            )
+        ],
+        createdAt: Date().addingTimeInterval(-86400 * 10),
+        updatedAt: Date()
+    )
 }

@@ -77,7 +77,7 @@ extension PlansViewModel {
     private func filterPlans() {
         plans = projects.flatMap(\.plans).filter {
             switch selectedSegment {
-            case .inWork: !$0.isCompleted
+            case .inWork: !$0.isCompleted && $0.progress > .zero
             case .completed: $0.isCompleted
             case .favorites: $0.isFavorite
             }

@@ -21,31 +21,18 @@ struct StepTreeView: View {
                 .ignoresSafeArea()
 
             ScrollView {
-                VStack(alignment: .leading, spacing: 12.fitW) {
-                    VStack(alignment: .leading, spacing: 6.fitW) {
-                        TitleText()
-                        DifficultyStepsView(
-                            difficulty: viewModel.plan.difficulty,
-                            steps: viewModel.plan.steps.count
-                        )
+                VStack(alignment: .leading, spacing: 16.fitW) {
+                    PlanInfoView()
+                        .padding(.horizontal, 16.fitW)
+                        .padding(.bottom, 8.fitW)
+
+                    WeeksScrollView()
+
+                    ForEach(viewModel.selectedWeek?.steps ?? [], id: \.id) { step in
+                        StepButton(step)
+                            .padding(.horizontal, 16.fitW)
                     }
-                    Divider()
-                    DescriptionText(
-                        icon: .firstResults,
-                        title: String(format: String(localized: "firstResultsFormat"), viewModel.plan.firstResults)
-                    )
-                    DescriptionText(
-                        icon: .budget,
-                        title: String(format: String(localized: "budgetFormat"), viewModel.plan.budget.description)
-                    )
-                    DescriptionText(
-                        icon: .result,
-                        title: String(format: String(localized: "resultFormat"), viewModel.plan.result)
-                    )
-                    DoneProgress(percentage: viewModel.plan.progress)
-                    Divider()
                 }
-                .padding(.horizontal, 16.fitW)
             }
             .scrollIndicators(.hidden)
             .scrollBounceBehavior(.basedOnSize)
@@ -70,11 +57,35 @@ struct StepTreeView: View {
 
     // MARK: - Views
 
-    private func TitleText() -> some View {
-        Text(viewModel.plan.emoji + " " + viewModel.plan.title)
-            .font(.system(size: 22.fitW, weight: .bold))
-            .foregroundStyle(.white)
-            .multilineTextAlignment(.leading)
+    private func PlanInfoView() -> some View {
+        VStack(alignment: .leading, spacing: 12.fitW) {
+            VStack(alignment: .leading, spacing: 6.fitW) {
+                Text(viewModel.plan.emoji + " " + viewModel.plan.title)
+                    .font(.system(size: 22.fitW, weight: .bold))
+                    .foregroundStyle(.white)
+                    .multilineTextAlignment(.leading)
+
+                DifficultyStepsView(
+                    difficulty: viewModel.plan.difficulty,
+                    steps: viewModel.plan.allSteps.count
+                )
+            }
+            Divider()
+            DescriptionText(
+                icon: .firstResults,
+                title: String(format: String(localized: "firstResultsFormat"), viewModel.plan.firstResults)
+            )
+            DescriptionText(
+                icon: .budget,
+                title: String(format: String(localized: "budgetFormat"), viewModel.plan.budget.description)
+            )
+            DescriptionText(
+                icon: .result,
+                title: String(format: String(localized: "resultFormat"), viewModel.plan.result)
+            )
+            DoneProgress(percentage: viewModel.plan.progress)
+            Divider()
+        }
     }
 
     private func DescriptionText(icon: ImageResource, title: String) -> some View {
@@ -95,6 +106,77 @@ struct StepTreeView: View {
             .fill(.gray545456.opacity(0.34))
             .frame(maxWidth: .infinity)
             .frame(height: 1.fitW)
+    }
+
+    private func WeeksScrollView() -> some View {
+        ScrollViewReader { reader in
+            ScrollView(.horizontal) {
+                HStack(spacing: 6.fitW) {
+                    ForEach(viewModel.plan.weeks, id: \.id) { week in
+                        WeekButton(week) {
+                            viewModel.didTapWeekButton(week)
+                        }
+                        .id(week.id)
+                    }
+                }
+                .onChange(of: viewModel.selectedWeek) { oldValue, newValue in
+                    guard oldValue?.id != newValue?.id else { return }
+                    withAnimation(oldValue == nil ? nil : .easeInOut) {
+                        reader.scrollTo(newValue?.id, anchor: .center)
+                    }
+                }
+            }
+            .scrollIndicators(.hidden)
+            .scrollBounceBehavior(.basedOnSize, axes: .horizontal)
+            .contentMargins(.horizontal, 16.fitW, for: .scrollContent)
+        }
+    }
+
+    private func WeekButton(_ week: Project.Plan.Week, onTap: @escaping () -> Void) -> some View {
+        Button(action: onTap) {
+            let isSelected = viewModel.selectedWeek?.id == week.id
+            HStack(spacing: 4.fitW) {
+                if !viewModel.isPro, week.number > 1 {
+                    Image(.crown)
+                        .resizable()
+                        .frame(width: 18.fitW, height: 18.fitW)
+                }
+                Text(String(format: String(localized: "shortWeekFormat"), week.number))
+                    .font(.system(size: 13.fitW, weight: .semibold))
+                    .foregroundStyle(isSelected ? .white : viewModel.isPro ? .grayD1D1D6 : .yellowFFCC00)
+            }
+            .frame(height: 36.fitW)
+            .padding(.horizontal, 16.fitW)
+            .background(
+                isSelected
+                ? .blue007AFF
+                : viewModel.isPro ? .gray787880.opacity(0.12) : .yellowFFCC00.opacity(0.12)
+            )
+            .clipShape(.capsule)
+            .contentShape(.rect)
+        }
+        .buttonStyle(.plain)
+        .hapticFeedback()
+    }
+
+    private func StepButton(_ step: Project.Plan.Step) -> some View {
+        Button {
+            viewModel.didTapStepButton(step)
+        } label: {
+            HStack(alignment: .top, spacing: 6.fitW) {
+                Image(step.isCompleted ? .checkboxCircleSelectedYellow : .checkboxCircleUnselected)
+                    .resizable()
+                    .frame(width: 24.fitW, height: 24.fitW)
+
+                Text(step.title)
+                    .font(.system(size: 15.fitW))
+                    .foregroundStyle(.grayD1D1D6)
+                    .frame(minHeight: 24.fitW)
+            }
+            .contentShape(.rect)
+        }
+        .buttonStyle(.plain)
+        .hapticFeedback()
     }
 
     private func PaywallCover() -> some View {

@@ -45,6 +45,9 @@ struct GenerationResultView: View {
         .navigationBarBackButtonHidden()
         .toolbarVisibility(.hidden, for: .tabBar)
         .navigationBarLeadingButton(icon: .back, action: viewModel.didTapNavigationBarLeadingButton)
+        .onAppear {
+            viewModel.didViewAppear()
+        }
         .fullScreenCover(isPresented: $viewModel.isPaywallPresented) {
             PaywallCover()
         }

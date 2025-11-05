@@ -26,14 +26,23 @@ struct DoneProgress: View {
                         Capsule()
                             .fill(percentage >= 1 ? .green34C759 : .blue007AFF)
                             .frame(width: geometry.size.width * percentage, height: 8.fitW)
-                            .animation(.easeInOut(duration: 0.25), value: percentage)
+                            .animation(.easeInOut, value: percentage)
                     }
             }
             .frame(height: 8.fitW)
 
-            Text("\(Int(percentage * 100))% " + String(localized: "done").lowercased())
-                .font(.system(size: 12.fitW))
-                .foregroundColor(.gray8E8E93)
+            HStack(spacing: .zero) {
+                Text(percentage * 100, format: .number)
+                    .font(.system(size: 12.fitW))
+                    .foregroundColor(.gray8E8E93)
+                    .monospaced()
+                    .contentTransition(.numericText())
+
+                Text("% " + String(localized: "done").lowercased())
+                    .font(.system(size: 12.fitW))
+                    .foregroundColor(.gray8E8E93)
+            }
+            .animation(.easeInOut, value: percentage)
         }
     }
 }

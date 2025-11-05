@@ -40,7 +40,7 @@ final class ProjectEntity {
             id: id,
             prompt: prompt,
             summary: summary,
-            plans: plans.map { $0.toPlan() },
+            plans: plans.map { $0.toPlan() }.sorted { $0.difficulty.rawValue < $1.difficulty.rawValue },
             createdAt: createdAt,
             updatedAt: updatedAt
         )
@@ -63,7 +63,7 @@ final class PlanEntity {
     var result: String
     var difficultyRaw: Int
     @Relationship(deleteRule: .cascade)
-    var steps: [StepEntity]
+    var weeks: [WeekEntity]
     var isFavorite: Bool
 
     // MARK: - Inits
@@ -76,7 +76,7 @@ final class PlanEntity {
         self.budget = model.budget
         self.result = model.result
         self.difficultyRaw = model.difficulty.rawValue
-        self.steps = model.steps.map { StepEntity(from: $0) }
+        self.weeks = model.weeks.map { WeekEntity(from: $0) }
         self.isFavorite = model.isFavorite
     }
 
@@ -91,8 +91,40 @@ final class PlanEntity {
             budget: budget,
             result: result,
             difficulty: Project.Plan.Difficulty(rawValue: difficultyRaw) ?? .easy,
-            steps: steps.map { $0.toStep() },
+            weeks: weeks.map { $0.toWeek() }.sorted { $0.number < $1.number },
             isFavorite: isFavorite
+        )
+    }
+}
+
+// MARK: - Week
+
+@Model
+final class WeekEntity {
+
+    // MARK: - Public Properties
+
+    @Attribute(.unique)
+    var id: UUID
+    var number: Int
+    @Relationship(deleteRule: .cascade)
+    var steps: [StepEntity]
+
+    // MARK: - Inits
+
+    init(from model: Project.Plan.Week) {
+        self.id = model.id
+        self.number = model.number
+        self.steps = model.steps.map { StepEntity(from: $0) }
+    }
+
+    // MARK: - Public Methods
+
+    func toWeek() -> Project.Plan.Week {
+        Project.Plan.Week(
+            id: id,
+            number: number,
+            steps: steps.map { $0.toStep() }.sorted { $0.index < $1.index }
         )
     }
 }
@@ -107,6 +139,7 @@ final class StepEntity {
     @Attribute(.unique)
     var id: UUID
     var title: String
+    var index: Int
     var isCompleted: Bool
 
     // MARK: - Inits
@@ -114,6 +147,7 @@ final class StepEntity {
     init(from model: Project.Plan.Step) {
         self.id = model.id
         self.title = model.title
+        self.index = model.index
         self.isCompleted = model.isCompleted
     }
 
@@ -123,6 +157,7 @@ final class StepEntity {
         Project.Plan.Step(
             id: id,
             title: title,
+            index: index,
             isCompleted: isCompleted
         )
     }

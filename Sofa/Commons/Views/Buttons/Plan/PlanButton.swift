@@ -21,7 +21,7 @@ struct PlanButton: View {
             VStack(alignment: .leading, spacing: 12.fitW) {
                 VStack(alignment: .leading, spacing: 8.fitW) {
                     TitleText()
-                    DifficultyStepsView(difficulty: plan.difficulty, steps: plan.steps.count)
+                    DifficultyStepsView(difficulty: plan.difficulty, steps: plan.allSteps.count)
                 }
                 Divider()
                 ResultView()

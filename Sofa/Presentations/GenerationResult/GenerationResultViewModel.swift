@@ -14,7 +14,7 @@ final class GenerationResultViewModel {
 
     // MARK: - Public Properties
 
-    let project: Project
+    private(set) var project: Project
     var alertItem: AlertItem?
     var isPaywallPresented = false
     
@@ -28,8 +28,6 @@ final class GenerationResultViewModel {
     private let dataStorage: DataStorage
     private let storeManager: StoreManager
 
-    private var profile: Profile?
-
     // MARK: - Inits
 
     init(
@@ -42,8 +40,6 @@ final class GenerationResultViewModel {
         self.dataStorage = dataStorage
         self.storeManager = storeManager
         self.project = project
-
-        fetchProfile()
     }
 }
 
@@ -52,6 +48,10 @@ final class GenerationResultViewModel {
 extension GenerationResultViewModel {
 
     // MARK: - Input
+
+    func didViewAppear() {
+        fetchProject()
+    }
 
     func didTapNavigationBarLeadingButton() {
         router.back()
@@ -81,10 +81,10 @@ extension GenerationResultViewModel {
 // MARK: - Private Methods
 
 extension GenerationResultViewModel {
-    private func fetchProfile() {
+    private func fetchProject() {
         Task { @MainActor in
             do {
-                profile = try dataStorage.fetchProfile()
+                project = try dataStorage.fetchProject(id: project.id) ?? project
             } catch {
                 alertItem = .error(message: error.localizedDescription)
             }

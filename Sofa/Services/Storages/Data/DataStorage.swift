@@ -21,6 +21,14 @@ protocol DataStorage {
     @MainActor
     func fetchProjects() throws -> [Project]
 
+    /// Получает сохранённый проект.
+    ///
+    /// - Parameter id: Идентификатор проекта.
+    /// - Returns: Обьект `Project`.
+    /// - Throws: Ошибка, если чтение из хранилища не удалось.
+    @MainActor
+    func fetchProject(id: UUID) throws -> Project?
+
     /// Сохраняет проект.
     ///
     /// - Parameter project: Проект для сохранения.
@@ -65,6 +73,7 @@ final class DefaultDataStorage: DataStorage {
             ProjectEntity.self,
             ProfileEntity.self,
             PlanEntity.self,
+            WeekEntity.self,
             StepEntity.self
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
@@ -82,6 +91,17 @@ final class DefaultDataStorage: DataStorage {
         )
         let projects = try context.fetch(descriptor)
         return projects.map { $0.toProject() }
+    }
+
+    @MainActor
+    func fetchProject(id: UUID) throws -> Project? {
+        guard let context = container?.mainContext else { return nil }
+        let descriptor = FetchDescriptor<ProjectEntity>(
+            predicate: #Predicate { $0.id == id },
+            sortBy: []
+        )
+        let projects = try context.fetch(descriptor)
+        return projects.map { $0.toProject() }.first
     }
 
     @MainActor
