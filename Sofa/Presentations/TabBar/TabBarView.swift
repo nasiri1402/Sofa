@@ -16,6 +16,7 @@ struct TabBarView: View {
     // MARK: - Private Properties
 
     @State private var settingsRouter = SettingsRouter()
+    @State private var generatorRouter = GeneratorRouter()
 
     // MARK: - Body
 
@@ -30,10 +31,14 @@ struct TabBarView: View {
     // MARK: - Views
 
     private func GeneratorTab() -> some View {
-        NavigationStack {
+        NavigationStack(path: $generatorRouter.path) {
             GeneratorView(viewModel: GeneratorViewModel(
+                router: generatorRouter,
                 dataStorage: ServiceLayer.dataStorage
             ))
+            .navigationDestination(for: AnyRouter.self) { router in
+                router.makeView()
+            }
         }
         .tabItem {
             TabItem(.generator)

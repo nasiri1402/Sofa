@@ -22,11 +22,13 @@ final class GeneratorViewModel {
 
     // MARK: - Private Properties
 
+    private let router: GeneratorRouter
     private let dataStorage: DataStorage
 
     // MARK: - Inits
 
-    init(dataStorage: DataStorage) {
+    init(router: GeneratorRouter, dataStorage: DataStorage) {
+        self.router = router
         self.dataStorage = dataStorage
 
         initialize()
@@ -45,7 +47,7 @@ extension GeneratorViewModel {
     }
 
     func didTapProjectButton(_ project: Project) {
-        // TODO: Навигация к проекту
+        router.route(to: .generationResult(project))
     }
 
     func didTapDeleteProjectButton(_ project: Project) {
