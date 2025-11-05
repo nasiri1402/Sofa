@@ -14,12 +14,12 @@ final class InProcessViewModel {
 
     // MARK: - Public Properties
 
-    private(set) var displayProjects: [Project] = []
+    private(set) var plans: [Project.Plan] = []
     let segments = InProcessModel.Segment.allCases
     var selectedSegment: InProcessModel.Segment = .inWork {
         didSet {
             guard oldValue != selectedSegment else { return }
-            filterProjects()
+            filterPlans()
         }
     }
     private(set) var emptyState: InProcessModel.EmptyState?
@@ -46,6 +46,9 @@ extension InProcessViewModel {
 
     // MARK: - Input
 
+    func didTapPlanButton(_ plan: Project.Plan) {
+        // TODO: Навигация к плану/проекту
+    }
 }
 
 // MARK: - Private Methods
@@ -59,15 +62,17 @@ extension InProcessViewModel {
         Task { @MainActor in
             do {
                 projects = try dataStorage.fetchProjects()
-                filterProjects()
+                // TODO: Убрать моковый проект
+//                projects = [.mock]
+                filterPlans()
             } catch {
                 alertItem = .error(message: error.localizedDescription)
             }
         }
     }
 
-    private func filterProjects() {
-        displayProjects = projects.filter {
+    private func filterPlans() {
+        plans = projects.flatMap(\.plans).filter {
             switch selectedSegment {
             case .inWork: !$0.isCompleted
             case .completed: $0.isCompleted
@@ -77,10 +82,15 @@ extension InProcessViewModel {
     }
 
     private func checkEmptyState() {
-        guard displayProjects.isEmpty else { return }
-        emptyState = switch selectedSegment {
-        case .inWork: .inWork
-        case .completed: .completed
+        guard plans.isEmpty else {
+            emptyState = nil
+            return
+        }
+        withAnimation {
+            emptyState = switch selectedSegment {
+            case .inWork: .inWork
+            case .completed: .completed
+            }
         }
     }
 }

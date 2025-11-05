@@ -61,7 +61,12 @@ final class DefaultDataStorage: DataStorage {
     // MARK: - Private Properties
 
     private var container: ModelContainer? = {
-        let schema = Schema([ProjectEntity.self, ProfileEntity.self])
+        let schema = Schema([
+            ProjectEntity.self,
+            ProfileEntity.self,
+            PlanEntity.self,
+            StepEntity.self
+        ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
         return try? ModelContainer(for: schema, configurations: [modelConfiguration])
     }()

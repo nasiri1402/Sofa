@@ -20,18 +20,21 @@ struct InProcessView: View {
             Color.black090909
                 .ignoresSafeArea()
 
-            VStack(spacing: 16.fitW) {
+            VStack(spacing: .zero) {
                 SegmentPicker()
-                    .padding(.horizontal, 16.fitW)
+                    .padding(.top, 24.fitW)
+                    .padding(.bottom, 16.fitW)
 
                 if let emptyState = viewModel.emptyState {
                     EmptyStateView(emptyState)
-                        .padding(.top, 85.fitW)
-                        .padding(.horizontal, 16.fitW)
+                        .padding(.top, 69.fitW)
+
+                    Spacer(minLength: .zero)
+                } else {
+                    PlansScrollView()
                 }
-                Spacer(minLength: .zero)
             }
-            .padding(.vertical, 24.fitW)
+            .padding(.horizontal, 16.fitW)
         }
         .navigationTitle(String(localized: "inProcess"))
         .navigationBarTitleDisplayMode(.large)
@@ -74,7 +77,22 @@ struct InProcessView: View {
                 .foregroundStyle(.white.opacity(0.4))
                 .multilineTextAlignment(.center)
         }
-        .transition(.blurReplace.combined(with: .opacity))
-        .animation(.easeInOut, value: viewModel.emptyState)
+        .transition(.opacity)
+    }
+
+    private func PlansScrollView() -> some View {
+        ScrollView {
+            VStack(spacing: 12.fitW) {
+                ForEach(viewModel.plans, id: \.id) { plan in
+                    PlanButton(plan: plan) {
+                        viewModel.didTapPlanButton(plan)
+                    }
+                }
+            }
+        }
+        .scrollIndicators(.hidden)
+        .scrollBounceBehavior(.basedOnSize)
+        .contentMargins(.top, 8.fitW, for: .scrollContent)
+        .contentMargins(.bottom, 16.fitW, for: .scrollContent)
     }
 }

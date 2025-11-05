@@ -13,7 +13,8 @@ final class ProfileEntity {
 
     // MARK: - Public Properties
 
-    @Attribute(.unique) var id: UUID
+    @Attribute(.unique)
+    var id: UUID
     var name: String
     var age: Int
     var genderRaw: Int
