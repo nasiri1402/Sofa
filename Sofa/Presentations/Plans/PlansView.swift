@@ -65,7 +65,7 @@ struct PlansView: View {
 
     private func EmptyStateView(_ state: PlansModel.EmptyState) -> some View {
         VStack(alignment: .center, spacing: .zero) {
-            LottieView(animation: .named("empty-loading-state"))
+            LottieView(animation: .named("empty-state"))
                 .looping()
                 .resizable()
                 .frame(width: 150.fitW, height: 150.fitW)
