@@ -35,6 +35,9 @@ struct InProcessView: View {
         }
         .navigationTitle(String(localized: "inProcess"))
         .navigationBarTitleDisplayMode(.large)
+        .alert(item: $viewModel.alertItem) { item in
+            item.alert()
+        }
     }
 
     // MARK: - Views

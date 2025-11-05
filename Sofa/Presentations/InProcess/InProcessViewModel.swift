@@ -14,19 +14,29 @@ final class InProcessViewModel {
 
     // MARK: - Public Properties
 
+    private(set) var displayProjects: [Project] = []
     let segments = InProcessModel.Segment.allCases
     var selectedSegment: InProcessModel.Segment = .inWork {
         didSet {
             guard oldValue != selectedSegment else { return }
-            checkEmptyState()
+            filterProjects()
         }
     }
     private(set) var emptyState: InProcessModel.EmptyState?
+    var alertItem: AlertItem?
+
+    // MARK: - Private Properties
+
+    private let dataStorage: DataStorage
+
+    private var projects: [Project] = []
 
     // MARK: - Inits
 
-    init() {
-        checkEmptyState()
+    init(dataStorage: DataStorage) {
+        self.dataStorage = dataStorage
+
+        initialize()
     }
 }
 
@@ -41,11 +51,36 @@ extension InProcessViewModel {
 // MARK: - Private Methods
 
 extension InProcessViewModel {
+    private func initialize() {
+        fetchProjects()
+    }
+
+    private func fetchProjects() {
+        Task { @MainActor in
+            do {
+                projects = try dataStorage.fetchProjects()
+                filterProjects()
+            } catch {
+                alertItem = .error(message: error.localizedDescription)
+            }
+        }
+    }
+
+    private func filterProjects() {
+        displayProjects = projects.filter {
+            switch selectedSegment {
+            case .inWork: !$0.isCompleted
+            case .completed: $0.isCompleted
+            }
+        }
+        checkEmptyState()
+    }
+
     private func checkEmptyState() {
-        // TODO: Нужно проверять есть ли данные для нужного сегмента
-        switch selectedSegment {
-        case .inWork: emptyState = .inWork
-        case .completed: emptyState = .completed
+        guard displayProjects.isEmpty else { return }
+        emptyState = switch selectedSegment {
+        case .inWork: .inWork
+        case .completed: .completed
         }
     }
 }

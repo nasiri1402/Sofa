@@ -41,7 +41,9 @@ struct TabBarView: View {
 
     private func InProcessTab() -> some View {
         NavigationStack {
-            InProcessView(viewModel: InProcessViewModel())
+            InProcessView(viewModel: InProcessViewModel(
+                dataStorage: ServiceLayer.dataStorage
+            ))
         }
         .tabItem {
             TabItem(.inProcess)

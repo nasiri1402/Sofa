@@ -14,4 +14,7 @@ struct Project: Identifiable {
     let emoji: String
     let createdAt: Date
     var updatedAt: Date
+
+    // TODO: Нужно по выполненым шагам определять выполнен ли проект или нет
+    var isCompleted: Bool { false }
 }

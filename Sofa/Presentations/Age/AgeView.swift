@@ -87,6 +87,7 @@ struct AgeView: View {
             }
             .scrollIndicators(.hidden)
             .scrollBounceBehavior(.basedOnSize)
+            .contentMargins(.vertical, 16.fitW, for: .scrollContent)
         }
     }
 
