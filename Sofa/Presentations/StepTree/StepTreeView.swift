@@ -5,6 +5,7 @@
 //  Created by dukes on 11/5/25.
 //
 
+import Lottie
 import SwiftUI
 
 struct StepTreeView: View {
@@ -26,17 +27,26 @@ struct StepTreeView: View {
                         .padding(.horizontal, 16.fitW)
                         .padding(.bottom, 8.fitW)
 
-                    WeeksScrollView()
-
-                    ForEach(viewModel.selectedWeek?.steps ?? [], id: \.id) { step in
-                        StepButton(step)
+                    if viewModel.isWellDone {
+                        WellDoneView()
                             .padding(.horizontal, 16.fitW)
+                    } else {
+                        WeeksScrollView()
+                        ForEach(viewModel.selectedWeek?.steps ?? [], id: \.id) { step in
+                            StepButton(step)
+                                .padding(.horizontal, 16.fitW)
+                        }
                     }
                 }
             }
             .scrollIndicators(.hidden)
             .scrollBounceBehavior(.basedOnSize)
             .contentMargins(.vertical, 24.fitW, for: .scrollContent)
+            .overlay(alignment: .bottom) {
+                ViewPlanButton()
+                    .padding(16.fitW)
+            }
+            .animation(.easeInOut, value: viewModel.isWellDone)
         }
         .navigationTitle(String(localized: "stepTree"))
         .navigationBarTitleDisplayMode(.inline)
@@ -177,6 +187,34 @@ struct StepTreeView: View {
         }
         .buttonStyle(.plain)
         .hapticFeedback()
+    }
+
+    private func WellDoneView() -> some View {
+        VStack(alignment: .center, spacing: .zero) {
+            LottieView(animation: .named("well-done"))
+                .playing(loopMode: .playOnce)
+                .resizable()
+                .frame(width: 150.fitW, height: 150.fitW)
+
+            Text(String(localized: "wellDone"))
+                .font(.system(size: 34.fitW, weight: .bold))
+                .foregroundStyle(.white)
+                .padding(.bottom, 16.fitW)
+                .multilineTextAlignment(.center)
+
+            Text(String(localized: "wellDoneDescription"))
+                .font(.system(size: 17.fitW))
+                .foregroundStyle(.white.opacity(0.4))
+                .multilineTextAlignment(.center)
+        }
+        .frame(maxWidth: .infinity)
+        .transition(.blurReplace.combined(with: .opacity))
+    }
+
+    private func ViewPlanButton() -> some View {
+        PrimaryButton(title: String(localized: "viewPlan"), onTap: viewModel.didTapViewPlanButton)
+            .transition(.opacity)
+            .opacity(viewModel.isWellDone ? 1 : 0)
     }
 
     private func PaywallCover() -> some View {

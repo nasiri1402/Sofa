@@ -18,6 +18,7 @@ final class StepTreeViewModel {
     private(set) var selectedWeek: Project.Plan.Week?
     var alertItem: AlertItem?
     var isPaywallPresented = false
+    var isWellDone = false
 
     var isPro: Bool {
         storeManager.hasPurchasedProduct()
@@ -89,7 +90,12 @@ extension StepTreeViewModel {
             project.plans[planIndex] = plan
         }
         selectedWeek = week
+        isWellDone = plan.isCompleted
         saveProject()
+    }
+
+    func didTapViewPlanButton() {
+        isWellDone = false
     }
 }
 
@@ -97,6 +103,7 @@ extension StepTreeViewModel {
 
 extension StepTreeViewModel {
     private func initialize() {
+        isWellDone = plan.isCompleted
         selectedWeek = if isPro {
             plan.weeks.first { !$0.isCompleted } ?? plan.weeks.last
         } else {
