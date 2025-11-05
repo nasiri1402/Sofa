@@ -40,6 +40,7 @@ struct CountryView: View {
                     TipView()
                         .padding(.bottom, 16.fitW)
 
+                    // TODO: Добавить плейсхолдер лотти
                     CountriesScrollView()
                 }
                 .padding(.horizontal, 16.fitW)

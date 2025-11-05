@@ -62,9 +62,6 @@ extension CountryViewModel {
     func didTapSaveButton() {
         saveProfile()
     }
-
-    // MARK: - Output
-
 }
 
 // MARK: - Private Methods

@@ -49,6 +49,9 @@ struct NameView: View {
         .onTapGesture {
             isFocused = false
         }
+        .onAppear {
+            isFocused = true
+        }
         .onChangeKeyboardHeight { newValue in
             guard newValue != keyboardHeight else { return }
             withAnimation(.easeInOut(duration: 0.25)) {

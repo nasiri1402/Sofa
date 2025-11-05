@@ -14,6 +14,8 @@ final class AgeViewModel {
 
     // MARK: - Public Properties
 
+    let ages = (16...50).map(\.self)
+    private(set) var selectedAge: Int?
     var alertItem: AlertItem?
 
     // MARK: - Private Properties
@@ -39,11 +41,18 @@ extension AgeViewModel {
 
     // MARK: - Input
 
-    func didTapNavigationBarLeadingButton() {
+    func didTapBackButton() {
         router.back()
     }
 
-    // MARK: - Output
+    func didTapAgeButton(_ age: Int) {
+        guard selectedAge != age else { return }
+        selectedAge = age
+    }
+
+    func didTapSaveButton() {
+        saveProfile()
+    }
 }
 
 // MARK: - Private Methods
@@ -53,6 +62,20 @@ extension AgeViewModel {
         Task { @MainActor in
             do {
                 profile = try dataStorage.fetchProfile()
+                selectedAge = profile?.age
+            } catch {
+                alertItem = .error(message: error.localizedDescription)
+            }
+        }
+    }
+
+    private func saveProfile() {
+        guard let profile, let selectedAge else { return }
+        let updatedProfile = profile.copy(age: selectedAge)
+        Task { @MainActor in
+            do {
+                try dataStorage.saveProfile(updatedProfile)
+                router.back()
             } catch {
                 alertItem = .error(message: error.localizedDescription)
             }
