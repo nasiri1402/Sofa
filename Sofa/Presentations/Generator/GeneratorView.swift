@@ -48,6 +48,9 @@ struct GeneratorView: View {
         .onTapGesture {
             swipeState = .swiped(UUID())
         }
+        .onAppear {
+            viewModel.didViewAppear()
+        }
         .onDisappear {
             swipeState = .swiped(UUID())
         }
@@ -137,6 +140,7 @@ struct GeneratorView: View {
             Text(project.summary)
                 .font(.system(size: 15.fitW))
                 .foregroundStyle(.grayD1D1D6)
+                .frame(minHeight: 24.fitW)
         }
         .padding(20.fitW)
         .background(.gray787880.opacity(0.12))

@@ -1,5 +1,5 @@
 //
-//  GenerationResultViewModel.swift
+//  StepTreeViewModel.swift
 //  Sofa
 //
 //  Created by dukes on 11/5/25.
@@ -10,38 +10,41 @@ import Observation
 import SwiftUI
 
 @MainActor @Observable
-final class GenerationResultViewModel {
+final class StepTreeViewModel {
 
     // MARK: - Public Properties
 
-    let project: Project
+    private(set) var plan: Project.Plan
     var alertItem: AlertItem?
     var isPaywallPresented = false
-    
+
     var isPro: Bool {
         storeManager.hasPurchasedProduct()
     }
 
     // MARK: - Private Properties
 
-    private let router: GenerationResultRouter
+    private let router: StepTreeRouter
     private let dataStorage: DataStorage
     private let storeManager: StoreManager
 
+    private var project: Project
     private var profile: Profile?
 
     // MARK: - Inits
 
     init(
-        router: GenerationResultRouter,
+        router: StepTreeRouter,
         dataStorage: DataStorage,
         storeManager: StoreManager,
-        project: Project
+        project: Project,
+        plan: Project.Plan
     ) {
         self.router = router
         self.dataStorage = dataStorage
         self.storeManager = storeManager
         self.project = project
+        self.plan = plan
 
         fetchProfile()
     }
@@ -49,7 +52,7 @@ final class GenerationResultViewModel {
 
 // MARK: - Public Properties
 
-extension GenerationResultViewModel {
+extension StepTreeViewModel {
 
     // MARK: - Input
 
@@ -57,34 +60,32 @@ extension GenerationResultViewModel {
         router.back()
     }
 
-    func didTapChangeInputButton() {
-        guard isPro else {
-            isPaywallPresented = true
-            return
+    func didTapNavigationBarTrailingButton() {
+        plan.isFavorite.toggle()
+        if let index = project.plans.firstIndex(where: { $0.id == plan.id }) {
+            project.plans[index].isFavorite = plan.isFavorite
         }
-        // TODO: Навигация к настройкам генерации
-    }
-
-    func didTapGenerateMoreButton() {
-        guard isPro else {
-            isPaywallPresented = true
-            return
-        }
-        // TODO: Навигация к лоадеру генератора
-    }
-
-    func didTapPlanButton(_ plan: Project.Plan) {
-        router.route(to: .stepTree(project, plan))
+        saveProject()
     }
 }
 
 // MARK: - Private Methods
 
-extension GenerationResultViewModel {
+extension StepTreeViewModel {
     private func fetchProfile() {
         Task { @MainActor in
             do {
                 profile = try dataStorage.fetchProfile()
+            } catch {
+                alertItem = .error(message: error.localizedDescription)
+            }
+        }
+    }
+
+    private func saveProject() {
+        Task { @MainActor in
+            do {
+                try dataStorage.saveProject(project)
             } catch {
                 alertItem = .error(message: error.localizedDescription)
             }

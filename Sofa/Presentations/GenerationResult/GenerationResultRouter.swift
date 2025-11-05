@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 enum GenerationResultRoute {
-    case stepTree
+    case stepTree(Project, Project.Plan)
 }
 
 final class GenerationResultRouter: HashableRouter {
@@ -29,7 +29,11 @@ final class GenerationResultRouter: HashableRouter {
     // MARK: - Public Methods
 
     func route(to route: GenerationResultRoute) {
-        
+        switch route {
+        case .stepTree(let project, let plan):
+            let router = StepTreeRouter(navigator: navigator, project: project, plan: plan)
+            navigator.push(router)
+        }
     }
 
     func back() {

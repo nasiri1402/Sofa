@@ -11,7 +11,7 @@ struct Project: Identifiable {
     let id: UUID
     let prompt: String
     let summary: String
-    let plans: [Plan]
+    var plans: [Plan]
     let createdAt: Date
     var updatedAt: Date
     var isCompleted: Bool {
@@ -27,9 +27,12 @@ extension Project {
         let id: UUID
         let title: String
         let emoji: String
+        let firstResults: String
+        let budget: Int
         let result: String
         let difficulty: Difficulty
         let steps: [Step]
+        var isFavorite: Bool
         var progress: Double {
             guard !steps.isEmpty else { return .zero }
             let completedSteps = steps.filter(\.isCompleted)
@@ -89,18 +92,23 @@ extension Project {
                     id: UUID(),
                     title: "Design & Branding",
                     emoji: "🎨",
+                    firstResults: "3-4 weeks",
+                    budget: 1000,
                     result: "App identity, logo, and UI components ready",
                     difficulty: .easy,
                     steps: [
                         .init(id: UUID(), title: "Create color palette and typography", isCompleted: true),
                         .init(id: UUID(), title: "Design app icon and splash screen", isCompleted: false),
                         .init(id: UUID(), title: "Make UI kit in Figma", isCompleted: false)
-                    ]
+                    ],
+                    isFavorite: false
                 ),
                 Plan(
                     id: UUID(),
                     title: "Core App Development",
                     emoji: "💻",
+                    firstResults: "2-3 weeks",
+                    budget: 2000,
                     result: "Functional MVP with core features",
                     difficulty: .average,
                     steps: [
@@ -108,19 +116,23 @@ extension Project {
                         .init(id: UUID(), title: "Add main UI modules", isCompleted: true),
                         .init(id: UUID(), title: "Integrate iCloud sync", isCompleted: false),
                         .init(id: UUID(), title: "Add notifications and background refresh", isCompleted: false)
-                    ]
+                    ],
+                    isFavorite: true
                 ),
                 Plan(
                     id: UUID(),
                     title: "App Store Launch",
                     emoji: "🚀",
+                    firstResults: "2-4 weeks",
+                    budget: 5000,
                     result: "Live app available on App Store",
                     difficulty: .difficult,
                     steps: [
                         .init(id: UUID(), title: "Write App Store description and keywords", isCompleted: true),
                         .init(id: UUID(), title: "Prepare screenshots and preview video", isCompleted: false),
                         .init(id: UUID(), title: "Submit build and pass review", isCompleted: false)
-                    ]
+                    ],
+                    isFavorite: true
                 )
             ],
             createdAt: Date().addingTimeInterval(-86400 * 10),

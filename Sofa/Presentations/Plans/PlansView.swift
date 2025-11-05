@@ -1,5 +1,5 @@
 //
-//  InProcessView.swift
+//  PlansView.swift
 //  Sofa
 //
 //  Created by dukes on 11/3/25.
@@ -8,11 +8,11 @@
 import Lottie
 import SwiftUI
 
-struct InProcessView: View {
+struct PlansView: View {
 
     // MARK: - Public Properties
 
-    @State private(set) var viewModel: InProcessViewModel
+    @State private(set) var viewModel: PlansViewModel
 
     // MARK: - Body
 
@@ -37,8 +37,11 @@ struct InProcessView: View {
             }
             .padding(.horizontal, 16.fitW)
         }
-        .navigationTitle(String(localized: "inProcess"))
+        .navigationTitle(String(localized: "plans"))
         .navigationBarTitleDisplayMode(.large)
+        .onAppear {
+            viewModel.didViewAppear()
+        }
         .alert(item: $viewModel.alertItem) { item in
             item.alert()
         }
@@ -60,7 +63,7 @@ struct InProcessView: View {
         .tint(.gray636366)
     }
 
-    private func EmptyStateView(_ state: InProcessModel.EmptyState) -> some View {
+    private func EmptyStateView(_ state: PlansModel.EmptyState) -> some View {
         VStack(alignment: .center, spacing: .zero) {
             LottieView(animation: .named("empty-loading-state"))
                 .looping()

@@ -1,5 +1,5 @@
 //
-//  InProcessViewModel.swift
+//  PlansViewModel.swift
 //  Sofa
 //
 //  Created by dukes on 11/3/25.
@@ -10,60 +10,59 @@ import Observation
 import SwiftUI
 
 @MainActor @Observable
-final class InProcessViewModel {
+final class PlansViewModel {
 
     // MARK: - Public Properties
 
     private(set) var plans: [Project.Plan] = []
-    let segments = InProcessModel.Segment.allCases
-    var selectedSegment: InProcessModel.Segment = .inWork {
+    let segments = PlansModel.Segment.allCases
+    var selectedSegment: PlansModel.Segment = .inWork {
         didSet {
             guard oldValue != selectedSegment else { return }
             filterPlans()
         }
     }
-    private(set) var emptyState: InProcessModel.EmptyState?
+    private(set) var emptyState: PlansModel.EmptyState?
     var alertItem: AlertItem?
 
     // MARK: - Private Properties
 
+    private let router: PlansRouter
     private let dataStorage: DataStorage
 
     private var projects: [Project] = []
 
     // MARK: - Inits
 
-    init(dataStorage: DataStorage) {
+    init(router: PlansRouter, dataStorage: DataStorage) {
+        self.router = router
         self.dataStorage = dataStorage
-
-        initialize()
     }
 }
 
 // MARK: - Public Properties
 
-extension InProcessViewModel {
+extension PlansViewModel {
 
     // MARK: - Input
 
+    func didViewAppear() {
+        fetchProjects()
+    }
+
     func didTapPlanButton(_ plan: Project.Plan) {
-        // TODO: Навигация к плану/проекту
+        guard let project = findProject(for: plan) else { return }
+        router.route(to: .stepTree(project, plan))
     }
 }
 
 // MARK: - Private Methods
 
-extension InProcessViewModel {
-    private func initialize() {
-        fetchProjects()
-    }
-
+extension PlansViewModel {
     private func fetchProjects() {
         Task { @MainActor in
             do {
                 projects = try dataStorage.fetchProjects()
-                // TODO: Убрать моковый проект
-//                projects = [.mock]
                 filterPlans()
             } catch {
                 alertItem = .error(message: error.localizedDescription)
@@ -71,11 +70,16 @@ extension InProcessViewModel {
         }
     }
 
+    private func findProject(for plan: Project.Plan) -> Project? {
+        projects.first { $0.plans.contains { $0.id == plan.id } }
+    }
+
     private func filterPlans() {
         plans = projects.flatMap(\.plans).filter {
             switch selectedSegment {
             case .inWork: !$0.isCompleted
             case .completed: $0.isCompleted
+            case .favorites: $0.isFavorite
             }
         }
         checkEmptyState()
@@ -90,6 +94,7 @@ extension InProcessViewModel {
             emptyState = switch selectedSegment {
             case .inWork: .inWork
             case .completed: .completed
+            case .favorites: .favorites
             }
         }
     }

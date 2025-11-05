@@ -21,7 +21,7 @@ struct PlanButton: View {
             VStack(alignment: .leading, spacing: 12.fitW) {
                 VStack(alignment: .leading, spacing: 8.fitW) {
                     TitleText()
-                    DifficultyStepsView()
+                    DifficultyStepsView(difficulty: plan.difficulty, steps: plan.steps.count)
                 }
                 Divider()
                 ResultView()
@@ -46,31 +46,11 @@ struct PlanButton: View {
             .frame(height: 21.fitW)
     }
 
-    private func DifficultyStepsView() -> some View {
-        HStack(spacing: 6.fitW) {
-            Text(plan.difficulty.name)
-                .font(.system(size: 13.fitW))
-                .foregroundStyle(Color(plan.difficulty.color))
-
-            Image(.arrowRight)
-                .resizable()
-                .frame(width: 14.fitW, height: 14.fitW)
-
-            Text(String(format: String(localized: "stepsPluralFormat"), plan.steps.count))
-                .font(.system(size: 13.fitW))
-                .foregroundStyle(.gray8E8E93)
-
-            Spacer(minLength: .zero)
-        }
-        .frame(height: 18.fitW)
-    }
-
     private func Divider() -> some View {
         Rectangle()
             .fill(.gray545456.opacity(0.34))
             .frame(maxWidth: .infinity)
             .frame(height: 1.fitW)
-
     }
 
     private func ResultView() -> some View {
@@ -80,9 +60,10 @@ struct PlanButton: View {
                 .frame(width: 24.fitW, height: 24.fitW)
                 .padding(.trailing, 8.fitW)
 
-            Text(plan.result)
+            Text(String(format: String(localized: "resultFormat"), plan.result))
                 .font(.system(size: 13.fitW))
                 .foregroundStyle(.grayE5E5EA)
+                .frame(minHeight: 24.fitW)
         }
     }
 }

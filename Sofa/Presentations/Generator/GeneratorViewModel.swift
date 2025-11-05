@@ -30,8 +30,6 @@ final class GeneratorViewModel {
     init(router: GeneratorRouter, dataStorage: DataStorage) {
         self.router = router
         self.dataStorage = dataStorage
-
-        initialize()
     }
 }
 
@@ -40,6 +38,10 @@ final class GeneratorViewModel {
 extension GeneratorViewModel {
 
     // MARK: - Input
+
+    func didViewAppear() {
+        fetchProjects()
+    }
 
     func didTapStoryButton(_ story: GeneratorModel.Story) {
         guard selectedStory != story else { return }
@@ -70,16 +72,10 @@ extension GeneratorViewModel {
 // MARK: - Private Methods
 
 extension GeneratorViewModel {
-    private func initialize() {
-        fetchProjects()
-    }
-
     private func fetchProjects() {
         Task { @MainActor in
             do {
-//                projects = try dataStorage.fetchProjects()
-                // TODO: Убрать моковый проект
-                projects = [.mock, .mock, .mock, .mock, .mock, .mock, .mock, .mock, .mock, .mock]
+                projects = try dataStorage.fetchProjects()
             } catch {
                 alertItem = .error(message: error.localizedDescription)
             }

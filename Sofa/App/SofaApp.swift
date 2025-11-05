@@ -47,4 +47,12 @@ final class SofaAppDelegate: NSObject, UIApplicationDelegate {
         networkMonitor.startMonitoring()
         return true
     }
+
+    // MARK: - Test Methods
+
+    private func saveMockProject() {
+        Task { @MainActor in
+            try ServiceLayer.dataStorage.saveProject(.mock)
+        }
+    }
 }

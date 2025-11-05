@@ -12,12 +12,12 @@ enum TabBarModel {
     // MARK: - Item
 
     enum Tab {
-        case generator, inProcess, settings
+        case generator, plans, settings
 
         var title: String {
             switch self {
             case .generator: String(localized: "generator")
-            case .inProcess: String(localized: "inProcess")
+            case .plans: String(localized: "plans")
             case .settings: String(localized: "settings")
             }
         }
@@ -25,7 +25,7 @@ enum TabBarModel {
         var selectedIcon: ImageResource {
             switch self {
             case .generator: .generatorSelected
-            case .inProcess: .inProcessSelected
+            case .plans: .plansSelected
             case .settings: .settingsSelected
             }
         }
@@ -33,7 +33,7 @@ enum TabBarModel {
         var unselectedIcon: ImageResource {
             switch self {
             case .generator: .generatorUnselected
-            case .inProcess: .inProcessUnselected
+            case .plans: .plansUnselected
             case .settings: .settingsUnselected
             }
         }

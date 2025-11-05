@@ -58,10 +58,13 @@ final class PlanEntity {
     var id: UUID
     var title: String
     var emoji: String
+    var firstResults: String
+    var budget: Int
     var result: String
     var difficultyRaw: Int
     @Relationship(deleteRule: .cascade)
     var steps: [StepEntity]
+    var isFavorite: Bool
 
     // MARK: - Inits
 
@@ -69,9 +72,12 @@ final class PlanEntity {
         self.id = model.id
         self.title = model.title
         self.emoji = model.emoji
+        self.firstResults = model.firstResults
+        self.budget = model.budget
         self.result = model.result
         self.difficultyRaw = model.difficulty.rawValue
         self.steps = model.steps.map { StepEntity(from: $0) }
+        self.isFavorite = model.isFavorite
     }
 
     // MARK: - Public Methods
@@ -81,9 +87,12 @@ final class PlanEntity {
             id: id,
             title: title,
             emoji: emoji,
+            firstResults: firstResults,
+            budget: budget,
             result: result,
             difficulty: Project.Plan.Difficulty(rawValue: difficultyRaw) ?? .easy,
-            steps: steps.map { $0.toStep() }
+            steps: steps.map { $0.toStep() },
+            isFavorite: isFavorite
         )
     }
 }

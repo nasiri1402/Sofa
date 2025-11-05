@@ -18,6 +18,23 @@ extension View {
                         Image(icon)
                             .resizable()
                             .frame(width: 24.fitW, height: 24.fitW)
+                            .animation(.easeInOut, value: icon)
+                    }
+                }
+            }
+    }
+
+    func navigationBarTrailingButton(icon: ImageResource, action: @escaping () -> Void) -> some View {
+        self
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        action()
+                    } label: {
+                        Image(icon)
+                            .resizable()
+                            .frame(width: 24.fitW, height: 24.fitW)
+                            .animation(.easeInOut, value: icon)
                     }
                 }
             }

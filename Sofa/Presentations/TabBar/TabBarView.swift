@@ -15,15 +15,16 @@ struct TabBarView: View {
 
     // MARK: - Private Properties
 
-    @State private var settingsRouter = SettingsRouter()
     @State private var generatorRouter = GeneratorRouter()
+    @State private var plansRouter = PlansRouter()
+    @State private var settingsRouter = SettingsRouter()
 
     // MARK: - Body
 
     var body: some View {
         TabView(selection: $viewModel.selectedTab) {
             GeneratorTab()
-            InProcessTab()
+            PlansTab()
             SettingsTab()
         }
     }
@@ -46,16 +47,20 @@ struct TabBarView: View {
         .tag(TabBarModel.Tab.generator)
     }
 
-    private func InProcessTab() -> some View {
-        NavigationStack {
-            InProcessView(viewModel: InProcessViewModel(
+    private func PlansTab() -> some View {
+        NavigationStack(path: $plansRouter.path) {
+            PlansView(viewModel: PlansViewModel(
+                router: plansRouter,
                 dataStorage: ServiceLayer.dataStorage
             ))
+            .navigationDestination(for: AnyRouter.self) { router in
+                router.makeView()
+            }
         }
         .tabItem {
-            TabItem(.inProcess)
+            TabItem(.plans)
         }
-        .tag(TabBarModel.Tab.inProcess)
+        .tag(TabBarModel.Tab.plans)
     }
 
     private func SettingsTab() -> some View {
