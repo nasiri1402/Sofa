@@ -71,7 +71,7 @@ struct SettingsView: View {
         }
         .onChange(of: viewModel.reviewTrigger) { oldValue, newValue in
             guard oldValue != newValue else { return }
-            if let url = URL(string: SofaConstants.AppStore.appLink), UIApplication.shared.canOpenURL(url) {
+            if let url = URL(string: SofaConstants.AppStore.reviewLink), UIApplication.shared.canOpenURL(url) {
                 openURL(url)
             }
         }
