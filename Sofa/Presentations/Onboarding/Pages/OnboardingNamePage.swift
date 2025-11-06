@@ -12,52 +12,65 @@ struct OnboardingNamePage: View {
     // MARK: - Public Properties
 
     @Binding var nameInput: String
-    let onFinish: () -> Void
+    @Binding var isNextEnabled: Bool
+    let needsReveal: Bool
 
     // MARK: - Private Properties
 
     @FocusState private var isFocused
     @State private var keyboardHeight: CGFloat = .zero
     @State private var isInputEnabled = false
-    @State private var titleTopPadding: CGFloat = 256.fitH
+    @State private var topPadding: CGFloat = 256.fitH
     @State private var transitionTask: Task<Void, Never>?
 
     // MARK: - Body
 
     var body: some View {
         VStack(alignment: .leading, spacing: 32.fitW) {
-            WordRevealText(
-                text: String(localized: "whatIsYourName"),
-                font: .system(size: 34.fitW, weight: .bold),
-                revealedColor: .white,
-                hiddenColor: .white.opacity(0),
-                onRevealFinished: completeTitleReveal
-            )
-            .multilineTextAlignment(.leading)
-            .frame(maxWidth: .infinity, alignment: .leading)
-
+            if needsReveal {
+                WordRevealText(
+                    text: String(localized: "whatIsYourName"),
+                    font: .system(size: 34.fitW, weight: .bold),
+                    onFinished: completeTitleReveal
+                )
+                .multilineTextAlignment(.leading)
+                .frame(maxWidth: .infinity, alignment: .leading)
+            } else {
+                Text(String(localized: "whatIsYourName"))
+                    .font(.system(size: 34.fitW, weight: .bold))
+                    .foregroundStyle(.white)
+                    .multilineTextAlignment(.leading)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
             if isInputEnabled {
                 NameTextField()
                     .transition(.move(edge: .bottom).combined(with: .opacity))
             }
             Spacer()
         }
-        .padding(.top, titleTopPadding)
+        .padding(.top, topPadding)
         .padding(.horizontal, 16.fitW)
         .contentShape(.rect)
         .onTapGesture {
             isFocused = false
         }
         .transition(.opacity)
+        .onAppear {
+            if needsReveal {
+                isInputEnabled = false
+                topPadding = 256.fitH
+            } else {
+                isInputEnabled = true
+                topPadding = 72.fitW
+            }
+        }
         .onDisappear {
             isFocused = false
             transitionTask?.cancel()
         }
         .onChange(of: nameInput.isEmpty) { oldValue, newValue in
             guard oldValue != newValue else { return }
-            if !newValue {
-                onFinish()
-            }
+            isNextEnabled = !newValue
         }
         .onChangeKeyboardHeight { newValue in
             guard newValue != keyboardHeight else { return }
@@ -83,14 +96,12 @@ struct OnboardingNamePage: View {
     @MainActor
     private func completeTitleReveal() {
         transitionTask?.cancel()
-        transitionTask = Task {
-            await MainActor.run {
-                withAnimation(.easeInOut) {
-                    titleTopPadding = 72.fitW
-                    isInputEnabled = true
-                } completion: {
-                    isFocused = true
-                }
+        transitionTask = Task { @MainActor in
+            withAnimation(.easeInOut) {
+                topPadding = 72.fitW
+                isInputEnabled = true
+            } completion: {
+                isFocused = true
             }
         }
     }

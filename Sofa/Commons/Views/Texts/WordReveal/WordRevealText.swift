@@ -18,7 +18,7 @@ struct WordRevealText: View {
     var wordRevealDelay: Double = 0.3
     var pauseAfterReveal: Double = 2
     var animationDuration: Double = 0.25
-    var onRevealFinished: (() -> Void)?
+    var onFinished: (() -> Void)?
 
     // MARK: - Private Properties
 
@@ -72,7 +72,7 @@ private extension WordRevealText {
                         try await Task.sleep(for: .seconds(pauseAfterReveal))
                     }
                     await MainActor.run {
-                        onRevealFinished?()
+                        onFinished?()
                     }
                     return
                 }
@@ -91,13 +91,13 @@ private extension WordRevealText {
                 }
 
                 await MainActor.run {
-                    onRevealFinished?()
+                    onFinished?()
                 }
             } catch is CancellationError {
                 // Если задача отменена, ничего не делаем
             } catch {
                 await MainActor.run {
-                    onRevealFinished?()
+                    onFinished?()
                 }
             }
         }

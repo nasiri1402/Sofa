@@ -11,7 +11,7 @@ struct OnboardingLetsBeginPage: View {
 
     // MARK: - Public Properties
 
-    let onFinish: () -> Void
+    @Binding var isNextEnabled: Bool
 
     // MARK: - Private Properties
 
@@ -24,9 +24,7 @@ struct OnboardingLetsBeginPage: View {
             WordRevealText(
                 text: phase.text,
                 font: .system(size: 34.fitW, weight: .bold),
-                revealedColor: .white,
-                hiddenColor: .white.opacity(0),
-                onRevealFinished: advanceToNextPhase
+                onFinished: advanceToNextPhase
             )
             .padding(.top, 256.fitH)
 
@@ -34,11 +32,23 @@ struct OnboardingLetsBeginPage: View {
         }
         .padding(.horizontal, 16.fitW)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .onAppear {
-            phase = .one
-        }
     }
 
+    // MARK: - Private Methods
+
+    @MainActor
+    func advanceToNextPhase() {
+        guard let next = nextPhase(after: phase) else {
+            isNextEnabled = true
+            return
+        }
+        phase = next
+    }
+
+    func nextPhase(after phase: Phase) -> Phase? {
+        guard let index = Phase.allCases.firstIndex(of: phase) else { return nil }
+        return Phase.allCases[safe: index + 1]
+    }
 }
 
 // MARK: - Types
@@ -49,47 +59,19 @@ extension OnboardingLetsBeginPage {
 
         var text: String {
             switch self {
-            case .one:
-                return [
-                    String(localized: "comeUpWithIt"),
-                    String(localized: "generateIt"),
-                    String(localized: "takeAction")
-                ].joined(separator: "\n")
-            case .two:
-                return String(localized: "journeyBeginsHereAndNow")
-            case .three:
-                return String(localized: "iWillTurnYourGoalIntoActionPlan")
-            case .four:
-                return [
-                    String(localized: "hello") + " 👋",
-                    String(localized: "myNameIsSofa")
-                ].joined(separator: "\n")
-            case .five:
-                return String(localized: "iCanCreateAIGeneratedStepByStepPlanToImplementYourIdea")
+            case .one: [
+                String(localized: "comeUpWithIt"),
+                String(localized: "generateIt"),
+                String(localized: "takeAction")
+            ].joined(separator: "\n")
+            case .two: String(localized: "journeyBeginsHereAndNow")
+            case .three: String(localized: "iWillTurnYourGoalIntoActionPlan")
+            case .four: [
+                String(localized: "hello") + " 👋",
+                String(localized: "myNameIsSofa")
+            ].joined(separator: "\n")
+            case .five: String(localized: "iCanCreateAIGeneratedStepByStepPlanToImplementYourIdea")
             }
         }
-    }
-}
-
-// MARK: - Private Helpers
-
-private extension OnboardingLetsBeginPage {
-
-    @MainActor
-    func advanceToNextPhase() {
-        guard let next = nextPhase(after: phase) else {
-            onFinish()
-            return
-        }
-        phase = next
-    }
-
-    func nextPhase(after phase: Phase) -> Phase? {
-        guard let index = Phase.allCases.firstIndex(of: phase),
-              Phase.allCases.indices.contains(index + 1) else {
-            return nil
-        }
-
-        return Phase.allCases[index + 1]
     }
 }

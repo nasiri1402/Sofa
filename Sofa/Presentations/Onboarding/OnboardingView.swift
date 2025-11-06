@@ -29,15 +29,9 @@ struct OnboardingView: View {
 
             VStack(alignment: .leading, spacing: .zero) {
                 switch viewModel.currentStage {
-                case .logo: OnboardingLogoPage {
-                    viewModel.didFinishStage(.logo)
-                }
-                case .letsBegin: OnboardingLetsBeginPage {
-                    viewModel.didFinishStage(.letsBegin)
-                }
-                case .name: OnboardingNamePage(nameInput: $viewModel.nameInput) {
-                    viewModel.didFinishStage(.name)
-                }
+                case .logo: LogoPage()
+                case .letsBegin: LetsBeginPage()
+                case .name: NamePage()
                 case .gender: GenderPage()
                 case .age: AgePage()
                 case .country: CountryPage()
@@ -68,7 +62,7 @@ struct OnboardingView: View {
         .navigationBarBackButtonHidden()
         .toolbarVisibility(.hidden, for: .tabBar)
         .overlay {
-            ActivityIndicator(isLoading: viewModel.isLoading)
+            ActivityIndicator(isLoading: viewModel.isReviewing)
         }
         .onChange(of: viewModel.reviewTrigger) { _, _ in
             requestReview()
@@ -99,36 +93,81 @@ struct OnboardingView: View {
     }
 }
 
+// MARK: - Pages
+
 extension OnboardingView {
+
+    // MARK: - LogoPage
+
+    private func LogoPage() -> some View {
+        OnboardingLogoPage(onFinish: viewModel.didFinishStage)
+    }
+
+    // MARK: - LetsBeginPage
+
+    private func LetsBeginPage() -> some View {
+        OnboardingLetsBeginPage(isNextEnabled: $viewModel.isNextEnabled)
+    }
 
     // MARK: - NamePage
 
     private func NamePage() -> some View {
-        EmptyView()
+        OnboardingNamePage(
+            nameInput: $viewModel.name,
+            isNextEnabled: $viewModel.isNextEnabled,
+            needsReveal: !viewModel.finishedStages.contains(.name)
+        )
     }
 
     // MARK: - GenderPage
 
     private func GenderPage() -> some View {
-        EmptyView()
+        OnboardingGenderPage(
+            name: viewModel.name,
+            selectedGender: $viewModel.gender,
+            genders: viewModel.allGenders,
+            isPreviousEnabled: $viewModel.isPreviousEnabled,
+            isNextEnabled: $viewModel.isNextEnabled,
+            needsReveal: !viewModel.finishedStages.contains(.gender)
+        )
     }
 
     // MARK: - AgePage
 
     private func AgePage() -> some View {
-        EmptyView()
+        OnboardingAgePage(
+            selectedAge: $viewModel.age,
+            ages: viewModel.ages,
+            isPreviousEnabled: $viewModel.isPreviousEnabled,
+            isNextEnabled: $viewModel.isNextEnabled,
+            needsReveal: !viewModel.finishedStages.contains(.age)
+        )
     }
 
     // MARK: - CountryPage
 
     private func CountryPage() -> some View {
-        EmptyView()
+        OnboardingCountryPage(
+            selectedCountry: $viewModel.country,
+            countries: viewModel.countries,
+            searchInput: $viewModel.countrySearchInput,
+            isPreviousEnabled: $viewModel.isPreviousEnabled,
+            isNextEnabled: $viewModel.isNextEnabled,
+            needsReveal: !viewModel.finishedStages.contains(.country)
+        )
     }
 
     // MARK: - AboutUsPage
 
     private func AboutUsPage() -> some View {
-        EmptyView()
+        OnboardingAboutUsPage(
+            selectedSource: $viewModel.source,
+            sources: viewModel.sources,
+            otherSourceInput: $viewModel.otherSourceText,
+            isPreviousEnabled: $viewModel.isPreviousEnabled,
+            isNextEnabled: $viewModel.isNextEnabled,
+            needsReveal: !viewModel.finishedStages.contains(.aboutUs)
+        )
     }
 
     // MARK: - PrivacyPage

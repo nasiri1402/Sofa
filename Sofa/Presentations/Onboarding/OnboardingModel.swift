@@ -54,4 +54,22 @@ enum OnboardingModel {
             }
         }
     }
+
+    // MARK: - Source
+
+    enum Source: CaseIterable {
+        case instagramFacebook, tikTok, youTube, appStore, influencer, friendFamily, other
+
+        var title: String {
+            switch self {
+            case .instagramFacebook: String(localized: "instagramFacebook")
+            case .tikTok: String(localized: "tikTok")
+            case .youTube: String(localized: "youTube")
+            case .appStore: String(localized: "appStore")
+            case .influencer: String(localized: "influencer")
+            case .friendFamily: String(localized: "friendFamily")
+            case .other: String(localized: "other")
+            }
+        }
+    }
 }

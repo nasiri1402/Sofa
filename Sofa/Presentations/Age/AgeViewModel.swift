@@ -14,7 +14,7 @@ final class AgeViewModel {
 
     // MARK: - Public Properties
 
-    let ages = (16...50).map(\.self)
+    let ages = Array(16...50)
     private(set) var selectedAge: Int?
     var alertItem: AlertItem?
 
