@@ -16,7 +16,7 @@ struct WordRevealText: View {
     var revealedColor: Color = .white
     var hiddenColor: Color = .white.opacity(.zero)
     var wordRevealDelay: Double = 0.3
-    var pauseAfterReveal: Double = 1
+    var pauseAfterReveal: Double = 2
     var animationDuration: Double = 0.25
     var onRevealFinished: (() -> Void)?
 
@@ -55,10 +55,9 @@ struct WordRevealText: View {
     }
 }
 
-// MARK: - Private Helpers
+// MARK: - Private Methods
 
 private extension WordRevealText {
-
     @MainActor
     func restartAnimation() {
         cancelAnimation()

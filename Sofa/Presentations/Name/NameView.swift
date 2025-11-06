@@ -84,7 +84,7 @@ struct NameView: View {
     }
 
     private func NameTextField() -> some View {
-        TextField(String(localized: "enterYourName"), text: $viewModel.nameInput)
+        TextField(String(localized: "yourName"), text: $viewModel.nameInput)
             .font(.system(size: 17.fitW))
             .foregroundStyle(.grayE5E5EA)
             .autocorrectionDisabled()
