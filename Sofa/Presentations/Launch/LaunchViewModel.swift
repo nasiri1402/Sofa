@@ -19,7 +19,7 @@ final class LaunchViewModel {
     // MARK: - Private Properties
 
     @ObservationIgnored @AppStorage(SofaConstants.AppStorage.isBeforeLaunched)
-    private var isBeforeLaunched = true
+    private var isBeforeLaunched = false
     private var isProductsUpdated = false
 
     // MARK: - Inits

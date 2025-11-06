@@ -38,13 +38,10 @@ struct LaunchView: View {
     }
 
     private func Onboarding() -> some View {
-//        OnboardingView(viewModel: OnboardingViewModel {
-//            viewModel.didFinishStage(.onboarding)
-//        })
-//        .transition(.opacity)
-        HStack {
-
-        }
+        OnboardingView(viewModel: OnboardingViewModel {
+            viewModel.didFinishStage(.onboarding)
+        })
+        .transition(.opacity)
     }
 
     private func TabBar() -> some View {
