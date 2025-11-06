@@ -48,7 +48,6 @@ struct OnboardingAboutUsPage: View {
                 VStack(alignment: .leading, spacing: 12.fitW) {
                     if otherSourceInput != nil {
                         OtherSourceTextField()
-                            .transition(.blurReplace.combined(with: .opacity))
                     } else {
                         ForEach(sources, id: \.self) { source in
                             SourceButton(source)
@@ -70,6 +69,7 @@ struct OnboardingAboutUsPage: View {
         }
         .onAppear {
             if needsReveal {
+                otherSourceInput = nil
                 isSelectionEnabled = false
                 topPadding = 256.fitH
             } else {
@@ -122,13 +122,15 @@ struct OnboardingAboutUsPage: View {
     private func OtherSourceTextField() -> some View {
         TextField(
             String(localized: "yourAnswer"),
-            text: Binding(get: { otherSourceInput ?? "" }, set: { otherSourceInput = $0 })
+            text: Binding(get: { otherSourceInput ?? "" }, set: { otherSourceInput = $0 }),
+            axis: .vertical
         )
         .font(.system(size: 17.fitW))
         .foregroundStyle(.grayE5E5EA)
         .autocorrectionDisabled()
         .focused($isOtherFocused)
-        .frame(height: 22.fitW)
+        .lineLimit(7)
+        .transition(.opacity)
         .onAppear {
             isOtherFocused = true
         }
