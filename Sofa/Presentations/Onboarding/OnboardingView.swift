@@ -64,12 +64,26 @@ struct OnboardingView: View {
         .overlay {
             ActivityIndicator(isLoading: viewModel.isReviewing)
         }
+        .environment(\.openURL, OpenURLAction { url in
+            viewModel.didTapPrivacyLink(url: url)
+            return .discarded
+        })
+        .sheet(isPresented: $viewModel.isSafariPresented) {
+            if let url = viewModel.safariURL {
+                SafariView(url: url)
+            }
+        }
+        .alert(item: $viewModel.alertItem) { item in
+            item.alert()
+        }
         .onChange(of: viewModel.reviewTrigger) { _, _ in
             requestReview()
         }
         .onChangeKeyboardHeight { newValue in
             guard keyboardHeight != newValue else { return }
-            keyboardHeight = newValue
+            withAnimation(.easeInOut(duration: 0.25)) {
+                keyboardHeight = newValue
+            }
         }
     }
 
@@ -88,28 +102,26 @@ struct OnboardingView: View {
     }
 
     private func ContinueButton() -> some View {
-        PrimaryButton(title: viewModel.currentStage.actionTitle, onTap: viewModel.didTapContinueButton)
-            .transition(.opacity)
+        PrimaryButton(
+            title: viewModel.currentStage.actionTitle(
+                isForceContinue: viewModel.currentStage == .rateUs && viewModel.isReviewRequested
+            ),
+            onTap: viewModel.didTapContinueButton
+        )
+        .transition(.opacity)
     }
 }
 
 // MARK: - Pages
 
 extension OnboardingView {
-
-    // MARK: - LogoPage
-
     private func LogoPage() -> some View {
-        OnboardingLogoPage(onFinish: viewModel.didFinishStage)
+        OnboardingLogoPage(onFinish: viewModel.didTapContinueButton)
     }
-
-    // MARK: - LetsBeginPage
 
     private func LetsBeginPage() -> some View {
         OnboardingLetsBeginPage(isNextEnabled: $viewModel.isNextEnabled)
     }
-
-    // MARK: - NamePage
 
     private func NamePage() -> some View {
         OnboardingNamePage(
@@ -118,8 +130,6 @@ extension OnboardingView {
             needsReveal: !viewModel.finishedStages.contains(.name)
         )
     }
-
-    // MARK: - GenderPage
 
     private func GenderPage() -> some View {
         OnboardingGenderPage(
@@ -132,8 +142,6 @@ extension OnboardingView {
         )
     }
 
-    // MARK: - AgePage
-
     private func AgePage() -> some View {
         OnboardingAgePage(
             selectedAge: $viewModel.age,
@@ -143,8 +151,6 @@ extension OnboardingView {
             needsReveal: !viewModel.finishedStages.contains(.age)
         )
     }
-
-    // MARK: - CountryPage
 
     private func CountryPage() -> some View {
         OnboardingCountryPage(
@@ -157,8 +163,6 @@ extension OnboardingView {
         )
     }
 
-    // MARK: - AboutUsPage
-
     private func AboutUsPage() -> some View {
         OnboardingAboutUsPage(
             selectedSource: $viewModel.source,
@@ -170,45 +174,27 @@ extension OnboardingView {
         )
     }
 
-    // MARK: - PrivacyPage
-
     private func PrivacyPage() -> some View {
-        EmptyView()
+        OnboardingPrivacyPage(
+            name: viewModel.name,
+            isPrivacyRead: $viewModel.isPrivacyRead,
+            isPreviousEnabled: $viewModel.isPreviousEnabled,
+            isNextEnabled: $viewModel.isNextEnabled,
+            needsReveal: !viewModel.finishedStages.contains(.privacy)
+        )
     }
-
-    // MARK: - RateUs
 
     private func RateUsPage() -> some View {
-        VStack(alignment: .leading, spacing: .zero) {
-            LottieView(animation: .named("reviewing"))
-                .looping()
-                .resizable()
-                .frame(width: 150.fitW, height: 150.fitW)
-
-            Text(String(localized: "pleaseRateUs"))
-                .font(.system(size: 34.fitW, weight: .bold))
-                .foregroundStyle(.white)
-                .padding(.bottom, 16.fitW)
-                .multilineTextAlignment(.center)
-
-            Text(String(localized: "pleaseRateUsDescription"))
-                .font(.system(size: 17.fitW))
-                .foregroundStyle(.white.opacity(0.4))
-                .multilineTextAlignment(.center)
-
-            Spacer(minLength: .zero)
-//            RateButton()
-//                .padding(.bottom, 31.fitW)
-        }
-        .frame(maxWidth: .infinity)
-        .transition(.blurReplace.combined(with: .opacity))
-        .padding(.top, 154.fitW)
-        .padding(16.fitW)
+        OnboardingRateUsPage(
+            isPreviousEnabled: $viewModel.isPreviousEnabled,
+            isNextEnabled: $viewModel.isNextEnabled
+        )
     }
 
-    // MARK: - LetsAskPage
-
     private func LetsAskPage() -> some View {
-        EmptyView()
+        OnboardingLetsAsk(
+            isPreviousEnabled: $viewModel.isPreviousEnabled,
+            isNextEnabled: $viewModel.isNextEnabled
+        )
     }
 }

@@ -18,6 +18,9 @@ final class OnboardingViewModel {
     private(set) var finishedStages: Set<OnboardingModel.Stage> = []
     var isPreviousEnabled = false
     var isNextEnabled = false
+    var alertItem: AlertItem?
+    private(set) var safariURL: URL?
+    var isSafariPresented = false
 
     var name = ""
 
@@ -47,18 +50,21 @@ final class OnboardingViewModel {
     let sources = OnboardingModel.Source.allCases
     var otherSourceText: String?
 
+    var isPrivacyRead = true
+
     private(set) var reviewTrigger = UUID()
     private(set) var isReviewing = false
+    private(set) var isReviewRequested = false
 
     // MARK: - Private Properties
 
+    private let dataStorage: DataStorage
     private let onFinish: () -> Void
-
-    private var isReviewRequested = false
 
     // MARK: - Inits
 
-    init(onFinish: @escaping () -> Void) {
+    init(dataStorage: DataStorage, onFinish: @escaping () -> Void) {
+        self.dataStorage = dataStorage
         self.onFinish = onFinish
     }
 }
@@ -87,21 +93,24 @@ extension OnboardingViewModel {
             source = nil
             otherSourceText = nil
             previousStage()
-        default: break
-        }
-    }
-
-    func didFinishStage() {
-        switch currentStage {
-        case .logo: nextStage()
-        default: break
+        case .privacy:
+            isPrivacyRead = true
+            previousStage()
+        case .rateUs:
+            previousStage()
+        case .logo, .letsBegin, .name, .letsAsk: break
         }
     }
 
     func didTapContinueButton() {
         switch currentStage {
-        case .logo: break
-        case .letsBegin, .name, .gender, .country, .privacy, .letsAsk: nextStage()
+        case .logo, .letsBegin, .gender: nextStage()
+        case .country:
+            countrySearchInput.removeAll()
+            nextStage()
+        case .name:
+            name = name.trimmingCharacters(in: .whitespacesAndNewlines)
+            nextStage()
         case .age:
             applyCountrySearchFilter()
             nextStage()
@@ -111,13 +120,26 @@ extension OnboardingViewModel {
             } else {
                 nextStage()
             }
-        case .rateUs:
+        case .privacy:
             if isReviewRequested {
-                requestReview()
+                currentStage = .letsAsk
             } else {
                 nextStage()
             }
+        case .rateUs:
+            if isReviewRequested {
+                nextStage()
+            } else {
+                requestReview()
+            }
+        case .letsAsk:
+            saveProfile()
         }
+    }
+
+    func didTapPrivacyLink(url: URL) {
+        safariURL = url
+        isSafariPresented = true
     }
 }
 
@@ -155,10 +177,31 @@ extension OnboardingViewModel {
     private func requestReview() {
         isReviewRequested = true
         isReviewing = true
+        isNextEnabled = false
         reviewTrigger = UUID()
         Task { @MainActor in
             try? await Task.sleep(for: .seconds(2))
             isReviewing = false
+            isNextEnabled = true
+        }
+    }
+
+    private func saveProfile() {
+        guard !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty, let gender, let country else { return }
+        let profile = Profile(
+            id: UUID(),
+            name: name.trimmingCharacters(in: .whitespacesAndNewlines),
+            age: age,
+            gender: gender,
+            country: country
+        )
+        Task { @MainActor in
+            do {
+                try dataStorage.saveProfile(profile)
+                onFinish()
+            } catch {
+                alertItem = .error(message: error.localizedDescription)
+            }
         }
     }
 }

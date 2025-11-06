@@ -38,7 +38,7 @@ struct LaunchView: View {
     }
 
     private func Onboarding() -> some View {
-        OnboardingView(viewModel: OnboardingViewModel {
+        OnboardingView(viewModel: OnboardingViewModel(dataStorage: ServiceLayer.dataStorage) {
             viewModel.didFinishStage(.onboarding)
         })
         .transition(.opacity)

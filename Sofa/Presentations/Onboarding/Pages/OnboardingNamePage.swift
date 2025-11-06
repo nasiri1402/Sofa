@@ -67,9 +67,10 @@ struct OnboardingNamePage: View {
             isFocused = false
             transitionTask?.cancel()
         }
-        .onChange(of: nameInput.isEmpty) { oldValue, newValue in
+        .onChange(of: nameInput) { oldValue, newValue in
             guard oldValue != newValue else { return }
-            isNextEnabled = !newValue
+            let trimmedValue = newValue.trimmingCharacters(in: .whitespacesAndNewlines)
+            isNextEnabled = !trimmedValue.isEmpty
         }
     }
 

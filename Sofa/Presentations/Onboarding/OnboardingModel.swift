@@ -14,8 +14,11 @@ enum OnboardingModel {
     enum Stage {
         case logo, letsBegin, name, gender, age, country, aboutUs, privacy, rateUs, letsAsk
 
-        var actionTitle: String {
-            switch self {
+        func actionTitle(isForceContinue: Bool) -> String {
+            guard !isForceContinue else {
+                return String(localized: "continue")
+            }
+            return switch self {
             case .logo: ""
             case .letsBegin: String(localized: "letsBegin")
             case .name, .gender, .age, .country, .aboutUs, .privacy: String(localized: "continue")
