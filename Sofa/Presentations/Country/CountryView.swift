@@ -38,7 +38,7 @@ struct CountryView: View {
                     TitleText()
                         .padding(.vertical, 16.fitW)
 
-                    TipView()
+                    Tip(text: String(localized: "weWillCreateIdeasForYourCountryMarket"))
                         .padding(.bottom, 16.fitW)
 
                     CountriesScrollView()
@@ -86,26 +86,6 @@ struct CountryView: View {
             .font(.system(size: 34.fitW, weight: .bold))
             .foregroundStyle(.white)
             .frame(maxWidth: .infinity, alignment: .leading)
-    }
-
-    private func TipView() -> some View {
-        HStack(alignment: .top, spacing: .zero) {
-            Image(.lamp)
-                .resizable()
-                .frame(width: 24.fitW, height: 24.fitW)
-                .padding(.trailing, 6.fitW)
-
-            Text(String(localized: "weWillCreateIdeasForYourCountryMarket"))
-                .font(.system(size: 13.fitW))
-                .foregroundStyle(.grayE5E5EA)
-                .frame(maxWidth: .infinity, alignment: .leading)
-
-            Spacer(minLength: .zero)
-        }
-        .padding(.horizontal, 20.fitW)
-        .padding(.vertical, 14.fitW)
-        .background(.gray787880.opacity(0.12))
-        .clipShape(.rect(cornerRadius: 12.fitW))
     }
 
     private func EmptyStateView() -> some View {
