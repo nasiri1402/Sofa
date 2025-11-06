@@ -98,7 +98,13 @@ extension OnboardingViewModel {
             previousStage()
         case .rateUs:
             previousStage()
-        case .logo, .letsBegin, .name, .letsAsk: break
+        case .letsAsk:
+            if isReviewRequested {
+                previousStage(.privacy)
+            } else {
+                previousStage()
+            }
+        case .logo, .letsBegin, .name: break
         }
     }
 
@@ -122,7 +128,7 @@ extension OnboardingViewModel {
             }
         case .privacy:
             if isReviewRequested {
-                currentStage = .letsAsk
+                nextStage(.letsAsk)
             } else {
                 nextStage()
             }
@@ -146,17 +152,25 @@ extension OnboardingViewModel {
 // MARK: - Private Methods
 
 extension OnboardingViewModel {
-    private func nextStage() {
+    private func nextStage(_ stage: OnboardingModel.Stage? = nil) {
         isPreviousEnabled = false
         isNextEnabled = false
         finishedStages.insert(currentStage)
-        currentStage = currentStage.next() ?? currentStage
+        currentStage = if let stage {
+            stage
+        } else {
+            currentStage.next() ?? currentStage
+        }
     }
 
-    private func previousStage() {
+    private func previousStage(_ stage: OnboardingModel.Stage? = nil) {
         isNextEnabled = true
         finishedStages.remove(currentStage)
-        currentStage = currentStage.previous() ?? currentStage
+        currentStage = if let stage {
+            stage
+        } else {
+            currentStage.previous() ?? currentStage
+        }
     }
 
     private func applyCountrySearchFilter() {

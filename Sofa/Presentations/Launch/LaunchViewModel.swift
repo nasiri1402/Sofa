@@ -31,10 +31,13 @@ final class LaunchViewModel {
     // MARK: - Public Methods
 
     func didFinishStage(_ stage: LaunchModel.Stage) {
-        currentStage = switch stage {
-        case .splash: isBeforeLaunched ? .tabBar : .onboarding
-        case .onboarding: .tabBar
-        case .tabBar: currentStage
+        switch stage {
+        case .splash:
+            currentStage = isBeforeLaunched ? .tabBar : .onboarding
+        case .onboarding:
+            isBeforeLaunched = true
+            currentStage = .tabBar
+        case .tabBar: break
         }
     }
 }
