@@ -18,7 +18,6 @@ struct OnboardingNamePage: View {
     // MARK: - Private Properties
 
     @FocusState private var isFocused
-    @State private var keyboardHeight: CGFloat = .zero
     @State private var isInputEnabled = false
     @State private var topPadding: CGFloat = 256.fitH
     @State private var transitionTask: Task<Void, Never>?
@@ -71,12 +70,6 @@ struct OnboardingNamePage: View {
         .onChange(of: nameInput.isEmpty) { oldValue, newValue in
             guard oldValue != newValue else { return }
             isNextEnabled = !newValue
-        }
-        .onChangeKeyboardHeight { newValue in
-            guard newValue != keyboardHeight else { return }
-            withAnimation(.easeInOut(duration: 0.25)) {
-                keyboardHeight = newValue
-            }
         }
     }
 

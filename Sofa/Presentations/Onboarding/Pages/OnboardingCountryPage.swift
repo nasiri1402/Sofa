@@ -153,7 +153,13 @@ struct OnboardingCountryPage: View {
             .scrollIndicators(.hidden)
             .scrollBounceBehavior(.basedOnSize)
             .contentMargins(.top, 16.fitW, for: .scrollContent)
-            .contentMargins(.bottom, keyboardHeight > .zero ? 84.fitW : 115.fitW, for: .scrollContent)
+            .contentMargins(
+                .bottom,
+                selectedCountry == nil
+                ? 16.fitW
+                : keyboardHeight > .zero ? 84.fitW : 115.fitW,
+                for: .scrollContent
+            )
         }
     }
 

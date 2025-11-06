@@ -20,6 +20,7 @@ struct OnboardingAboutUsPage: View {
 
     // MARK: - Private Properties
 
+    @FocusState private var isOtherFocused
     @State private var isSelectionEnabled = false
     @State private var topPadding: CGFloat = 256.fitH
     @State private var transitionTask: Task<Void, Never>?
@@ -45,11 +46,17 @@ struct OnboardingAboutUsPage: View {
             }
             if isSelectionEnabled {
                 VStack(alignment: .leading, spacing: 12.fitW) {
-                    ForEach(sources, id: \.self) { source in
-                        SourceButton(source)
+                    if otherSourceInput != nil {
+                        OtherSourceTextField()
+                            .transition(.blurReplace.combined(with: .opacity))
+                    } else {
+                        ForEach(sources, id: \.self) { source in
+                            SourceButton(source)
+                        }
                     }
                 }
                 .animation(.easeInOut, value: selectedSource)
+                .animation(.easeInOut, value: otherSourceInput == nil)
                 .transition(.move(edge: .bottom).combined(with: .opacity))
             }
             Spacer(minLength: .zero)
@@ -57,6 +64,10 @@ struct OnboardingAboutUsPage: View {
         .padding(.top, topPadding)
         .padding(.horizontal, 16.fitW)
         .transition(.opacity)
+        .contentShape(.rect)
+        .onTapGesture {
+            isOtherFocused = false
+        }
         .onAppear {
             if needsReveal {
                 isSelectionEnabled = false
@@ -67,11 +78,16 @@ struct OnboardingAboutUsPage: View {
             }
         }
         .onDisappear {
+            isOtherFocused = false
             transitionTask?.cancel()
         }
         .onChange(of: selectedSource) { oldValue, newValue in
             guard oldValue != newValue else { return }
             isNextEnabled = newValue != nil
+        }
+        .onChange(of: otherSourceInput) { oldValue, newValue in
+            guard oldValue != newValue else { return }
+            isNextEnabled = !(newValue ?? "").isEmpty
         }
     }
 
@@ -101,6 +117,21 @@ struct OnboardingAboutUsPage: View {
         }
         .buttonStyle(.plain)
         .hapticFeedback()
+    }
+
+    private func OtherSourceTextField() -> some View {
+        TextField(
+            String(localized: "yourAnswer"),
+            text: Binding(get: { otherSourceInput ?? "" }, set: { otherSourceInput = $0 })
+        )
+        .font(.system(size: 17.fitW))
+        .foregroundStyle(.grayE5E5EA)
+        .autocorrectionDisabled()
+        .focused($isOtherFocused)
+        .frame(height: 22.fitW)
+        .onAppear {
+            isOtherFocused = true
+        }
     }
 
     // MARK: - Private Methods
