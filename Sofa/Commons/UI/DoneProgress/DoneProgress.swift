@@ -18,19 +18,7 @@ struct DoneProgress: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8.fitW) {
-            GeometryReader { geometry in
-                Capsule()
-                    .fill(.gray3C3C43.opacity(0.6))
-                    .frame(height: 8.fitW)
-                    .overlay(alignment: .leading) {
-                        Capsule()
-                            .fill(percentage >= 1 ? .green34C759 : .blue007AFF)
-                            .frame(width: geometry.size.width * percentage, height: 8.fitW)
-                            .animation(.easeInOut, value: percentage)
-                    }
-            }
-            .frame(height: 8.fitW)
-
+            ProgressBar(percentage: percentage)
             HStack(spacing: .zero) {
                 Text(percentage * 100, format: .number)
                     .font(.system(size: 12.fitW))

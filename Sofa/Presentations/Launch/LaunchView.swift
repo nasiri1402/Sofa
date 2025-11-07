@@ -18,8 +18,10 @@ struct LaunchView: View {
     var body: some View {
         Group {
             switch viewModel.currentStage {
-            case .splash: Splash()
+//            case .splash: Splash()
+            case .splash: Brief()
             case .onboarding: Onboarding()
+            case .brief: Brief()
             case .tabBar: TabBar()
             }
         }
@@ -40,6 +42,13 @@ struct LaunchView: View {
     private func Onboarding() -> some View {
         OnboardingView(viewModel: OnboardingViewModel(dataStorage: ServiceLayer.dataStorage) {
             viewModel.didFinishStage(.onboarding)
+        })
+        .transition(.opacity)
+    }
+
+    private func Brief() -> some View {
+        BriefView(viewModel: BriefViewModel(isFirstBrief: true) {
+            viewModel.didFinishStage(.brief)
         })
         .transition(.opacity)
     }

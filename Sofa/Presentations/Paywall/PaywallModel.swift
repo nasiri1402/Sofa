@@ -29,8 +29,8 @@ enum PaywallModel {
 
         var title: String {
             switch self {
-            case .monthly: String(localized: "1month")
-            case .weekly: String(localized: "1week")
+            case .monthly: String(format: String(localized: "monthsPluralFormat"), 1).capitalized
+            case .weekly: String(format: String(localized: "weeksPluralFormat"), 1).capitalized
             }
         }
 

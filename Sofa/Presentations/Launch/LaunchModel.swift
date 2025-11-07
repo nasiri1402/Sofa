@@ -12,6 +12,6 @@ enum LaunchModel {
     // MARK: - Stage
 
     enum Stage {
-        case splash, onboarding, tabBar
+        case splash, onboarding, brief, tabBar
     }
 }

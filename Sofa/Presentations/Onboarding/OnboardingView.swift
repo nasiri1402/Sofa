@@ -127,7 +127,7 @@ extension OnboardingView {
         OnboardingNamePage(
             nameInput: $viewModel.name,
             isNextEnabled: $viewModel.isNextEnabled,
-            needsReveal: !viewModel.finishedStages.contains(.name)
+            needsReveal: !viewModel.revealedStages.contains(.name)
         )
     }
 
@@ -135,10 +135,10 @@ extension OnboardingView {
         OnboardingGenderPage(
             name: viewModel.name,
             selectedGender: $viewModel.gender,
-            genders: viewModel.allGenders,
+            genders: Profile.Gender.allCases,
             isPreviousEnabled: $viewModel.isPreviousEnabled,
             isNextEnabled: $viewModel.isNextEnabled,
-            needsReveal: !viewModel.finishedStages.contains(.gender)
+            needsReveal: !viewModel.revealedStages.contains(.gender)
         )
     }
 
@@ -148,7 +148,7 @@ extension OnboardingView {
             ages: viewModel.ages,
             isPreviousEnabled: $viewModel.isPreviousEnabled,
             isNextEnabled: $viewModel.isNextEnabled,
-            needsReveal: !viewModel.finishedStages.contains(.age)
+            needsReveal: !viewModel.revealedStages.contains(.age)
         )
     }
 
@@ -159,18 +159,18 @@ extension OnboardingView {
             searchInput: $viewModel.countrySearchInput,
             isPreviousEnabled: $viewModel.isPreviousEnabled,
             isNextEnabled: $viewModel.isNextEnabled,
-            needsReveal: !viewModel.finishedStages.contains(.country)
+            needsReveal: !viewModel.revealedStages.contains(.country)
         )
     }
 
     private func AboutUsPage() -> some View {
         OnboardingAboutUsPage(
             selectedSource: $viewModel.source,
-            sources: viewModel.sources,
+            sources: OnboardingModel.Source.allCases,
             otherSourceInput: $viewModel.otherSourceText,
             isPreviousEnabled: $viewModel.isPreviousEnabled,
             isNextEnabled: $viewModel.isNextEnabled,
-            needsReveal: !viewModel.finishedStages.contains(.aboutUs)
+            needsReveal: !viewModel.revealedStages.contains(.aboutUs)
         )
     }
 
@@ -180,7 +180,7 @@ extension OnboardingView {
             isPrivacyRead: $viewModel.isPrivacyRead,
             isPreviousEnabled: $viewModel.isPreviousEnabled,
             isNextEnabled: $viewModel.isNextEnabled,
-            needsReveal: !viewModel.finishedStages.contains(.privacy)
+            needsReveal: !viewModel.revealedStages.contains(.privacy)
         )
     }
 

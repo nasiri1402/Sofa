@@ -21,6 +21,19 @@ struct Project: Identifiable {
 
 extension Project {
 
+    // MARK: - Brief
+
+    struct Brief: Identifiable, Hashable {
+        let id: UUID
+        let idea: String
+        let timeframe: Timeframe
+        let experience: Experience
+        let startPoint: String
+        let result: Result
+        let budget: Int?
+        let limits: String
+    }
+
     // MARK: - Plan
 
     struct Plan: Identifiable, Hashable {
@@ -44,6 +57,64 @@ extension Project {
         }
         var isCompleted: Bool {
             weeks.allSatisfy(\.isCompleted)
+        }
+    }
+}
+
+extension Project.Brief {
+
+    // MARK: - Timeframe
+
+    enum Timeframe: Int, CaseIterable, Equatable {
+        case month1, month3, month6, month12
+
+        var name: String {
+            switch self {
+            case .month1: String(format: String(localized: "monthsPluralFormat"), 1)
+            case .month3: String(format: String(localized: "monthsPluralFormat"), 3)
+            case .month6: String(format: String(localized: "monthsPluralFormat"), 6)
+            case .month12: String(format: String(localized: "monthsPluralFormat"), 12)
+            }
+        }
+    }
+
+    // MARK: - Experience
+
+    enum Experience: Int, CaseIterable, Hashable {
+        case beginner, intermediate, expert
+
+        var name: String {
+            switch self {
+            case .beginner: String(localized: "beginner")
+            case .intermediate: String(localized: "intermediate")
+            case .expert: String(localized: "expert")
+            }
+        }
+    }
+
+    // MARK: - Result
+
+    struct Result: Hashable {
+        let goals: Set<Goal>
+        let money: Int?
+        let subscribers: Int?
+        let option: String?
+    }
+
+    // MARK: - Goal
+
+    enum Goal: Int, CaseIterable, Hashable {
+        case money, subscribers, clients, cases, experience, option
+
+        var name: String {
+            switch self {
+            case .money: String(localized: "money")
+            case .subscribers: String(localized: "subscribers")
+            case .clients: String(localized: "clients")
+            case .cases: String(localized: "cases")
+            case .experience: String(localized: "experience")
+            case .option: String(localized: "yourOption")
+            }
         }
     }
 }

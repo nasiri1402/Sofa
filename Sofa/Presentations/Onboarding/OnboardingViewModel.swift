@@ -15,7 +15,7 @@ final class OnboardingViewModel {
     // MARK: - Public Properties
 
     private(set) var currentStage: OnboardingModel.Stage = .logo
-    private(set) var finishedStages: Set<OnboardingModel.Stage> = []
+    private(set) var revealedStages: Set<OnboardingModel.Stage> = []
     var isPreviousEnabled = false
     var isNextEnabled = false
     var alertItem: AlertItem?
@@ -25,7 +25,6 @@ final class OnboardingViewModel {
     var name = ""
 
     var gender: Profile.Gender?
-    let allGenders = Profile.Gender.allCases
 
     var age: Int = .zero
     var ages: [Int] {
@@ -47,7 +46,6 @@ final class OnboardingViewModel {
     }
 
     var source: OnboardingModel.Source?
-    let sources = OnboardingModel.Source.allCases
     var otherSourceText: String?
 
     var isPrivacyRead = true
@@ -155,7 +153,7 @@ extension OnboardingViewModel {
     private func nextStage(_ stage: OnboardingModel.Stage? = nil) {
         isPreviousEnabled = false
         isNextEnabled = false
-        finishedStages.insert(currentStage)
+        revealedStages.insert(currentStage)
         currentStage = if let stage {
             stage
         } else {
@@ -165,7 +163,7 @@ extension OnboardingViewModel {
 
     private func previousStage(_ stage: OnboardingModel.Stage? = nil) {
         isNextEnabled = true
-        finishedStages.remove(currentStage)
+        revealedStages.remove(currentStage)
         currentStage = if let stage {
             stage
         } else {

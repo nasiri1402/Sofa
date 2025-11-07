@@ -35,6 +35,7 @@ enum SofaConstants {
 
     enum AppStorage {
         static let isBeforeLaunched = "isBeforeLaunched"
+        static let isProfileCreated = "isProfileCreated"
     }
 
     // MARK: - FreeLimits

@@ -48,6 +48,7 @@ struct OnboardingAboutUsPage: View {
                 VStack(alignment: .leading, spacing: 12.fitW) {
                     if otherSourceInput != nil {
                         OtherSourceTextField()
+                            .transition(.opacity)
                     } else {
                         ForEach(sources, id: \.self) { source in
                             SourceButton(source)
