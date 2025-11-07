@@ -47,6 +47,13 @@ extension NameViewModel {
     func didTapSaveButton() {
         saveProfile()
     }
+
+    func didChangeNameInput(_ newValue: String) {
+        let scalars = newValue.unicodeScalars.filter { CharacterSet.letters.contains($0) }
+        let letters = String(scalars.map(Character.init))
+        guard letters != newValue else { return }
+        nameInput = letters
+    }
 }
 
 // MARK: - Private Methods
@@ -64,8 +71,9 @@ extension NameViewModel {
     }
 
     private func saveProfile() {
-        guard let profile else { return }
-        let updatedProfile = profile.copy(name: nameInput.trimmingCharacters(in: .whitespacesAndNewlines))
+        let name = nameInput.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard let profile, !name.isEmpty else { return }
+        let updatedProfile = profile.copy(name: name)
         Task { @MainActor in
             do {
                 try dataStorage.saveProfile(updatedProfile)

@@ -90,9 +90,15 @@ struct NameView: View {
             .autocorrectionDisabled()
             .focused($isFocused)
             .frame(height: 22.fitW)
+            .onChange(of: viewModel.nameInput) { oldValue, newValue in
+                guard oldValue != newValue else { return }
+                viewModel.didChangeNameInput(newValue)
+            }
     }
 
     private func SaveButton() -> some View {
         PrimaryButton(title: String(localized: "saveChanges"), onTap: viewModel.didTapSaveButton)
+            .opacity(viewModel.nameInput.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? 0 : 1)
+            .animation(.easeInOut, value: viewModel.nameInput.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
     }
 }

@@ -69,8 +69,12 @@ struct OnboardingNamePage: View {
         }
         .onChange(of: nameInput) { oldValue, newValue in
             guard oldValue != newValue else { return }
-            let trimmedValue = newValue.trimmingCharacters(in: .whitespacesAndNewlines)
-            isNextEnabled = !trimmedValue.isEmpty
+            let scalars = newValue.unicodeScalars.filter { CharacterSet.letters.contains($0) }
+            let letters = String(scalars.map(Character.init))
+            if letters != newValue {
+                nameInput = letters
+            }
+            isNextEnabled = !letters.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
         }
     }
 
