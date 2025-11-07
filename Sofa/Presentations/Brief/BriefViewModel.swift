@@ -28,14 +28,15 @@ final class BriefViewModel {
 
     var startPoint = ""
 
-    var result: Project.Brief.Result?
     var goals: Set<Project.Brief.Goal> = []
     var goalMoneyText = ""
     var goalSubscribersText = ""
     var goalOptionText = ""
-    private(set) var isGoalMoneyHidden = false
-    private(set) var isGoalSubscribersHidden = false
-    private(set) var isGoalOptionHidden = false
+
+    var hasBudget: Bool?
+    var budgetText = ""
+
+    var limitsText = ""
 
     // MARK: - Private Properties
 
@@ -63,33 +64,56 @@ extension BriefViewModel {
 
     func didTapBackButton() {
         switch currentStage {
+        case .idea:
+            if isFirstBrief {
+                break
+            } else {
+                // TODO: Навигация на главную
+                break
+            }
         case .timeframe:
             timeframe = nil
             isPreviousEnabled = !isFirstBrief
-            previousStage()
+            previousStage(.idea)
         case .experience:
             experience = nil
-            previousStage()
+            previousStage(.timeframe)
         case .startPoint:
             startPoint.removeAll()
-            previousStage()
+            previousStage(.experience)
         case .result:
-            if !isGoalSubscribersHidden {
-                isGoalSubscribersHidden = true
-                isNextEnabled = true
-                goalSubscribersText.removeAll()
-            } else if !isGoalMoneyHidden {
-                isGoalMoneyHidden = true
-                isNextEnabled = true
-                goalMoneyText.removeAll()
-            } else if !isGoalOptionHidden {
-                isGoalOptionHidden = true
-                isNextEnabled = true
-                goalOptionText.removeAll()
+            goals.removeAll()
+            previousStage(.startPoint)
+        case .resultMoney:
+            goalMoneyText.removeAll()
+            previousStage(.result)
+        case .resultSubscribers:
+            goalSubscribersText.removeAll()
+            if goals.contains(.money) {
+                previousStage(.resultMoney)
             } else {
-                previousStage()
+                previousStage(.result)
             }
-        default: break
+        case .resultOption:
+            goalOptionText.removeAll()
+            previousStage(.result)
+        case .hasBudget:
+            switch true {
+            case goals.contains(.subscribers): previousStage(.resultSubscribers)
+            case goals.contains(.money): previousStage(.resultMoney)
+            case goals.contains(.option): previousStage(.resultOption)
+            default: nextStage(.result)
+            }
+        case .budget:
+            budgetText.removeAll()
+            previousStage(.hasBudget)
+        case .limits:
+            limitsText.removeAll()
+            if hasBudget == true {
+                previousStage(.budget)
+            } else {
+                previousStage(.hasBudget)
+            }
         }
     }
 
@@ -97,26 +121,43 @@ extension BriefViewModel {
         switch currentStage {
         case .idea:
             idea = idea.trimmingCharacters(in: .whitespacesAndNewlines)
-            nextStage()
-        case .timeframe, .experience:
-            nextStage()
+            nextStage(.timeframe)
+        case .timeframe:
+            nextStage(.experience)
+        case .experience:
+            nextStage(.startPoint)
         case .startPoint:
             startPoint = startPoint.trimmingCharacters(in: .whitespacesAndNewlines)
-            nextStage()
+            nextStage(.result)
         case .result:
-            if goals.contains(.money) {
-                isGoalMoneyHidden = false
-            } else if goals.contains(.subscribers) {
-                isGoalSubscribersHidden = false
-            } else if goals.contains(.option){
-                isGoalOptionHidden = false
-            } else {
-                isGoalMoneyHidden = true
-                isGoalSubscribersHidden = true
-                isGoalOptionHidden = true
-                nextStage()
+            switch true {
+            case goals.contains(.money): nextStage(.resultMoney)
+            case goals.contains(.subscribers): nextStage(.resultSubscribers)
+            case goals.contains(.option): nextStage(.resultOption)
+            default: nextStage(.hasBudget)
             }
-        default: break
+        case .resultMoney:
+            if goals.contains(.subscribers) {
+                nextStage(.resultSubscribers)
+            } else {
+                nextStage(.hasBudget)
+            }
+        case .resultSubscribers:
+            nextStage(.hasBudget)
+        case .resultOption:
+            goalOptionText = goalOptionText.trimmingCharacters(in: .whitespacesAndNewlines)
+            nextStage(.hasBudget)
+        case .hasBudget:
+            if hasBudget == true {
+                nextStage(.budget)
+            } else {
+                nextStage(.limits)
+            }
+        case .budget:
+            nextStage(.limits)
+        case .limits:
+            limitsText = limitsText.trimmingCharacters(in: .whitespacesAndNewlines)
+            startGeneration()
         }
     }
 
@@ -130,30 +171,27 @@ extension BriefViewModel {
 // MARK: - Private Methods
 
 extension BriefViewModel {
-    private func nextStage(_ stage: BriefModel.Stage? = nil) {
+    private func nextStage(_ stage: BriefModel.Stage) {
         isPreviousEnabled = false
         isNextEnabled = false
         revealedStages.insert(currentStage)
-        currentStage = if let stage {
-            stage
-        } else {
-            currentStage.next() ?? currentStage
-        }
+        currentStage = stage
         updateProgress()
     }
 
-    private func previousStage(_ stage: BriefModel.Stage? = nil) {
+    private func previousStage(_ stage: BriefModel.Stage) {
         isNextEnabled = true
         revealedStages.remove(currentStage)
-        currentStage = if let stage {
-            stage
-        } else {
-            currentStage.previous() ?? currentStage
-        }
+        currentStage = stage
         updateProgress()
     }
-
+    
     private func updateProgress() {
-        progress = Double(currentStage.number) / Double(BriefModel.Stage.allCases.count)
+        let allCases = BriefModel.Stage.allCases.filter(\.isProgressable)
+        progress = max(0, min(1, Double(currentStage.number) / Double(allCases.count)))
+    }
+
+    private func startGeneration() {
+        // TODO: Начинать генерацию
     }
 }

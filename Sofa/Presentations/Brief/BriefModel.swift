@@ -12,40 +12,34 @@ enum BriefModel {
     // MARK: - Stage
 
     enum Stage: Int, CaseIterable {
-        case idea, timeframe, experience, startPoint, result, budget, limits
+        case idea, timeframe, experience, startPoint
+        case result, resultMoney, resultSubscribers, resultOption
+        case hasBudget, budget, limits
 
         var number: Int {
-            rawValue + 1
+            switch self {
+            case .idea: 1
+            case .timeframe: 2
+            case .experience: 3
+            case .startPoint: 4
+            case .result, .resultMoney, .resultSubscribers, .resultOption: 5
+            case .hasBudget, .budget: 6
+            case .limits: 7
+            }
+        }
+
+        var isProgressable: Bool {
+            switch self {
+            case .resultMoney, .resultSubscribers, .resultOption, .budget: false
+            default: true
+            }
         }
 
         func actionTitle() -> String {
             switch self {
-            case .idea, .timeframe, .experience, .startPoint, .result, .budget: String(localized: "continue")
+            case .idea, .timeframe, .experience, .startPoint, .hasBudget, .budget: String(localized: "continue")
+            case .result, .resultMoney, .resultSubscribers, .resultOption: String(localized: "continue")
             case .limits: String(localized: "startGeneration")
-            }
-        }
-
-        func next() -> Stage? {
-            switch self {
-            case .idea: .timeframe
-            case .timeframe: .experience
-            case .experience: .startPoint
-            case .startPoint: .result
-            case .result: .budget
-            case .budget: .limits
-            case .limits: nil
-            }
-        }
-
-        func previous() -> Stage? {
-            switch self {
-            case .idea: nil
-            case .timeframe: .idea
-            case .experience: .timeframe
-            case .startPoint: .experience
-            case .result: .startPoint
-            case .budget: .result
-            case .limits: .budget
             }
         }
     }

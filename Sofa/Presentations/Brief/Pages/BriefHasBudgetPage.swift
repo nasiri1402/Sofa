@@ -1,5 +1,5 @@
 //
-//  BriefResultPage.swift
+//  BriefHasBudgetPage.swift
 //  Sofa
 //
 //  Created by dukes on 11/7/25.
@@ -7,12 +7,11 @@
 
 import SwiftUI
 
-struct BriefResultPage: View {
+struct BriefHasBudgetPage: View {
 
     // MARK: - Public Properties
 
-    @Binding var selectedGoals: Set<Project.Brief.Goal>
-    let goals: [Project.Brief.Goal]
+    @Binding var hasBudget: Bool?
     @Binding var isPreviousEnabled: Bool
     @Binding var isNextEnabled: Bool
     let needsReveal: Bool
@@ -20,7 +19,6 @@ struct BriefResultPage: View {
     // MARK: - Private Properties
 
     @State private var isSelectionEnabled = false
-    @State private var keyboardHeight: CGFloat = .zero
     @State private var topPadding: CGFloat = 256.fitH
     @State private var transitionTask: Task<Void, Never>?
 
@@ -30,24 +28,26 @@ struct BriefResultPage: View {
         VStack(alignment: .leading, spacing: 16.fitW) {
             if needsReveal {
                 WordRevealText(
-                    text: String(localized: "whatDoesResultMeanToYou"),
+                    text: String(localized: "doYouHaveBudgetForThis"),
                     font: .system(size: 34.fitW, weight: .bold),
                     onFinished: completeTitleReveal
                 )
                 .multilineTextAlignment(.leading)
                 .frame(maxWidth: .infinity, alignment: .leading)
             } else {
-                Text(String(localized: "whatDoesResultMeanToYou"))
+                Text(String(localized: "doYouHaveBudgetForThis"))
                     .font(.system(size: 34.fitW, weight: .bold))
                     .foregroundStyle(.white)
                     .multilineTextAlignment(.leading)
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
             if isSelectionEnabled {
-                VStack(spacing: 16.fitW) {
-                    Tip(text: String(localized: "selectMultipleAnswersOrWriteYourOwn"))
-                    GoalsScrollView()
+                VStack(alignment: .leading, spacing: 12.fitW) {
+                    ForEach([true, false], id: \.self) { flag in
+                        FlagButton(flag)
+                    }
                 }
+                .animation(.easeInOut, value: hasBudget)
                 .transition(.move(edge: .bottom).combined(with: .opacity))
             }
             Spacer()
@@ -67,60 +67,20 @@ struct BriefResultPage: View {
         .onDisappear {
             transitionTask?.cancel()
         }
-        .onChange(of: selectedGoals) { oldValue, newValue in
+        .onChange(of: hasBudget) { oldValue, newValue in
             guard oldValue != newValue else { return }
-            isNextEnabled = !newValue.isEmpty
-        }
-        .onChangeKeyboardHeight { newValue in
-            guard keyboardHeight != newValue else { return }
-            keyboardHeight = newValue
+            isNextEnabled = hasBudget != nil
         }
     }
 
     // MARK: - Views
 
-    private func GoalsScrollView() -> some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 12.fitW) {
-                ForEach(goals, id: \.self) { goal in
-                    GoalButton(goal)
-                }
-            }
-            .animation(.easeInOut, value: selectedGoals)
-        }
-        .scrollIndicators(.hidden)
-        .scrollBounceBehavior(.basedOnSize)
-        .contentMargins(.top, 16.fitW, for: .scrollContent)
-        .contentMargins(
-            .bottom,
-            selectedGoals.isEmpty
-            ? 16.fitW
-            : keyboardHeight > .zero ? 84.fitW : 115.fitW,
-            for: .scrollContent
-        )
-    }
-
-    private func GoalButton(_ goal: Project.Brief.Goal) -> some View {
+    private func FlagButton(_ flag: Bool) -> some View {
         Button {
-            guard !selectedGoals.contains(goal) else {
-                selectedGoals.remove(goal)
-                return
-            }
-            if goal == .option {
-                selectedGoals.removeAll()
-            } else if selectedGoals.contains(.option) {
-                selectedGoals.remove(.option)
-            }
-            selectedGoals.insert(goal)
+            hasBudget = flag
         } label: {
             HStack(spacing: 6.fitW) {
-                if selectedGoals.contains(goal), goal != .option {
-                    Image(.checkboxRectSelectedWhite)
-                        .resizable()
-                        .frame(width: 20.fitW, height: 20.fitW)
-                        .transition(.move(edge: .leading).combined(with: .opacity))
-                }
-                Text(goal.name)
+                Text(flag ? String(localized: "yesIDo") : String(localized: "noBudget"))
                     .multilineMinimumScale()
                     .multilineTextAlignment(.center)
                     .font(.system(size: 15.fitW, weight: .semibold))
@@ -134,7 +94,7 @@ struct BriefResultPage: View {
             .overlay {
                 Capsule()
                     .strokeBorder(.blue007AFF, lineWidth: 1.fitW)
-                    .opacity(selectedGoals.contains(goal) ? 1 : 0)
+                    .opacity(hasBudget == flag ? 1 : 0)
             }
         }
         .buttonStyle(.plain)

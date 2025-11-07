@@ -42,7 +42,7 @@ struct BriefIdeaPage: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
             if isInputEnabled {
-                VStack(spacing: 44.fitW) {
+                VStack(spacing: 32.fitW) {
                     Tip(text: String(localized: "moreDetailsMeanClearerActionPlan"))
                     IdeaTextField()
                 }

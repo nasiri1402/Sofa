@@ -1,5 +1,5 @@
 //
-//  BriefBudgetPage.swift
+//  BriefResultMoneyPage.swift
 //  Sofa
 //
 //  Created by dukes on 11/7/25.
@@ -7,11 +7,11 @@
 
 import SwiftUI
 
-struct BriefBudgetPage: View {
+struct BriefResultMoneyPage: View {
 
     // MARK: - Public Properties
 
-    @Binding var budgetInput: String
+    @Binding var goalMoneyInput: String
     @Binding var isPreviousEnabled: Bool
     @Binding var isNextEnabled: Bool
     let needsReveal: Bool
@@ -29,21 +29,21 @@ struct BriefBudgetPage: View {
         VStack(alignment: .leading, spacing: 32.fitW) {
             if needsReveal {
                 WordRevealText(
-                    text: String(localized: "whatIsYourBudgetForTheIdea"),
+                    text: String(localized: "howMuchDoYouWantToEarn"),
                     font: .system(size: 34.fitW, weight: .bold),
                     onFinished: completeTitleReveal
                 )
                 .multilineTextAlignment(.leading)
                 .frame(maxWidth: .infinity, alignment: .leading)
             } else {
-                Text(String(localized: "whatIsYourBudgetForTheIdea"))
+                Text(String(localized: "howMuchDoYouWantToEarn"))
                     .font(.system(size: 34.fitW, weight: .bold))
                     .foregroundStyle(.white)
                     .multilineTextAlignment(.leading)
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
             if isInputEnabled {
-                BudgetTextField()
+                MoneyTextField()
                     .transition(.move(edge: .bottom).combined(with: .opacity))
             }
             Spacer()
@@ -69,7 +69,7 @@ struct BriefBudgetPage: View {
             isFocused = false
             transitionTask?.cancel()
         }
-        .onChange(of: budgetInput) { oldValue, newValue in
+        .onChange(of: goalMoneyInput) { oldValue, newValue in
             guard oldValue != newValue else { return }
             isNextEnabled = !newValue.isEmpty
         }
@@ -77,7 +77,7 @@ struct BriefBudgetPage: View {
 
     // MARK: - Views
 
-    private func BudgetTextField() -> some View {
+    private func MoneyTextField() -> some View {
         HStack(spacing: .zero) {
             Text(verbatim: "$ ")
                 .font(.system(size: 17.fitW))
@@ -85,7 +85,7 @@ struct BriefBudgetPage: View {
 
             TextField(
                 String("0"),
-                text: Binding(get: { budgetInput }, set: { budgetInput = $0.filter(\.isNumber) })
+                text: Binding(get: { goalMoneyInput }, set: { goalMoneyInput = $0.filter(\.isNumber) })
             )
             .font(.system(size: 17.fitW))
             .foregroundStyle(.grayE5E5EA)

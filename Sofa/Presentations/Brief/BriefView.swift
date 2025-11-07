@@ -32,6 +32,10 @@ struct BriefView: View {
                 case .experience: ExperiencePage()
                 case .startPoint: StartPointPage()
                 case .result: ResultPage()
+                case .resultMoney: ResultMoneyPage()
+                case .resultSubscribers: ResultSubscribersPage()
+                case .resultOption: ResultOptionPage()
+                case .hasBudget: HasBudgetPage()
                 case .budget: BudgetPage()
                 case .limits: LimitsPage()
                 }
@@ -41,8 +45,7 @@ struct BriefView: View {
                     BackButton()
                         .opacity(viewModel.isPreviousEnabled ? 1 : 0)
 
-                    ProgressBar(percentage: viewModel.progress)
-
+                    ProgressBar(percentage: viewModel.progress, isGreenCompleted: false)
                     BackButton()
                         .opacity(.zero)
                 }
@@ -139,41 +142,64 @@ extension BriefView {
 
     private func ResultPage() -> some View {
         BriefResultPage(
-            goalMoneyInput: $viewModel.goalMoneyText,
-            goalSubscribersInput: $viewModel.goalSubscribersText,
-            goalOptionInput: $viewModel.goalOptionText,
             selectedGoals: $viewModel.goals,
             goals: Project.Brief.Goal.allCases,
-            isGoalMoneyHidden: viewModel.isGoalMoneyHidden,
-            isGoalSubscribersHidden: viewModel.isGoalSubscribersHidden,
-            isGoalOptionHidden: viewModel.isGoalOptionHidden,
             isPreviousEnabled: $viewModel.isPreviousEnabled,
             isNextEnabled: $viewModel.isNextEnabled,
             needsReveal: viewModel.needsReveal(for: .result)
         )
     }
 
+    private func ResultMoneyPage() -> some View {
+        BriefResultMoneyPage(
+            goalMoneyInput: $viewModel.goalMoneyText,
+            isPreviousEnabled: $viewModel.isPreviousEnabled,
+            isNextEnabled: $viewModel.isNextEnabled,
+            needsReveal: viewModel.needsReveal(for: .resultMoney)
+        )
+    }
+
+    private func ResultSubscribersPage() -> some View {
+        BriefResultSubscribersPage(
+            goalSubscribersInput: $viewModel.goalSubscribersText,
+            isPreviousEnabled: $viewModel.isPreviousEnabled,
+            isNextEnabled: $viewModel.isNextEnabled,
+            needsReveal: viewModel.needsReveal(for: .resultSubscribers)
+        )
+    }
+
+    private func ResultOptionPage() -> some View {
+        BriefResultOptionPage(
+            goalOptionInput: $viewModel.goalOptionText,
+            isPreviousEnabled: $viewModel.isPreviousEnabled,
+            isNextEnabled: $viewModel.isNextEnabled
+        )
+    }
+
+    private func HasBudgetPage() -> some View {
+        BriefHasBudgetPage(
+            hasBudget: $viewModel.hasBudget,
+            isPreviousEnabled: $viewModel.isPreviousEnabled,
+            isNextEnabled: $viewModel.isNextEnabled,
+            needsReveal: viewModel.needsReveal(for: .hasBudget)
+        )
+    }
+
     private func BudgetPage() -> some View {
-        EmptyView()
-//        OnboardingCountryPage(
-//            selectedCountry: $viewModel.country,
-//            countries: viewModel.countries,
-//            searchInput: $viewModel.countrySearchInput,
-//            isPreviousEnabled: $viewModel.isPreviousEnabled,
-//            isNextEnabled: $viewModel.isNextEnabled,
-//            needsReveal: !viewModel.finishedStages.contains(.country)
-//        )
+        BriefBudgetPage(
+            budgetInput: $viewModel.budgetText,
+            isPreviousEnabled: $viewModel.isPreviousEnabled,
+            isNextEnabled: $viewModel.isNextEnabled,
+            needsReveal: viewModel.needsReveal(for: .budget)
+        )
     }
 
     private func LimitsPage() -> some View {
-        EmptyView()
-        //        OnboardingAboutUsPage(
-        //            selectedSource: $viewModel.source,
-        //            sources: viewModel.sources,
-        //            otherSourceInput: $viewModel.otherSourceText,
-        //            isPreviousEnabled: $viewModel.isPreviousEnabled,
-        //            isNextEnabled: $viewModel.isNextEnabled,
-        //            needsReveal: !viewModel.finishedStages.contains(.aboutUs)
-        //        )
+        BriefLimitsPage(
+            limitsInput: $viewModel.limitsText,
+            isPreviousEnabled: $viewModel.isPreviousEnabled,
+            isNextEnabled: $viewModel.isNextEnabled,
+            needsReveal: viewModel.needsReveal(for: .limits)
+        )
     }
 }

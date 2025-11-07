@@ -13,6 +13,7 @@ struct ProgressBar: View {
 
     /// от 0 до 1
     let percentage: Double
+    var isGreenCompleted = false
 
     // MARK: - Body
 
@@ -23,7 +24,7 @@ struct ProgressBar: View {
                 .frame(height: 8.fitW)
                 .overlay(alignment: .leading) {
                     Capsule()
-                        .fill(percentage >= 1 ? .green34C759 : .blue007AFF)
+                        .fill(percentage == 1 && isGreenCompleted ? .green34C759 : .blue007AFF)
                         .frame(width: geometry.size.width * percentage, height: 8.fitW)
                         .animation(.easeInOut, value: percentage)
                 }
