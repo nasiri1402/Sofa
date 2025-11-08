@@ -87,9 +87,6 @@ struct BriefResultSubscribersPage: View {
         .autocorrectionDisabled()
         .keyboardType(.numberPad)
         .focused($isFocused)
-        .onAppear {
-            isFocused = true
-        }
     }
 
     // MARK: - Private Methods
@@ -102,6 +99,8 @@ struct BriefResultSubscribersPage: View {
             withAnimation(.easeInOut) {
                 topPadding = 72.fitW
                 isInputEnabled = true
+            } completion: {
+                isFocused = true
             }
         }
     }

@@ -18,8 +18,7 @@ struct LaunchView: View {
     var body: some View {
         Group {
             switch viewModel.currentStage {
-//            case .splash: Splash()
-            case .splash: Brief()
+            case .splash: Splash()
             case .onboarding: Onboarding()
             case .brief: Brief()
             case .tabBar: TabBar()

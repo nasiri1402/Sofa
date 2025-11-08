@@ -92,9 +92,6 @@ struct BriefResultMoneyPage: View {
             .autocorrectionDisabled()
             .keyboardType(.numberPad)
             .focused($isFocused)
-            .onAppear {
-                isFocused = true
-            }
         }
     }
 
@@ -108,6 +105,8 @@ struct BriefResultMoneyPage: View {
             withAnimation(.easeInOut) {
                 topPadding = 72.fitW
                 isInputEnabled = true
+            } completion: {
+                isFocused = true
             }
         }
     }

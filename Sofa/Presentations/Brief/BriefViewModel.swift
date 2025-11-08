@@ -72,31 +72,31 @@ extension BriefViewModel {
                 break
             }
         case .timeframe:
-            timeframe = nil
             isPreviousEnabled = !isFirstBrief
             previousStage(.idea)
+            timeframe = nil
         case .experience:
-            experience = nil
             previousStage(.timeframe)
+            experience = nil
         case .startPoint:
-            startPoint.removeAll()
             previousStage(.experience)
+            startPoint.removeAll()
         case .result:
-            goals.removeAll()
             previousStage(.startPoint)
+            goals.removeAll()
         case .resultMoney:
-            goalMoneyText.removeAll()
             previousStage(.result)
+            goalMoneyText.removeAll()
         case .resultSubscribers:
-            goalSubscribersText.removeAll()
             if goals.contains(.money) {
                 previousStage(.resultMoney)
             } else {
                 previousStage(.result)
             }
+            goalSubscribersText.removeAll()
         case .resultOption:
-            goalOptionText.removeAll()
             previousStage(.result)
+            goalOptionText.removeAll()
         case .hasBudget:
             switch true {
             case goals.contains(.subscribers): previousStage(.resultSubscribers)
@@ -104,32 +104,40 @@ extension BriefViewModel {
             case goals.contains(.option): previousStage(.resultOption)
             default: nextStage(.result)
             }
+            hasBudget = nil
         case .budget:
-            budgetText.removeAll()
             previousStage(.hasBudget)
+            budgetText.removeAll()
         case .limits:
-            limitsText.removeAll()
             if hasBudget == true {
                 previousStage(.budget)
             } else {
                 previousStage(.hasBudget)
             }
+            limitsText.removeAll()
         }
     }
 
     func didTapContinueButton() {
         switch currentStage {
         case .idea:
-            idea = idea.trimmingCharacters(in: .whitespacesAndNewlines)
+            let trimmedIdea = idea.trimmingCharacters(in: .whitespacesAndNewlines)
+            guard !trimmedIdea.isEmpty else { return }
             nextStage(.timeframe)
+            idea = trimmedIdea
         case .timeframe:
+            guard timeframe != nil else { return }
             nextStage(.experience)
         case .experience:
+            guard experience != nil else { return }
             nextStage(.startPoint)
         case .startPoint:
-            startPoint = startPoint.trimmingCharacters(in: .whitespacesAndNewlines)
+            let trimmedStartPoint = startPoint.trimmingCharacters(in: .whitespacesAndNewlines)
+            guard !trimmedStartPoint.isEmpty else { return }
             nextStage(.result)
+            startPoint = trimmedStartPoint
         case .result:
+            guard !goals.isEmpty else { return }
             switch true {
             case goals.contains(.money): nextStage(.resultMoney)
             case goals.contains(.subscribers): nextStage(.resultSubscribers)
@@ -137,26 +145,36 @@ extension BriefViewModel {
             default: nextStage(.hasBudget)
             }
         case .resultMoney:
+            guard Int(goalMoneyText) != nil else { return }
             if goals.contains(.subscribers) {
                 nextStage(.resultSubscribers)
             } else {
                 nextStage(.hasBudget)
             }
         case .resultSubscribers:
+            guard Int(goalSubscribersText) != nil else { return }
             nextStage(.hasBudget)
         case .resultOption:
-            goalOptionText = goalOptionText.trimmingCharacters(in: .whitespacesAndNewlines)
+            let trimmedGoalOption = goalOptionText.trimmingCharacters(in: .whitespacesAndNewlines)
+            guard !trimmedGoalOption.isEmpty else { return }
             nextStage(.hasBudget)
+            goalOptionText = trimmedGoalOption
         case .hasBudget:
-            if hasBudget == true {
+            guard let hasBudget else { return }
+            if hasBudget {
                 nextStage(.budget)
             } else {
                 nextStage(.limits)
             }
         case .budget:
+            let trimmedBudget = budgetText.trimmingCharacters(in: .whitespacesAndNewlines)
+            guard !trimmedBudget.isEmpty else { return }
             nextStage(.limits)
+            budgetText = trimmedBudget
         case .limits:
-            limitsText = limitsText.trimmingCharacters(in: .whitespacesAndNewlines)
+            let trimmedLimits = limitsText.trimmingCharacters(in: .whitespacesAndNewlines)
+            guard !trimmedLimits.isEmpty else { return }
+            limitsText = trimmedLimits
             startGeneration()
         }
     }

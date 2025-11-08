@@ -1,5 +1,5 @@
 //
-//  BriefResultOptionPage.swift
+//  OnboardingAboutUsOtherPage.swift
 //  Sofa
 //
 //  Created by dukes on 11/7/25.
@@ -7,54 +7,51 @@
 
 import SwiftUI
 
-struct BriefResultOptionPage: View {
+struct OnboardingAboutUsOtherPage: View {
 
     // MARK: - Public Properties
 
-    @Binding var goalOptionInput: String
+    @Binding var otherSourceInput: String
     @Binding var isPreviousEnabled: Bool
     @Binding var isNextEnabled: Bool
 
     // MARK: - Private Properties
 
     @FocusState private var isFocused
-    @State private var transitionTask: Task<Void, Never>?
 
     // MARK: - Body
 
     var body: some View {
         VStack(alignment: .leading, spacing: 32.fitW) {
-            Text(String(localized: "whatDoesResultMeanToYou"))
+            Text(String(localized: "howDidYouHearAboutUs"))
                 .font(.system(size: 34.fitW, weight: .bold))
                 .foregroundStyle(.white)
                 .multilineTextAlignment(.leading)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
-            OptionTextField()
+            OtherSourceTextField()
+                .transition(.opacity)
+                .animation(.easeInOut, value: otherSourceInput )
                 .transition(.move(edge: .bottom).combined(with: .opacity))
-                .animation(.easeInOut, value: isPreviousEnabled)
 
-            Spacer()
+            Spacer(minLength: .zero)
         }
         .padding(.top, 72.fitW)
         .padding(.horizontal, 16.fitW)
         .transition(.opacity)
-        .ignoresSafeArea(.keyboard)
         .contentShape(.rect)
         .onTapGesture {
             isFocused = false
         }
         .onAppear {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                isFocused = goalOptionInput.isEmpty
+                isFocused = otherSourceInput.isEmpty
             }
-            isPreviousEnabled = true
         }
         .onDisappear {
             isFocused = false
-            transitionTask?.cancel()
         }
-        .onChange(of: goalOptionInput) { oldValue, newValue in
+        .onChange(of: otherSourceInput) { oldValue, newValue in
             guard oldValue != newValue else { return }
             isNextEnabled = !newValue.isEmpty
         }
@@ -62,10 +59,10 @@ struct BriefResultOptionPage: View {
 
     // MARK: - Views
 
-    private func OptionTextField() -> some View {
+    private func OtherSourceTextField() -> some View {
         TextField(
-            String(localized: "noteYourEndGoals"),
-            text: $goalOptionInput,
+            String(localized: "yourAnswer"),
+            text: $otherSourceInput,
             axis: .vertical
         )
         .font(.system(size: 17.fitW))
@@ -73,5 +70,9 @@ struct BriefResultOptionPage: View {
         .autocorrectionDisabled()
         .focused($isFocused)
         .lineLimit(7)
+        .transition(.opacity)
+        .onAppear {
+            isFocused = true
+        }
     }
 }

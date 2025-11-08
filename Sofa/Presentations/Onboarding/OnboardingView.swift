@@ -36,6 +36,7 @@ struct OnboardingView: View {
                 case .age: AgePage()
                 case .country: CountryPage()
                 case .aboutUs: AboutUsPage()
+                case .aboutUsOther: AboutUsOtherPage()
                 case .privacy: PrivacyPage()
                 case .rateUs: RateUsPage()
                 case .letsAsk: LetsAskPage()
@@ -167,10 +168,17 @@ extension OnboardingView {
         OnboardingAboutUsPage(
             selectedSource: $viewModel.source,
             sources: OnboardingModel.Source.allCases,
-            otherSourceInput: $viewModel.otherSourceText,
             isPreviousEnabled: $viewModel.isPreviousEnabled,
             isNextEnabled: $viewModel.isNextEnabled,
             needsReveal: !viewModel.revealedStages.contains(.aboutUs)
+        )
+    }
+
+    private func AboutUsOtherPage() -> some View {
+        OnboardingAboutUsOtherPage(
+            otherSourceInput: $viewModel.otherSourceText,
+            isPreviousEnabled: $viewModel.isPreviousEnabled,
+            isNextEnabled: $viewModel.isNextEnabled
         )
     }
 

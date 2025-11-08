@@ -12,7 +12,7 @@ enum OnboardingModel {
     // MARK: - Stage
 
     enum Stage {
-        case logo, letsBegin, name, gender, age, country, aboutUs, privacy, rateUs, letsAsk
+        case logo, letsBegin, name, gender, age, country, aboutUs, aboutUsOther, privacy, rateUs, letsAsk
 
         func actionTitle(isForceContinue: Bool) -> String {
             guard !isForceContinue else {
@@ -21,39 +21,9 @@ enum OnboardingModel {
             return switch self {
             case .logo: ""
             case .letsBegin: String(localized: "letsBegin")
-            case .name, .gender, .age, .country, .aboutUs, .privacy: String(localized: "continue")
+            case .name, .gender, .age, .country, .aboutUs, .aboutUsOther, .privacy: String(localized: "continue")
             case .rateUs: String(localized: "rateUs")
             case .letsAsk: String(localized: "letsAsk")
-            }
-        }
-
-        func next() -> Stage? {
-            switch self {
-            case .logo: .letsBegin
-            case .letsBegin: .name
-            case .name: .gender
-            case .gender: .age
-            case .age: .country
-            case .country: .aboutUs
-            case .aboutUs: .privacy
-            case .privacy: .rateUs
-            case .rateUs: .letsAsk
-            case .letsAsk: nil
-            }
-        }
-
-        func previous() -> Stage? {
-            switch self {
-            case .logo: nil
-            case .letsBegin: .logo
-            case .name: .letsAsk
-            case .gender: .name
-            case .age: .gender
-            case .country: .age
-            case .aboutUs: .country
-            case .privacy: .aboutUs
-            case .rateUs: .privacy
-            case .letsAsk: .rateUs
             }
         }
     }

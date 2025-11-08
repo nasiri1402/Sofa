@@ -46,7 +46,7 @@ final class OnboardingViewModel {
     }
 
     var source: OnboardingModel.Source?
-    var otherSourceText: String?
+    var otherSourceText = ""
 
     var isPrivacyRead = true
 
@@ -75,64 +75,85 @@ extension OnboardingViewModel {
 
     func didTapBackButton() {
         switch currentStage {
+        case .logo, .letsBegin, .name: break
         case .gender:
+            previousStage(.name)
             gender = nil
             isPreviousEnabled = false
-            previousStage()
         case .age:
+            previousStage(.gender)
             age = .zero
-            previousStage()
         case .country:
+            previousStage(.age)
             country = nil
             countrySearchInput.removeAll()
             countries = []
-            previousStage()
         case .aboutUs:
+            previousStage(.country)
             source = nil
-            otherSourceText = nil
-            previousStage()
+        case .aboutUsOther:
+            previousStage(.aboutUs)
+            otherSourceText.removeAll()
         case .privacy:
+            if !otherSourceText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                previousStage(.aboutUsOther)
+            } else {
+                previousStage(.aboutUs)
+            }
             isPrivacyRead = true
-            previousStage()
         case .rateUs:
-            previousStage()
+            previousStage(.privacy)
         case .letsAsk:
             if isReviewRequested {
                 previousStage(.privacy)
             } else {
-                previousStage()
+                previousStage(.rateUs)
             }
-        case .logo, .letsBegin, .name: break
         }
     }
 
     func didTapContinueButton() {
         switch currentStage {
-        case .logo, .letsBegin, .gender: nextStage()
-        case .country:
-            countrySearchInput.removeAll()
-            nextStage()
+        case .logo:
+            nextStage(.letsBegin)
+        case .letsBegin:
+            nextStage(.name)
         case .name:
-            name = name.trimmingCharacters(in: .whitespacesAndNewlines)
-            nextStage()
+            let trimmedName = name.trimmingCharacters(in: .whitespacesAndNewlines)
+            guard !trimmedName.isEmpty else { return }
+            name = trimmedName
+            nextStage(.gender)
+        case .gender:
+            nextStage(.age)
         case .age:
+            guard age != .zero else { return }
             applyCountrySearchFilter()
-            nextStage()
+            nextStage(.country)
+        case .country:
+            guard country != nil else { return }
+            nextStage(.aboutUs)
+            countrySearchInput.removeAll()
         case .aboutUs:
-            if source == .other, otherSourceText == nil {
-                otherSourceText = ""
+            guard source != nil else { return }
+            if source == .other {
+                nextStage(.aboutUsOther)
             } else {
-                nextStage()
+                nextStage(.privacy)
             }
+        case .aboutUsOther:
+            let trimmedOther = otherSourceText.trimmingCharacters(in: .whitespacesAndNewlines)
+            guard !trimmedOther.isEmpty else { return }
+            nextStage(.privacy)
         case .privacy:
             if isReviewRequested {
                 nextStage(.letsAsk)
             } else {
-                nextStage()
+                nextStage(.rateUs)
             }
         case .rateUs:
+            guard !isReviewing else { return }
             if isReviewRequested {
-                nextStage()
+                nextStage(.letsAsk)
             } else {
                 requestReview()
             }
@@ -150,25 +171,17 @@ extension OnboardingViewModel {
 // MARK: - Private Methods
 
 extension OnboardingViewModel {
-    private func nextStage(_ stage: OnboardingModel.Stage? = nil) {
+    private func nextStage(_ stage: OnboardingModel.Stage) {
         isPreviousEnabled = false
         isNextEnabled = false
         revealedStages.insert(currentStage)
-        currentStage = if let stage {
-            stage
-        } else {
-            currentStage.next() ?? currentStage
-        }
+        currentStage = stage
     }
 
-    private func previousStage(_ stage: OnboardingModel.Stage? = nil) {
+    private func previousStage(_ stage: OnboardingModel.Stage) {
         isNextEnabled = true
         revealedStages.remove(currentStage)
-        currentStage = if let stage {
-            stage
-        } else {
-            currentStage.previous() ?? currentStage
-        }
+        currentStage = stage
     }
 
     private func applyCountrySearchFilter() {
@@ -189,11 +202,13 @@ extension OnboardingViewModel {
     private func requestReview() {
         isReviewRequested = true
         isReviewing = true
+        isPreviousEnabled = false
         isNextEnabled = false
         reviewTrigger = UUID()
         Task { @MainActor in
             try? await Task.sleep(for: .seconds(2))
             isReviewing = false
+            isPreviousEnabled = true
             isNextEnabled = true
         }
     }

@@ -13,14 +13,12 @@ struct OnboardingAboutUsPage: View {
 
     @Binding var selectedSource: OnboardingModel.Source?
     let sources: [OnboardingModel.Source]
-    @Binding var otherSourceInput: String?
     @Binding var isPreviousEnabled: Bool
     @Binding var isNextEnabled: Bool
     let needsReveal: Bool
 
     // MARK: - Private Properties
 
-    @FocusState private var isOtherFocused
     @State private var isSelectionEnabled = false
     @State private var topPadding: CGFloat = 256.fitH
     @State private var transitionTask: Task<Void, Never>?
@@ -46,17 +44,11 @@ struct OnboardingAboutUsPage: View {
             }
             if isSelectionEnabled {
                 VStack(alignment: .leading, spacing: 12.fitW) {
-                    if otherSourceInput != nil {
-                        OtherSourceTextField()
-                            .transition(.opacity)
-                    } else {
-                        ForEach(sources, id: \.self) { source in
-                            SourceButton(source)
-                        }
+                    ForEach(sources, id: \.self) { source in
+                        SourceButton(source)
                     }
                 }
                 .animation(.easeInOut, value: selectedSource)
-                .animation(.easeInOut, value: otherSourceInput == nil)
                 .transition(.move(edge: .bottom).combined(with: .opacity))
             }
             Spacer(minLength: .zero)
@@ -64,13 +56,8 @@ struct OnboardingAboutUsPage: View {
         .padding(.top, topPadding)
         .padding(.horizontal, 16.fitW)
         .transition(.opacity)
-        .contentShape(.rect)
-        .onTapGesture {
-            isOtherFocused = false
-        }
         .onAppear {
             if needsReveal {
-                otherSourceInput = nil
                 isSelectionEnabled = false
                 topPadding = 256.fitH
             } else {
@@ -79,16 +66,11 @@ struct OnboardingAboutUsPage: View {
             }
         }
         .onDisappear {
-            isOtherFocused = false
             transitionTask?.cancel()
         }
         .onChange(of: selectedSource) { oldValue, newValue in
             guard oldValue != newValue else { return }
             isNextEnabled = newValue != nil
-        }
-        .onChange(of: otherSourceInput) { oldValue, newValue in
-            guard oldValue != newValue else { return }
-            isNextEnabled = !(newValue ?? "").isEmpty
         }
     }
 
@@ -118,23 +100,6 @@ struct OnboardingAboutUsPage: View {
         }
         .buttonStyle(.plain)
         .hapticFeedback()
-    }
-
-    private func OtherSourceTextField() -> some View {
-        TextField(
-            String(localized: "yourAnswer"),
-            text: Binding(get: { otherSourceInput ?? "" }, set: { otherSourceInput = $0 }),
-            axis: .vertical
-        )
-        .font(.system(size: 17.fitW))
-        .foregroundStyle(.grayE5E5EA)
-        .autocorrectionDisabled()
-        .focused($isOtherFocused)
-        .lineLimit(7)
-        .transition(.opacity)
-        .onAppear {
-            isOtherFocused = true
-        }
     }
 
     // MARK: - Private Methods
