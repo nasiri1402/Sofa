@@ -31,25 +31,28 @@ struct WordRevealText: View {
     var body: some View {
         RenderedText()
             .font(font)
-            .onAppear { restartAnimation() }
+            .transition(.opacity)
+            .animation(.easeInOut(duration: animationDuration), value: segments.map(\.text))
+            .onAppear {
+                restartAnimation()
+            }
+            .onDisappear {
+                cancelAnimation()
+            }
             .onChange(of: text) { _, _ in
                 restartAnimation()
             }
-            .onDisappear { cancelAnimation() }
     }
 
     // MARK: - Views
 
     private func RenderedText() -> Text {
         segments.reduce(Text(verbatim: "")) { partial, segment in
-            let color: Color
-
-            if let order = segment.wordOrder {
-                color = order < revealedWordCount ? revealedColor : hiddenColor
+            let color: Color = if let order = segment.wordOrder {
+                order < revealedWordCount ? revealedColor : hiddenColor
             } else {
-                color = hiddenColor
+                hiddenColor
             }
-
             return partial + Text(segment.text).foregroundStyle(color)
         }
     }
