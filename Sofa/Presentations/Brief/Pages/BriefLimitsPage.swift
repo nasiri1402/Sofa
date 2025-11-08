@@ -11,6 +11,7 @@ struct BriefLimitsPage: View {
 
     // MARK: - Public Properties
 
+    let hasBudget: Bool
     @Binding var limitsInput: String
     @Binding var isPreviousEnabled: Bool
     @Binding var isNextEnabled: Bool
@@ -30,9 +31,9 @@ struct BriefLimitsPage: View {
         VStack(alignment: .leading, spacing: 16.fitW) {
             if needsReveal {
                 WordRevealText(
-                    text: phase.text,
+                    text: hasBudget ? phase.text : String(localized: "whatAreTheLimitsOrRequests"),
                     font: .system(size: 34.fitW, weight: .bold),
-                    onFinished: advanceToNextPhase
+                    onFinished: hasBudget ? advanceToNextPhase : completeTitleReveal
                 )
                 .multilineTextAlignment(.leading)
                 .frame(maxWidth: .infinity, alignment: .leading)

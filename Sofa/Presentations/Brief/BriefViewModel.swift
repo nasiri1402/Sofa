@@ -29,14 +29,14 @@ final class BriefViewModel {
     var startPoint = ""
 
     var goals: Set<Project.Brief.Goal> = []
-    var goalMoneyText = ""
-    var goalSubscribersText = ""
-    var goalOptionText = ""
+    var goalMoney = ""
+    var goalSubscribers = ""
+    var goalOption = ""
 
     var hasBudget: Bool?
-    var budgetText = ""
+    var budget = ""
 
-    var limitsText = ""
+    var limits = ""
 
     // MARK: - Private Properties
 
@@ -51,8 +51,6 @@ final class BriefViewModel {
         self.isFirstBrief = isFirstBrief
         self.isPreviousEnabled = !isFirstBrief
         self.onFinish = onFinish
-
-        updateProgress()
     }
 }
 
@@ -62,120 +60,39 @@ extension BriefViewModel {
 
     // MARK: - Input
 
+    func didViewAppear() {
+        updateProgress()
+    }
+
     func didTapBackButton() {
         switch currentStage {
-        case .idea:
-            if isFirstBrief {
-                break
-            } else {
-                // TODO: Навигация на главную
-                break
-            }
-        case .timeframe:
-            isPreviousEnabled = !isFirstBrief
-            previousStage(.idea)
-            timeframe = nil
-        case .experience:
-            previousStage(.timeframe)
-            experience = nil
-        case .startPoint:
-            previousStage(.experience)
-            startPoint.removeAll()
-        case .result:
-            previousStage(.startPoint)
-            goals.removeAll()
-        case .resultMoney:
-            previousStage(.result)
-            goalMoneyText.removeAll()
-        case .resultSubscribers:
-            if goals.contains(.money) {
-                previousStage(.resultMoney)
-            } else {
-                previousStage(.result)
-            }
-            goalSubscribersText.removeAll()
-        case .resultOption:
-            previousStage(.result)
-            goalOptionText.removeAll()
-        case .hasBudget:
-            switch true {
-            case goals.contains(.subscribers): previousStage(.resultSubscribers)
-            case goals.contains(.money): previousStage(.resultMoney)
-            case goals.contains(.option): previousStage(.resultOption)
-            default: nextStage(.result)
-            }
-            hasBudget = nil
-        case .budget:
-            previousStage(.hasBudget)
-            budgetText.removeAll()
-        case .limits:
-            if hasBudget == true {
-                previousStage(.budget)
-            } else {
-                previousStage(.hasBudget)
-            }
-            limitsText.removeAll()
+        case .idea: handleIdea(for: .previous)
+        case .timeframe: handleTimeframe(for: .previous)
+        case .experience: handleExperience(for: .previous)
+        case .startPoint: handleStartPoint(for: .previous)
+        case .result: handleResult(for: .previous)
+        case .resultMoney: handleResultMoney(for: .previous)
+        case .resultSubscribers: handleResultSubscribers(for: .previous)
+        case .resultOption: handleResultOption(for: .previous)
+        case .hasBudget: handleHasBudget(for: .previous)
+        case .budget: handleBudget(for: .previous)
+        case .limits: handleLimits(for: .previous)
         }
     }
 
     func didTapContinueButton() {
         switch currentStage {
-        case .idea:
-            let trimmedIdea = idea.trimmingCharacters(in: .whitespacesAndNewlines)
-            guard !trimmedIdea.isEmpty else { return }
-            nextStage(.timeframe)
-            idea = trimmedIdea
-        case .timeframe:
-            guard timeframe != nil else { return }
-            nextStage(.experience)
-        case .experience:
-            guard experience != nil else { return }
-            nextStage(.startPoint)
-        case .startPoint:
-            let trimmedStartPoint = startPoint.trimmingCharacters(in: .whitespacesAndNewlines)
-            guard !trimmedStartPoint.isEmpty else { return }
-            nextStage(.result)
-            startPoint = trimmedStartPoint
-        case .result:
-            guard !goals.isEmpty else { return }
-            switch true {
-            case goals.contains(.money): nextStage(.resultMoney)
-            case goals.contains(.subscribers): nextStage(.resultSubscribers)
-            case goals.contains(.option): nextStage(.resultOption)
-            default: nextStage(.hasBudget)
-            }
-        case .resultMoney:
-            guard Int(goalMoneyText) != nil else { return }
-            if goals.contains(.subscribers) {
-                nextStage(.resultSubscribers)
-            } else {
-                nextStage(.hasBudget)
-            }
-        case .resultSubscribers:
-            guard Int(goalSubscribersText) != nil else { return }
-            nextStage(.hasBudget)
-        case .resultOption:
-            let trimmedGoalOption = goalOptionText.trimmingCharacters(in: .whitespacesAndNewlines)
-            guard !trimmedGoalOption.isEmpty else { return }
-            nextStage(.hasBudget)
-            goalOptionText = trimmedGoalOption
-        case .hasBudget:
-            guard let hasBudget else { return }
-            if hasBudget {
-                nextStage(.budget)
-            } else {
-                nextStage(.limits)
-            }
-        case .budget:
-            let trimmedBudget = budgetText.trimmingCharacters(in: .whitespacesAndNewlines)
-            guard !trimmedBudget.isEmpty else { return }
-            nextStage(.limits)
-            budgetText = trimmedBudget
-        case .limits:
-            let trimmedLimits = limitsText.trimmingCharacters(in: .whitespacesAndNewlines)
-            guard !trimmedLimits.isEmpty else { return }
-            limitsText = trimmedLimits
-            startGeneration()
+        case .idea: handleIdea(for: .next)
+        case .timeframe: handleTimeframe(for: .next)
+        case .experience: handleExperience(for: .next)
+        case .startPoint: handleStartPoint(for: .next)
+        case .result: handleResult(for: .next)
+        case .resultMoney: handleResultMoney(for: .next)
+        case .resultSubscribers: handleResultSubscribers(for: .next)
+        case .resultOption: handleResultOption(for: .next)
+        case .hasBudget: handleHasBudget(for: .next)
+        case .budget: handleBudget(for: .next)
+        case .limits: handleLimits(for: .next)
         }
     }
 
@@ -189,6 +106,166 @@ extension BriefViewModel {
 // MARK: - Private Methods
 
 extension BriefViewModel {
+    private func handleIdea(for direction: BriefModel.Direction) {
+        switch direction {
+        case .next:
+            let trimmedIdea = idea.trimmingCharacters(in: .whitespacesAndNewlines)
+            guard !trimmedIdea.isEmpty else { return }
+            nextStage(.timeframe)
+            idea = trimmedIdea
+        case .previous:
+            if isFirstBrief {
+                break
+            } else {
+                // TODO: Навигация на главную
+                break
+            }
+        }
+    }
+
+    private func handleTimeframe(for direction: BriefModel.Direction) {
+        switch direction {
+        case .next:
+            guard timeframe != nil else { return }
+            nextStage(.experience)
+        case .previous:
+            isPreviousEnabled = !isFirstBrief
+            previousStage(.idea)
+            timeframe = nil
+        }
+    }
+
+    private func handleExperience(for direction: BriefModel.Direction) {
+        switch direction {
+        case .next:
+            guard experience != nil else { return }
+            nextStage(.startPoint)
+        case .previous:
+            previousStage(.timeframe)
+            experience = nil
+        }
+    }
+
+    private func handleStartPoint(for direction: BriefModel.Direction) {
+        switch direction {
+        case .next:
+            let trimmedStartPoint = startPoint.trimmingCharacters(in: .whitespacesAndNewlines)
+            guard !trimmedStartPoint.isEmpty else { return }
+            nextStage(.result)
+            startPoint = trimmedStartPoint
+        case .previous:
+            previousStage(.experience)
+            startPoint.removeAll()
+        }
+    }
+
+    private func handleResult(for direction: BriefModel.Direction) {
+        switch direction {
+        case .next:
+            guard !goals.isEmpty else { return }
+            switch true {
+            case goals.contains(.money): nextStage(.resultMoney)
+            case goals.contains(.subscribers): nextStage(.resultSubscribers)
+            case goals.contains(.option): nextStage(.resultOption)
+            default: nextStage(.hasBudget)
+            }
+        case .previous:
+            previousStage(.startPoint)
+            goals.removeAll()
+        }
+    }
+
+    private func handleResultMoney(for direction: BriefModel.Direction) {
+        switch direction {
+        case .next:
+            guard Int(goalMoney) != nil else { return }
+            if goals.contains(.subscribers) {
+                nextStage(.resultSubscribers)
+            } else {
+                nextStage(.hasBudget)
+            }
+        case .previous:
+            previousStage(.result)
+            goalMoney.removeAll()
+        }
+    }
+
+    private func handleResultSubscribers(for direction: BriefModel.Direction) {
+        switch direction {
+        case .next:
+            guard Int(goalSubscribers) != nil else { return }
+            nextStage(.hasBudget)
+        case .previous:
+            if goals.contains(.money) {
+                previousStage(.resultMoney)
+            } else {
+                previousStage(.result)
+            }
+            goalSubscribers.removeAll()
+        }
+    }
+
+    private func handleResultOption(for direction: BriefModel.Direction) {
+        switch direction {
+        case .next:
+            let trimmedGoalOption = goalOption.trimmingCharacters(in: .whitespacesAndNewlines)
+            guard !trimmedGoalOption.isEmpty else { return }
+            nextStage(.hasBudget)
+            goalOption = trimmedGoalOption
+        case .previous:
+            previousStage(.result)
+            goalOption.removeAll()
+        }
+    }
+
+    private func handleHasBudget(for direction: BriefModel.Direction) {
+        switch direction {
+        case .next:
+            guard let hasBudget else { return }
+            if hasBudget {
+                nextStage(.budget)
+            } else {
+                nextStage(.limits)
+            }
+        case .previous:
+            switch true {
+            case goals.contains(.subscribers): previousStage(.resultSubscribers)
+            case goals.contains(.money): previousStage(.resultMoney)
+            case goals.contains(.option): previousStage(.resultOption)
+            default: previousStage(.result)
+            }
+            hasBudget = nil
+        }
+    }
+
+    private func handleBudget(for direction: BriefModel.Direction) {
+        switch direction {
+        case .next:
+            guard Int(budget) != nil else { return }
+            nextStage(.limits)
+        case .previous:
+            previousStage(.hasBudget)
+            budget.removeAll()
+        }
+    }
+
+    private func handleLimits(for direction: BriefModel.Direction) {
+        switch direction {
+        case .next:
+            let trimmedLimits = limits.trimmingCharacters(in: .whitespacesAndNewlines)
+            guard !trimmedLimits.isEmpty else { return }
+            limits = trimmedLimits
+            startGeneration()
+        case .previous:
+            if hasBudget == true {
+                previousStage(.budget)
+            } else {
+                previousStage(.hasBudget)
+            }
+            limits.removeAll()
+        }
+    }
+
     private func nextStage(_ stage: BriefModel.Stage) {
         isPreviousEnabled = false
         isNextEnabled = false
@@ -210,6 +287,22 @@ extension BriefViewModel {
     }
 
     private func startGeneration() {
+        guard let timeframe, let experience, let budget = Int(budget) else { return }
         // TODO: Начинать генерацию
+        let brief = Project.Brief(
+            id: UUID(),
+            idea: idea,
+            timeframe: timeframe,
+            experience: experience,
+            startPoint: startPoint,
+            result: Project.Brief.Result(
+                goals: goals,
+                money: Int(goalMoney),
+                subscribers: Int(goalSubscribers),
+                option: goalOption
+            ),
+            budget: budget,
+            limits: limits
+        )
     }
 }

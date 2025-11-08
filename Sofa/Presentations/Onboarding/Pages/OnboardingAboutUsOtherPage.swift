@@ -44,6 +44,7 @@ struct OnboardingAboutUsOtherPage: View {
             isFocused = false
         }
         .onAppear {
+            isPreviousEnabled = true
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                 isFocused = otherSourceInput.isEmpty
             }

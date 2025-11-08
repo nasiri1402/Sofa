@@ -43,4 +43,10 @@ enum BriefModel {
             }
         }
     }
+
+    // MARK: - Direction
+
+    enum Direction {
+        case next, previous
+    }
 }

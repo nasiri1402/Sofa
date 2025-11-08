@@ -20,6 +20,7 @@ struct OnboardingAboutUsPage: View {
     // MARK: - Private Properties
 
     @State private var isSelectionEnabled = false
+    @State private var keyboardHeight: CGFloat = .zero
     @State private var topPadding: CGFloat = 256.fitH
     @State private var transitionTask: Task<Void, Never>?
 
@@ -43,13 +44,8 @@ struct OnboardingAboutUsPage: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
             if isSelectionEnabled {
-                VStack(alignment: .leading, spacing: 12.fitW) {
-                    ForEach(sources, id: \.self) { source in
-                        SourceButton(source)
-                    }
-                }
-                .animation(.easeInOut, value: selectedSource)
-                .transition(.move(edge: .bottom).combined(with: .opacity))
+                SourcesScrollView()
+                    .transition(.move(edge: .bottom).combined(with: .opacity))
             }
             Spacer(minLength: .zero)
         }
@@ -72,9 +68,33 @@ struct OnboardingAboutUsPage: View {
             guard oldValue != newValue else { return }
             isNextEnabled = newValue != nil
         }
+        .onChangeKeyboardHeight { newValue in
+            guard keyboardHeight != newValue else { return }
+            keyboardHeight = newValue
+        }
     }
 
     // MARK: - Views
+
+    private func SourcesScrollView() -> some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 12.fitW) {
+                ForEach(sources, id: \.self) { source in
+                    SourceButton(source)
+                }
+            }
+            .animation(.easeInOut, value: selectedSource)
+        }
+        .scrollIndicators(.hidden)
+        .scrollBounceBehavior(.basedOnSize)
+        .contentMargins(
+            .bottom,
+            selectedSource == nil
+            ? 16.fitW
+            : keyboardHeight > .zero ? 84.fitW : 115.fitW,
+            for: .scrollContent
+        )
+    }
 
     private func SourceButton(_ source: OnboardingModel.Source) -> some View {
         Button {

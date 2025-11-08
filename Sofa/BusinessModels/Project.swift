@@ -30,7 +30,7 @@ extension Project {
         let experience: Experience
         let startPoint: String
         let result: Result
-        let budget: Int?
+        let budget: Int
         let limits: String
     }
 

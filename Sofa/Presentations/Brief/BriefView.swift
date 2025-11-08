@@ -46,6 +46,8 @@ struct BriefView: View {
                         .opacity(viewModel.isPreviousEnabled ? 1 : 0)
 
                     ProgressBar(percentage: viewModel.progress, isGreenCompleted: false)
+                        .transition(.opacity)
+
                     BackButton()
                         .opacity(.zero)
                 }
@@ -67,6 +69,9 @@ struct BriefView: View {
         .toolbarVisibility(.hidden, for: .tabBar)
         .alert(item: $viewModel.alertItem) { item in
             item.alert()
+        }
+        .onAppear {
+            viewModel.didViewAppear()
         }
         .onChangeKeyboardHeight { newValue in
             guard keyboardHeight != newValue else { return }
@@ -152,7 +157,7 @@ extension BriefView {
 
     private func ResultMoneyPage() -> some View {
         BriefResultMoneyPage(
-            goalMoneyInput: $viewModel.goalMoneyText,
+            goalMoneyInput: $viewModel.goalMoney,
             isPreviousEnabled: $viewModel.isPreviousEnabled,
             isNextEnabled: $viewModel.isNextEnabled,
             needsReveal: viewModel.needsReveal(for: .resultMoney)
@@ -161,7 +166,7 @@ extension BriefView {
 
     private func ResultSubscribersPage() -> some View {
         BriefResultSubscribersPage(
-            goalSubscribersInput: $viewModel.goalSubscribersText,
+            goalSubscribersInput: $viewModel.goalSubscribers,
             isPreviousEnabled: $viewModel.isPreviousEnabled,
             isNextEnabled: $viewModel.isNextEnabled,
             needsReveal: viewModel.needsReveal(for: .resultSubscribers)
@@ -170,7 +175,7 @@ extension BriefView {
 
     private func ResultOptionPage() -> some View {
         BriefResultOptionPage(
-            goalOptionInput: $viewModel.goalOptionText,
+            goalOptionInput: $viewModel.goalOption,
             isPreviousEnabled: $viewModel.isPreviousEnabled,
             isNextEnabled: $viewModel.isNextEnabled
         )
@@ -187,7 +192,7 @@ extension BriefView {
 
     private func BudgetPage() -> some View {
         BriefBudgetPage(
-            budgetInput: $viewModel.budgetText,
+            budgetInput: $viewModel.budget,
             isPreviousEnabled: $viewModel.isPreviousEnabled,
             isNextEnabled: $viewModel.isNextEnabled,
             needsReveal: viewModel.needsReveal(for: .budget)
@@ -196,7 +201,8 @@ extension BriefView {
 
     private func LimitsPage() -> some View {
         BriefLimitsPage(
-            limitsInput: $viewModel.limitsText,
+            hasBudget: viewModel.hasBudget ?? false,
+            limitsInput: $viewModel.limits,
             isPreviousEnabled: $viewModel.isPreviousEnabled,
             isNextEnabled: $viewModel.isNextEnabled,
             needsReveal: viewModel.needsReveal(for: .limits)
