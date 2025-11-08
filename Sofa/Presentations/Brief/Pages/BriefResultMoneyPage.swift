@@ -63,6 +63,9 @@ struct BriefResultMoneyPage: View {
             } else {
                 isInputEnabled = true
                 topPadding = 72.fitW
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                    isFocused = goalMoneyInput.isEmpty
+                }
             }
         }
         .onDisappear {

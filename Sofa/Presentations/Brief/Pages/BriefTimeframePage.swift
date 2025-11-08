@@ -20,6 +20,7 @@ struct BriefTimeframePage: View {
     // MARK: - Private Properties
 
     @State private var phase: Phase = .one
+    @State private var keyboardHeight: CGFloat = .zero
     @State private var isSelectionEnabled = false
     @State private var topPadding: CGFloat = 256.fitH
     @State private var transitionTask: Task<Void, Never>?
@@ -44,13 +45,8 @@ struct BriefTimeframePage: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
             if isSelectionEnabled {
-                VStack(alignment: .leading, spacing: 12.fitW) {
-                    ForEach(timeframes, id: \.self) { timeframe in
-                        TimeframeButton(timeframe)
-                    }
-                }
-                .animation(.easeInOut, value: selectedTimeframe)
-                .transition(.move(edge: .bottom).combined(with: .opacity))
+                TimeframesScrollView()
+                    .transition(.move(edge: .bottom).combined(with: .opacity))
             }
             Spacer(minLength: .zero)
         }
@@ -74,9 +70,34 @@ struct BriefTimeframePage: View {
             guard oldValue != newValue else { return }
             isNextEnabled = newValue != nil
         }
+        .onChangeKeyboardHeight { newValue in
+            guard keyboardHeight != newValue else { return }
+            keyboardHeight = newValue
+        }
     }
 
     // MARK: - Views
+
+    private func TimeframesScrollView() -> some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 12.fitW) {
+                ForEach(timeframes, id: \.self) { timeframe in
+                    TimeframeButton(timeframe)
+                }
+            }
+            .animation(.easeInOut, value: selectedTimeframe)
+        }
+        .scrollIndicators(.hidden)
+        .scrollBounceBehavior(.basedOnSize)
+        .contentMargins(.top, 16.fitW, for: .scrollContent)
+        .contentMargins(
+            .bottom,
+            selectedTimeframe == nil
+            ? 16.fitW
+            : keyboardHeight > .zero ? 84.fitW : 115.fitW,
+            for: .scrollContent
+        )
+    }
 
     private func TimeframeButton(_ timeframe: Project.Brief.Timeframe) -> some View {
         Button {

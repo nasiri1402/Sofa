@@ -267,7 +267,7 @@ extension BriefViewModel {
     }
 
     private func nextStage(_ stage: BriefModel.Stage) {
-        isPreviousEnabled = false
+        isPreviousEnabled = !isFirstBrief
         isNextEnabled = false
         revealedStages.insert(currentStage)
         currentStage = stage
