@@ -22,7 +22,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		AB76BABC2EB90F6100419E57 /* Exceptions for "Sofa" folder in "Sofa" target */ = {
+		AB0440ED2EC4309000FAF796 /* Exceptions for "Sofa" folder in "Sofa" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Sources/Plists/Info.plist,
@@ -35,7 +35,7 @@
 		AB6285FD2EB8FA65008669A0 /* Sofa */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				AB76BABC2EB90F6100419E57 /* Exceptions for "Sofa" folder in "Sofa" target */,
+				AB0440ED2EC4309000FAF796 /* Exceptions for "Sofa" folder in "Sofa" target */,
 			);
 			path = Sofa;
 			sourceTree = "<group>";

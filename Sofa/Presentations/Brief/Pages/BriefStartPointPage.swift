@@ -80,12 +80,18 @@ struct BriefStartPointPage: View {
     // MARK: - Views
 
     private func StartPointTextField() -> some View {
-        TextField(String(localized: "forExampleWebsite"), text: $startPointInput, axis: .vertical)
-            .font(.system(size: 17.fitW))
-            .foregroundStyle(.grayE5E5EA)
-            .autocorrectionDisabled()
-            .focused($isFocused)
-            .lineLimit(7)
+        TypewriterTextField(
+            text: $startPointInput,
+            placeholder: String(localized: "forExample") + ", ",
+            typewriterOptions: [
+                String(localized: "website"),
+                String(localized: "instagramAccount"),
+                String(localized: "goodAcquaintances").lowercased(),
+                String(localized: "richFriends").lowercased(),
+                String(localized: "youTubeChannel")
+            ],
+            isFocused: $isFocused
+        )
     }
 
     // MARK: - Private Methods
