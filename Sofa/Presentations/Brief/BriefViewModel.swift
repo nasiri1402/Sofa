@@ -305,7 +305,7 @@ extension BriefViewModel {
     }
 
     private func startGeneration() {
-        guard let timeframe, let experience, let budget = Int(budget) else { return }
+        guard let timeframe, let experience else { return }
         let brief = Project.Brief(
             id: UUID(),
             idea: idea,
@@ -318,7 +318,7 @@ extension BriefViewModel {
                 subscribers: Int(goalSubscribers),
                 option: goalOption
             ),
-            budget: budget,
+            budget: Int(budget),
             limits: limits
         )
         Task { @MainActor in
