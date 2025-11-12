@@ -40,17 +40,33 @@ final class BriefViewModel {
 
     // MARK: - Private Properties
 
-    private let isFirstBrief: Bool
+    private let initialBrief: Project.Brief?
     private let onFinish: () -> Void
 
     private var revealedStages: Set<BriefModel.Stage> = []
 
     // MARK: - Inits
 
-    init(isFirstBrief: Bool, onFinish: @escaping () -> Void) {
-        self.isFirstBrief = isFirstBrief
-        self.isPreviousEnabled = !isFirstBrief
+    init(brief: Project.Brief?, onFinish: @escaping () -> Void) {
+        self.initialBrief = brief
         self.onFinish = onFinish
+
+        if let brief {
+            idea = brief.idea
+            timeframe = brief.timeframe
+            experience = brief.experience
+            startPoint = brief.startPoint
+            goals = brief.result.goals
+            goalMoney = brief.result.money?.description ?? ""
+            goalSubscribers = brief.result.subscribers?.description ?? ""
+            goalOption = brief.result.option ?? ""
+            hasBudget = brief.budget != nil
+            budget = brief.budget?.description ?? ""
+            limits = brief.limits
+            isPreviousEnabled = true
+        } else {
+            isPreviousEnabled = false
+        }
     }
 }
 
@@ -99,7 +115,7 @@ extension BriefViewModel {
     // MARK: - Output
 
     func needsReveal(for stage: BriefModel.Stage) -> Bool {
-        isFirstBrief && !revealedStages.contains(stage)
+        initialBrief == nil && !revealedStages.contains(stage)
     }
 }
 
@@ -114,7 +130,7 @@ extension BriefViewModel {
             nextStage(.timeframe)
             idea = trimmedIdea
         case .previous:
-            if isFirstBrief {
+            if initialBrief != nil {
                 break
             } else {
                 // TODO: Навигация на главную
@@ -129,7 +145,7 @@ extension BriefViewModel {
             guard timeframe != nil else { return }
             nextStage(.experience)
         case .previous:
-            isPreviousEnabled = !isFirstBrief
+            isPreviousEnabled = initialBrief != nil
             previousStage(.idea)
             timeframe = nil
         }
@@ -267,7 +283,7 @@ extension BriefViewModel {
     }
 
     private func nextStage(_ stage: BriefModel.Stage) {
-        isPreviousEnabled = !isFirstBrief
+        isPreviousEnabled = initialBrief != nil
         isNextEnabled = false
         revealedStages.insert(currentStage)
         currentStage = stage

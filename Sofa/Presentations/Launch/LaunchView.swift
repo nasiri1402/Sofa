@@ -46,7 +46,7 @@ struct LaunchView: View {
     }
 
     private func Brief() -> some View {
-        BriefView(viewModel: BriefViewModel(isFirstBrief: true) {
+        BriefView(viewModel: BriefViewModel(brief: nil) {
             viewModel.didFinishStage(.brief)
         })
         .transition(.opacity)
