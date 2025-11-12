@@ -70,7 +70,12 @@ extension GenerationResultViewModel {
             isPaywallPresented = true
             return
         }
-        // TODO: Навигация к лоадеру генератора
+        router.route(to: .generationLoader(project.brief) { [weak self] newValue in
+            guard let self else { return }
+            let oldValue = project
+            project = newValue
+            removeProject(oldValue)
+        })
     }
 
     func didTapPlanButton(_ plan: Project.Plan) {
@@ -85,6 +90,16 @@ extension GenerationResultViewModel {
         Task { @MainActor in
             do {
                 project = try dataStorage.fetchProject(id: project.id) ?? project
+            } catch {
+                alertItem = .error(message: error.localizedDescription)
+            }
+        }
+    }
+
+    private func removeProject(_ project: Project) {
+        Task { @MainActor in
+            do {
+                try dataStorage.deleteProject(project)
             } catch {
                 alertItem = .error(message: error.localizedDescription)
             }

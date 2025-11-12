@@ -70,8 +70,9 @@ final class DefaultDataStorage: DataStorage {
 
     private var container: ModelContainer? = {
         let schema = Schema([
-            ProjectEntity.self,
             ProfileEntity.self,
+            ProjectEntity.self,
+            BriefEntity.self,
             PlanEntity.self,
             WeekEntity.self,
             StepEntity.self

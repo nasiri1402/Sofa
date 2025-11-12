@@ -9,6 +9,7 @@ import SwiftUI
 
 struct Project: Identifiable {
     let id: UUID
+    let brief: Brief
     let prompt: String
     let summary: String
     var plans: [Plan]
@@ -169,6 +170,16 @@ extension Project.Plan {
 extension Project {
     static let mock = Project(
         id: UUID(),
+        brief: Brief(
+            id: UUID(),
+            idea: "idea",
+            timeframe: .month1,
+            experience: .expert,
+            startPoint: "start point",
+            result: Brief.Result(goals: [.money, .clients], money: 100, subscribers: nil, option: nil),
+            budget: 1000,
+            limits: "limits"
+        ),
         prompt: "Launch a personal app",
         summary: "Roadmap to build and launch an iOS app.",
         plans: [

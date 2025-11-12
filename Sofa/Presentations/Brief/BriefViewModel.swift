@@ -40,6 +40,7 @@ final class BriefViewModel {
 
     // MARK: - Private Properties
 
+    private let projectGenerator: ProjectGenerator
     private let initialBrief: Project.Brief?
     private let onFinish: () -> Void
 
@@ -47,7 +48,8 @@ final class BriefViewModel {
 
     // MARK: - Inits
 
-    init(brief: Project.Brief?, onFinish: @escaping () -> Void) {
+    init(projectGenerator: ProjectGenerator, brief: Project.Brief?, onFinish: @escaping () -> Void) {
+        self.projectGenerator = projectGenerator
         self.initialBrief = brief
         self.onFinish = onFinish
 
@@ -93,6 +95,7 @@ extension BriefViewModel {
         case .hasBudget: handleHasBudget(for: .previous)
         case .budget: handleBudget(for: .previous)
         case .limits: handleLimits(for: .previous)
+        case .loader: break
         }
     }
 
@@ -109,6 +112,7 @@ extension BriefViewModel {
         case .hasBudget: handleHasBudget(for: .next)
         case .budget: handleBudget(for: .next)
         case .limits: handleLimits(for: .next)
+        case .loader: break
         }
     }
 
@@ -130,12 +134,9 @@ extension BriefViewModel {
             nextStage(.timeframe)
             idea = trimmedIdea
         case .previous:
-            if initialBrief != nil {
-                break
-            } else {
-                // TODO: Навигация на главную
-                break
-            }
+            guard initialBrief != nil else { return }
+            // TODO: Навигация на главную
+            return
         }
     }
 
@@ -271,6 +272,7 @@ extension BriefViewModel {
             let trimmedLimits = limits.trimmingCharacters(in: .whitespacesAndNewlines)
             guard !trimmedLimits.isEmpty else { return }
             limits = trimmedLimits
+            nextStage(.loader)
             startGeneration()
         case .previous:
             if hasBudget == true {
@@ -304,7 +306,6 @@ extension BriefViewModel {
 
     private func startGeneration() {
         guard let timeframe, let experience, let budget = Int(budget) else { return }
-        // TODO: Начинать генерацию
         let brief = Project.Brief(
             id: UUID(),
             idea: idea,
@@ -320,5 +321,13 @@ extension BriefViewModel {
             budget: budget,
             limits: limits
         )
+        Task { @MainActor in
+            do {
+                try await projectGenerator.generate(brief: brief)
+                onFinish()
+            } catch {
+                alertItem = .error(message: error.localizedDescription)
+            }
+        }
     }
 }

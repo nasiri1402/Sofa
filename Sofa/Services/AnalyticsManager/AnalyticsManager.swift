@@ -5,6 +5,7 @@
 //  Created by dukes on 11/3/25.
 //
 
+import FirebaseAnalytics
 import Adapty
 import StoreKit
 
@@ -34,7 +35,10 @@ final class AnalyticsManager: NSObject {
     // MARK: - Public Methods
 
     func configure() {
+        #if !DEBUG
         initializeAdapty()
+        Analytics.setAnalyticsCollectionEnabled(true)
+        #endif
     }
 }
 

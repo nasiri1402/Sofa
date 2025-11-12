@@ -161,7 +161,6 @@ extension PaywallViewModel {
             do {
                 products = try await storeManager.getProducts()
                 subscriptions = products.compactMap { PaywallModel.Subscription(id: $0.id) }
-
                 guard subscriptions.isEmpty else { return }
                 alertItem = AlertItem(
                     title: Text(
@@ -178,7 +177,10 @@ extension PaywallViewModel {
                         guard let self else { return }
                         dismissTrigger = UUID()
                     },
-                    secondaryButton: .default(Text(String(localized: "retry")), action: loadProducts)
+                    secondaryButton: .default(Text(String(localized: "retry"))) { [weak self] in
+                        guard let self else { return }
+                        loadProducts()
+                    }
                 )
             } catch {
                 alertItem = .error(message: error.localizedDescription) { [weak self] in

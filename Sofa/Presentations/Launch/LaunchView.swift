@@ -39,14 +39,19 @@ struct LaunchView: View {
     }
 
     private func Onboarding() -> some View {
-        OnboardingView(viewModel: OnboardingViewModel(dataStorage: ServiceLayer.dataStorage) {
+        OnboardingView(viewModel: OnboardingViewModel(
+            dataStorage: ServiceLayer.dataStorage
+        ) {
             viewModel.didFinishStage(.onboarding)
         })
         .transition(.opacity)
     }
 
     private func Brief() -> some View {
-        BriefView(viewModel: BriefViewModel(brief: nil) {
+        BriefView(viewModel: BriefViewModel(
+            projectGenerator: ServiceLayer.projectGenerator,
+            brief: nil
+        ) {
             viewModel.didFinishStage(.brief)
         })
         .transition(.opacity)

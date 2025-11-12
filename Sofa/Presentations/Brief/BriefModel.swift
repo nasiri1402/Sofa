@@ -14,7 +14,7 @@ enum BriefModel {
     enum Stage: Int, CaseIterable {
         case idea, timeframe, experience, startPoint
         case result, resultMoney, resultSubscribers, resultOption
-        case hasBudget, budget, limits
+        case hasBudget, budget, limits, loader
 
         var number: Int {
             switch self {
@@ -25,12 +25,13 @@ enum BriefModel {
             case .result, .resultMoney, .resultSubscribers, .resultOption: 5
             case .hasBudget, .budget: 6
             case .limits: 7
+            case .loader: 8
             }
         }
 
         var isProgressable: Bool {
             switch self {
-            case .resultMoney, .resultSubscribers, .resultOption, .budget: false
+            case .resultMoney, .resultSubscribers, .resultOption, .budget, .loader: false
             default: true
             }
         }
@@ -38,7 +39,7 @@ enum BriefModel {
         func actionTitle() -> String {
             switch self {
             case .idea, .timeframe, .experience, .startPoint, .hasBudget, .budget: String(localized: "continue")
-            case .result, .resultMoney, .resultSubscribers, .resultOption: String(localized: "continue")
+            case .result, .resultMoney, .resultSubscribers, .resultOption, .loader: String(localized: "continue")
             case .limits: String(localized: "startGeneration")
             }
         }

@@ -16,4 +16,9 @@ enum ServiceLayer {
     static let storeManager: StoreManager = DefaultStoreManager()
     static let networkMonitor: NetworkMonitor = DefaultNetworkMonitor()
     static let dataStorage: DataStorage = DefaultDataStorage()
+    static let projectGenerator: ProjectGenerator = DefaultProjectGenerator(functionsClient: functionsClient, dataStorage: dataStorage)
+
+    // MARK: - Private Properties
+
+    private static let functionsClient: FunctionsClient = DefaultFunctionsClient()
 }
