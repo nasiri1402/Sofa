@@ -5,6 +5,10 @@
 //  Created by dukes on 11/3/25.
 //
 
+import Firebase
+import FirebaseAnalytics
+import FirebaseCore
+import FirebaseCrashlytics
 import SwiftUI
 
 @main
@@ -30,6 +34,7 @@ final class SofaAppDelegate: NSObject, UIApplicationDelegate {
 
     // MARK: - Private Properties
 
+    private let appChecker = ServiceLayer.appChecker
     private let analyticsManager = ServiceLayer.analyticsManager
     private let storeManager = ServiceLayer.storeManager
     private let networkMonitor = ServiceLayer.networkMonitor
@@ -40,8 +45,9 @@ final class SofaAppDelegate: NSObject, UIApplicationDelegate {
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
     ) -> Bool {
-        // TODO: Конфигурировать фаербейс и аналитику
-//        FirebaseApp.configure()
+//        appChecker.configure()
+        FirebaseApp.configure()
+//        appChecker.isTokenAutoRefreshEnabled(true)
         storeManager.configure()
 //        analyticsManager.configure()
         networkMonitor.startMonitoring()

@@ -100,7 +100,7 @@ struct OnboardingPrivacyPage: View {
                 isPrivacyRead.toggle()
                 isNextEnabled.toggle()
             } label: {
-                Image(isPrivacyRead ? .checkboxRectSelectedBlue : .checkboxCircleUnselected)
+                Image(isPrivacyRead ? .checkboxRectSelectedBlue : .checkboxRectUnselected)
                     .resizable()
                     .frame(width: 24.fitW, height: 24.fitW)
                     .padding(.trailing, 6.fitW)
