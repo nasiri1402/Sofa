@@ -42,6 +42,6 @@ final class DefaultFunctionsClient: FunctionsClient {
 
 extension DefaultFunctionsClient {
     enum Function {
-        static let generator = "chatCompletions"
+        static let generator = "generator"
     }
 }
