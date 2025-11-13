@@ -43,8 +43,10 @@ final class BriefViewModel {
     private let router: BriefRouter?
     private let projectGenerator: ProjectGenerator
     private let initialBrief: Project.Brief?
-    private let onGenerate: (Project) -> Void
+    private let onGenerate: ((Project) -> Void)?
 
+    @ObservationIgnored @AppStorage(SofaConstants.AppStorage.isBeforeLaunched)
+    private var isBeforeLaunched = false
     private var revealedStages: Set<BriefModel.Stage> = []
 
     // MARK: - Inits
@@ -53,12 +55,14 @@ final class BriefViewModel {
         router: BriefRouter?,
         projectGenerator: ProjectGenerator,
         brief: Project.Brief?,
-        onGenerate: @escaping (Project) -> Void
+        onGenerate: ((Project) -> Void)?
     ) {
         self.router = router
         self.projectGenerator = projectGenerator
         self.initialBrief = brief
         self.onGenerate = onGenerate
+        self.isPreviousEnabled = isBeforeLaunched
+        self.isNextEnabled = isBeforeLaunched
 
         if let brief {
             idea = brief.idea
@@ -72,9 +76,6 @@ final class BriefViewModel {
             hasBudget = brief.budget != nil
             budget = brief.budget?.description ?? ""
             limits = brief.limits
-            isPreviousEnabled = true
-        } else {
-            isPreviousEnabled = false
         }
     }
 }
@@ -126,7 +127,7 @@ extension BriefViewModel {
     // MARK: - Output
 
     func needsReveal(for stage: BriefModel.Stage) -> Bool {
-        initialBrief == nil && !revealedStages.contains(stage)
+        !isBeforeLaunched && !revealedStages.contains(stage)
     }
 }
 
@@ -138,12 +139,11 @@ extension BriefViewModel {
         case .next:
             let trimmedIdea = idea.trimmingCharacters(in: .whitespacesAndNewlines)
             guard !trimmedIdea.isEmpty else { return }
+            isNextEnabled = timeframe != nil
             nextStage(.timeframe)
             idea = trimmedIdea
         case .previous:
-            guard initialBrief != nil else { return }
-            // TODO: Навигация на главную
-            return
+            router?.back()
         }
     }
 
@@ -151,9 +151,10 @@ extension BriefViewModel {
         switch direction {
         case .next:
             guard timeframe != nil else { return }
+            isNextEnabled = experience != nil
             nextStage(.experience)
         case .previous:
-            isPreviousEnabled = initialBrief != nil
+            isPreviousEnabled = isBeforeLaunched
             previousStage(.idea)
             timeframe = nil
         }
@@ -163,6 +164,7 @@ extension BriefViewModel {
         switch direction {
         case .next:
             guard experience != nil else { return }
+            isNextEnabled = !startPoint.isEmpty
             nextStage(.startPoint)
         case .previous:
             previousStage(.timeframe)
@@ -175,6 +177,7 @@ extension BriefViewModel {
         case .next:
             let trimmedStartPoint = startPoint.trimmingCharacters(in: .whitespacesAndNewlines)
             guard !trimmedStartPoint.isEmpty else { return }
+            isNextEnabled = !goals.isEmpty
             nextStage(.result)
             startPoint = trimmedStartPoint
         case .previous:
@@ -188,10 +191,18 @@ extension BriefViewModel {
         case .next:
             guard !goals.isEmpty else { return }
             switch true {
-            case goals.contains(.money): nextStage(.resultMoney)
-            case goals.contains(.subscribers): nextStage(.resultSubscribers)
-            case goals.contains(.option): nextStage(.resultOption)
-            default: nextStage(.hasBudget)
+            case goals.contains(.money):
+                isNextEnabled = !goalMoney.isEmpty
+                nextStage(.resultMoney)
+            case goals.contains(.subscribers):
+                isNextEnabled = !goalSubscribers.isEmpty
+                nextStage(.resultSubscribers)
+            case goals.contains(.option):
+                isNextEnabled = !goalOption.isEmpty
+                nextStage(.resultOption)
+            default:
+                isNextEnabled = hasBudget != nil
+                nextStage(.hasBudget)
             }
         case .previous:
             previousStage(.startPoint)
@@ -204,8 +215,10 @@ extension BriefViewModel {
         case .next:
             guard Int(goalMoney) != nil else { return }
             if goals.contains(.subscribers) {
+                isNextEnabled = !goalSubscribers.isEmpty
                 nextStage(.resultSubscribers)
             } else {
+                isNextEnabled = hasBudget != nil
                 nextStage(.hasBudget)
             }
         case .previous:
@@ -218,6 +231,7 @@ extension BriefViewModel {
         switch direction {
         case .next:
             guard Int(goalSubscribers) != nil else { return }
+            isNextEnabled = hasBudget != nil
             nextStage(.hasBudget)
         case .previous:
             if goals.contains(.money) {
@@ -234,6 +248,7 @@ extension BriefViewModel {
         case .next:
             let trimmedGoalOption = goalOption.trimmingCharacters(in: .whitespacesAndNewlines)
             guard !trimmedGoalOption.isEmpty else { return }
+            isNextEnabled = hasBudget != nil
             nextStage(.hasBudget)
             goalOption = trimmedGoalOption
         case .previous:
@@ -247,8 +262,10 @@ extension BriefViewModel {
         case .next:
             guard let hasBudget else { return }
             if hasBudget {
+                isNextEnabled = !budget.isEmpty
                 nextStage(.budget)
             } else {
+                isNextEnabled = !limits.isEmpty
                 nextStage(.limits)
             }
         case .previous:
@@ -266,6 +283,7 @@ extension BriefViewModel {
         switch direction {
         case .next:
             guard Int(budget) != nil else { return }
+            isNextEnabled = !limits.isEmpty
             nextStage(.limits)
         case .previous:
             previousStage(.hasBudget)
@@ -279,6 +297,7 @@ extension BriefViewModel {
             let trimmedLimits = limits.trimmingCharacters(in: .whitespacesAndNewlines)
             guard !trimmedLimits.isEmpty else { return }
             limits = trimmedLimits
+            isNextEnabled = false
             nextStage(.loader)
             startGeneration()
         case .previous:
@@ -292,8 +311,7 @@ extension BriefViewModel {
     }
 
     private func nextStage(_ stage: BriefModel.Stage) {
-        isPreviousEnabled = initialBrief != nil
-        isNextEnabled = false
+        isPreviousEnabled = isBeforeLaunched
         revealedStages.insert(currentStage)
         currentStage = stage
         updateProgress()
@@ -331,7 +349,7 @@ extension BriefViewModel {
         Task { @MainActor in
             do {
                 let project = try await projectGenerator.generate(brief: brief)
-                onGenerate(project)
+                onGenerate?(project)
                 router?.back()
             } catch {
                 alertItem = .error(message: error.localizedDescription)

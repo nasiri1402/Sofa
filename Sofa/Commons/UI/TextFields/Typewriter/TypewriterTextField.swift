@@ -21,7 +21,6 @@ struct TypewriterTextField: View {
     private let typingInterval = 0.1
     private let pauseInterval = 1
 
-    @State private var isFirstAppear = true
     @State private var typewriterText = ""
     @State private var index = 0
 
@@ -40,13 +39,7 @@ struct TypewriterTextField: View {
         .lineLimit(7)
         .task(id: text.isEmpty) {
             guard text.isEmpty else { return }
-            if isFirstAppear {
-                isFirstAppear = false
-                try? await Task.sleep(for: .seconds(pauseInterval))
-                await typeLoop()
-            } else {
-                await typeLoop()
-            }
+            await typeLoop()
         }
     }
 

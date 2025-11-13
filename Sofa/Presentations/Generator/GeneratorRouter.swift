@@ -11,6 +11,7 @@ import SwiftUI
 
 enum GeneratorRoute {
     case generationResult(Project)
+    case brief
 }
 
 @Observable
@@ -23,11 +24,13 @@ final class GeneratorRouter: HashableRouter {
     // MARK: - Public Methods
 
     func route(to route: GeneratorRoute) {
-        switch route {
+        let router: any Routable = switch route {
         case .generationResult(let project):
-            let router = GenerationResultRouter(navigator: self, project: project)
-            push(router)
+            GenerationResultRouter(navigator: self, project: project)
+        case .brief:
+            BriefRouter(navigator: self, brief: nil, onGenerate: nil)
         }
+        push(router)
     }
 }
 

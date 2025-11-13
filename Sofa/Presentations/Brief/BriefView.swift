@@ -212,6 +212,6 @@ extension BriefView {
     }
 
     private func LoaderPage() -> some View {
-        BriefLoaderPage()
+        BriefLoaderPage(isPreviousEnabled: $viewModel.isPreviousEnabled)
     }
 }

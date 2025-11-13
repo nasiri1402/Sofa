@@ -10,6 +10,10 @@ import SwiftUI
 
 struct BriefLoaderPage: View {
 
+    // MARK: - Public Properties
+
+    @Binding var isPreviousEnabled: Bool
+
     // MARK: - Private Properties
 
     @State private var phase: Phase = .analyzing
@@ -51,6 +55,9 @@ struct BriefLoaderPage: View {
         .scrollIndicators(.hidden)
         .scrollBounceBehavior(.basedOnSize)
         .scrollDisabled(true)
+        .onAppear {
+            isPreviousEnabled = false
+        }
     }
 
     // MARK: - Private Methods

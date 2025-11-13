@@ -65,7 +65,7 @@ extension GeneratorViewModel {
     }
 
     func didTapGenerateButton() {
-        // TODO: Навигация к новой генерации
+        router.route(to: .brief)
     }
 }
 

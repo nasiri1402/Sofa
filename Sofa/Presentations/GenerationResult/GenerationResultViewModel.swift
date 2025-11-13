@@ -62,7 +62,10 @@ extension GenerationResultViewModel {
             isPaywallPresented = true
             return
         }
-        // TODO: Навигация к настройкам генерации
+        router.route(to: .brief(project.brief) { [weak self] in
+            guard let self else { return }
+            updateProject($0)
+        })
     }
 
     func didTapGenerateMoreButton() {
@@ -70,11 +73,9 @@ extension GenerationResultViewModel {
             isPaywallPresented = true
             return
         }
-        router.route(to: .generationLoader(project.brief) { [weak self] newValue in
+        router.route(to: .generationLoader(project.brief) { [weak self] in
             guard let self else { return }
-            let oldValue = project
-            project = newValue
-            removeProject(oldValue)
+            updateProject($0)
         })
     }
 
@@ -94,6 +95,12 @@ extension GenerationResultViewModel {
                 alertItem = .error(message: error.localizedDescription)
             }
         }
+    }
+
+    private func updateProject(_ newValue: Project) {
+        let oldValue = project
+        project = newValue
+        removeProject(oldValue)
     }
 
     private func removeProject(_ project: Project) {

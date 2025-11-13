@@ -12,14 +12,14 @@ extension View {
         self
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
-                    Button {
-                        action()
-                    } label: {
+                    Button(action: action) {
                         Image(icon)
                             .resizable()
                             .frame(width: 24.fitW, height: 24.fitW)
                             .animation(.easeInOut, value: icon)
+                            .contentShape(.rect)
                     }
+                    .buttonStyle(.plain)
                 }
             }
     }
@@ -28,14 +28,14 @@ extension View {
         self
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        action()
-                    } label: {
+                    Button(action: action) {
                         Image(icon)
                             .resizable()
                             .frame(width: 24.fitW, height: 24.fitW)
                             .animation(.easeInOut, value: icon)
+                            .contentShape(.rect)
                     }
+                    .buttonStyle(.plain)
                 }
             }
     }

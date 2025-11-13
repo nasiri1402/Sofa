@@ -13,11 +13,11 @@ final class BriefRouter: HashableRouter {
 
     private let navigator: Navigator
     private let brief: Project.Brief?
-    private let onGenerate: (Project) -> Void
+    private let onGenerate: ((Project) -> Void)?
 
     // MARK: - Inits
 
-    init(navigator: Navigator, brief: Project.Brief?, onGenerate: @escaping (Project) -> Void) {
+    init(navigator: Navigator, brief: Project.Brief?, onGenerate: ((Project) -> Void)?) {
         self.navigator = navigator
         self.brief = brief
         self.onGenerate = onGenerate

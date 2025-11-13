@@ -5,8 +5,8 @@
 //  Created by dukes on 11/3/25.
 //
 
-import FirebaseAnalytics
 import Adapty
+import FirebaseAnalytics
 import StoreKit
 
 final class AnalyticsManager: NSObject {
