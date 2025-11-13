@@ -73,8 +73,12 @@ struct BriefBudgetPage: View {
             transitionTask?.cancel()
         }
         .onChange(of: budgetInput) { oldValue, newValue in
+            defer { isNextEnabled = !budgetInput.isEmpty }
             guard oldValue != newValue else { return }
-            isNextEnabled = !newValue.isEmpty
+            let scalars = newValue.unicodeScalars.filter { CharacterSet.decimalDigits.contains($0) }
+            let digits = String(scalars.map(Character.init))
+            guard digits != newValue else { return }
+            budgetInput = digits
         }
     }
 
@@ -86,15 +90,12 @@ struct BriefBudgetPage: View {
                 .font(.system(size: 17.fitW))
                 .foregroundStyle(.white)
 
-            TextField(
-                String("0"),
-                text: Binding(get: { budgetInput }, set: { budgetInput = $0.filter(\.isNumber) })
-            )
-            .font(.system(size: 17.fitW))
-            .foregroundStyle(.grayE5E5EA)
-            .autocorrectionDisabled()
-            .keyboardType(.numberPad)
-            .focused($isFocused)
+            TextField(String("0"), text: $budgetInput)
+                .font(.system(size: 17.fitW))
+                .foregroundStyle(.grayE5E5EA)
+                .autocorrectionDisabled()
+                .keyboardType(.numberPad)
+                .focused($isFocused)
         }
     }
 

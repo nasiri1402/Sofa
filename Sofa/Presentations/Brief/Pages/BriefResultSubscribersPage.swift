@@ -73,23 +73,24 @@ struct BriefResultSubscribersPage: View {
             transitionTask?.cancel()
         }
         .onChange(of: goalSubscribersInput) { oldValue, newValue in
+            defer { isNextEnabled = !goalSubscribersInput.isEmpty }
             guard oldValue != newValue else { return }
-            isNextEnabled = !newValue.isEmpty
+            let scalars = newValue.unicodeScalars.filter { CharacterSet.decimalDigits.contains($0) }
+            let digits = String(scalars.map(Character.init))
+            guard digits != newValue else { return }
+            goalSubscribersInput = digits
         }
     }
 
     // MARK: - Views
 
     private func SubscribersTextField() -> some View {
-        TextField(
-            String("0"),
-            text: Binding(get: { goalSubscribersInput }, set: { goalSubscribersInput = $0.filter(\.isNumber) })
-        )
-        .font(.system(size: 17.fitW))
-        .foregroundStyle(.grayE5E5EA)
-        .autocorrectionDisabled()
-        .keyboardType(.numberPad)
-        .focused($isFocused)
+        TextField(String("0"), text: $goalSubscribersInput)
+            .font(.system(size: 17.fitW))
+            .foregroundStyle(.grayE5E5EA)
+            .autocorrectionDisabled()
+            .keyboardType(.numberPad)
+            .focused($isFocused)
     }
 
     // MARK: - Private Methods

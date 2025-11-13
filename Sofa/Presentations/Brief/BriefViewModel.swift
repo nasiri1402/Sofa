@@ -62,7 +62,7 @@ final class BriefViewModel {
         self.initialBrief = brief
         self.onGenerate = onGenerate
         self.isPreviousEnabled = isBeforeLaunched
-        self.isNextEnabled = isBeforeLaunched
+        self.isNextEnabled = brief?.idea != nil
 
         if let brief {
             idea = brief.idea
