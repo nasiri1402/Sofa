@@ -27,31 +27,27 @@ struct CountryView: View {
                 .ignoresSafeArea()
 
             VStack(alignment: .leading, spacing: .zero) {
-                HStack {
-                    BackButton()
-                    Spacer()
-                }
-                .padding(.top, 10.fitW)
-                .padding(.leading, 16.fitW)
+                TitleText()
+                    .padding(.vertical, 16.fitW)
 
-                VStack(alignment: .leading, spacing: .zero) {
-                    TitleText()
-                        .padding(.vertical, 16.fitW)
+                Tip(text: String(localized: "weWillCreateIdeasForYourCountryMarket"))
+                    .padding(.bottom, 16.fitW)
 
-                    Tip(text: String(localized: "weWillCreateIdeasForYourCountryMarket"))
-                        .padding(.bottom, 16.fitW)
-
-                    CountriesScrollView()
-                }
-                .padding(.horizontal, 16.fitW)
-                .overlay(alignment: .bottom) {
-                    SaveButton()
-                        .padding(.horizontal, 16.fitW)
-                        .padding(.bottom, keyboardHeight > .zero ? 16.fitW : 47.fitW)
-                }
+                CountriesScrollView()
+            }
+            .padding(.horizontal, 16.fitW)
+            .overlay(alignment: .bottom) {
+                SaveButton()
+                    .padding(.horizontal, 16.fitW)
+                    .padding(.bottom, keyboardHeight > .zero ? 16.fitW : 47.fitW)
             }
         }
+        .navigationTitle(String(localized: "country"))
+        .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden()
+        .navigationBarLeadingButton(icon: .back) {
+            viewModel.didTapNavigationBarLeadingButton()
+        }
         .contentShape(.rect)
         .onTapGesture {
             isSearchFocused = false
@@ -68,16 +64,6 @@ struct CountryView: View {
     }
 
     // MARK: - Views
-
-    private func BackButton() -> some View {
-        Button(action: viewModel.didTapBackButton) {
-            Image(.backCircle)
-                .resizable()
-                .frame(width: 46.fitW, height: 46.fitW)
-        }
-        .buttonStyle(.plain)
-        .hapticFeedback()
-    }
 
     private func TitleText() -> some View {
         Text(String(localized: "whereAreYouFrom"))

@@ -41,7 +41,7 @@ extension AgeViewModel {
 
     // MARK: - Input
 
-    func didTapBackButton() {
+    func didTapNavigationBarLeadingButton() {
         router.back()
     }
 

@@ -45,16 +45,12 @@ final class SofaAppDelegate: NSObject, UIApplicationDelegate {
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
     ) -> Bool {
-//        appChecker.configure()
+        appChecker.configure()
         FirebaseApp.configure()
-//        appChecker.isTokenAutoRefreshEnabled(true)
+        appChecker.isTokenAutoRefreshEnabled(true)
         storeManager.configure()
-//        analyticsManager.configure()
+        analyticsManager.configure()
         networkMonitor.startMonitoring()
-
-//        Task { @MainActor in
-//            try ServiceLayer.dataStorage.saveProject(.mock)
-//        }
         return true
     }
 }

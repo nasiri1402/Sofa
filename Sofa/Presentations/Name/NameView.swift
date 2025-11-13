@@ -25,25 +25,21 @@ struct NameView: View {
             Color.black090909
                 .ignoresSafeArea()
 
-            VStack(alignment: .leading, spacing: .zero) {
-                HStack {
-                    BackButton()
-                    Spacer()
-                }
-                .padding(.top, 10.fitW)
-                .padding(.leading, 16.fitW)
-
-                VStack(alignment: .leading, spacing: 32.fitW) {
-                    TitleText()
-                    NameTextField()
-                    Spacer(minLength: .zero)
-                    SaveButton()
-                        .padding(.bottom, keyboardHeight > .zero ? .zero : 31.fitW)
-                }
-                .padding(16.fitW)
+            VStack(alignment: .leading, spacing: 32.fitW) {
+                TitleText()
+                NameTextField()
+                Spacer(minLength: .zero)
+                SaveButton()
+                    .padding(.bottom, keyboardHeight > .zero ? .zero : 31.fitW)
             }
+            .padding(16.fitW)
         }
+        .navigationTitle(String(localized: "name"))
+        .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden()
+        .navigationBarLeadingButton(icon: .back) {
+            viewModel.didTapNavigationBarLeadingButton()
+        }
         .contentShape(.rect)
         .onTapGesture {
             isFocused = false
@@ -63,16 +59,6 @@ struct NameView: View {
     }
 
     // MARK: - Views
-
-    private func BackButton() -> some View {
-        Button(action: viewModel.didTapBackButton) {
-            Image(.backCircle)
-                .resizable()
-                .frame(width: 46.fitW, height: 46.fitW)
-        }
-        .buttonStyle(.plain)
-        .hapticFeedback()
-    }
 
     private func TitleText() -> some View {
         Text(String(localized: "whatIsYourName"))

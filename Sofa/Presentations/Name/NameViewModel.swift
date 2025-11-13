@@ -40,7 +40,7 @@ extension NameViewModel {
 
     // MARK: - Input
 
-    func didTapBackButton() {
+    func didTapNavigationBarLeadingButton() {
         router.back()
     }
 

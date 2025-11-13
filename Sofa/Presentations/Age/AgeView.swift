@@ -21,43 +21,29 @@ struct AgeView: View {
                 .ignoresSafeArea()
 
             VStack(alignment: .leading, spacing: .zero) {
-                HStack {
-                    BackButton()
-                    Spacer()
-                }
-                .padding(.top, 10.fitW)
-                .padding(.leading, 16.fitW)
+                TitleText()
+                AgesScrollView()
+                    .padding(.top, 73.fitW)
+                    .padding(.bottom, 30.fitW)
 
-                VStack(alignment: .leading, spacing: .zero) {
-                    TitleText()
-                    AgesScrollView()
-                        .padding(.top, 73.fitW)
-                        .padding(.bottom, 30.fitW)
-
-                    Spacer(minLength: .zero)
-                    SaveButton()
-                        .padding(.bottom, 31.fitW)
-                }
-                .padding(16.fitW)
+                Spacer(minLength: .zero)
+                SaveButton()
+                    .padding(.bottom, 31.fitW)
             }
+            .padding(16.fitW)
         }
+        .navigationTitle(String(localized: "age"))
+        .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden()
+        .navigationBarLeadingButton(icon: .back) {
+            viewModel.didTapNavigationBarLeadingButton()
+        }
         .alert(item: $viewModel.alertItem) { item in
             item.alert()
         }
     }
 
     // MARK: - Views
-
-    private func BackButton() -> some View {
-        Button(action: viewModel.didTapBackButton) {
-            Image(.backCircle)
-                .resizable()
-                .frame(width: 46.fitW, height: 46.fitW)
-        }
-        .buttonStyle(.plain)
-        .hapticFeedback()
-    }
 
     private func TitleText() -> some View {
         Text(String(localized: "howOldAreYou"))
