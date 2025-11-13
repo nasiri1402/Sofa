@@ -49,9 +49,10 @@ struct LaunchView: View {
 
     private func Brief() -> some View {
         BriefView(viewModel: BriefViewModel(
+            router: nil,
             projectGenerator: ServiceLayer.projectGenerator,
             brief: nil
-        ) {
+        ) { _ in
             viewModel.didFinishStage(.brief)
         })
         .transition(.opacity)

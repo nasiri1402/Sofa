@@ -40,18 +40,25 @@ final class BriefViewModel {
 
     // MARK: - Private Properties
 
+    private let router: BriefRouter?
     private let projectGenerator: ProjectGenerator
     private let initialBrief: Project.Brief?
-    private let onFinish: () -> Void
+    private let onGenerate: (Project) -> Void
 
     private var revealedStages: Set<BriefModel.Stage> = []
 
     // MARK: - Inits
 
-    init(projectGenerator: ProjectGenerator, brief: Project.Brief?, onFinish: @escaping () -> Void) {
+    init(
+        router: BriefRouter?,
+        projectGenerator: ProjectGenerator,
+        brief: Project.Brief?,
+        onGenerate: @escaping (Project) -> Void
+    ) {
+        self.router = router
         self.projectGenerator = projectGenerator
         self.initialBrief = brief
-        self.onFinish = onFinish
+        self.onGenerate = onGenerate
 
         if let brief {
             idea = brief.idea
@@ -323,8 +330,9 @@ extension BriefViewModel {
         )
         Task { @MainActor in
             do {
-                try await projectGenerator.generate(brief: brief)
-                onFinish()
+                let project = try await projectGenerator.generate(brief: brief)
+                onGenerate(project)
+                router?.back()
             } catch {
                 alertItem = .error(message: error.localizedDescription)
             }
