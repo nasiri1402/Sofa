@@ -14,6 +14,10 @@ struct StepTreeView: View {
 
     @State private(set) var viewModel: StepTreeViewModel
 
+    // MARK: - Private Properties
+
+    @Environment(\.isTabBarHidden) private var isTabBarHidden
+
     // MARK: - Body
 
     var body: some View {
@@ -51,17 +55,20 @@ struct StepTreeView: View {
         .navigationTitle(String(localized: "stepTree"))
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden()
-        .toolbarVisibility(.hidden, for: .tabBar)
-        .navigationBarLeadingButton(icon: .back, action: viewModel.didTapNavigationBarLeadingButton)
-        .navigationBarTrailingButton(
-            icon: viewModel.plan.isFavorite ? .like : .unlike,
-            action: viewModel.didTapNavigationBarTrailingButton
-        )
+        .navigationBarLeadingButton(icon: .back) {
+            viewModel.didTapNavigationBarLeadingButton()
+        }
+        .navigationBarTrailingButton(icon: viewModel.plan.isFavorite ? .like : .unlike) {
+            viewModel.didTapNavigationBarTrailingButton()
+        }
         .fullScreenCover(isPresented: $viewModel.isPaywallPresented) {
             PaywallCover()
         }
         .alert(item: $viewModel.alertItem) { item in
             item.alert()
+        }
+        .onAppear {
+            isTabBarHidden.wrappedValue = true
         }
     }
 

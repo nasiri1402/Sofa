@@ -52,7 +52,6 @@ struct CountryView: View {
             }
         }
         .navigationBarBackButtonHidden()
-        .toolbarVisibility(.hidden, for: .tabBar)
         .contentShape(.rect)
         .onTapGesture {
             isSearchFocused = false

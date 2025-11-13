@@ -18,6 +18,7 @@ struct TabBarView: View {
     @State private var generatorRouter = GeneratorRouter()
     @State private var plansRouter = PlansRouter()
     @State private var settingsRouter = SettingsRouter()
+    @State private var isTabBarHidden = false
 
     // MARK: - Body
 
@@ -27,6 +28,8 @@ struct TabBarView: View {
             PlansTab()
             SettingsTab()
         }
+        .toolbarVisibility(isTabBarHidden ? .hidden : .visible, for: .tabBar)
+        .environment(\.isTabBarHidden, $isTabBarHidden)
     }
 
     // MARK: - Views
@@ -37,6 +40,7 @@ struct TabBarView: View {
                 router: generatorRouter,
                 dataStorage: ServiceLayer.dataStorage
             ))
+            .toolbarVisibility(isTabBarHidden ? .hidden : .visible, for: .tabBar)
             .navigationDestination(for: AnyRouter.self) { router in
                 router.makeView()
             }
@@ -53,6 +57,7 @@ struct TabBarView: View {
                 router: plansRouter,
                 dataStorage: ServiceLayer.dataStorage
             ))
+            .toolbarVisibility(isTabBarHidden ? .hidden : .visible, for: .tabBar)
             .navigationDestination(for: AnyRouter.self) { router in
                 router.makeView()
             }
@@ -69,6 +74,7 @@ struct TabBarView: View {
                 router: settingsRouter,
                 storeManager: ServiceLayer.storeManager
             ))
+            .toolbarVisibility(isTabBarHidden ? .hidden : .visible, for: .tabBar)
             .navigationDestination(for: AnyRouter.self) { router in
                 router.makeView()
             }

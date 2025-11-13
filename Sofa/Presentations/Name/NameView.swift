@@ -44,7 +44,6 @@ struct NameView: View {
             }
         }
         .navigationBarBackButtonHidden()
-        .toolbarVisibility(.hidden, for: .tabBar)
         .contentShape(.rect)
         .onTapGesture {
             isFocused = false

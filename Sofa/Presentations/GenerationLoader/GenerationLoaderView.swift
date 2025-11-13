@@ -51,7 +51,6 @@ struct GenerationLoaderView: View {
             .transition(.blurReplace.combined(with: .opacity))
         }
         .navigationBarBackButtonHidden()
-        .toolbarVisibility(.hidden, for: .tabBar)
         .alert(item: $viewModel.alertItem) { item in
             item.alert()
         }

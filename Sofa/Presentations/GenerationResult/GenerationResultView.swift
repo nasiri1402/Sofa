@@ -13,6 +13,10 @@ struct GenerationResultView: View {
 
     @State private(set) var viewModel: GenerationResultViewModel
 
+    // MARK: - Private Properties
+
+    @Environment(\.isTabBarHidden) private var isTabBarHidden
+
     // MARK: - Body
 
     var body: some View {
@@ -43,9 +47,11 @@ struct GenerationResultView: View {
         .navigationTitle(String(localized: "generationResult"))
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden()
-        .toolbarVisibility(.hidden, for: .tabBar)
-        .navigationBarLeadingButton(icon: .back, action: viewModel.didTapNavigationBarLeadingButton)
+        .navigationBarLeadingButton(icon: .back) {
+            viewModel.didTapNavigationBarLeadingButton()
+        }
         .onAppear {
+            isTabBarHidden.wrappedValue = true
             viewModel.didViewAppear()
         }
         .fullScreenCover(isPresented: $viewModel.isPaywallPresented) {

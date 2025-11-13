@@ -16,6 +16,7 @@ struct GeneratorView: View {
 
     // MARK: - Private Properties
 
+    @Environment(\.isTabBarHidden) private var isTabBarHidden
     @State private var swipeState: SwipeState = .untouched
 
     // MARK: - Body
@@ -43,12 +44,13 @@ struct GeneratorView: View {
                     .padding(16.fitW)
             }
         }
-        .toolbarVisibility(.hidden, for: .navigationBar)
+        .ignoresSafeArea(.keyboard)
         .contentShape(.rect)
         .onTapGesture {
             swipeState = .swiped(UUID())
         }
         .onAppear {
+            isTabBarHidden.wrappedValue = false
             viewModel.didViewAppear()
         }
         .onDisappear {

@@ -14,6 +14,10 @@ struct PlansView: View {
 
     @State private(set) var viewModel: PlansViewModel
 
+    // MARK: - Private Properties
+
+    @Environment(\.isTabBarHidden) private var isTabBarHidden
+
     // MARK: - Body
 
     var body: some View {
@@ -40,6 +44,7 @@ struct PlansView: View {
         .navigationTitle(String(localized: "plans"))
         .navigationBarTitleDisplayMode(.large)
         .onAppear {
+            isTabBarHidden.wrappedValue = false
             viewModel.didViewAppear()
         }
         .alert(item: $viewModel.alertItem) { item in

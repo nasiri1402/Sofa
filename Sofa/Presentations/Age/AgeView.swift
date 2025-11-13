@@ -42,7 +42,6 @@ struct AgeView: View {
             }
         }
         .navigationBarBackButtonHidden()
-        .toolbarVisibility(.hidden, for: .tabBar)
         .alert(item: $viewModel.alertItem) { item in
             item.alert()
         }

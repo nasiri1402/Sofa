@@ -15,6 +15,7 @@ struct SettingsView: View {
 
     // MARK: - Private Properties
 
+    @Environment(\.isTabBarHidden) private var isTabBarHidden
     @Environment(\.openURL) private var openURL
 
     // MARK: - Body
@@ -43,6 +44,9 @@ struct SettingsView: View {
         .navigationBarTitleDisplayMode(.large)
         .fullScreenCover(isPresented: $viewModel.isPaywallPresented) {
             PaywallCover()
+        }
+        .onAppear {
+            isTabBarHidden.wrappedValue = false
         }
         .sheet(isPresented: $viewModel.isSafariPresented) {
             if let url = viewModel.safariURL {

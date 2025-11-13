@@ -13,6 +13,10 @@ struct MyDataView: View {
 
     @State private(set) var viewModel: MyDataViewModel
 
+    // MARK: - Private Properties
+
+    @Environment(\.isTabBarHidden) private var isTabBarHidden
+
     // MARK: - Body
 
     var body: some View {
@@ -36,12 +40,14 @@ struct MyDataView: View {
         .navigationTitle(String(localized: "myData"))
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden()
-        .toolbarVisibility(.hidden, for: .tabBar)
-        .navigationBarLeadingButton(icon: .back, action: viewModel.didTapNavigationBarLeadingButton)
+        .navigationBarLeadingButton(icon: .back) {
+            viewModel.didTapNavigationBarLeadingButton()
+        }
         .alert(item: $viewModel.alertItem) { item in
             item.alert()
         }
         .onAppear {
+            isTabBarHidden.wrappedValue = true
             viewModel.didViewAppear()
         }
     }

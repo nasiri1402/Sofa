@@ -8,13 +8,6 @@
 import Foundation
 import SwiftUI
 
-// MARK: - ViewFactory
-
-protocol ViewFactory {
-    @MainActor
-    func makeView() -> AnyView
-}
-
 // MARK: - AnyRouter
 
 struct AnyRouter {

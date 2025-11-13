@@ -61,7 +61,6 @@ struct OnboardingView: View {
             .animation(.easeInOut, value: viewModel.isPreviousEnabled)
         }
         .navigationBarBackButtonHidden()
-        .toolbarVisibility(.hidden, for: .tabBar)
         .overlay {
             ActivityIndicator(isLoading: viewModel.isReviewing)
         }

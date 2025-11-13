@@ -16,6 +16,7 @@ struct BriefView: View {
 
     // MARK: - Private Properties
 
+    @Environment(\.isTabBarHidden) private var isTabBarHidden
     @State private var keyboardHeight: CGFloat = .zero
 
     // MARK: - Body
@@ -68,11 +69,11 @@ struct BriefView: View {
             .animation(.easeInOut, value: viewModel.isPreviousEnabled)
         }
         .navigationBarBackButtonHidden()
-        .toolbarVisibility(.hidden, for: .tabBar)
         .alert(item: $viewModel.alertItem) { item in
             item.alert()
         }
         .onAppear {
+            isTabBarHidden.wrappedValue = true
             viewModel.didViewAppear()
         }
         .onChangeKeyboardHeight { newValue in
