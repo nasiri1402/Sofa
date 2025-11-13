@@ -13,7 +13,7 @@ enum SofaConstants {
     // MARK: - AppInfo
 
     enum AppInfo {
-        static let bundleIdentifier = Bundle.main.bundleIdentifier ?? "com.sofa"
+        static let bundleIdentifier = Bundle.main.bundleIdentifier ?? "com.ajdar.ai.sofa"
         static let bundleName = Bundle.main.infoDictionary?[kCFBundleNameKey as String] as? String ?? "Sofa"
         static let displayName = Bundle.main.infoDictionary?["CFBundleDisplayName"] as? String ?? "Sofa"
         static let shortVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "0.0.0"
@@ -26,6 +26,7 @@ enum SofaConstants {
     // MARK: - AppSupport
 
     enum AppSupport {
+        // TOOD: Заменить данные на боевые
         static let email = "support@sofa"
         static let terms = "https://www.apple.com"
         static let privacy = "https://www.apple.com"
@@ -38,15 +39,10 @@ enum SofaConstants {
         static let isProfileCreated = "isProfileCreated"
     }
 
-    // MARK: - FreeLimits
-
-    enum FreeLimits {
-    }
-
     // MARK: - AppStore
 
     enum AppStore {
-        static let appID = "123456"
+        static let appID = "6755126023"
         static let appLink = "https://apps.apple.com/app/id\(appID)"
         static var reviewLink = "itms-apps://apps.apple.com/app/id\(appID)?action=write-review"
     }
