@@ -41,6 +41,8 @@ final class GenerationLoaderViewModel {
         self.projectGenerator = projectGenerator
         self.brief = brief
         self.onGenerate = onGenerate
+
+        generateProject()
     }
 }
 
