@@ -10,7 +10,6 @@ import SwiftUI
 struct Project: Identifiable {
     let id: UUID
     let brief: Brief
-    let prompt: String
     let summary: String
     var plans: [Plan]
     let createdAt: Date
@@ -138,7 +137,7 @@ extension Project.Plan {
     struct Step: Identifiable, Hashable {
         let id: UUID
         let title: String
-        let index: Int
+        let number: Int
         var isCompleted: Bool
     }
 
@@ -180,7 +179,6 @@ extension Project {
             budget: 1000,
             limits: "limits"
         ),
-        prompt: "Launch a personal app",
         summary: "Roadmap to build and launch an iOS app.",
         plans: [
             Plan(
@@ -199,13 +197,13 @@ extension Project {
                             .init(
                                 id: UUID(),
                                 title: "Create color palette and typography",
-                                index: 1,
+                                number: 1,
                                 isCompleted: true
                             ),
                             .init(
                                 id: UUID(),
                                 title: "Design app icon",
-                                index: 2,
+                                number: 2,
                                 isCompleted: false
                             )
                         ]
@@ -217,13 +215,13 @@ extension Project {
                             .init(
                                 id: UUID(),
                                 title: "Build UI kit in Figma",
-                                index: 1,
+                                number: 1,
                                 isCompleted: false
                             ),
                             .init(
                                 id: UUID(),
                                 title: "Design splash screen",
-                                index: 2,
+                                number: 2,
                                 isCompleted: false
                             )
                         ]
@@ -247,13 +245,13 @@ extension Project {
                             .init(
                                 id: UUID(),
                                 title: "Implement SwiftData models",
-                                index: 1,
+                                number: 1,
                                 isCompleted: true
                             ),
                             .init(
                                 id: UUID(),
                                 title: "Add main UI modules",
-                                index: 2,
+                                number: 2,
                                 isCompleted: true
                             )
                         ]
@@ -265,13 +263,13 @@ extension Project {
                             .init(
                                 id: UUID(),
                                 title: "Integrate iCloud sync",
-                                index: 0,
+                                number: 0,
                                 isCompleted: false
                             ),
                             .init(
                                 id: UUID(),
                                 title: "Add notifications and background refresh",
-                                index: 1,
+                                number: 1,
                                 isCompleted: false
                             )
                         ]
@@ -295,13 +293,13 @@ extension Project {
                             .init(
                                 id: UUID(),
                                 title: "Write App Store description",
-                                index: 1,
+                                number: 1,
                                 isCompleted: true
                             ),
                             .init(
                                 id: UUID(),
                                 title: "Prepare keywords and metadata",
-                                index: 2,
+                                number: 2,
                                 isCompleted: false
                             )
                         ]
@@ -313,13 +311,13 @@ extension Project {
                             .init(
                                 id: UUID(),
                                 title: "Prepare screenshots and preview video",
-                                index: 1,
+                                number: 1,
                                 isCompleted: false
                             ),
                             .init(
                                 id: UUID(),
                                 title: "Submit build and pass review",
-                                index: 2,
+                                number: 2,
                                 isCompleted: false
                             )
                         ]

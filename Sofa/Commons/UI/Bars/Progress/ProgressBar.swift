@@ -13,7 +13,7 @@ struct ProgressBar: View {
 
     /// от 0 до 1
     let percentage: Double
-    var isGreenCompleted = false
+    let isGreenCompleted: Bool
 
     // MARK: - Body
 

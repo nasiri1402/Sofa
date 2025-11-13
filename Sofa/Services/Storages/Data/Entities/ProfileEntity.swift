@@ -20,6 +20,7 @@ final class ProfileEntity {
     var genderRaw: Int
     var countryISOCode: String
     var countryName: String
+    var currencyCode: String
 
     // MARK: - Inits
 
@@ -30,6 +31,7 @@ final class ProfileEntity {
         self.genderRaw = model.gender.rawValue
         self.countryISOCode = model.country.isoCode
         self.countryName = model.country.name
+        self.currencyCode = model.currency.code
     }
 
     // MARK: - Public Methods
@@ -40,7 +42,8 @@ final class ProfileEntity {
             name: name,
             age: age,
             gender: Profile.Gender(rawValue: genderRaw) ?? .male,
-            country: Profile.Country(isoCode: countryISOCode, name: countryName)
+            country: Profile.Country(isoCode: countryISOCode, name: countryName),
+            currency: Profile.Currency(code: currencyCode)
         )
     }
 }

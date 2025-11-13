@@ -220,7 +220,8 @@ extension OnboardingViewModel {
             name: name.trimmingCharacters(in: .whitespacesAndNewlines),
             age: age,
             gender: gender,
-            country: country
+            country: country,
+            currency: Profile.Currency(code: "USD")
         )
         Task { @MainActor in
             do {

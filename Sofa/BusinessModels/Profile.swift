@@ -13,19 +13,22 @@ struct Profile: Identifiable, Hashable {
     let age: Int
     let gender: Gender
     let country: Country
+    let currency: Currency
 
     func copy(
         name: String? = nil,
         age: Int? = nil,
         gender: Gender? = nil,
-        country: Country? = nil
+        country: Country? = nil,
+        currency: Currency? = nil
     ) -> Profile {
         Profile(
             id: id,
             name: name ?? self.name,
             age: age ?? self.age,
             gender: gender ?? self.gender,
-            country: country ?? self.country
+            country: country ?? self.country,
+            currency: currency ?? self.currency
         )
     }
 }
@@ -52,6 +55,12 @@ extension Profile {
         let isoCode: String
         let name: String
     }
+
+    // MARK: - Currency
+
+    struct Currency: Hashable {
+        let code: String
+    }
 }
 
 // MARK: - Mocks
@@ -62,6 +71,7 @@ extension Profile {
         name: "Ivan",
         age: 25,
         gender: .male,
-        country: Country(isoCode: "RU", name: "Russia")
+        country: Country(isoCode: "RU", name: "Russia"),
+        currency: Currency(code: "USD")
     )
 }

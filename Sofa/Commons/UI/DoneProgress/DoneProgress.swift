@@ -18,7 +18,7 @@ struct DoneProgress: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8.fitW) {
-            ProgressBar(percentage: percentage)
+            ProgressBar(percentage: percentage, isGreenCompleted: true)
             HStack(spacing: .zero) {
                 Text(percentage * 100, format: .number)
                     .font(.system(size: 12.fitW))

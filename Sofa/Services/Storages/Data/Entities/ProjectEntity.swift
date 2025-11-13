@@ -17,7 +17,6 @@ final class ProjectEntity {
     var id: UUID
     @Relationship(deleteRule: .cascade)
     var brief: BriefEntity
-    var prompt: String
     var summary: String
     @Relationship(deleteRule: .cascade)
     var plans: [PlanEntity]
@@ -29,7 +28,6 @@ final class ProjectEntity {
     init(from model: Project) {
         self.id = model.id
         self.brief = BriefEntity(from: model.brief)
-        self.prompt = model.prompt
         self.summary = model.summary
         self.plans = model.plans.map { PlanEntity(from: $0) }
         self.createdAt = model.createdAt
@@ -42,7 +40,6 @@ final class ProjectEntity {
         Project(
             id: id,
             brief: brief.toBrief(),
-            prompt: prompt,
             summary: summary,
             plans: plans.map { $0.toPlan() }.sorted { $0.difficulty.rawValue < $1.difficulty.rawValue },
             createdAt: createdAt,
@@ -185,7 +182,7 @@ final class WeekEntity {
         Project.Plan.Week(
             id: id,
             number: number,
-            steps: steps.map { $0.toStep() }.sorted { $0.index < $1.index }
+            steps: steps.map { $0.toStep() }.sorted { $0.number < $1.number }
         )
     }
 }
@@ -200,7 +197,7 @@ final class StepEntity {
     @Attribute(.unique)
     var id: UUID
     var title: String
-    var index: Int
+    var number: Int
     var isCompleted: Bool
 
     // MARK: - Inits
@@ -208,7 +205,7 @@ final class StepEntity {
     init(from model: Project.Plan.Step) {
         self.id = model.id
         self.title = model.title
-        self.index = model.index
+        self.number = model.number
         self.isCompleted = model.isCompleted
     }
 
@@ -218,7 +215,7 @@ final class StepEntity {
         Project.Plan.Step(
             id: id,
             title: title,
-            index: index,
+            number: number,
             isCompleted: isCompleted
         )
     }
