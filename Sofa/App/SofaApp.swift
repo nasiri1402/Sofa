@@ -34,6 +34,7 @@ final class SofaAppDelegate: NSObject, UIApplicationDelegate {
 
     // MARK: - Private Properties
 
+    private let authService = ServiceLayer.authService
     private let appChecker = ServiceLayer.appChecker
     private let analyticsManager = ServiceLayer.analyticsManager
     private let storeManager = ServiceLayer.storeManager
@@ -48,6 +49,7 @@ final class SofaAppDelegate: NSObject, UIApplicationDelegate {
         appChecker.configure()
         FirebaseApp.configure()
         appChecker.isTokenAutoRefreshEnabled(true)
+        authService.configure()
         storeManager.configure()
         analyticsManager.configure()
         networkMonitor.startMonitoring()

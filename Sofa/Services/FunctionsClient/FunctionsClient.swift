@@ -5,6 +5,7 @@
 //  Created by dukes on 11/12/25.
 //
 
+import FirebaseAuth
 import FirebaseFunctions
 import Foundation
 

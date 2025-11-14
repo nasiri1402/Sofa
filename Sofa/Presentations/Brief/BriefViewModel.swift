@@ -353,6 +353,7 @@ extension BriefViewModel {
                 router?.back()
             } catch {
                 alertItem = .error(message: error.localizedDescription)
+                previousStage(.limits)
             }
         }
     }

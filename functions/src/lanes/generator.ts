@@ -22,7 +22,6 @@ export const generator = onCall(
     if (!uid) {
       throw new HttpsError("unauthenticated", "Auth required.");
     }
-
     const {
       messages,
       response_format: responseFormat,
@@ -42,7 +41,7 @@ export const generator = onCall(
     // Сборка тела запроса (без логирования)
     const body = {
       model: "gpt-5-nano",
-      input: messages as any[],
+      input: messages,
       max_output_tokens: 5000,
       reasoning: {effort: "low"},
       text: {format: responseFormat},
@@ -101,18 +100,26 @@ export const generator = onCall(
     });
 
     // Firestore write
+    const counters = {
+      promptTokens: FieldValue.increment(inputTokens),
+      completionTokens: FieldValue.increment(outputTokens),
+      totalTokens: FieldValue.increment(totalTokens),
+      reasoningTokens: FieldValue.increment(reasoningTokens),
+      outputTokens: FieldValue.increment(visibleOutputTokens),
+      requestCount: FieldValue.increment(1),
+    };
+
+    // Firestore write
     await Promise.all([
-      db.collection("assistants").doc("generator").set(
-        {
-          promptTokens: FieldValue.increment(inputTokens),
-          completionTokens: FieldValue.increment(outputTokens),
-          totalTokens: FieldValue.increment(totalTokens),
-          reasoningTokens: FieldValue.increment(reasoningTokens),
-          outputTokens: FieldValue.increment(visibleOutputTokens),
-          requestCount: FieldValue.increment(1),
-        },
-        {merge: true},
-      ),
+      db.collection("assistants")
+        .doc("generator")
+        .set(counters, {merge: true}),
+
+      db.collection("users")
+        .doc(uid)
+        .collection("assistants")
+        .doc("generator")
+        .set(counters, {merge: true}),
     ]);
 
     return data;
