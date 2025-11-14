@@ -1,11 +1,9 @@
 import {onCall, HttpsError} from "firebase-functions/v2/https";
-import {initializeApp, getApps} from "firebase-admin/app";
+import {initializeApp} from "firebase-admin/app";
 import {getFirestore, FieldValue} from "firebase-admin/firestore";
 import {defineSecret} from "firebase-functions/params";
 
-if (!getApps().length) {
-  initializeApp();
-}
+initializeApp();
 
 const db = getFirestore();
 const OPENAI_API_KEY = defineSecret("OPENAI_API_KEY");
@@ -14,8 +12,7 @@ export const generator = onCall(
   {
     region: "us-central1",
     secrets: [OPENAI_API_KEY],
-    enforceAppCheck: true,
-    cors: true,
+    enforceAppCheck: false,
   },
   async (request) => {
     const uid = request.auth?.uid;
@@ -100,26 +97,35 @@ export const generator = onCall(
     });
 
     // Firestore write
-    const counters = {
-      promptTokens: FieldValue.increment(inputTokens),
-      completionTokens: FieldValue.increment(outputTokens),
-      totalTokens: FieldValue.increment(totalTokens),
-      reasoningTokens: FieldValue.increment(reasoningTokens),
-      outputTokens: FieldValue.increment(visibleOutputTokens),
-      requestCount: FieldValue.increment(1),
-    };
-
-    // Firestore write
     await Promise.all([
-      db.collection("assistants")
-        .doc("generator")
-        .set(counters, {merge: true}),
-
-      db.collection("users")
+      db
+        .collection("assistants")
+        .doc("generator").set(
+          {
+            promptTokens: FieldValue.increment(inputTokens),
+            completionTokens: FieldValue.increment(outputTokens),
+            totalTokens: FieldValue.increment(totalTokens),
+            reasoningTokens: FieldValue.increment(reasoningTokens),
+            outputTokens: FieldValue.increment(visibleOutputTokens),
+            requestCount: FieldValue.increment(1),
+          },
+          {merge: true},
+        ),
+      db
+        .collection("users")
         .doc(uid)
         .collection("assistants")
-        .doc("generator")
-        .set(counters, {merge: true}),
+        .doc("generator").set(
+          {
+            promptTokens: FieldValue.increment(inputTokens),
+            completionTokens: FieldValue.increment(outputTokens),
+            totalTokens: FieldValue.increment(totalTokens),
+            reasoningTokens: FieldValue.increment(reasoningTokens),
+            outputTokens: FieldValue.increment(visibleOutputTokens),
+            requestCount: FieldValue.increment(1),
+          },
+          {merge: true},
+        ),
     ]);
 
     return data;
