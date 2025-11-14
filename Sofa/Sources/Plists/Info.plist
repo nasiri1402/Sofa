@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>FirebaseAppCheckDebugToken</key>
+	<string>A43DCEC5-C343-427F-9FC8-43A39EE381A4</string>
 	<key>UIDesignRequiresCompatibility</key>
 	<false/>
 	<key>UILaunchScreen</key>
