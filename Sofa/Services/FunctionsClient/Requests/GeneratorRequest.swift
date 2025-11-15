@@ -65,3 +65,38 @@ extension GeneratorRequest.Message.Content {
         case type, text, image = "image_url"
     }
 }
+
+// MARK: - UsetContent
+
+extension GeneratorRequest {
+    struct UserContent: Encodable {
+        let profile: Profile
+        let brief: Brief
+        let responseLanguageCode: String
+
+        struct Profile: Encodable {
+            let name: String
+            let age: String
+            let gender: String
+            let countryCode: String
+            let currencyCode: String
+        }
+
+        struct Brief: Encodable {
+            let idea: String
+            let timeframe: String
+            let experience: String
+            let startPoint: String
+            let result: Result
+            let budget: Int?
+            let limits: String
+        }
+
+        struct Result: Encodable {
+            let goals: [String]
+            let money: String?
+            let subscribers: String?
+            let option: String?
+        }
+    }
+}

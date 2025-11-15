@@ -8,11 +8,39 @@
 import Foundation
 
 struct GeneratorResponse: Decodable {
-    let summary: String
-    let plans: [Plan]
+    let output: [Output]
+
+    var message: String {
+        for out in output {
+            if let text = out.content?.first(where: { $0.type == "output_text" })?.text {
+                return text
+            }
+        }
+        return ""
+    }
 }
 
 extension GeneratorResponse {
+    struct Output: Decodable {
+        let content: [Content]?
+    }
+}
+
+extension GeneratorResponse.Output {
+    struct Content: Decodable {
+        let type: String
+        let text: String?
+    }
+}
+
+// MARK: - ProjectContent
+
+extension GeneratorResponse {
+    struct ProjectContent: Decodable {
+        let summary: String
+        let plans: [Plan]
+    }
+
     struct Plan: Decodable {
         let title: String
         let emoji: String

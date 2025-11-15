@@ -18,11 +18,14 @@ protocol ProjectGenerator {
 
 enum ProjectGeneratorError: LocalizedError {
     case failedToEncodeData
+    case failedToDecodeData
 
     var errorDescription: String? {
         switch self {
         case .failedToEncodeData:
             String(localized: "projectGeneratorErrorFailedToEncodeData")
+        case .failedToDecodeData:
+            String(localized: "projectGeneratorErrorFailedToDecodeData")
         }
     }
 }
@@ -82,13 +85,21 @@ final class DefaultProjectGenerator: ProjectGenerator {
                 )
             ]
         )
-        let response = try await functionsClient.generator(request: request)
-        let project = makeProject(brief: brief, from: response)
+        let response = try await generate(request: request)
+        let project = try makeProject(brief: brief, from: response)
         try dataStorage.saveProject(project)
         return project
     }
 
     // MARK: - Private Methods
+
+    private func generate(request: GeneratorRequest) async throws -> GeneratorResponse {
+        do {
+            return try await functionsClient.generator(request: request)
+        } catch {
+            throw ProjectGeneratorError.failedToDecodeData
+        }
+    }
 
     private func makeSystemContent() -> String {
         // swiftlint:disable line_length
@@ -127,7 +138,7 @@ final class DefaultProjectGenerator: ProjectGenerator {
         
         Output format JSON:
         {
-          "summary": "<string, high-level summary of idea and strategy>",
+          "summary": "<string, personalized high-level description of idea>",
           "plans": [
             {
               "title": "<string, plan name>",
@@ -155,12 +166,20 @@ final class DefaultProjectGenerator: ProjectGenerator {
         - Return ONLY the final JSON object. No explanations, no reasoning, no meta-text.
         - Always generate exactly 3 plans in increasing difficulty (easy → medium → hard).
         - Each plan must be a concrete, practical steps. Steps must be specific actions, not abstract advice.
+        - The "summary" must be a friendly 1–2 sentence intro that describes:
+          • who the user is,  
+          • their goal,  
+          • their timeframe,  
+          • their constraints (budget, limits, experience).  
+        - The summary must NOT describe the plan or steps.  
+        - The summary must NOT include results, predictions, or strategy details.  
+        - The summary must reflect user’s profile and brief input.
         - Use `brief.timeframe` to scale plan length and intensity.
         - Number of weeks must approximately match `timeframe`:
-          1_month → 4–5 weeks,
-          3_months → 12–14 weeks,
-          6_months → 24–28 weeks,
-          12_months → 48–52 weeks.
+          • 1_month → 4–5 weeks,
+          • 3_months → 12–14 weeks,
+          • 6_months → 24–28 weeks,
+          • 12_months → 48–52 weeks.
         - Use `brief.experience` to adapt complexity of steps.
         - Use `brief.result.goals` to prioritize plan direction.
         - If goal is related to money, subscribers — estimate numeric outcomes.
@@ -176,8 +195,8 @@ final class DefaultProjectGenerator: ProjectGenerator {
 
     private func makeUserContent(brief: Project.Brief) async throws -> String {
         let profile = try dataStorage.fetchProfile()
-        let userContent = UserContent(
-            profile: UserContent.Profile(
+        let userContent = GeneratorRequest.UserContent(
+            profile: GeneratorRequest.UserContent.Profile(
                 name: profile?.name ?? "",
                 age: profile?.age == 50 ? "50+" : profile?.age.description ?? "",
                 gender: {
@@ -191,7 +210,7 @@ final class DefaultProjectGenerator: ProjectGenerator {
                 countryCode: profile?.country.isoCode ?? "",
                 currencyCode: profile?.currency.code ?? ""
             ),
-            brief: UserContent.Brief(
+            brief: GeneratorRequest.UserContent.Brief(
                 idea: brief.idea,
                 timeframe: {
                     switch brief.timeframe {
@@ -209,7 +228,7 @@ final class DefaultProjectGenerator: ProjectGenerator {
                     }
                 }(),
                 startPoint: brief.startPoint,
-                result: UserContent.Result(
+                result: GeneratorRequest.UserContent.Result(
                     goals: brief.result.goals.map {
                         switch $0 {
                         case .money: "money"
@@ -237,12 +256,16 @@ final class DefaultProjectGenerator: ProjectGenerator {
         return content
     }
 
-    private func makeProject(brief: Project.Brief, from response: GeneratorResponse) -> Project {
-        Project(
+    private func makeProject(brief: Project.Brief, from response: GeneratorResponse) throws -> Project {
+        guard !response.message.isEmpty,
+              let data = response.message.data(using: .utf8),
+              let content = try? decoder.decode(GeneratorResponse.ProjectContent.self, from: data)
+        else { throw ProjectGeneratorError.failedToDecodeData }
+        let project = Project(
             id: UUID(),
             brief: brief,
-            summary: response.summary,
-            plans: response.plans.map {
+            summary: content.summary,
+            plans: content.plans.map {
                 Project.Plan(
                     id: UUID(),
                     title: $0.title,
@@ -271,40 +294,6 @@ final class DefaultProjectGenerator: ProjectGenerator {
             createdAt: .now,
             updatedAt: .now
         )
-    }
-}
-
-// MARK: - UserContent
-
-extension DefaultProjectGenerator {
-    struct UserContent: Encodable {
-        let profile: Profile
-        let brief: Brief
-        let responseLanguageCode: String
-
-        struct Profile: Encodable {
-            let name: String
-            let age: String
-            let gender: String
-            let countryCode: String
-            let currencyCode: String
-        }
-
-        struct Brief: Encodable {
-            let idea: String
-            let timeframe: String
-            let experience: String
-            let startPoint: String
-            let result: Result
-            let budget: Int?
-            let limits: String
-        }
-
-        struct Result: Encodable {
-            let goals: [String]
-            let money: String?
-            let subscribers: String?
-            let option: String?
-        }
+        return project
     }
 }
