@@ -19,16 +19,27 @@ final class GeneratorViewModel {
     var selectedStory: GeneratorModel.Story?
     private(set) var deleteTrigger = UUID()
     var alertItem: AlertItem?
+    var isPaywallPresented = false
+
+    var isPro: Bool {
+        storeManager.hasPurchasedProduct()
+    }
 
     // MARK: - Private Properties
 
     private let router: GeneratorRouter
+    private let storeManager: StoreManager
     private let dataStorage: DataStorage
 
     // MARK: - Inits
 
-    init(router: GeneratorRouter, dataStorage: DataStorage) {
+    init(
+        router: GeneratorRouter,
+        storeManager: StoreManager,
+        dataStorage: DataStorage
+    ) {
         self.router = router
+        self.storeManager = storeManager
         self.dataStorage = dataStorage
     }
 }
@@ -65,7 +76,11 @@ extension GeneratorViewModel {
     }
 
     func didTapGenerateButton() {
-        router.route(to: .brief)
+        if isPro {
+            router.route(to: .brief)
+        } else {
+            isPaywallPresented = true
+        }
     }
 }
 

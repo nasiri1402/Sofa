@@ -13,6 +13,7 @@ struct PrimaryButton: View {
 
     let title: String
     var subtitle: String?
+    var icon: ImageResource?
     var foregroundColor: Color = .white
     var backgroundColor: Color = .blue007AFF
     let onTap: () -> Void
@@ -22,18 +23,25 @@ struct PrimaryButton: View {
     var body: some View {
         Button(action: onTap) {
             VStack(spacing: .zero) {
-                Text(title)
-                    .multilineMinimumScale()
-                    .font(.system(size: 15.fitW, weight: .semibold))
-                    .foregroundStyle(foregroundColor)
-                    .frame(height: 20.fitW)
-
-                if let subtitle {
-                    Text(subtitle)
+                HStack(spacing: 6.fitW) {
+                    if let icon {
+                        Image(icon)
+                            .resizable()
+                            .frame(width: 24.fitW, height: 24.fitW)
+                    }
+                    Text(title)
                         .multilineMinimumScale()
-                        .font(.system(size: 11.fitW))
-                        .foregroundStyle(foregroundColor.opacity(0.8))
-                        .frame(height: 13.fitW)
+                        .font(.system(size: 15.fitW, weight: .semibold))
+                        .foregroundStyle(foregroundColor)
+                        .frame(height: 20.fitW)
+
+                    if let subtitle {
+                        Text(subtitle)
+                            .multilineMinimumScale()
+                            .font(.system(size: 11.fitW))
+                            .foregroundStyle(foregroundColor.opacity(0.8))
+                            .frame(height: 13.fitW)
+                    }
                 }
             }
             .frame(maxWidth: .infinity)

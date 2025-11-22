@@ -61,9 +61,6 @@ struct StepTreeView: View {
         .navigationBarTrailingButton(icon: viewModel.plan.isFavorite ? .like : .unlike) {
             viewModel.didTapNavigationBarTrailingButton()
         }
-        .fullScreenCover(isPresented: $viewModel.isPaywallPresented) {
-            PaywallCover()
-        }
         .alert(item: $viewModel.alertItem) { item in
             item.alert()
         }
@@ -153,22 +150,13 @@ struct StepTreeView: View {
         Button(action: onTap) {
             let isSelected = viewModel.selectedWeek?.id == week.id
             HStack(spacing: 4.fitW) {
-                if !viewModel.isPro, week.number > 1 {
-                    Image(.crown)
-                        .resizable()
-                        .frame(width: 18.fitW, height: 18.fitW)
-                }
                 Text(String(format: String(localized: "shortWeekFormat"), week.number))
                     .font(.system(size: 13.fitW, weight: .semibold))
-                    .foregroundStyle(isSelected ? .white : viewModel.isPro ? .grayD1D1D6 : .yellowFFCC00)
+                    .foregroundStyle(isSelected ? .white : .grayD1D1D6)
             }
             .frame(height: 36.fitW)
             .padding(.horizontal, 16.fitW)
-            .background(
-                isSelected
-                ? .blue007AFF
-                : viewModel.isPro ? .gray787880.opacity(0.12) : .yellowFFCC00.opacity(0.12)
-            )
+            .background(isSelected ? .blue007AFF : .gray787880.opacity(0.12))
             .clipShape(.capsule)
             .contentShape(.rect)
         }
@@ -222,14 +210,5 @@ struct StepTreeView: View {
         PrimaryButton(title: String(localized: "viewPlan"), onTap: viewModel.didTapViewPlanButton)
             .transition(.opacity)
             .opacity(viewModel.isWellDone ? 1 : 0)
-    }
-
-    private func PaywallCover() -> some View {
-        PaywallView(viewModel: PaywallViewModel(
-            storeManager: ServiceLayer.storeManager,
-            networkMonitor: ServiceLayer.networkMonitor,
-            analyticsManager: ServiceLayer.analyticsManager,
-            placement: .generationResult
-        ))
     }
 }

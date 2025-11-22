@@ -17,18 +17,12 @@ final class StepTreeViewModel {
     private(set) var plan: Project.Plan
     private(set) var selectedWeek: Project.Plan.Week?
     var alertItem: AlertItem?
-    var isPaywallPresented = false
     var isWellDone = false
-
-    var isPro: Bool {
-        storeManager.hasPurchasedProduct()
-    }
 
     // MARK: - Private Properties
 
     private let router: StepTreeRouter
     private let dataStorage: DataStorage
-    private let storeManager: StoreManager
 
     private var project: Project
 
@@ -37,13 +31,11 @@ final class StepTreeViewModel {
     init(
         router: StepTreeRouter,
         dataStorage: DataStorage,
-        storeManager: StoreManager,
         project: Project,
         plan: Project.Plan
     ) {
         self.router = router
         self.dataStorage = dataStorage
-        self.storeManager = storeManager
         self.project = project
         self.plan = plan
 
@@ -71,11 +63,7 @@ extension StepTreeViewModel {
 
     func didTapWeekButton(_ week: Project.Plan.Week) {
         guard selectedWeek?.id != week.id else { return }
-        if week.number > 1, !isPro {
-            isPaywallPresented = true
-        } else {
-            selectedWeek = week
-        }
+        selectedWeek = week
     }
 
     func didTapStepButton(_ step: Project.Plan.Step) {
@@ -104,11 +92,7 @@ extension StepTreeViewModel {
 extension StepTreeViewModel {
     private func initialize() {
         isWellDone = plan.isCompleted
-        selectedWeek = if isPro {
-            plan.weeks.first { !$0.isCompleted } ?? plan.weeks.last
-        } else {
-            plan.weeks.first
-        }
+        selectedWeek = plan.weeks.first { !$0.isCompleted } ?? plan.weeks.last
     }
 
     private func saveProject() {

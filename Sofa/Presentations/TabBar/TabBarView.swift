@@ -38,6 +38,7 @@ struct TabBarView: View {
         NavigationStack(path: $generatorRouter.path) {
             GeneratorView(viewModel: GeneratorViewModel(
                 router: generatorRouter,
+                storeManager: ServiceLayer.storeManager,
                 dataStorage: ServiceLayer.dataStorage
             ))
             .toolbarVisibility(isTabBarHidden ? .hidden : .visible, for: .tabBar)

@@ -62,6 +62,9 @@ struct GeneratorView: View {
         .fullScreenCover(item: $viewModel.selectedStory) {
             StoriesCover($0)
         }
+        .fullScreenCover(isPresented: $viewModel.isPaywallPresented) {
+            PaywallCover()
+        }
         .alert(item: $viewModel.alertItem) { item in
             item.alert()
         }
@@ -179,7 +182,12 @@ struct GeneratorView: View {
     }
 
     private func GenerateButton() -> some View {
-        PrimaryButton(title: String(localized: "startGeneration")) {
+        PrimaryButton(
+            title: String(localized: "startGeneration"),
+            icon: viewModel.isPro ? nil : .crownBlack,
+            foregroundColor: viewModel.isPro ? .white : .black090909,
+            backgroundColor: viewModel.isPro ? .blue007AFF : .yellowFFCC00
+        ) {
             viewModel.didTapGenerateButton()
             swipeState = .swiped(UUID())
         }
@@ -197,5 +205,14 @@ struct GeneratorView: View {
                 }()
             ))
         }
+    }
+
+    private func PaywallCover() -> some View {
+        PaywallView(viewModel: PaywallViewModel(
+            storeManager: ServiceLayer.storeManager,
+            networkMonitor: ServiceLayer.networkMonitor,
+            analyticsManager: ServiceLayer.analyticsManager,
+            placement: .generationResult
+        ))
     }
 }
