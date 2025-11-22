@@ -117,12 +117,12 @@ struct GeneratorView: View {
                 ForEach(viewModel.projects, id: \.id) { project in
                     if viewModel.projects.count > 1 {
                         ProjectButton(project)
+                            .padding(.horizontal, 16.fitW)
                             .addSwipeAction(edge: .trailing, state: $swipeState) {
                                 DeleteProjectButton(project)
                             }
                             .id(project.id)
                             .transition(.opacity)
-                            .padding(.horizontal, 16.fitW)
                     } else {
                         ProjectButton(project)
                             .id(project.id)
