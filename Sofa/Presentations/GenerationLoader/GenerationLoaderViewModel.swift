@@ -22,11 +22,15 @@ final class GenerationLoaderViewModel {
     private let router: GenerationLoaderRouter
     private let networkMonitor: NetworkMonitor
     private let projectGenerator: ProjectGenerator
+    private let dataStorage: DataStorage
+    private let project: Project?
     private let brief: Project.Brief
     private let difficulty: Project.Plan.Difficulty
-    private let onGenerate: (Project) -> Void
 
     private var messagePool = GenerationLoaderModel.Message.allCases
+
+    @ObservationIgnored @AppStorage(SofaConstants.AppStorage.isBeforeLaunched)
+    private var isBeforeLaunched = false
 
     // MARK: - Inits
 
@@ -34,16 +38,18 @@ final class GenerationLoaderViewModel {
         router: GenerationLoaderRouter,
         networkMonitor: NetworkMonitor,
         projectGenerator: ProjectGenerator,
+        dataStorage: DataStorage,
+        project: Project?,
         brief: Project.Brief,
         difficulty: Project.Plan.Difficulty,
-        onGenerate: @escaping (Project) -> Void
     ) {
         self.router = router
         self.networkMonitor = networkMonitor
         self.projectGenerator = projectGenerator
+        self.dataStorage = dataStorage
+        self.project = project
         self.brief = brief
         self.difficulty = difficulty
-        self.onGenerate = onGenerate
 
         generateProject()
     }
@@ -88,9 +94,12 @@ extension GenerationLoaderViewModel {
         }
         Task { @MainActor in
             do {
-                let project = try await projectGenerator.generate(brief: brief, difficulty: difficulty)
-                onGenerate(project)
-                router.back()
+                let generatedProject = try await projectGenerator.generate(brief: brief, difficulty: difficulty)
+                let resultProject = try mergePlansIfNeeded(with: generatedProject)
+                if !isBeforeLaunched {
+                    isBeforeLaunched = true
+                }
+                router.route(to: .generationResult(resultProject))
             } catch {
                 alertItem = .error(message: error.localizedDescription) { [weak self] in
                     guard let self else { return }
@@ -98,5 +107,19 @@ extension GenerationLoaderViewModel {
                 }
             }
         }
+    }
+
+    private func mergePlansIfNeeded(with generatedProject: Project) throws -> Project {
+        guard var existingProject = project else {
+            try dataStorage.saveProject(generatedProject)
+            return generatedProject
+        }
+        // Если есть старый проект с которым пришли на новую генерацию, то добавляем новый план
+        if let newPlan = generatedProject.plans.first {
+            existingProject.plans.append(newPlan.copy(id: UUID()))
+            existingProject.updatedAt = .now
+            try dataStorage.saveProject(existingProject)
+        }
+        return existingProject
     }
 }

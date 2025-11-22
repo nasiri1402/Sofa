@@ -11,7 +11,7 @@ import SwiftUI
 
 enum GeneratorRoute {
     case generationResult(Project)
-    case brief(onGenerate: ((Project) -> Void)?)
+    case brief
 }
 
 @Observable
@@ -27,8 +27,8 @@ final class GeneratorRouter: HashableRouter {
         let router: any Routable = switch route {
         case .generationResult(let project):
             GenerationResultRouter(navigator: self, project: project)
-        case .brief(let onGenerate):
-            BriefRouter(navigator: self, brief: nil, onGenerate: onGenerate)
+        case .brief:
+            BriefRouter(navigator: self, project: nil, brief: nil)
         }
         push(router)
     }

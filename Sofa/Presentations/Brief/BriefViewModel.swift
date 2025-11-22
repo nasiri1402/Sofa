@@ -43,7 +43,6 @@ final class BriefViewModel {
     private let router: BriefRouter?
     private let projectGenerator: ProjectGenerator
     private let initialBrief: Project.Brief?
-    private let onGenerate: ((Project) -> Void)?
 
     @ObservationIgnored @AppStorage(SofaConstants.AppStorage.isBeforeLaunched)
     private var isBeforeLaunched = false
@@ -54,13 +53,11 @@ final class BriefViewModel {
     init(
         router: BriefRouter?,
         projectGenerator: ProjectGenerator,
-        brief: Project.Brief?,
-        onGenerate: ((Project) -> Void)?
+        brief: Project.Brief?
     ) {
         self.router = router
         self.projectGenerator = projectGenerator
         self.initialBrief = brief
-        self.onGenerate = onGenerate
         self.isPreviousEnabled = isBeforeLaunched
         self.isNextEnabled = brief?.idea != nil
 
@@ -343,10 +340,6 @@ extension BriefViewModel {
             budget: Int(budget),
             limits: limits
         )
-        router?.route(to: .generationLoader(brief, difficulty: .average) { [weak self] in
-            guard let self else { return }
-            onGenerate?($0)
-            router?.back()
-        })
+        router?.route(to: .generationLoader(brief, difficulty: .average))
     }
 }

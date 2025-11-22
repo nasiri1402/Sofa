@@ -10,8 +10,8 @@ import SwiftUI
 
 enum GenerationResultRoute {
     case stepTree(Project, Project.Plan)
-    case generationLoader(Project.Brief, difficulty: Project.Plan.Difficulty, onGenerate: (Project) -> Void)
-    case brief(Project.Brief, onGenerate: (Project) -> Void)
+    case generationLoader(Project, Project.Brief, Project.Plan.Difficulty)
+    case brief(Project, Project.Brief)
 }
 
 final class GenerationResultRouter: HashableRouter {
@@ -34,15 +34,15 @@ final class GenerationResultRouter: HashableRouter {
         let router: any Routable = switch route {
         case .stepTree(let project, let plan):
             StepTreeRouter(navigator: navigator, project: project, plan: plan)
-        case .generationLoader(let brief, let difficulty, let onGenerate):
+        case .generationLoader(let project, let brief, let difficulty):
             GenerationLoaderRouter(
                 navigator: navigator,
+                project: project,
                 brief: brief,
-                difficulty: difficulty,
-                onGenerate: onGenerate
+                difficulty: difficulty
             )
-        case .brief(let brief, let onGenerate):
-            BriefRouter(navigator: navigator, brief: brief, onGenerate: onGenerate)
+        case .brief(let project, let brief):
+            BriefRouter(navigator: navigator, project: project, brief: brief)
         }
         navigator.push(router)
     }

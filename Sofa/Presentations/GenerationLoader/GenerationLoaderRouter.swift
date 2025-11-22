@@ -7,30 +7,42 @@
 
 import SwiftUI
 
+enum GenerationLoaderRoute {
+    case generationResult(Project)
+}
+
 final class GenerationLoaderRouter: HashableRouter {
 
     // MARK: - Private Properties
 
     private let navigator: Navigator
+    private let project: Project?
     private let brief: Project.Brief
     private let difficulty: Project.Plan.Difficulty
-    private let onGenerate: (Project) -> Void
 
     // MARK: - Inits
 
     init(
         navigator: Navigator,
+        project: Project?,
         brief: Project.Brief,
-        difficulty: Project.Plan.Difficulty,
-        onGenerate: @escaping (Project) -> Void
+        difficulty: Project.Plan.Difficulty
     ) {
         self.navigator = navigator
+        self.project = project
         self.brief = brief
         self.difficulty = difficulty
-        self.onGenerate = onGenerate
     }
 
     // MARK: - Public Methods
+
+    func route(to route: GenerationLoaderRoute) {
+        let router: any Routable = switch route {
+        case .generationResult(let project):
+            GenerationResultRouter(navigator: navigator, project: project)
+        }
+        navigator.push(router)
+    }
 
     func back() {
         navigator.pop()
@@ -45,9 +57,10 @@ extension GenerationLoaderRouter: ViewFactory {
             router: self,
             networkMonitor: ServiceLayer.networkMonitor,
             projectGenerator: ServiceLayer.projectGenerator,
+            dataStorage: ServiceLayer.dataStorage,
+            project: project,
             brief: brief,
-            difficulty: difficulty,
-            onGenerate: onGenerate
+            difficulty: difficulty
         )
         let view = GenerationLoaderView(viewModel: viewModel)
         return AnyView(view)

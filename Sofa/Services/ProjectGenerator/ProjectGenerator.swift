@@ -10,7 +10,6 @@ import Foundation
 // MARK: - Interfaces
 
 protocol ProjectGenerator {
-    @discardableResult
     func generate(brief: Project.Brief, difficulty: Project.Plan.Difficulty) async throws -> Project
 }
 
@@ -69,7 +68,6 @@ final class DefaultProjectGenerator: ProjectGenerator {
 
     // MARK: - Public Methods
 
-    @discardableResult
     func generate(brief: Project.Brief, difficulty: Project.Plan.Difficulty) async throws -> Project {
         let systemContent = makeSystemContent()
         let userContent = try await makeUserContent(brief: brief, difficulty: difficulty)
@@ -87,7 +85,6 @@ final class DefaultProjectGenerator: ProjectGenerator {
         )
         let response = try await generate(request: request)
         let project = try makeProject(brief: brief, difficulty: difficulty, from: response)
-        try dataStorage.saveProject(project)
         return project
     }
 

@@ -63,10 +63,7 @@ extension GenerationResultViewModel {
             isPaywallPresented = true
             return
         }
-        router.route(to: .brief(project.brief.copy(id: UUID())) { [weak self] in
-            guard let self else { return }
-            insertPlan(from: $0)
-        })
+        router.route(to: .brief(project, project.brief.copy(id: UUID())))
     }
 
     func didTapGenerateMoreButton() {
@@ -78,10 +75,7 @@ extension GenerationResultViewModel {
     }
 
     func didTapDifficultyDialogButton(_ difficulty: Project.Plan.Difficulty) {
-        router.route(to: .generationLoader(project.brief.copy(id: UUID()), difficulty: difficulty) { [weak self] in
-            guard let self else { return }
-            insertPlan(from: $0)
-        })
+        router.route(to: .generationLoader(project, project.brief.copy(id: UUID()), difficulty))
     }
 
     func didTapPlanButton(_ plan: Project.Plan) {
@@ -96,58 +90,6 @@ extension GenerationResultViewModel {
         Task { @MainActor in
             do {
                 project = try dataStorage.fetchProject(id: project.id) ?? project
-            } catch {
-                alertItem = .error(message: error.localizedDescription)
-            }
-        }
-    }
-
-    func insertPlan(from newProject: Project) {
-        guard let plan = newProject.plans.first else { return }
-        let newPlan = Project.Plan(
-            id: UUID(),
-            title: plan.title,
-            emoji: plan.emoji,
-            firstResults: plan.firstResults,
-            budget: plan.budget,
-            result: plan.result,
-            difficulty: plan.difficulty,
-            weeks: plan.weeks.map {
-                Project.Plan.Week(
-                    id: UUID(),
-                    number: $0.number,
-                    steps: $0.steps.map {
-                        Project.Plan.Step(
-                            id: UUID(),
-                            title: $0.title,
-                            number: $0.number,
-                            isCompleted: $0.isCompleted
-                        )
-                    }
-                )
-            },
-            isFavorite: plan.isFavorite
-        )
-        project.plans.insert(newPlan, at: 0)
-        project.updatedAt = .now
-        saveProject(project)
-        removeProject(newProject)
-    }
-
-    private func saveProject(_ project: Project) {
-        Task { @MainActor in
-            do {
-                try dataStorage.saveProject(project)
-            } catch {
-                alertItem = .error(message: error.localizedDescription)
-            }
-        }
-    }
-
-    private func removeProject(_ project: Project) {
-        Task { @MainActor in
-            do {
-                try dataStorage.deleteProject(project)
             } catch {
                 alertItem = .error(message: error.localizedDescription)
             }

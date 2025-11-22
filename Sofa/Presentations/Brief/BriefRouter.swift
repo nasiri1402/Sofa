@@ -8,7 +8,7 @@
 import SwiftUI
 
 enum BriefRoute {
-    case generationLoader(Project.Brief, difficulty: Project.Plan.Difficulty, onGenerate: (Project) -> Void)
+    case generationLoader(Project.Brief, difficulty: Project.Plan.Difficulty)
 }
 
 final class BriefRouter: HashableRouter {
@@ -16,27 +16,27 @@ final class BriefRouter: HashableRouter {
     // MARK: - Private Properties
 
     private let navigator: Navigator
+    private let project: Project?
     private let brief: Project.Brief?
-    private let onGenerate: ((Project) -> Void)?
 
     // MARK: - Inits
 
-    init(navigator: Navigator, brief: Project.Brief?, onGenerate: ((Project) -> Void)?) {
+    init(navigator: Navigator, project: Project?, brief: Project.Brief?) {
         self.navigator = navigator
+        self.project = project
         self.brief = brief
-        self.onGenerate = onGenerate
     }
 
     // MARK: - Public Methods
 
     func route(to route: BriefRoute) {
         let router: any Routable = switch route {
-        case .generationLoader(let brief, let difficulty, let onGenerate):
+        case .generationLoader(let brief, let difficulty):
             GenerationLoaderRouter(
                 navigator: navigator,
+                project: project,
                 brief: brief,
-                difficulty: difficulty,
-                onGenerate: onGenerate
+                difficulty: difficulty
             )
         }
         navigator.push(router)
@@ -54,8 +54,7 @@ extension BriefRouter: ViewFactory {
         let viewModel = BriefViewModel(
             router: self,
             projectGenerator: ServiceLayer.projectGenerator,
-            brief: brief,
-            onGenerate: onGenerate
+            brief: brief
         )
         let view = BriefView(viewModel: viewModel)
         return AnyView(view)

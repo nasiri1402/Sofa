@@ -44,8 +44,6 @@ final class GeneratorViewModel {
         self.router = router
         self.storeManager = storeManager
         self.dataStorage = dataStorage
-
-//        initialize()
     }
 }
 
@@ -58,7 +56,8 @@ extension GeneratorViewModel {
     func didViewAppear() {
         fetchProjects()
 
-        initialize()
+        guard !isBeforeLaunched else { return }
+        router.route(to: .brief)
     }
 
     func didTapStoryButton(_ story: GeneratorModel.Story) {
@@ -84,7 +83,7 @@ extension GeneratorViewModel {
 
     func didTapGenerateButton() {
         if isPro {
-            router.route(to: .brief(onGenerate: nil))
+            router.route(to: .brief)
         } else {
             isPaywallPresented = true
         }
@@ -94,15 +93,6 @@ extension GeneratorViewModel {
 // MARK: - Private Methods
 
 extension GeneratorViewModel {
-    private func initialize() {
-        if !isBeforeLaunched {
-            router.route(to: .brief { [weak self] _ in
-                guard let self else { return }
-                isBeforeLaunched = true
-            })
-        }
-    }
-
     private func fetchProjects() {
         Task { @MainActor in
             do {
