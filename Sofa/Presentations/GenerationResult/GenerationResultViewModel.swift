@@ -64,8 +64,9 @@ extension GenerationResultViewModel {
             return
         }
         router.route(to: .brief(project.brief) { [weak self] in
-            guard let self else { return }
-            updateProject($0)
+            guard let self, let plan = $0.plans.first else { return }
+            insertPlan(plan.copy(id: UUID()))
+            removeProject($0)
         })
     }
 
@@ -79,8 +80,9 @@ extension GenerationResultViewModel {
 
     func didTapDifficultyDialogButton(_ difficulty: Project.Plan.Difficulty) {
         router.route(to: .generationLoader(project.brief, difficulty: difficulty) { [weak self] in
-            guard let self else { return }
-            updateProject($0)
+            guard let self, let plan = $0.plans.first else { return }
+            insertPlan(plan.copy(id: UUID()))
+            removeProject($0)
         })
     }
 
@@ -102,10 +104,20 @@ extension GenerationResultViewModel {
         }
     }
 
-    private func updateProject(_ newValue: Project) {
-        let oldValue = project
-        project = newValue
-        removeProject(oldValue)
+    private func insertPlan(_ plan: Project.Plan) {
+        project.plans.insert(plan, at: .zero)
+        project.updatedAt = .now
+        saveProject(project)
+    }
+
+    private func saveProject(_ project: Project) {
+        Task { @MainActor in
+            do {
+                try dataStorage.saveProject(project)
+            } catch {
+                alertItem = .error(message: error.localizedDescription)
+            }
+        }
     }
 
     private func removeProject(_ project: Project) {

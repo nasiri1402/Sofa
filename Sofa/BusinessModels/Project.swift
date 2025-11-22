@@ -58,6 +58,20 @@ extension Project {
         var isCompleted: Bool {
             weeks.allSatisfy(\.isCompleted)
         }
+
+        func copy(id: UUID) -> Plan {
+            Project.Plan(
+                id: id,
+                title: title
+                emoji: emoji,
+                firstResults: firstResults,
+                budget: budget,
+                result: result,
+                difficulty: difficulty,
+                weeks: weeks,
+                isFavorite: isFavorite
+            )
+        }
     }
 }
 
