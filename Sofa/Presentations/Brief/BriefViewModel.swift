@@ -59,7 +59,6 @@ final class BriefViewModel {
     ) {
         self.router = router
         self.projectGenerator = projectGenerator
-        self.dataStorage = dataStorage
         self.initialBrief = brief
         self.onGenerate = onGenerate
         self.isPreviousEnabled = isBeforeLaunched
