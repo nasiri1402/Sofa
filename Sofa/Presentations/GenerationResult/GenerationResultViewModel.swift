@@ -63,7 +63,7 @@ extension GenerationResultViewModel {
             isPaywallPresented = true
             return
         }
-        router.route(to: .brief(project.brief) { [weak self] in
+        router.route(to: .brief(project.brief.copy(id: UUID())) { [weak self] in
             guard let self, let plan = $0.plans.first else { return }
             insertPlan(plan.copy(id: UUID()))
             removeProject($0)
@@ -79,7 +79,7 @@ extension GenerationResultViewModel {
     }
 
     func didTapDifficultyDialogButton(_ difficulty: Project.Plan.Difficulty) {
-        router.route(to: .generationLoader(project.brief, difficulty: difficulty) { [weak self] in
+        router.route(to: .generationLoader(project.brief.copy(id: UUID()), difficulty: difficulty) { [weak self] in
             guard let self, let plan = $0.plans.first else { return }
             insertPlan(plan.copy(id: UUID()))
             removeProject($0)

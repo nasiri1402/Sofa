@@ -39,7 +39,7 @@ export const generator = onCall(
     const body = {
       model: "gpt-5-nano",
       input: messages,
-      max_output_tokens: 5000,
+      max_output_tokens: 10000,
       reasoning: {effort: "low"},
       text: {format: responseFormat},
     };

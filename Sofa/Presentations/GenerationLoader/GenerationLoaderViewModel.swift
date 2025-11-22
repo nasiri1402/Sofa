@@ -92,7 +92,10 @@ extension GenerationLoaderViewModel {
                 onGenerate(project)
                 router.back()
             } catch {
-                alertItem = .error(message: error.localizedDescription)
+                alertItem = .error(message: error.localizedDescription) { [weak self] in
+                    guard let self else { return }
+                    router.back()
+                }
             }
         }
     }

@@ -67,11 +67,12 @@ struct GenerationResultView: View {
     private func GeneratorBar() -> some View {
         HStack {
             // TODO: для первой версии решили скрыть изменение входных данных проекта
-//            GeneratorButton(
-//                icon: .changeInput,
-//                title: String(localized: "changeInput").lowercased(),
-//                onTap: viewModel.didTapChangeInputButton
-//            )
+            GeneratorButton(
+                icon: .changeInput,
+                title: String(localized: "changeInput").lowercased(),
+                onTap: viewModel.didTapChangeInputButton
+            )
+            .hidden()
             Spacer()
             GeneratorButton(
                 icon: .generateMore,

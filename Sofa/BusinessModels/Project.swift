@@ -32,6 +32,19 @@ extension Project {
         let result: Result
         let budget: Int?
         let limits: String
+
+        func copy(id: UUID) -> Brief {
+            Brief(
+                id: id,
+                idea: idea,
+                timeframe: timeframe,
+                experience: experience,
+                startPoint: startPoint,
+                result: result,
+                budget: budget,
+                limits: limits
+            )
+        }
     }
 
     // MARK: - Plan
@@ -62,7 +75,7 @@ extension Project {
         func copy(id: UUID) -> Plan {
             Project.Plan(
                 id: id,
-                title: title
+                title: title,
                 emoji: emoji,
                 firstResults: firstResults,
                 budget: budget,
@@ -80,14 +93,13 @@ extension Project.Brief {
     // MARK: - Timeframe
 
     enum Timeframe: Int, CaseIterable, Equatable {
-        case month1, month3, month6, month12
+        case month1, month3, month6
 
         var name: String {
             switch self {
             case .month1: String(format: String(localized: "monthsPluralFormat"), 1)
             case .month3: String(format: String(localized: "monthsPluralFormat"), 3)
             case .month6: String(format: String(localized: "monthsPluralFormat"), 6)
-            case .month12: String(format: String(localized: "monthsPluralFormat"), 12)
             }
         }
     }

@@ -39,7 +39,6 @@ final class LaunchViewModel {
             isProfileCreated = true
             currentStage = .brief
         case .brief:
-            print("tut")
             isBeforeLaunched = true
             currentStage = .tabBar
         case .tabBar: break

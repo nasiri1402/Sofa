@@ -38,7 +38,7 @@ extension GeneratorResponse.Output {
 extension GeneratorResponse {
     struct ProjectContent: Decodable {
         let summary: String
-        let plans: [Plan]
+        let plan: Plan
     }
 
     struct Plan: Decodable {

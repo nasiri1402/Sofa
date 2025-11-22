@@ -121,7 +121,7 @@ final class DefaultProjectGenerator: ProjectGenerator {
           },
           "brief": {
             "idea": "<string, description of user’s main idea or direction>",
-            "timeframe": "<string, one of: '1_month' | '3_months' | '6_months' | '12_months'>",
+            "timeframe": "<string, one of: '1_month' | '3_months' | '6_months'",
             "experience": "<string, one of: 'beginner' | 'intermediate' | 'expert'>",
             "difficulty": "<string, one of: 'easy' | 'medium' | 'hard'>",
             "start_point": "<string, description of user’s current starting position>",
@@ -160,31 +160,22 @@ final class DefaultProjectGenerator: ProjectGenerator {
           }
         }
         
-        Strict rules:
-        - Return ONLY the final JSON object. No explanations, no reasoning, no meta-text.
-        - The `plan` must be a concrete, practical steps. Steps must be specific actions, not abstract advice.
-        - The `summary` must be a friendly 1–2 sentence intro that describes:
-          • who the user is,  
-          • their goal,  
-          • their timeframe,  
-          • their constraints (budget, limits, experience).
-          • NOT describe the plan or steps.  
-          • NOT include results, predictions, or strategy details.
-        - Use `brief.timeframe` to scale plan length and intensity.
-        - Number of weeks must approximately match `timeframe`:
-          • 1_month → 4–5 weeks,
-          • 3_months → 12–14 weeks,
-          • 6_months → 24–28 weeks,
-          • 12_months → 48–52 weeks.
-        - Use `brief.experience` and `brief.difficulty` to adapt complexity of steps. Steps must match the selected difficulty and the specified experience.
-        - Use `brief.result.goals` to prioritize plan direction.
-        - If goal is related to money, subscribers — estimate numeric outcomes.
-        - Respect user limits (e.g., “online only”, “budget = $1000”, “focus on social media”).
-        - Do NOT invent additional user goals beyond those in `brief`.
-        - If budget exists, plan must include recommended allocation.
-        - Use `profile` to keep plans, examples, tone, and recommendations relevant to the user’s demographic and local context.
-        - Do NOT include profile data in the output JSON.
-        - Do NOT include content outside the defined JSON structure.
+        STRICT RULES:
+        - Return ONLY the final JSON object. No explanations or meta-text.
+        - `summary` must describe ONLY the goal + timeframe (no steps, no strategy, no predictions).
+        - `plan` must be 100% actionable steps (no abstract advice).
+        - Each week MUST contain 4–7 concrete action steps.
+        - Total number of weeks MUST strictly match `brief.timeframe`:
+          • 1_month → 4 or 5 weeks  
+          • 3_months → 12–14 weeks  
+          • 6_months → 24–28 weeks  
+          (Generating fewer weeks is NOT allowed.)
+        - Steps MUST match both `brief.experience` and `brief.difficulty`.
+        - Prioritize goals in `brief.result.goals` (estimate money/subscribers if included).
+        - Respect `brief.limits` (e.g., “online only”, “no Instagram”, “budget = $1000”).
+        - If `budget` is NOT provided → ALL steps must be zero-cost; do NOT invent a budget.
+        - Use `profile` only for context and tone. Do NOT include profile data in the output.
+        - Do NOT add anything outside the defined JSON structure.
         """
         // swiftlint:enable line_length
     }
@@ -215,7 +206,6 @@ final class DefaultProjectGenerator: ProjectGenerator {
                     case .month1: "1_month"
                     case .month3: "3_months"
                     case .month6: "6_months"
-                    case .month12: "12_months"
                     }
                 }(),
                 experience: {
@@ -274,16 +264,16 @@ final class DefaultProjectGenerator: ProjectGenerator {
             id: UUID(),
             brief: brief,
             summary: content.summary,
-            plans: content.plans.map {
+            plans: [
                 Project.Plan(
                     id: UUID(),
-                    title: $0.title,
-                    emoji: $0.emoji,
-                    firstResults: $0.firstResults,
-                    budget: $0.budget,
-                    result: $0.result,
+                    title: content.plan.title,
+                    emoji: content.plan.emoji,
+                    firstResults: content.plan.firstResults,
+                    budget: content.plan.budget,
+                    result: content.plan.result,
                     difficulty: difficulty,
-                    weeks: $0.weeks.sorted { $0.number < $1.number }.map {
+                    weeks: content.plan.weeks.sorted { $0.number < $1.number }.map {
                         Project.Plan.Week(
                             id: UUID(),
                             number: $0.number,
@@ -299,7 +289,7 @@ final class DefaultProjectGenerator: ProjectGenerator {
                     },
                     isFavorite: false
                 )
-            },
+            ],
             createdAt: .now,
             updatedAt: .now
         )
