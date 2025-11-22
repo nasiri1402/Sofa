@@ -348,7 +348,7 @@ extension BriefViewModel {
         )
         Task { @MainActor in
             do {
-                let project = try await projectGenerator.generate(brief: brief)
+                let project = try await projectGenerator.generate(brief: brief, difficulty: .average)
                 onGenerate?(project)
                 router?.back()
             } catch {

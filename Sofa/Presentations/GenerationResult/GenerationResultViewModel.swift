@@ -16,8 +16,9 @@ final class GenerationResultViewModel {
 
     private(set) var project: Project
     var alertItem: AlertItem?
+    var isDifficultyDialogPresented = false
     var isPaywallPresented = false
-    
+
     var isPro: Bool {
         storeManager.hasPurchasedProduct()
     }
@@ -69,11 +70,15 @@ extension GenerationResultViewModel {
     }
 
     func didTapGenerateMoreButton() {
-        guard isPro else {
+        if isPro {
+            isDifficultyDialogPresented = true
+        } else {
             isPaywallPresented = true
-            return
         }
-        router.route(to: .generationLoader(project.brief) { [weak self] in
+    }
+
+    func didTapDifficultyDialogButton(_ difficulty: Project.Plan.Difficulty) {
+        router.route(to: .generationLoader(project.brief, difficulty: difficulty) { [weak self] in
             guard let self else { return }
             updateProject($0)
         })

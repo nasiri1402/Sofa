@@ -23,6 +23,7 @@ final class GenerationLoaderViewModel {
     private let networkMonitor: NetworkMonitor
     private let projectGenerator: ProjectGenerator
     private let brief: Project.Brief
+    private let difficulty: Project.Plan.Difficulty
     private let onGenerate: (Project) -> Void
 
     private var messagePool = GenerationLoaderModel.Message.allCases
@@ -34,12 +35,14 @@ final class GenerationLoaderViewModel {
         networkMonitor: NetworkMonitor,
         projectGenerator: ProjectGenerator,
         brief: Project.Brief,
+        difficulty: Project.Plan.Difficulty,
         onGenerate: @escaping (Project) -> Void
     ) {
         self.router = router
         self.networkMonitor = networkMonitor
         self.projectGenerator = projectGenerator
         self.brief = brief
+        self.difficulty = difficulty
         self.onGenerate = onGenerate
 
         generateProject()
@@ -85,7 +88,7 @@ extension GenerationLoaderViewModel {
         }
         Task { @MainActor in
             do {
-                let project = try await projectGenerator.generate(brief: brief)
+                let project = try await projectGenerator.generate(brief: brief, difficulty: difficulty)
                 onGenerate(project)
                 router.back()
             } catch {

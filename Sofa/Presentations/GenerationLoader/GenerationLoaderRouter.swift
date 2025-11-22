@@ -13,13 +13,20 @@ final class GenerationLoaderRouter: HashableRouter {
 
     private let navigator: Navigator
     private let brief: Project.Brief
+    private let difficulty: Project.Plan.Difficulty
     private let onGenerate: (Project) -> Void
 
     // MARK: - Inits
 
-    init(navigator: Navigator, brief: Project.Brief, onGenerate: @escaping (Project) -> Void) {
+    init(
+        navigator: Navigator,
+        brief: Project.Brief,
+        difficulty: Project.Plan.Difficulty,
+        onGenerate: @escaping (Project) -> Void
+    ) {
         self.navigator = navigator
         self.brief = brief
+        self.difficulty = difficulty
         self.onGenerate = onGenerate
     }
 
@@ -39,6 +46,7 @@ extension GenerationLoaderRouter: ViewFactory {
             networkMonitor: ServiceLayer.networkMonitor,
             projectGenerator: ServiceLayer.projectGenerator,
             brief: brief,
+            difficulty: difficulty,
             onGenerate: onGenerate
         )
         let view = GenerationLoaderView(viewModel: viewModel)

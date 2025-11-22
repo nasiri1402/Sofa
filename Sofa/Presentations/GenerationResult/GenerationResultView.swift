@@ -74,9 +74,27 @@ struct GenerationResultView: View {
             Spacer()
             GeneratorButton(
                 icon: .generateMore,
-                title: String(localized: "generateMore").lowercased(),
+                title: String(localized: "generateOneMore").lowercased(),
                 onTap: viewModel.didTapGenerateMoreButton
             )
+            .confirmationDialog(
+                String(localized: "сhooseDfficultyDialogTitle"),
+                isPresented: $viewModel.isDifficultyDialogPresented,
+                titleVisibility: .visible
+            ) {
+                Button(String(localized: "easy")) {
+                    viewModel.didTapDifficultyDialogButton(.easy)
+                }
+                Button(String(localized: "average")) {
+                    viewModel.didTapDifficultyDialogButton(.average)
+                }
+                Button(String(localized: "difficult")) {
+                    viewModel.didTapDifficultyDialogButton(.difficult)
+                }
+                Button(String(localized: "cancel"), role: .cancel) {}
+            } message: {
+                Text(String(localized: "chooseDifficultyDialogMessage"))
+            }
         }
     }
 

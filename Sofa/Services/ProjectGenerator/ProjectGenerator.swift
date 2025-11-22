@@ -11,7 +11,7 @@ import Foundation
 
 protocol ProjectGenerator {
     @discardableResult
-    func generate(brief: Project.Brief) async throws -> Project
+    func generate(brief: Project.Brief, difficulty: Project.Plan.Difficulty) async throws -> Project
 }
 
 // MARK: - Errors
@@ -70,7 +70,7 @@ final class DefaultProjectGenerator: ProjectGenerator {
     // MARK: - Public Methods
 
     @discardableResult
-    func generate(brief: Project.Brief) async throws -> Project {
+    func generate(brief: Project.Brief, difficulty: Project.Plan.Difficulty) async throws -> Project {
         let systemContent = makeSystemContent()
         let userContent = try await makeUserContent(brief: brief)
         let request = GeneratorRequest(
