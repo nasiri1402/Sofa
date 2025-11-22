@@ -284,7 +284,8 @@ final class DefaultProjectGenerator: ProjectGenerator {
                             }
                         )
                     },
-                    isFavorite: false
+                    isFavorite: false,
+                    createdAt: .now,
                 )
             ],
             createdAt: .now,

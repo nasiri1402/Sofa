@@ -59,6 +59,7 @@ extension Project {
         let difficulty: Difficulty
         var weeks: [Week]
         var isFavorite: Bool
+        let createdAt: Date
         var allSteps: [Step] {
             weeks.flatMap(\.steps)
         }
@@ -82,7 +83,8 @@ extension Project {
                 result: result,
                 difficulty: difficulty,
                 weeks: weeks,
-                isFavorite: isFavorite
+                isFavorite: isFavorite,
+                createdAt: createdAt
             )
         }
     }
@@ -253,7 +255,8 @@ extension Project {
                         ]
                     )
                 ],
-                isFavorite: false
+                isFavorite: false,
+                createdAt: .now
             ),
             Plan(
                 id: UUID(),
@@ -301,7 +304,8 @@ extension Project {
                         ]
                     )
                 ],
-                isFavorite: true
+                isFavorite: true,
+                createdAt: .now
             ),
             Plan(
                 id: UUID(),
@@ -349,7 +353,8 @@ extension Project {
                         ]
                     )
                 ],
-                isFavorite: true
+                isFavorite: true,
+                createdAt: .now
             )
         ],
         createdAt: Date().addingTimeInterval(-86400 * 10),

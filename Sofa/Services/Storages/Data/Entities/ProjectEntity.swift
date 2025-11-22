@@ -41,7 +41,7 @@ final class ProjectEntity {
             id: id,
             brief: brief.toBrief(),
             summary: summary,
-            plans: plans.map { $0.toPlan() }.sorted { $0.difficulty.rawValue < $1.difficulty.rawValue },
+            plans: plans.map { $0.toPlan() }.sorted { $0.createdAt < $1.createdAt },
             createdAt: createdAt,
             updatedAt: updatedAt
         )
@@ -123,6 +123,7 @@ final class PlanEntity {
     @Relationship(deleteRule: .cascade)
     var weeks: [WeekEntity]
     var isFavorite: Bool
+    var createdAt: Date
 
     // MARK: - Inits
 
@@ -136,6 +137,7 @@ final class PlanEntity {
         self.difficultyRaw = model.difficulty.rawValue
         self.weeks = model.weeks.map { WeekEntity(from: $0) }
         self.isFavorite = model.isFavorite
+        self.createdAt = model.createdAt
     }
 
     // MARK: - Public Methods
@@ -150,7 +152,8 @@ final class PlanEntity {
             result: result,
             difficulty: Project.Plan.Difficulty(rawValue: difficultyRaw) ?? .easy,
             weeks: weeks.map { $0.toWeek() }.sorted { $0.number < $1.number },
-            isFavorite: isFavorite
+            isFavorite: isFavorite,
+            createdAt: createdAt
         )
     }
 }

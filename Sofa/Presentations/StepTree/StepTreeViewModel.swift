@@ -98,7 +98,9 @@ extension StepTreeViewModel {
     private func saveProject() {
         Task { @MainActor in
             do {
-                try dataStorage.saveProject(project)
+                let updatedProject = project
+                updatedProject.updatedAt = .now
+                try dataStorage.saveProject(updatedProject)
             } catch {
                 alertItem = .error(message: error.localizedDescription)
             }
