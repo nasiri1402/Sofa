@@ -98,7 +98,7 @@ extension StepTreeViewModel {
     private func saveProject() {
         Task { @MainActor in
             do {
-                let updatedProject = project
+                var updatedProject = project
                 updatedProject.updatedAt = .now
                 try dataStorage.saveProject(updatedProject)
             } catch {
