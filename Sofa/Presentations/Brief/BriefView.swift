@@ -39,7 +39,6 @@ struct BriefView: View {
                 case .hasBudget: HasBudgetPage()
                 case .budget: BudgetPage()
                 case .limits: LimitsPage()
-                case .loader: LoaderPage()
                 }
             }
             .overlay(alignment: .top) {
@@ -49,7 +48,6 @@ struct BriefView: View {
 
                     ProgressBar(percentage: viewModel.progress, isGreenCompleted: false)
                         .transition(.opacity)
-                        .opacity(viewModel.currentStage == .loader ? 0 : 1)
 
                     BackButton()
                         .opacity(.zero)
@@ -210,9 +208,5 @@ extension BriefView {
             isNextEnabled: $viewModel.isNextEnabled,
             needsReveal: viewModel.needsReveal(for: .limits)
         )
-    }
-
-    private func LoaderPage() -> some View {
-        BriefLoaderPage(isPreviousEnabled: $viewModel.isPreviousEnabled)
     }
 }

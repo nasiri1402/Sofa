@@ -434,7 +434,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mark your best ideas and they will live here"
+            "value" : "Mark your best ideas and\nthey will live here"
           }
         }
       }

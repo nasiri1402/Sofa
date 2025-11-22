@@ -20,7 +20,6 @@ struct LaunchView: View {
             switch viewModel.currentStage {
             case .splash: Splash()
             case .onboarding: Onboarding()
-            case .brief: Brief()
             case .tabBar: TabBar()
             }
         }
@@ -43,17 +42,6 @@ struct LaunchView: View {
             dataStorage: ServiceLayer.dataStorage
         ) {
             viewModel.didFinishStage(.onboarding)
-        })
-        .transition(.opacity)
-    }
-
-    private func Brief() -> some View {
-        BriefView(viewModel: BriefViewModel(
-            router: nil,
-            projectGenerator: ServiceLayer.projectGenerator,
-            brief: nil
-        ) { _ in
-            viewModel.didFinishStage(.brief)
         })
         .transition(.opacity)
     }

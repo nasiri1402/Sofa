@@ -103,7 +103,6 @@ extension BriefViewModel {
         case .hasBudget: handleHasBudget(for: .previous)
         case .budget: handleBudget(for: .previous)
         case .limits: handleLimits(for: .previous)
-        case .loader: break
         }
     }
 
@@ -120,7 +119,6 @@ extension BriefViewModel {
         case .hasBudget: handleHasBudget(for: .next)
         case .budget: handleBudget(for: .next)
         case .limits: handleLimits(for: .next)
-        case .loader: break
         }
     }
 
@@ -297,8 +295,7 @@ extension BriefViewModel {
             let trimmedLimits = limits.trimmingCharacters(in: .whitespacesAndNewlines)
             guard !trimmedLimits.isEmpty else { return }
             limits = trimmedLimits
-            isNextEnabled = false
-            nextStage(.loader)
+            revealedStages.insert(currentStage)
             startGeneration()
         case .previous:
             if hasBudget == true {
@@ -346,15 +343,10 @@ extension BriefViewModel {
             budget: Int(budget),
             limits: limits
         )
-        Task { @MainActor in
-            do {
-                let project = try await projectGenerator.generate(brief: brief, difficulty: .average)
-                onGenerate?(project)
-                router?.back()
-            } catch {
-                alertItem = .error(message: error.localizedDescription)
-                previousStage(.limits)
-            }
-        }
+        router?.route(to: .generationLoader(brief, difficulty: .average) { [weak self] in
+            guard let self else { return }
+            onGenerate?($0)
+            router?.back()
+        })
     }
 }

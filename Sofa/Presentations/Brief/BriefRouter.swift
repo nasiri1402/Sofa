@@ -7,6 +7,10 @@
 
 import SwiftUI
 
+enum BriefRoute {
+    case generationLoader(Project.Brief, difficulty: Project.Plan.Difficulty, onGenerate: (Project) -> Void)
+}
+
 final class BriefRouter: HashableRouter {
 
     // MARK: - Private Properties
@@ -24,6 +28,19 @@ final class BriefRouter: HashableRouter {
     }
 
     // MARK: - Public Methods
+
+    func route(to route: BriefRoute) {
+        let router: any Routable = switch route {
+        case .generationLoader(let brief, let difficulty, let onGenerate):
+            GenerationLoaderRouter(
+                navigator: navigator,
+                brief: brief,
+                difficulty: difficulty,
+                onGenerate: onGenerate
+            )
+        }
+        navigator.push(router)
+    }
 
     func back() {
         navigator.pop()

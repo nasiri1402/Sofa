@@ -31,6 +31,9 @@ final class GeneratorViewModel {
     private let storeManager: StoreManager
     private let dataStorage: DataStorage
 
+    @ObservationIgnored @AppStorage(SofaConstants.AppStorage.isBeforeLaunched)
+    private var isBeforeLaunched = false
+
     // MARK: - Inits
 
     init(
@@ -41,6 +44,8 @@ final class GeneratorViewModel {
         self.router = router
         self.storeManager = storeManager
         self.dataStorage = dataStorage
+
+//        initialize()
     }
 }
 
@@ -52,6 +57,8 @@ extension GeneratorViewModel {
 
     func didViewAppear() {
         fetchProjects()
+
+        initialize()
     }
 
     func didTapStoryButton(_ story: GeneratorModel.Story) {
@@ -77,7 +84,7 @@ extension GeneratorViewModel {
 
     func didTapGenerateButton() {
         if isPro {
-            router.route(to: .brief)
+            router.route(to: .brief(onGenerate: nil))
         } else {
             isPaywallPresented = true
         }
@@ -87,6 +94,15 @@ extension GeneratorViewModel {
 // MARK: - Private Methods
 
 extension GeneratorViewModel {
+    private func initialize() {
+        if !isBeforeLaunched {
+            router.route(to: .brief { [weak self] _ in
+                guard let self else { return }
+                isBeforeLaunched = true
+            })
+        }
+    }
+
     private func fetchProjects() {
         Task { @MainActor in
             do {

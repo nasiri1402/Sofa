@@ -20,8 +20,6 @@ final class LaunchViewModel {
 
     @ObservationIgnored @AppStorage(SofaConstants.AppStorage.isProfileCreated)
     private var isProfileCreated = false
-    @ObservationIgnored @AppStorage(SofaConstants.AppStorage.isBeforeLaunched)
-    private var isBeforeLaunched = false
 
     // MARK: - Inits
 
@@ -34,12 +32,9 @@ final class LaunchViewModel {
     func didFinishStage(_ stage: LaunchModel.Stage) {
         switch stage {
         case .splash:
-            currentStage = isBeforeLaunched ? .tabBar : isProfileCreated ? .brief : .onboarding
+            currentStage = isProfileCreated ? .tabBar : .onboarding
         case .onboarding:
             isProfileCreated = true
-            currentStage = .brief
-        case .brief:
-            isBeforeLaunched = true
             currentStage = .tabBar
         case .tabBar: break
         }
