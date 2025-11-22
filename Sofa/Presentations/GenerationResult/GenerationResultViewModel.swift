@@ -55,7 +55,7 @@ extension GenerationResultViewModel {
     }
 
     func didTapNavigationBarLeadingButton() {
-        router.back()
+        router.routeToRoot()
     }
 
     func didTapChangeInputButton() {

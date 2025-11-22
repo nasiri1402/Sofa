@@ -166,7 +166,7 @@ final class DefaultProjectGenerator: ProjectGenerator {
         - `plan` must be 100% actionable steps (no abstract advice).
         - Each week MUST contain 4–7 concrete action steps.
         - Total number of weeks MUST strictly match `brief.timeframe`:
-          • 1_month → 4 or 5 weeks  
+          • 1_month → 4-5 weeks  
           • 3_months → 12–14 weeks  
           • 6_months → 24–28 weeks  
           (Generating fewer weeks is NOT allowed.)

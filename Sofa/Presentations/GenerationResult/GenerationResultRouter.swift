@@ -47,8 +47,8 @@ final class GenerationResultRouter: HashableRouter {
         navigator.push(router)
     }
 
-    func back() {
-        navigator.pop()
+    func routeToRoot() {
+        navigator.popToRoot()
     }
 }
 
