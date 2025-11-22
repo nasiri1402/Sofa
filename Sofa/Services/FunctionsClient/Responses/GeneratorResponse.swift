@@ -47,7 +47,6 @@ extension GeneratorResponse {
         let firstResults: String
         let budget: Int
         let result: String
-        let difficulty: Int
         let weeks: [Week]
     }
 

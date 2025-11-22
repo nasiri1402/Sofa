@@ -72,7 +72,7 @@ final class DefaultProjectGenerator: ProjectGenerator {
     @discardableResult
     func generate(brief: Project.Brief, difficulty: Project.Plan.Difficulty) async throws -> Project {
         let systemContent = makeSystemContent()
-        let userContent = try await makeUserContent(brief: brief)
+        let userContent = try await makeUserContent(brief: brief, difficulty: difficulty)
         let request = GeneratorRequest(
             messages: [
                 GeneratorRequest.Message(
@@ -86,7 +86,7 @@ final class DefaultProjectGenerator: ProjectGenerator {
             ]
         )
         let response = try await generate(request: request)
-        let project = try makeProject(brief: brief, from: response)
+        let project = try makeProject(brief: brief, difficulty: difficulty, from: response)
         try dataStorage.saveProject(project)
         return project
     }
@@ -108,7 +108,7 @@ final class DefaultProjectGenerator: ProjectGenerator {
         Your task:
         - Process the provided structured JSON input.
         - Use the input strictly as context for generating the final JSON response.
-        - Produce 3 development plans (easy, medium, hard), each as a practical, step-by-step strategy.
+        - Develop 1 development plan as a practical step-by-step strategy.
         
         Input format JSON:
         {
@@ -123,6 +123,7 @@ final class DefaultProjectGenerator: ProjectGenerator {
             "idea": "<string, description of user’s main idea or direction>",
             "timeframe": "<string, one of: '1_month' | '3_months' | '6_months' | '12_months'>",
             "experience": "<string, one of: 'beginner' | 'intermediate' | 'expert'>",
+            "difficulty": "<string, one of: 'easy' | 'medium' | 'hard'>",
             "start_point": "<string, description of user’s current starting position>",
             "result": {
               "goals": ["money", "subscribers", "clients", "cases", "experience", "option"],
@@ -139,48 +140,43 @@ final class DefaultProjectGenerator: ProjectGenerator {
         Output format JSON:
         {
           "summary": "<string, personalized high-level description of idea>",
-          "plans": [
-            {
-              "title": "<string, plan name>",
-              "emoji": "<string, 1 emoji representing the plan>",
-              "first_results": "<string, timeframe until first noticeable results (e.g. 'in 5 days', 'in 1 week', 'on week 2', 'on 3–4 week')>",
-              "budget": <integer, approximate budget required to execute this plan>,
-              "result": "<string, short description of the final outcome the user is expected to achieve by completing the plan>",
-              "difficulty": <integer: 1=easy, 2=medium, 3=hard>,
-              "weeks": [
-                {
-                  "number": <integer, week index starting from 1>,
-                  "steps": [
-                    {
-                      "title": "<string, step description>",
-                      "number": <integer, order number starting from 1>
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
+          "plan": {
+            "title": "<string, plan name>",
+            "emoji": "<string, 1 emoji representing the plan>",
+            "first_results": "<string, timeframe until first noticeable results (e.g. 'in 5 days', 'in 1 week', 'on week 2', 'on 3–4 week')>",
+            "budget": <integer, approximate budget required to execute this plan>,
+            "result": "<string, short description of the final outcome the user is expected to achieve by completing the plan>",
+            "weeks": [
+              {
+                "number": <integer, week index starting from 1>,
+                "steps": [
+                  {
+                    "title": "<string, step description>",
+                    "number": <integer, order number starting from 1>
+                  }
+                ]
+              }
+            ]
+          }
         }
         
         Strict rules:
         - Return ONLY the final JSON object. No explanations, no reasoning, no meta-text.
-        - Always generate exactly 3 plans in increasing difficulty (easy → medium → hard).
-        - Each plan must be a concrete, practical steps. Steps must be specific actions, not abstract advice.
-        - The "summary" must be a friendly 1–2 sentence intro that describes:
+        - The `plan` must be a concrete, practical steps. Steps must be specific actions, not abstract advice.
+        - The `summary` must be a friendly 1–2 sentence intro that describes:
           • who the user is,  
           • their goal,  
           • their timeframe,  
-          • their constraints (budget, limits, experience).  
-        - The summary must NOT describe the plan or steps.  
-        - The summary must NOT include results, predictions, or strategy details.  
-        - The summary must reflect user’s profile and brief input.
+          • their constraints (budget, limits, experience).
+          • NOT describe the plan or steps.  
+          • NOT include results, predictions, or strategy details.
         - Use `brief.timeframe` to scale plan length and intensity.
         - Number of weeks must approximately match `timeframe`:
           • 1_month → 4–5 weeks,
           • 3_months → 12–14 weeks,
           • 6_months → 24–28 weeks,
           • 12_months → 48–52 weeks.
-        - Use `brief.experience` to adapt complexity of steps.
+        - Use `brief.experience` and `brief.difficulty` to adapt complexity of steps. Steps must match the selected difficulty and the specified experience.
         - Use `brief.result.goals` to prioritize plan direction.
         - If goal is related to money, subscribers — estimate numeric outcomes.
         - Respect user limits (e.g., “online only”, “budget = $1000”, “focus on social media”).
@@ -193,7 +189,10 @@ final class DefaultProjectGenerator: ProjectGenerator {
         // swiftlint:enable line_length
     }
 
-    private func makeUserContent(brief: Project.Brief) async throws -> String {
+    private func makeUserContent(
+        brief: Project.Brief,
+        difficulty: Project.Plan.Difficulty
+    ) async throws -> String {
         let profile = try dataStorage.fetchProfile()
         let userContent = GeneratorRequest.UserContent(
             profile: GeneratorRequest.UserContent.Profile(
@@ -203,8 +202,7 @@ final class DefaultProjectGenerator: ProjectGenerator {
                     switch profile?.gender {
                     case .male: "male"
                     case .female: "female"
-                    case .other: "other"
-                    case .none: ""
+                    case .other, .none: "other"
                     }
                 }(),
                 countryCode: profile?.country.isoCode ?? "",
@@ -225,6 +223,13 @@ final class DefaultProjectGenerator: ProjectGenerator {
                     case .beginner: "beginner"
                     case .intermediate: "intermediate"
                     case .expert: "expert"
+                    }
+                }(),
+                difficulty: {
+                    switch difficulty {
+                    case .easy: "easy"
+                    case .average: "medium"
+                    case .difficult: "hard"
                     }
                 }(),
                 startPoint: brief.startPoint,
@@ -256,7 +261,11 @@ final class DefaultProjectGenerator: ProjectGenerator {
         return content
     }
 
-    private func makeProject(brief: Project.Brief, from response: GeneratorResponse) throws -> Project {
+    private func makeProject(
+        brief: Project.Brief,
+        difficulty: Project.Plan.Difficulty,
+        from response: GeneratorResponse
+    ) throws -> Project {
         guard !response.message.isEmpty,
               let data = response.message.data(using: .utf8),
               let content = try? decoder.decode(GeneratorResponse.ProjectContent.self, from: data)
@@ -273,7 +282,7 @@ final class DefaultProjectGenerator: ProjectGenerator {
                     firstResults: $0.firstResults,
                     budget: $0.budget,
                     result: $0.result,
-                    difficulty: Project.Plan.Difficulty(rawValue: $0.difficulty) ?? .easy,
+                    difficulty: difficulty,
                     weeks: $0.weeks.sorted { $0.number < $1.number }.map {
                         Project.Plan.Week(
                             id: UUID(),

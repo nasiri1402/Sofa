@@ -86,6 +86,7 @@ extension GeneratorRequest {
             let idea: String
             let timeframe: String
             let experience: String
+            let difficulty: String
             let startPoint: String
             let result: Result
             let budget: Int?
