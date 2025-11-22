@@ -119,10 +119,12 @@ struct GeneratorView: View {
                             }
                             .id(project.id)
                             .transition(.opacity)
+                            .padding(.horizontal, 16.fitW)
                     } else {
                         ProjectButton(project)
                             .id(project.id)
                             .transition(.opacity)
+                            .padding(.horizontal, 16.fitW)
                     }
                 }
             }
@@ -143,6 +145,8 @@ struct GeneratorView: View {
                 .font(.system(size: 15.fitW))
                 .foregroundStyle(.grayD1D1D6)
                 .frame(minHeight: 24.fitW)
+
+            Spacer(minLength: .zero)
         }
         .padding(20.fitW)
         .background(.gray787880.opacity(0.12))

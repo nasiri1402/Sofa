@@ -35,7 +35,8 @@ final class DefaultFunctionsClient: FunctionsClient {
         let payload = try JSONSerialization.jsonObject(with: request)
         let call = try await functions.httpsCallable(Function.generator).call(payload)
         let data = try JSONSerialization.data(withJSONObject: call.data)
-        let jsonString = String(data: data, encoding: .utf8)
+        let jsonString = String(data: data, encoding: .utf8) ?? ""
+        debugPrint(jsonString)
         let response = try decoder.decode(GeneratorResponse.self, from: data)
         return response
     }
