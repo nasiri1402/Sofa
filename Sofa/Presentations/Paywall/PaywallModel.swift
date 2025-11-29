@@ -12,7 +12,7 @@ enum PaywallModel {
     // MARK: - Placement
 
     enum Placement: String, CaseIterable {
-        case onboarding, settings, generationResult
+        case generator, settings, generationResult
     }
 
     // MARK: - Subscription
@@ -22,8 +22,8 @@ enum PaywallModel {
 
         var id: String {
             switch self {
-            case .monthly: "sofa.month.notrial"
-            case .weekly: "sofa.week.trial"
+            case .monthly: "com.ai.sofa.subscriptions.month"
+            case .weekly: "com.ai.sofa.subscriptions.week.3trial"
             }
         }
 

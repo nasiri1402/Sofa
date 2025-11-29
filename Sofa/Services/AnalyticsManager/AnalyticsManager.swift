@@ -197,7 +197,10 @@ extension AnalyticsManager {
         // MARK: - Private Properties
 
         private static let maskedAdapty: [UInt8] = [
-            2
+            213, 153, 85, 18, 232, 171, 76, 54, 132, 66, 26,
+            217, 254, 39, 22, 218, 70, 62, 178, 133, 63, 12,
+            214, 103, 5, 242, 136, 117, 45, 129, 25, 33, 196,
+            186, 92, 61, 146, 99, 60, 212, 175
         ]
 
         // MARK: - Private Methods

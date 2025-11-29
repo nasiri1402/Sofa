@@ -212,7 +212,7 @@ struct GeneratorView: View {
             storeManager: ServiceLayer.storeManager,
             networkMonitor: ServiceLayer.networkMonitor,
             analyticsManager: ServiceLayer.analyticsManager,
-            placement: .generationResult
+            placement: .generator
         ))
     }
 }

@@ -80,7 +80,7 @@
           "codeOffers" : [
 
           ],
-          "displayPrice" : "5.99",
+          "displayPrice" : "3.99",
           "familyShareable" : false,
           "groupNumber" : 1,
           "internalID" : "34790B54",
@@ -96,7 +96,7 @@
               "locale" : "en_US"
             }
           ],
-          "productID" : "sofa.week.trial",
+          "productID" : "com.ai.sofa.subscriptions.week.3trial",
           "recurringSubscriptionPeriod" : "P1W",
           "referenceName" : "Week",
           "subscriptionGroupID" : "956768B5",
@@ -112,7 +112,7 @@
           "codeOffers" : [
 
           ],
-          "displayPrice" : "59.99",
+          "displayPrice" : "9.99",
           "familyShareable" : false,
           "groupNumber" : 1,
           "internalID" : "48227812",
@@ -124,7 +124,7 @@
               "locale" : "en_US"
             }
           ],
-          "productID" : "sofa.month.notrial",
+          "productID" : "com.ai.sofa.subscriptions.month",
           "recurringSubscriptionPeriod" : "P1M",
           "referenceName" : "Month",
           "subscriptionGroupID" : "956768B5",
