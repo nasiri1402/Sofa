@@ -22,8 +22,10 @@ struct AgeView: View {
 
             VStack(alignment: .leading, spacing: .zero) {
                 TitleText()
-                AgesScrollView()
-                    .padding(.top, 73.fitW)
+
+                Spacer(minLength: .zero)
+
+                AgePicker()
                     .padding(.bottom, 30.fitW)
 
                 Spacer(minLength: .zero)
@@ -53,43 +55,20 @@ struct AgeView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
     }
 
-    private func AgesScrollView() -> some View {
-        ScrollViewReader { reader in
-            ScrollView {
-                VStack(alignment: .leading, spacing: 12.fitW) {
-                    ForEach(viewModel.ages, id: \.self) { age in
-                        AgeButton(age)
-                            .id(age)
-                    }
-                }
-                .animation(.easeInOut, value: viewModel.selectedAge)
-                .onChange(of: viewModel.selectedAge) { oldValue, newValue in
-                    guard oldValue != newValue else { return }
-                    withAnimation(oldValue == nil ? nil : .default) {
-                        reader.scrollTo(newValue, anchor: .center)
-                    }
-                }
+    private func AgePicker() -> some View {
+        Picker(String(""), selection: Binding(
+            get: { viewModel.selectedAge ?? viewModel.ages.first ?? 0 },
+            set: { viewModel.didSelectAge($0) }
+        )) {
+            ForEach(viewModel.ages, id: \.self) { age in
+                Text(age.description + (age == viewModel.ages.last ? "+" : ""))
+                    .font(.system(size: 24.fitW, weight: .semibold))
+                    .foregroundStyle(.white)
             }
-            .scrollIndicators(.hidden)
-            .scrollBounceBehavior(.basedOnSize)
-            .contentMargins(.vertical, 16.fitW, for: .scrollContent)
         }
-    }
-
-    private func AgeButton(_ age: Int) -> some View {
-        Button {
-            viewModel.didTapAgeButton(age)
-        } label: {
-            let isSelected = age == viewModel.selectedAge
-            Text(age.description + (age == viewModel.ages.last ? "+" : ""))
-                .font(.system(size: isSelected ? 28.fitW : 22.fitW, weight: isSelected ? .bold : .regular))
-                .foregroundStyle(isSelected ? .white : .white.opacity(0.4))
-                .frame(height: 34.fitW)
-                .frame(maxWidth: .infinity)
-                .contentShape(.rect)
-        }
-        .buttonStyle(.plain)
-        .hapticFeedback()
+        .pickerStyle(.wheel)
+        .labelsHidden()
+        .frame(maxWidth: .infinity)
     }
 
     private func SaveButton() -> some View {

@@ -43,9 +43,10 @@ struct OnboardingAgePage: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
             if isSelectionEnabled {
-                AgesScrollView()
+                Spacer(minLength: .zero)
+
+                AgePicker()
                     .transition(.move(edge: .bottom).combined(with: .opacity))
-                    .padding(.top, 41.fitW)
                     .padding(.bottom, 129.fitW)
             }
             Spacer(minLength: .zero)
@@ -73,50 +74,21 @@ struct OnboardingAgePage: View {
 
     // MARK: - Views
 
-    private func AgesScrollView() -> some View {
-        ScrollViewReader { reader in
-            ScrollView {
-                VStack(alignment: .leading, spacing: 12.fitW) {
-                    ForEach(ages, id: \.self) { age in
-                        AgeButton(age)
-                            .id(age)
-                    }
-                }
-                .animation(.easeInOut, value: selectedAge)
-                .onChange(of: selectedAge) { oldValue, newValue in
-                    guard oldValue != newValue else { return }
-                    withAnimation {
-                        reader.scrollTo(newValue, anchor: .center)
-                    }
-                }
-                .onAppear {
-                    reader.scrollTo(selectedAge, anchor: .center)
-                }
+    private func AgePicker() -> some View {
+        Picker(String(""), selection: $selectedAge) {
+            ForEach(ages, id: \.self) { age in
+                Text(
+                    age == .zero
+                    ? String(localized: "notSelected")
+                    : age.description + (age == ages.last ? "+" : "")
+                )
+                .font(.system(size: 24.fitW, weight: .semibold))
+                .foregroundStyle(.white)
             }
-            .scrollIndicators(.hidden)
-            .scrollBounceBehavior(.basedOnSize)
-            .contentMargins(.vertical, 16.fitW, for: .scrollContent)
         }
-    }
-
-    private func AgeButton(_ age: Int) -> some View {
-        Button {
-            selectedAge = age
-        } label: {
-            let isSelected = age == selectedAge
-            Text(
-                age == .zero
-                ? String(localized: "notSelected")
-                : age.description + (age == ages.last ? "+" : "")
-            )
-            .font(.system(size: isSelected ? 28.fitW : 22.fitW, weight: isSelected ? .bold : .regular))
-            .foregroundStyle(isSelected ? .white : .white.opacity(0.4))
-            .frame(height: 34.fitW)
-            .frame(maxWidth: .infinity)
-            .contentShape(.rect)
-        }
-        .buttonStyle(.plain)
-        .hapticFeedback()
+        .pickerStyle(.wheel)
+        .labelsHidden()
+        .frame(maxWidth: .infinity)
     }
 
     // MARK: - Private Methods

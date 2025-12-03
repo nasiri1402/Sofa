@@ -45,7 +45,7 @@ extension AgeViewModel {
         router.back()
     }
 
-    func didTapAgeButton(_ age: Int) {
+    func didSelectAge(_ age: Int) {
         guard selectedAge != age else { return }
         selectedAge = age
     }
@@ -62,7 +62,7 @@ extension AgeViewModel {
         Task { @MainActor in
             do {
                 profile = try dataStorage.fetchProfile()
-                selectedAge = profile?.age
+                selectedAge = profile?.age ?? selectedAge
             } catch {
                 alertItem = .error(message: error.localizedDescription)
             }
