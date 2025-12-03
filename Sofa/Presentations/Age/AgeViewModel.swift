@@ -14,7 +14,7 @@ final class AgeViewModel {
 
     // MARK: - Public Properties
 
-    let ages = Array(16...50)
+    let ages = Array(14...50)
     private(set) var selectedAge: Int?
     var alertItem: AlertItem?
 

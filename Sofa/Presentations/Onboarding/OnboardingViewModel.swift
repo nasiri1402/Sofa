@@ -28,7 +28,7 @@ final class OnboardingViewModel {
 
     var age: Int = .zero
     var ages: [Int] {
-        var values = Array(16...50)
+        var values = Array(14...50)
         guard age == .zero else { return values }
         if let index = values.firstIndex(of: 26) {
             values.insert(.zero, at: index)
