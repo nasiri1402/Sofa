@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "sao tome and prince.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
