@@ -14,8 +14,8 @@ final class CountryViewModel {
 
     // MARK: - Public Properties
 
-    private(set) var displayCountries: [Profile.Country] = []
-    private(set) var selectedCountry: Profile.Country?
+    private(set) var displayCountries: [CountryModel.Country] = []
+    private(set) var selectedCountry: CountryModel.Country?
     var searchInput = "" {
         didSet {
             guard oldValue != searchInput else { return }
@@ -32,7 +32,7 @@ final class CountryViewModel {
     private let locale: Locale = .current
 
     private var profile: Profile?
-    private var countries: [Profile.Country] = []
+    private let countries = CountryModel.Country.allCases
 
     // MARK: - Inits
 
@@ -54,7 +54,7 @@ extension CountryViewModel {
         router.back()
     }
 
-    func didTapCountryButton(_ country: Profile.Country) {
+    func didTapCountryButton(_ country: CountryModel.Country) {
         guard selectedCountry != country else { return }
         selectedCountry = country
     }
@@ -69,10 +69,6 @@ extension CountryViewModel {
 extension CountryViewModel {
     private func initialize() {
         fetchProfile()
-        countries = Locale.Region.isoRegions.compactMap { region in
-            guard let name = locale.localizedString(forRegionCode: region.identifier) else { return nil }
-            return Profile.Country(isoCode: region.identifier, name: name)
-        }.sorted { $0.name < $1.name }
         applySearchFilter()
     }
 
@@ -80,7 +76,7 @@ extension CountryViewModel {
         Task { @MainActor in
             do {
                 profile = try dataStorage.fetchProfile()
-                selectedCountry = profile?.country
+                selectedCountry = countries.first { $0.isoCode == profile?.country.isoCode }
             } catch {
                 alertItem = .error(message: error.localizedDescription)
             }
@@ -89,7 +85,8 @@ extension CountryViewModel {
 
     private func saveProfile() {
         guard let profile, let selectedCountry else { return }
-        let updatedProfile = profile.copy(country: selectedCountry)
+        let country = Profile.Country(isoCode: selectedCountry.isoCode, name: selectedCountry.name)
+        let updatedProfile = profile.copy(country: country)
         Task { @MainActor in
             do {
                 try dataStorage.saveProfile(updatedProfile)

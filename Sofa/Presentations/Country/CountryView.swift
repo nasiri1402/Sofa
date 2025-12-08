@@ -119,25 +119,32 @@ struct CountryView: View {
         }
     }
 
-    private func CountryButton(_ country: Profile.Country) -> some View {
+    private func CountryButton(_ country: CountryModel.Country) -> some View {
         Button {
             viewModel.didTapCountryButton(country)
         } label: {
-            Text(country.name)
-                .multilineTextAlignment(.leading)
-                .font(.system(size: 15.fitW, weight: .semibold))
-                .foregroundStyle(.white)
-                .lineLimit(1)
-                .padding(.horizontal, 20.fitW)
-                .frame(height: 48.fitW)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .background(.gray787880.opacity(0.12))
-                .clipShape(.capsule)
-                .overlay {
-                    Capsule()
-                        .strokeBorder(.blue007AFF, lineWidth: 1.fitW)
-                        .opacity(country == viewModel.selectedCountry ? 1 : 0)
-                }
+            HStack(spacing: .zero) {
+                Image(country.flag)
+                    .resizable()
+                    .frame(width: 24.fitW, height: 24.fitW)
+
+                Text(country.name)
+                    .multilineTextAlignment(.leading)
+                    .font(.system(size: 15.fitW, weight: .semibold))
+                    .foregroundStyle(.grayD1D1D6)
+                    .lineLimit(1)
+
+                Spacer(minLength: .zero)
+            }
+            .padding(14.fitW)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(.gray787880.opacity(0.12))
+            .clipShape(.capsule)
+            .overlay {
+                Capsule()
+                    .strokeBorder(.blue007AFF, lineWidth: 1.fitW)
+                    .opacity(country == viewModel.selectedCountry ? 1 : 0)
+            }
         }
         .buttonStyle(.plain)
         .hapticFeedback()
