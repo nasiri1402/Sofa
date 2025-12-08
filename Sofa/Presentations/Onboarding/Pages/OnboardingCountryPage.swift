@@ -151,6 +151,7 @@ struct OnboardingCountryPage: View {
                 Image(country.flag)
                     .resizable()
                     .frame(width: 24.fitW, height: 24.fitW)
+                    .padding(.trailing, 10.fitW)
 
                 Text(country.name)
                     .multilineTextAlignment(.leading)
