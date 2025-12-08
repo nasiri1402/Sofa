@@ -28,6 +28,10 @@ enum OnboardingModel {
         }
     }
 
+    // MARK: - Country
+
+    typealias Country = CountryModel.Country
+
     // MARK: - Source
 
     enum Source: CaseIterable {

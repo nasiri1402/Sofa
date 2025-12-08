@@ -36,8 +36,8 @@ final class OnboardingViewModel {
         return values
     }
 
-    var country: Profile.Country?
-    private(set) var countries: [Profile.Country] = []
+    var country: OnboardingModel.Country?
+    private(set) var countries = OnboardingModel.Country.allCases
     var countrySearchInput = "" {
         didSet {
             guard oldValue != countrySearchInput else { return }
@@ -87,7 +87,6 @@ extension OnboardingViewModel {
             previousStage(.age)
             country = nil
             countrySearchInput.removeAll()
-            countries = []
         case .aboutUs:
             previousStage(.country)
             source = nil
@@ -185,10 +184,7 @@ extension OnboardingViewModel {
     }
 
     private func applyCountrySearchFilter() {
-        let allCountries: [Profile.Country] = Locale.Region.isoRegions.compactMap { region in
-            guard let name = Locale.current.localizedString(forRegionCode: region.identifier) else { return nil }
-            return Profile.Country(isoCode: region.identifier, name: name)
-        }.sorted { $0.name < $1.name }
+        let allCountries = OnboardingModel.Country.allCases
         guard !countrySearchInput.isEmpty else {
             countries = allCountries
             return
@@ -220,7 +216,7 @@ extension OnboardingViewModel {
             name: name.trimmingCharacters(in: .whitespacesAndNewlines),
             age: age,
             gender: gender,
-            country: country,
+            country: Profile.Country(isoCode: country.isoCode, name: country.name),
             currency: Profile.Currency(code: "USD")
         )
         Task { @MainActor in
