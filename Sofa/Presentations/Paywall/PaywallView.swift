@@ -22,18 +22,27 @@ struct PaywallView: View {
     var body: some View {
         VStack(alignment: .center, spacing: 16.fitH) {
             Spacer(minLength: .zero)
+            ReviewsCarouselView()
+
             FeaturesView()
+                .padding(.horizontal, 16.fitW)
+
             TrialView()
+                .padding(.horizontal, 16.fitW)
 
             VStack(spacing: 10.fitH) {
                 ForEach(viewModel.subscriptions, id: \.id) { subscription in
                     SubscriptionButton(subscription)
                 }
             }
+            .padding(.horizontal, 16.fitW)
+
             VStack(spacing: 10.fitH) {
                 ContinueButton()
                 CancelAnytimeView()
             }
+            .padding(.horizontal, 16.fitW)
+
             HStack(spacing: .zero) {
                 PrivacyButton(title: String(localized: "termsOfUse"), onTap: viewModel.didTapTermsButton)
                 Spacer(minLength: 6.fitW)
@@ -41,10 +50,10 @@ struct PaywallView: View {
                 Spacer(minLength: 6.fitW)
                 PrivacyButton(title: String(localized: "restore"), onTap: viewModel.didTapRestoreButton)
             }
+            .padding(.horizontal, 16.fitW)
         }
         .padding(.top, 20.fitH)
         .padding(.bottom, 16.fitH)
-        .padding(.horizontal, 16.fitW)
         .background(.black090909)
         .overlay(alignment: .topLeading) {
             HStack(spacing: 16.fitW) {
@@ -107,6 +116,26 @@ extension PaywallView {
                 .foregroundColor(.grayD1D1D6)
                 .multilineTextAlignment(.leading)
         }
+    }
+
+    private func ReviewsCarouselView() -> some View {
+        ScrollView(.horizontal) {
+            HStack(spacing: 10.fitW) {
+                let images: [ImageResource] = [.paywallReview1, .paywallReview2, .paywallReview3]
+                let width = UIScreen.main.bounds.width - 2 * 38.fitW
+
+                ForEach(images, id: \.self) { image in
+                    Image(image)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: width)
+                }
+            }
+            .scrollTargetLayout()
+        }
+        .scrollIndicators(.hidden)
+        .scrollTargetBehavior(.viewAligned)
+        .contentMargins(.horizontal, 38.fitW, for: .scrollContent)
     }
 
     private func TrialView() -> some View {
