@@ -20,9 +20,8 @@ struct PaywallView: View {
     // MARK: - Body
 
     var body: some View {
-        VStack(alignment: .center, spacing: 24.fitH) {
+        VStack(alignment: .center, spacing: 16.fitH) {
             Spacer(minLength: .zero)
-            TextTitle()
             FeaturesView()
             TrialView()
 
@@ -46,21 +45,15 @@ struct PaywallView: View {
         .padding(.top, 20.fitH)
         .padding(.bottom, 16.fitH)
         .padding(.horizontal, 16.fitW)
-        .background {
-            GeometryReader { proxy in
-                Image(.paywallBackground)
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: proxy.size.width, height: proxy.size.height)
-                    .ignoresSafeArea()
-                    .clipped()
-            }
-            .ignoresSafeArea()
-        }
+        .background(.black090909)
         .overlay(alignment: .topLeading) {
-            CloseButton()
-                .padding(.top, 10.fitW)
-                .padding(.leading, 16.fitW)
+            HStack(spacing: 16.fitW) {
+                CloseButton()
+                TextTitle()
+                CloseButton()
+                    .hidden()
+            }
+            .padding(.horizontal, 16.fitW)
         }
         .overlay {
             ActivityIndicator(isLoading: viewModel.isLoading)
