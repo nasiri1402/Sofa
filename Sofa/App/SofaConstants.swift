@@ -26,10 +26,9 @@ enum SofaConstants {
     // MARK: - AppSupport
 
     enum AppSupport {
-        // TODO: Заменить данные на боевые
-        static let email = "support@sofa.com"
-        static let terms = "https://www.apple.com"
-        static let privacy = "https://www.apple.com"
+        static let email = "avaitagency@gmail.com"
+        static let terms = "https://sofa-app.framer.website/terms-of-use"
+        static let privacy = "https://sofa-app.framer.website/privacy"
     }
 
     // MARK: - AppStorage
