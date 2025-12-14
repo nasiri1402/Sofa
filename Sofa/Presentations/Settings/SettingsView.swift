@@ -98,7 +98,7 @@ struct SettingsView: View {
 
                 Spacer(minLength: .zero)
 
-                if field == .language, let language = Locale.currentLanguageName {
+                if field == .language, let language = Locale.currentLanguageName?.capitalized {
                     Text(language)
                         .font(.system(size: 16.fitW))
                         .foregroundStyle(.gray8E8E93)

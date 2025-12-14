@@ -14,10 +14,4 @@ extension Locale {
     static var currentLanguageName: String? {
         Locale.current.localizedString(forLanguageCode: Locale.current.language.languageCode?.identifier ?? "")
     }
-
-    static var countryNames: [String] {
-        Locale.Region.isoRegions.compactMap { region in
-            Locale.current.localizedString(forRegionCode: region.identifier)
-        }.sorted()
-    }
 }
