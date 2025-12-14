@@ -15,6 +15,7 @@ final class GenerationLoaderViewModel {
     // MARK: - Public Properties
 
     private(set) var message: GenerationLoaderModel.Message = .analyzing
+    private(set) var feedbackTrigger = UUID()
     var alertItem: AlertItem?
 
     // MARK: - Private Properties
@@ -99,6 +100,7 @@ extension GenerationLoaderViewModel {
                 if !isBeforeLaunched {
                     isBeforeLaunched = true
                 }
+                feedbackTrigger = UUID()
                 router.route(to: .generationResult(resultProject))
             } catch {
                 alertItem = .error(message: error.localizedDescription) { [weak self] in

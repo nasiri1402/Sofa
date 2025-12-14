@@ -54,5 +54,6 @@ struct GenerationLoaderView: View {
         .alert(item: $viewModel.alertItem) { item in
             item.alert()
         }
+        .sensoryFeedback(.success, trigger: viewModel.feedbackTrigger)
     }
 }
