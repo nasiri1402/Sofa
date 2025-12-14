@@ -48,14 +48,12 @@ struct GenerationResultView: View {
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden()
         .navigationBarLeadingButton(icon: .back) {
+            isTabBarHidden.wrappedValue = false
             viewModel.didTapNavigationBarLeadingButton()
         }
         .onAppear {
             isTabBarHidden.wrappedValue = true
             viewModel.didViewAppear()
-        }
-        .onDisappear {
-            isTabBarHidden.wrappedValue = false
         }
         .fullScreenCover(isPresented: $viewModel.isPaywallPresented) {
             PaywallCover()
