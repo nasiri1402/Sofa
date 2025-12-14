@@ -44,9 +44,9 @@ struct PaywallView: View {
             .padding(.horizontal, 16.fitW)
 
             HStack(spacing: .zero) {
-                PrivacyButton(title: String(localized: "termsOfUse"), onTap: viewModel.didTapTermsButton)
+                PrivacyButton(title: String(localized: "terms"), onTap: viewModel.didTapTermsButton)
                 Spacer(minLength: 6.fitW)
-                PrivacyButton(title: String(localized: "privacyPolicy"), onTap: viewModel.didTapPrivacyButton)
+                PrivacyButton(title: String(localized: "privacy"), onTap: viewModel.didTapPrivacyButton)
                 Spacer(minLength: 6.fitW)
                 PrivacyButton(title: String(localized: "restore"), onTap: viewModel.didTapRestoreButton)
             }
@@ -105,7 +105,7 @@ extension PaywallView {
     }
 
     private func FeaturesView() -> some View {
-        HStack(spacing: 10.fitW) {
+        HStack(alignment: .center, spacing: 10.fitW) {
             Image(._infinity)
                 .resizable()
                 .frame(width: 28.fitW, height: 28.fitW)
@@ -144,6 +144,7 @@ extension PaywallView {
                 .multilineMinimumScale()
                 .foregroundStyle(viewModel.isTrialOn ? .white : .gray8E8E93)
                 .font(.system(size: 13.fitW))
+                .animation(.easeInOut, value: viewModel.isTrialOn)
 
             Spacer(minLength: 8.fitW)
 
