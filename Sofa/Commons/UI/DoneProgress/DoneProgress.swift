@@ -20,7 +20,7 @@ struct DoneProgress: View {
         VStack(alignment: .leading, spacing: 8.fitW) {
             ProgressBar(percentage: percentage, isGreenCompleted: true)
             HStack(spacing: .zero) {
-                Text(percentage * 100, format: .number)
+                Text(percentage, format: .percent.precision(.fractionLength(.zero)))
                     .font(.system(size: 12.fitW))
                     .foregroundColor(.gray8E8E93)
                     .monospaced()
