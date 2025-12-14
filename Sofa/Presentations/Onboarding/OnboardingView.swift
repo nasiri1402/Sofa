@@ -29,7 +29,6 @@ struct OnboardingView: View {
 
             VStack(alignment: .leading, spacing: .zero) {
                 switch viewModel.currentStage {
-                case .logo: LogoPage()
                 case .letsBegin: LetsBeginPage()
                 case .name: NamePage()
                 case .gender: GenderPage()
@@ -115,10 +114,6 @@ struct OnboardingView: View {
 // MARK: - Pages
 
 extension OnboardingView {
-    private func LogoPage() -> some View {
-        OnboardingLogoPage(onFinish: viewModel.didTapContinueButton)
-    }
-
     private func LetsBeginPage() -> some View {
         OnboardingLetsBeginPage(isNextEnabled: $viewModel.isNextEnabled)
     }

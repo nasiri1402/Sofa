@@ -14,7 +14,7 @@ final class OnboardingViewModel {
 
     // MARK: - Public Properties
 
-    private(set) var currentStage: OnboardingModel.Stage = .logo
+    private(set) var currentStage: OnboardingModel.Stage = .letsBegin
     private(set) var revealedStages: Set<OnboardingModel.Stage> = []
     var isPreviousEnabled = false
     var isNextEnabled = false
@@ -75,7 +75,7 @@ extension OnboardingViewModel {
 
     func didTapBackButton() {
         switch currentStage {
-        case .logo, .letsBegin, .name: break
+        case .letsBegin, .name: break
         case .gender:
             previousStage(.name)
             gender = nil
@@ -113,8 +113,6 @@ extension OnboardingViewModel {
 
     func didTapContinueButton() {
         switch currentStage {
-        case .logo:
-            nextStage(.letsBegin)
         case .letsBegin:
             nextStage(.name)
         case .name:

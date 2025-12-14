@@ -12,14 +12,13 @@ enum OnboardingModel {
     // MARK: - Stage
 
     enum Stage {
-        case logo, letsBegin, name, gender, age, country, aboutUs, aboutUsOther, privacy, rateUs, letsAsk
+        case letsBegin, name, gender, age, country, aboutUs, aboutUsOther, privacy, rateUs, letsAsk
 
         func actionTitle(isForceContinue: Bool) -> String {
             guard !isForceContinue else {
                 return String(localized: "continue")
             }
             return switch self {
-            case .logo: ""
             case .letsBegin: String(localized: "letsBegin")
             case .name, .gender, .age, .country, .aboutUs, .aboutUsOther, .privacy: String(localized: "continue")
             case .rateUs: String(localized: "rateUs")
