@@ -170,11 +170,13 @@ extension PaywallView {
             HStack(spacing: .zero) {
                 VStack(alignment: .leading, spacing: 2.fitW) {
                     Text(subscription.title + ", " + viewModel.formatPrice(for: subscription))
+                        .multilineMinimumScale()
                         .font(.system(size: 15.fitW, weight: .semibold))
                         .foregroundStyle(isSelected ? .white : .gray8E8E93)
                         .frame(height: 20.fitW)
 
                     Text(viewModel.formatPriceDescription(for: subscription))
+                        .multilineMinimumScale()
                         .font(.system(size: 11.fitW))
                         .foregroundStyle(.gray8E8E93)
                         .frame(height: 13.fitW)

@@ -34,14 +34,13 @@ struct PrimaryButton: View {
                         .font(.system(size: 15.fitW, weight: .semibold))
                         .foregroundStyle(foregroundColor)
                         .frame(height: 20.fitW)
-
-                    if let subtitle {
-                        Text(subtitle)
-                            .multilineMinimumScale()
-                            .font(.system(size: 11.fitW))
-                            .foregroundStyle(foregroundColor.opacity(0.8))
-                            .frame(height: 13.fitW)
-                    }
+                }
+                if let subtitle {
+                    Text(subtitle)
+                        .multilineMinimumScale()
+                        .font(.system(size: 11.fitW))
+                        .foregroundStyle(foregroundColor.opacity(0.8))
+                        .frame(height: 13.fitW)
                 }
             }
             .frame(maxWidth: .infinity)
