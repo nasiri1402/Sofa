@@ -8,7 +8,6 @@
 import Foundation
 import SwiftUI
 
-// swiftlint:disable type_body_length
 enum CountryModel {
     enum Country: CaseIterable {
         case albania
@@ -597,4 +596,3 @@ enum CountryModel {
         }
     }
 }
-// swiftlint:enable type_body_length

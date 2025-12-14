@@ -26,7 +26,7 @@ struct DoneProgress: View {
                     .monospaced()
                     .contentTransition(.numericText())
 
-                Text("% " + String(localized: "done").lowercased())
+                Text(" " + String(localized: "done").lowercased())
                     .font(.system(size: 12.fitW))
                     .foregroundColor(.gray8E8E93)
             }
