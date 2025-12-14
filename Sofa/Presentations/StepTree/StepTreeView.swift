@@ -133,6 +133,11 @@ struct StepTreeView: View {
                         .id(week.id)
                     }
                 }
+                .onAppear {
+                    DispatchQueue.main.async {
+                        reader.scrollTo(viewModel.selectedWeek?.id, anchor: .center)
+                    }
+                }
                 .onChange(of: viewModel.selectedWeek) { oldValue, newValue in
                     guard oldValue?.id != newValue?.id else { return }
                     withAnimation(oldValue == nil ? nil : .easeInOut) {
