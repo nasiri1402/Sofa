@@ -54,6 +54,9 @@ struct GenerationResultView: View {
             isTabBarHidden.wrappedValue = true
             viewModel.didViewAppear()
         }
+        .onDisappear {
+            isTabBarHidden.wrappedValue = false
+        }
         .fullScreenCover(isPresented: $viewModel.isPaywallPresented) {
             PaywallCover()
         }
