@@ -28,7 +28,7 @@ struct TabBarView: View {
             PlansTab()
             SettingsTab()
         }
-        .toolbarVisibility(isTabBarHidden ? .hidden : .visible, for: .tabBar)
+        .toolbar(isTabBarHidden ? .hidden : .visible, for: .tabBar)
         .environment(\.isTabBarHidden, $isTabBarHidden)
     }
 
@@ -41,7 +41,7 @@ struct TabBarView: View {
                 storeManager: ServiceLayer.storeManager,
                 dataStorage: ServiceLayer.dataStorage
             ))
-            .toolbarVisibility(isTabBarHidden ? .hidden : .visible, for: .tabBar)
+            .toolbar(isTabBarHidden ? .hidden : .visible, for: .tabBar)
             .navigationDestination(for: AnyRouter.self) { router in
                 router.makeView()
             }
@@ -58,7 +58,7 @@ struct TabBarView: View {
                 router: plansRouter,
                 dataStorage: ServiceLayer.dataStorage
             ))
-            .toolbarVisibility(isTabBarHidden ? .hidden : .visible, for: .tabBar)
+            .toolbar(isTabBarHidden ? .hidden : .visible, for: .tabBar)
             .navigationDestination(for: AnyRouter.self) { router in
                 router.makeView()
             }
@@ -75,7 +75,7 @@ struct TabBarView: View {
                 router: settingsRouter,
                 storeManager: ServiceLayer.storeManager
             ))
-            .toolbarVisibility(isTabBarHidden ? .hidden : .visible, for: .tabBar)
+            .toolbar(isTabBarHidden ? .hidden : .visible, for: .tabBar)
             .navigationDestination(for: AnyRouter.self) { router in
                 router.makeView()
             }

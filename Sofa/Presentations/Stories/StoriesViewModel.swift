@@ -110,7 +110,7 @@ extension StoriesViewModel {
             ),
             StoriesModel.Page(
                 title: StoriesModel.Page.PageText(text: String(localized: "storyRedPage4Title"), emoji: "💡"),
-                tips: [StoriesModel.Page.PageText(text: String(localized: "storyRedPage4Tip"), emoji: "🚀")]
+                tips: []
             )
         ]
         }
