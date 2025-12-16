@@ -43,6 +43,7 @@ struct BriefResultMoneyPage: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
             if isInputEnabled {
+                Tip(text: String(localized: "monthlyIncomeGoal"))
                 MoneyTextField()
                     .transition(.move(edge: .bottom).combined(with: .opacity))
             }
