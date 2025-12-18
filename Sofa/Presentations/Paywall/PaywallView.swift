@@ -169,7 +169,7 @@ extension PaywallView {
             let isSelected = viewModel.selectedSubscription == subscription
             HStack(spacing: .zero) {
                 VStack(alignment: .leading, spacing: 2.fitW) {
-                    Text(subscription.title + ", " + viewModel.formatPrice(for: subscription))
+                    Text(subscription.title + " - " + viewModel.formatPrice(for: subscription))
                         .multilineMinimumScale()
                         .font(.system(size: 15.fitW, weight: .semibold))
                         .foregroundStyle(isSelected ? .white : .gray8E8E93)

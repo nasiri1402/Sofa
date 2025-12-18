@@ -128,12 +128,11 @@ extension PaywallViewModel {
     }
 
     func formatPriceDescription(for subscription: PaywallModel.Subscription) -> String {
-        let prefix = String(localized: "then") + " "
-        let suffix = switch subscription {
-        case .monthly: getPricePerWeek(for: subscription)
-        case .weekly:  getPricePerDay(for: subscription) + " - " + String(localized: "cheaperThanCoffee") + " ☕"
+        let description = switch subscription {
+        case .monthly: String(localized: "just") + " " + getPricePerWeek(for: subscription)
+        case .weekly: String(localized: "cheaperThanCoffee") + " ☕"
         }
-        return prefix.lowercased() + suffix.lowercased()
+        return description.lowercased()
     }
 
     func getUnit(for subscription: PaywallModel.Subscription) -> String {
