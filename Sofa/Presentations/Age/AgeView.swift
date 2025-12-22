@@ -56,14 +56,15 @@ struct AgeView: View {
     }
 
     private func AgePicker() -> some View {
-        Picker(String(""), selection: Binding(
-            get: { viewModel.selectedAge ?? viewModel.ages.first ?? 0 },
-            set: { viewModel.didSelectAge($0) }
-        )) {
+        Picker(String(""), selection: $viewModel.selectedAge) {
             ForEach(viewModel.ages, id: \.self) { age in
-                Text(age.description + (age == viewModel.ages.last ? "+" : ""))
-                    .font(.system(size: 24.fitW, weight: .semibold))
-                    .foregroundStyle(.white)
+                Text(
+                    age == .zero
+                    ? String(localized: "notSelected")
+                    : age.description + (age == viewModel.ages.last ? "+" : "")
+                )
+                .font(.system(size: 24.fitW, weight: .semibold))
+                .foregroundStyle(.white)
             }
         }
         .pickerStyle(.wheel)

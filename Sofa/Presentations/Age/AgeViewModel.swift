@@ -14,8 +14,14 @@ final class AgeViewModel {
 
     // MARK: - Public Properties
 
-    let ages = Array(14...50)
-    private(set) var selectedAge: Int?
+    var ages: [Int] {
+        var values = Array(14...50)
+        if let index = values.firstIndex(of: 26) {
+            values.insert(.zero, at: index)
+        }
+        return values
+    }
+    var selectedAge: Int = .zero
     var alertItem: AlertItem?
 
     // MARK: - Private Properties
@@ -45,11 +51,6 @@ extension AgeViewModel {
         router.back()
     }
 
-    func didSelectAge(_ age: Int) {
-        guard selectedAge != age else { return }
-        selectedAge = age
-    }
-
     func didTapSaveButton() {
         saveProfile()
     }
@@ -70,7 +71,7 @@ extension AgeViewModel {
     }
 
     private func saveProfile() {
-        guard let profile, let selectedAge else { return }
+        guard let profile else { return }
         let updatedProfile = profile.copy(age: selectedAge)
         Task { @MainActor in
             do {

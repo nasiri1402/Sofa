@@ -141,7 +141,7 @@ struct OnboardingCountryPage: View {
 
     private func CountryButton(_ country: CountryModel.Country) -> some View {
         Button {
-            selectedCountry = country
+            selectedCountry = selectedCountry == country ? nil : country
         } label: {
             HStack(spacing: .zero) {
                 Image(country.flag)

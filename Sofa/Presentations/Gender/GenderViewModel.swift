@@ -45,8 +45,7 @@ extension GenderViewModel {
     }
 
     func didTapGenderButton(_ gender: Profile.Gender) {
-        guard selectedGender != gender else { return }
-        selectedGender = gender
+        selectedGender = selectedGender == gender ? nil : gender
     }
 
     func didTapSaveButton() {

@@ -55,8 +55,7 @@ extension CountryViewModel {
     }
 
     func didTapCountryButton(_ country: CountryModel.Country) {
-        guard selectedCountry != country else { return }
-        selectedCountry = country
+        selectedCountry = selectedCountry == country ? nil : country
     }
 
     func didTapSaveButton() {
@@ -76,7 +75,7 @@ extension CountryViewModel {
         Task { @MainActor in
             do {
                 profile = try dataStorage.fetchProfile()
-                selectedCountry = countries.first { $0.isoCode == profile?.country.isoCode }
+                selectedCountry = countries.first { $0.isoCode == profile?.country?.isoCode }
             } catch {
                 alertItem = .error(message: error.localizedDescription)
             }

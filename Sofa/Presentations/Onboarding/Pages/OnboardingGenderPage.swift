@@ -77,7 +77,7 @@ struct OnboardingGenderPage: View {
 
     private func GenderButton(_ gender: Profile.Gender) -> some View {
         Button {
-            selectedGender = gender
+            selectedGender = selectedGender == gender ? nil : gender
         } label: {
             HStack(spacing: .zero) {
                 Text(name)
