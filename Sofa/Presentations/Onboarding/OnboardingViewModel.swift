@@ -122,11 +122,9 @@ extension OnboardingViewModel {
         case .gender:
             nextStage(.age)
         case .age:
-            guard age != .zero else { return }
             applyCountrySearchFilter()
             nextStage(.country)
         case .country:
-            guard country != nil else { return }
             nextStage(.aboutUs)
             countrySearchInput.removeAll()
         case .aboutUs:
