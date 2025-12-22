@@ -66,10 +66,6 @@ struct OnboardingAgePage: View {
         .onDisappear {
             transitionTask?.cancel()
         }
-        .onChange(of: selectedAge) { oldValue, newValue in
-            guard oldValue != newValue else { return }
-            isNextEnabled = newValue != .zero
-        }
     }
 
     // MARK: - Views
@@ -96,6 +92,7 @@ struct OnboardingAgePage: View {
     @MainActor
     private func completeTitleReveal() {
         isPreviousEnabled = true
+        isNextEnabled = true
         transitionTask?.cancel()
         transitionTask = Task { @MainActor in
             withAnimation(.easeInOut) {

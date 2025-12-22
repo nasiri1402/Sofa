@@ -71,10 +71,6 @@ struct OnboardingGenderPage: View {
         .onDisappear {
             transitionTask?.cancel()
         }
-        .onChange(of: selectedGender) { oldValue, newValue in
-            guard oldValue != newValue else { return }
-            isNextEnabled = newValue != nil
-        }
     }
 
     // MARK: - Views
@@ -129,6 +125,7 @@ struct OnboardingGenderPage: View {
     @MainActor
     private func completeTitleReveal() {
         isPreviousEnabled = true
+        isNextEnabled = true
         transitionTask?.cancel()
         transitionTask = Task { @MainActor in
             withAnimation(.easeInOut) {

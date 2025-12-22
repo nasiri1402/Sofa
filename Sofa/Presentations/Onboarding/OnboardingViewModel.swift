@@ -29,7 +29,6 @@ final class OnboardingViewModel {
     var age: Int = .zero
     var ages: [Int] {
         var values = Array(14...50)
-        guard age == .zero else { return values }
         if let index = values.firstIndex(of: 26) {
             values.insert(.zero, at: index)
         }
@@ -208,13 +207,16 @@ extension OnboardingViewModel {
     }
 
     private func saveProfile() {
-        guard !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty, let gender, let country else { return }
+        guard !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
         let profile = Profile(
             id: UUID(),
             name: name.trimmingCharacters(in: .whitespacesAndNewlines),
-            age: age,
+            age: age == .zero ? nil : age,
             gender: gender,
-            country: Profile.Country(isoCode: country.isoCode, name: country.name),
+            country: {
+                guard let country else { return nil }
+                return Profile.Country(isoCode: country.isoCode, name: country.name)
+            }(),
             currency: Profile.Currency(code: "USD")
         )
         Task { @MainActor in

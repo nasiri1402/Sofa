@@ -74,10 +74,6 @@ struct OnboardingCountryPage: View {
         .onDisappear {
             transitionTask?.cancel()
         }
-        .onChange(of: selectedCountry) { oldValue, newValue in
-            guard oldValue != newValue else { return }
-            isNextEnabled = newValue != nil
-        }
         .onChangeKeyboardHeight { newValue in
             guard newValue != keyboardHeight else { return }
             withAnimation(.easeInOut(duration: 0.25)) {
@@ -180,6 +176,7 @@ struct OnboardingCountryPage: View {
     @MainActor
     private func completeTitleReveal() {
         isPreviousEnabled = true
+        isNextEnabled = true
         transitionTask?.cancel()
         transitionTask = Task { @MainActor in
             withAnimation(.easeInOut) {
