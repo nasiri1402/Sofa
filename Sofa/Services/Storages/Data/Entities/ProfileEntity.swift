@@ -16,10 +16,10 @@ final class ProfileEntity {
     @Attribute(.unique)
     var id: UUID
     var name: String
-    var age: Int
-    var genderRaw: Int
-    var countryISOCode: String
-    var countryName: String
+    var age: Int?
+    var genderRaw: Int?
+    var countryISOCode: String?
+    var countryName: String?
     var currencyCode: String
 
     // MARK: - Inits
@@ -28,9 +28,9 @@ final class ProfileEntity {
         self.id = model.id
         self.name = model.name
         self.age = model.age
-        self.genderRaw = model.gender.rawValue
-        self.countryISOCode = model.country.isoCode
-        self.countryName = model.country.name
+        self.genderRaw = model.gender?.rawValue
+        self.countryISOCode = model.country?.isoCode
+        self.countryName = model.country?.name
         self.currencyCode = model.currency.code
     }
 
@@ -41,8 +41,14 @@ final class ProfileEntity {
             id: id,
             name: name,
             age: age,
-            gender: Profile.Gender(rawValue: genderRaw) ?? .male,
-            country: Profile.Country(isoCode: countryISOCode, name: countryName),
+            gender: {
+                guard let genderRaw else { return nil }
+                return Profile.Gender(rawValue: genderRaw)
+            }(),
+            country: {
+                guard let countryISOCode, let countryName else { return nil }
+                return Profile.Country(isoCode: countryISOCode, name: countryName)
+            }(),
             currency: Profile.Currency(code: currencyCode)
         )
     }

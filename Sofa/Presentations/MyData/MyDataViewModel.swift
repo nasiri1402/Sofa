@@ -60,9 +60,13 @@ extension MyDataViewModel {
         guard let profile else { return "" }
         return switch field {
         case .name: profile.name
-        case .gender: profile.gender.name
-        case .age: String(format: String(localized: "yearsPluralFormat"), profile.age)
-        case .country: profile.country.name
+        case .gender: profile.gender?.name ?? ""
+        case .age: if let age = profile.age {
+            String(format: String(localized: "yearsPluralFormat"), age)
+        } else {
+            ""
+        }
+        case .country: profile.country?.name ?? ""
         }
     }
 }

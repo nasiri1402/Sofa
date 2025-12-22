@@ -111,10 +111,10 @@ final class DefaultProjectGenerator: ProjectGenerator {
         {
           "profile": {
             "name": "<string, user's name>",
-            "age": "<integer, user's age>",
-            "gender": "<string: 'male' | 'female' | 'other'>",
-            "country_code": "<string, ISO 3166-1 alpha-2 code>",
-            "currency_code": "<string, ISO 4217 currency code (e.g. 'USD', 'EUR')>"
+            "age": "<integer, optional — user's age, may be omitted>",
+            "gender": "<string, optional — 'male' | 'female' | 'other', may be omitted>",
+            "country_code": "<string, optional — ISO 3166-1 alpha-2 code, may be omitted>",
+            "currency_code": "<string, optional — ISO 4217 currency code (e.g. 'USD', 'EUR')>"
           },
           "brief": {
             "idea": "<string, description of user’s main idea or direction>",
@@ -168,10 +168,11 @@ final class DefaultProjectGenerator: ProjectGenerator {
           • 6_months → 24–28 weeks  
           (Generating fewer weeks is NOT allowed.)
         - Steps MUST match both `brief.experience` and `brief.difficulty`.
-        - Prioritize goals in `brief.result.goals` (estimate money/subscribers if included).
+        - Prioritize goals in `brief.result.goals` (estimate money/subscribers ONLY if explicitly requested).
         - Respect `brief.limits` (e.g., “online only”, “no Instagram”, “budget = $1000”).
         - If `budget` is NOT provided → ALL steps must be zero-cost; do NOT invent a budget.
-        - Use `profile` only for context and tone. Do NOT include profile data in the output.
+        - Use `profile` ONLY for context and tone. Do NOT include profile data in the output.
+        - If any optional profile field is missing, Do NOT infer, guess, or fabricate it.
         - Do NOT add anything outside the defined JSON structure.
         """
         // swiftlint:enable line_length
@@ -185,16 +186,17 @@ final class DefaultProjectGenerator: ProjectGenerator {
         let userContent = GeneratorRequest.UserContent(
             profile: GeneratorRequest.UserContent.Profile(
                 name: profile?.name ?? "",
-                age: profile?.age == 50 ? "50+" : profile?.age.description ?? "",
+                age: profile?.age == 50 ? "50+" : profile?.age?.description,
                 gender: {
                     switch profile?.gender {
                     case .male: "male"
                     case .female: "female"
-                    case .other, .none: "other"
+                    case .other: "other"
+                    case .none: nil
                     }
                 }(),
-                countryCode: profile?.country.isoCode ?? "",
-                currencyCode: profile?.currency.code ?? ""
+                countryCode: profile?.country?.isoCode,
+                currencyCode: profile?.currency.code ?? "USD"
             ),
             brief: GeneratorRequest.UserContent.Brief(
                 idea: brief.idea,

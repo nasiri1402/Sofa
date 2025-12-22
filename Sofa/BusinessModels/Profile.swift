@@ -10,9 +10,9 @@ import Foundation
 struct Profile: Identifiable, Hashable {
     let id: UUID
     let name: String
-    let age: Int
-    let gender: Gender
-    let country: Country
+    let age: Int?
+    let gender: Gender?
+    let country: Country?
     let currency: Currency
 
     func copy(

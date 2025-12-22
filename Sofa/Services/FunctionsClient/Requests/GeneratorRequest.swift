@@ -76,9 +76,9 @@ extension GeneratorRequest {
 
         struct Profile: Encodable {
             let name: String
-            let age: String
-            let gender: String
-            let countryCode: String
+            let age: String?
+            let gender: String?
+            let countryCode: String?
             let currencyCode: String
         }
 
