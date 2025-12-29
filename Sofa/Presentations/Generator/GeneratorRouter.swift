@@ -26,7 +26,7 @@ final class GeneratorRouter: HashableRouter {
     func route(to route: GeneratorRoute) {
         let router: any Routable = switch route {
         case .generationResult(let project):
-            GenerationResultRouter(navigator: self, project: project)
+            GenerationResultRouter(navigator: self, project: project, isAfterLoader: false)
         case .brief:
             BriefRouter(navigator: self, project: nil, brief: nil)
         }

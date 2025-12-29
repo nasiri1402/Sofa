@@ -20,12 +20,18 @@ final class GenerationResultRouter: HashableRouter {
 
     private let navigator: Navigator
     private let project: Project
+    private let isAfterLoader: Bool
 
     // MARK: - Inits
 
-    init(navigator: Navigator, project: Project) {
+    init(
+        navigator: Navigator,
+        project: Project,
+        isAfterLoader: Bool
+    ) {
         self.navigator = navigator
         self.project = project
+        self.isAfterLoader = isAfterLoader
     }
 
     // MARK: - Public Methods
@@ -60,7 +66,8 @@ extension GenerationResultRouter: ViewFactory {
             router: self,
             dataStorage: ServiceLayer.dataStorage,
             storeManager: ServiceLayer.storeManager,
-            project: project
+            project: project,
+            isAfterLoader: isAfterLoader
         )
         let view = GenerationResultView(viewModel: viewModel)
         return AnyView(view)

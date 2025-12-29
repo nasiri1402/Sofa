@@ -39,7 +39,7 @@ final class GenerationLoaderRouter: HashableRouter {
     func route(to route: GenerationLoaderRoute) {
         let router: any Routable = switch route {
         case .generationResult(let project):
-            GenerationResultRouter(navigator: navigator, project: project)
+            GenerationResultRouter(navigator: navigator, project: project, isAfterLoader: true)
         }
         navigator.push(router)
     }

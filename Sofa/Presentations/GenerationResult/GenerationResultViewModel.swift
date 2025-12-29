@@ -28,6 +28,7 @@ final class GenerationResultViewModel {
     private let router: GenerationResultRouter
     private let dataStorage: DataStorage
     private let storeManager: StoreManager
+    private let isAfterLoader: Bool
 
     // MARK: - Inits
 
@@ -35,12 +36,16 @@ final class GenerationResultViewModel {
         router: GenerationResultRouter,
         dataStorage: DataStorage,
         storeManager: StoreManager,
-        project: Project
+        project: Project,
+        isAfterLoader: Bool
     ) {
         self.router = router
         self.dataStorage = dataStorage
         self.storeManager = storeManager
         self.project = project
+        self.isAfterLoader = isAfterLoader
+
+        initialize()
     }
 }
 
@@ -94,5 +99,10 @@ extension GenerationResultViewModel {
                 alertItem = .error(message: error.localizedDescription)
             }
         }
+    }
+
+    private func initialize() {
+        guard isAfterLoader, !isPro else { return }
+        isPaywallPresented = true
     }
 }
