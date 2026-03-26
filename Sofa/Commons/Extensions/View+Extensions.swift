@@ -65,4 +65,8 @@ extension View {
     func onChangeKeyboardHeight(_ onChange: @escaping (CGFloat) -> Void) -> some View {
         modifier(KeyboardHeightModifier(onChange: onChange))
     }
+
+    func keepScreenOn() -> some View {
+        modifier(KeepScreenOnModifier())
+    }
 }

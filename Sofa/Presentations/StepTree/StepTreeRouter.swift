@@ -46,6 +46,7 @@ extension StepTreeRouter: ViewFactory {
         let viewModel = StepTreeViewModel(
             router: self,
             dataStorage: ServiceLayer.dataStorage,
+            storeManager: ServiceLayer.storeManager,
             project: project,
             plan: plan
         )

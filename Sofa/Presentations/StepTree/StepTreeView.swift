@@ -64,6 +64,9 @@ struct StepTreeView: View {
         .alert(item: $viewModel.alertItem) { item in
             item.alert()
         }
+        .fullScreenCover(isPresented: $viewModel.isPaywallPresented) {
+            PaywallCover()
+        }
         .onAppear {
             isTabBarHidden.wrappedValue = true
         }
@@ -153,17 +156,32 @@ struct StepTreeView: View {
 
     private func WeekButton(_ week: Project.Plan.Week, onTap: @escaping () -> Void) -> some View {
         Button(action: onTap) {
+            let isLocked = viewModel.isWeekLocked(week)
             let isSelected = viewModel.selectedWeek?.id == week.id
             HStack(spacing: 4.fitW) {
+                if isLocked {
+                    Image(.crownYellow)
+                        .resizable()
+                        .frame(width: 16.fitW, height: 16.fitW)
+                }
                 Text(String(format: String(localized: "shortWeekFormat"), week.number))
                     .font(.system(size: 13.fitW, weight: .semibold))
-                    .foregroundStyle(isSelected ? .white : .grayD1D1D6)
+                    .foregroundStyle(
+                        isLocked
+                        ? .black090909
+                        : (isSelected ? .white : .grayD1D1D6)
+                    )
             }
             .frame(height: 36.fitW)
             .padding(.horizontal, 16.fitW)
-            .background(isSelected ? .blue007AFF : .gray787880.opacity(0.12))
+            .background(
+                isLocked
+                ? .yellowFFCC00
+                : (isSelected ? .blue007AFF : .gray787880.opacity(0.12))
+            )
             .clipShape(.capsule)
             .contentShape(.rect)
+            .animation(.easeInOut, value: isLocked)
         }
         .buttonStyle(.plain)
         .hapticFeedback()
@@ -215,5 +233,14 @@ struct StepTreeView: View {
         PrimaryButton(title: String(localized: "viewPlan"), onTap: viewModel.didTapViewPlanButton)
             .transition(.opacity)
             .opacity(viewModel.isWellDone ? 1 : 0)
+    }
+
+    private func PaywallCover() -> some View {
+        PaywallView(viewModel: PaywallViewModel(
+            storeManager: ServiceLayer.storeManager,
+            networkMonitor: ServiceLayer.networkMonitor,
+            analyticsManager: ServiceLayer.analyticsManager,
+            placement: .stepTree
+        ))
     }
 }
