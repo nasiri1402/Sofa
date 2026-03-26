@@ -66,7 +66,7 @@ extension View {
         modifier(KeyboardHeightModifier(onChange: onChange))
     }
 
-    func keepScreenOn() -> some View {
-        modifier(KeepScreenOnModifier())
+    func wakeLock() -> some View {
+        modifier(WakeLockModifier())
     }
 }

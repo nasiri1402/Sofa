@@ -1,5 +1,5 @@
 //
-//  KeepScreenOnModifier.swift
+//  WakeLockModifier.swift
 //  Sofa
 //
 //  Created by dukes on 3/26/26.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct KeepScreenOnModifier: ViewModifier {
+struct WakeLockModifier: ViewModifier {
 
     // MARK: - Private Properties
 

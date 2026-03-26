@@ -55,6 +55,6 @@ struct GenerationLoaderView: View {
             item.alert()
         }
         .sensoryFeedback(.success, trigger: viewModel.feedbackTrigger)
-        .keepScreenOn()
+        .wakeLock()
     }
 }
