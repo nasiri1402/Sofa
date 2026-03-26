@@ -36,6 +36,7 @@ enum SofaConstants {
     enum AppStorage {
         static let isBeforeLaunched = "isBeforeLaunched"
         static let isProfileCreated = "isProfileCreated"
+        static let isNotificationsEnabled = "isNotificationsEnabled"
     }
 
     // MARK: - AppStore

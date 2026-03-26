@@ -37,4 +37,18 @@ extension AlertItem {
             secondaryButton: nil
         )
     }
+
+    static func settings(title: String, message: String) -> AlertItem {
+        AlertItem(
+            title: Text(title),
+            message: Text(message),
+            primaryButton: .default(Text(String(localized: "settings"))) {
+                guard let url = URL(string: UIApplication.openSettingsURLString),
+                      UIApplication.shared.canOpenURL(url)
+                else { return }
+                UIApplication.shared.open(url)
+            },
+            secondaryButton: .cancel(Text(String(localized: "cancel")))
+        )
+    }
 }

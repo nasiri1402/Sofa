@@ -44,14 +44,27 @@ final class SettingsViewModel {
 
     private let router: SettingsRouter
     private let storeManager: StoreManager
+    private let permissionManager: PermissionManager
+    private let notificationManager: NotificationManager
 
     private let locale: Locale = .current
+    private var isNotificationPermissionUpdating = false
+
+    @ObservationIgnored @AppStorage(SofaConstants.AppStorage.isNotificationsEnabled)
+    private var isNotificationsEnabled = false
 
     // MARK: - Inits
 
-    init(router: SettingsRouter, storeManager: StoreManager) {
+    init(
+        router: SettingsRouter,
+        storeManager: StoreManager,
+        permissionManager: PermissionManager,
+        notificationManager: NotificationManager
+    ) {
         self.router = router
         self.storeManager = storeManager
+        self.permissionManager = permissionManager
+        self.notificationManager = notificationManager
     }
 }
 
@@ -60,6 +73,14 @@ final class SettingsViewModel {
 extension SettingsViewModel {
 
     // MARK: - Input
+
+    func didViewAppear() {
+        requestNotificationPermission()
+    }
+
+    func didBecomeActive() {
+        requestNotificationPermission()
+    }
 
     func didTapFieldButton(_ field: SettingsModel.Field) {
         switch field {
@@ -92,6 +113,53 @@ extension SettingsViewModel {
             router.route(to: .myData)
         case .language:
             settingsTrigger = UUID()
+        case .notifications: break
+        }
+    }
+
+    func didToggleField(_ field: SettingsModel.Field, isOn: Bool) {
+        switch field {
+        case .notifications:
+            guard !isNotificationPermissionUpdating else { return }
+            guard isOn else {
+                alertItem = .settings(
+                    title: String(localized: "alertConfirmNotificationDisableTitle"),
+                    message: String(localized: "alertConfirmNotificationDisableMessage")
+                )
+                return
+            }
+            isNotificationPermissionUpdating = true
+            permissionManager.requestNotification { [weak self] isGranted in
+                guard let self else { return }
+                isNotificationsEnabled = isGranted
+                if isGranted {
+                    notificationManager.rescheduleInactiveNotifications()
+                } else {
+                    notificationManager.cancelInactiveNotifications()
+                    alertItem = .settings(
+                        title: String(localized: "alertNotificationAccessTitle"),
+                        message: String(localized: "alertNotificationAccessMessage")
+                    )
+                }
+                isNotificationPermissionUpdating = false
+            }
+        default: break
+        }
+    }
+}
+
+// MARK: - Private Methods
+
+extension SettingsViewModel {
+    private func requestNotificationPermission() {
+        permissionManager.requestNotification { [weak self] isGranted in
+            guard let self else { return }
+            isNotificationsEnabled = isGranted
+            if isGranted {
+                notificationManager.rescheduleInactiveNotifications()
+            } else {
+                notificationManager.cancelInactiveNotifications()
+            }
         }
     }
 }

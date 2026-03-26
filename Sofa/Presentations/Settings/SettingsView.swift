@@ -17,6 +17,10 @@ struct SettingsView: View {
 
     @Environment(\.isTabBarHidden) private var isTabBarHidden
     @Environment(\.openURL) private var openURL
+    
+    @AppStorage(SofaConstants.AppStorage.isNotificationsEnabled)
+    private var isNotificationsEnabled = false
+    private let notificationCenter: NotificationCenter = .default
 
     // MARK: - Body
 
@@ -28,7 +32,7 @@ struct SettingsView: View {
             ScrollView {
                 VStack(spacing: 10.fitW) {
                     ForEach(viewModel.fields, id: \.self) { field in
-                        FieldButton(field)
+                        FieldView(field)
                             .padding(.bottom, field.needsExtraBottomPadding ? 14.fitW : .zero)
                     }
                     VersionText()
@@ -47,6 +51,7 @@ struct SettingsView: View {
         }
         .onAppear {
             isTabBarHidden.wrappedValue = false
+            viewModel.didViewAppear()
         }
         .sheet(isPresented: $viewModel.isSafariPresented) {
             if let url = viewModel.safariURL {
@@ -79,38 +84,81 @@ struct SettingsView: View {
                 openURL(url)
             }
         }
+        .onReceive(notificationCenter.publisher(for: UIApplication.didBecomeActiveNotification)) { _ in
+            viewModel.didBecomeActive()
+        }
     }
 
     // MARK: - Views
 
-    private func FieldButton(_ field: SettingsModel.Field) -> some View {
-        Button {
-            viewModel.didTapFieldButton(field)
-        } label: {
-            HStack(spacing: 6.fitW) {
-                Image(field.icon)
-                    .resizable()
-                    .frame(width: 24.fitW, height: 24.fitW)
+    private func FieldView(_ field: SettingsModel.Field) -> some View {
+        Group {
+            switch field.accessory {
+            case .toggle:
+                FieldContent(field)
+            case .text, .none:
+                Button {
+                    viewModel.didTapFieldButton(field)
+                } label: {
+                    FieldContent(field)
+                }
+                .buttonStyle(.plain)
+            }
+        }
+        .hapticFeedback()
+    }
 
-                Text(field.title)
-                    .font(.system(size: 16.fitW, weight: .semibold))
-                    .foregroundStyle(Color(field.foregroundColor))
+    private func FieldContent(_ field: SettingsModel.Field) -> some View {
+        HStack(spacing: 6.fitW) {
+            Image(field.icon)
+                .resizable()
+                .frame(width: 24.fitW, height: 24.fitW)
 
-                Spacer(minLength: .zero)
+            Text(field.title)
+                .font(.system(size: 16.fitW, weight: .semibold))
+                .foregroundStyle(Color(field.foregroundColor))
 
-                if field == .language, let language = Locale.currentLanguageName?.capitalized {
+            Spacer(minLength: .zero)
+
+            FieldAccessory(field)
+        }
+        .padding(20.fitW)
+        .background(field == .pro ? .yellowFFCC00 : .gray787880.opacity(0.12))
+        .clipShape(.rect(cornerRadius: 16.fitW))
+        .contentShape(.rect)
+    }
+
+    @ViewBuilder
+    private func FieldAccessory(_ field: SettingsModel.Field) -> some View {
+        switch field.accessory {
+        case .text:
+            switch field {
+            case .language:
+                if let language = Locale.currentLanguageName?.capitalized {
                     Text(language)
                         .font(.system(size: 16.fitW))
                         .foregroundStyle(.gray8E8E93)
                 }
+            default: EmptyView()
             }
-            .padding(20.fitW)
-            .background(field == .pro ? .yellowFFCC00 : .gray787880.opacity(0.12))
-            .clipShape(.rect(cornerRadius: 16.fitW))
-            .contentShape(.rect)
+        case .toggle:
+            switch field {
+            case .notifications:
+                Toggle(String(""), isOn: Binding(
+                    get: { isNotificationsEnabled },
+                    set: { newValue in
+                        guard newValue != isNotificationsEnabled else { return }
+                        viewModel.didToggleField(field, isOn: newValue)
+                    }
+                ))
+                .labelsHidden()
+                .tint(.blue007AFF)
+                .fixedSize(horizontal: true, vertical: false)
+
+            default: EmptyView()
+            }
+        default: EmptyView()
         }
-        .buttonStyle(.plain)
-        .hapticFeedback()
     }
 
     private func VersionText() -> some View {

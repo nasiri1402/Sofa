@@ -12,7 +12,11 @@ enum SettingsModel {
     // MARK: - Field
 
     enum Field: Hashable, CaseIterable {
-        case pro, termsOfUse, privacyPolicy, share, contactUs, rateUs, myData, language
+        enum Accessory {
+            case text, toggle
+        }
+
+        case pro, termsOfUse, privacyPolicy, share, contactUs, rateUs, notifications, myData, language
 
         var title: String {
             switch self {
@@ -24,6 +28,7 @@ enum SettingsModel {
             case .rateUs: String(localized: "rateUs")
             case .myData: String(localized: "myData")
             case .language: String(localized: "language")
+            case .notifications: String(localized: "notifications")
             }
         }
 
@@ -37,6 +42,7 @@ enum SettingsModel {
             case .rateUs: .rateUs
             case .myData: .myData
             case .language: .language
+            case .notifications: .notifications
             }
         }
 
@@ -45,6 +51,14 @@ enum SettingsModel {
             case .pro: .black090909
             case .rateUs: .yellowFFCC00
             default: .blue007AFF
+            }
+        }
+
+        var accessory: Accessory? {
+            switch self {
+            case .notifications: .toggle
+            case .language: .text
+            default: nil
             }
         }
 

@@ -73,7 +73,9 @@ struct TabBarView: View {
         NavigationStack(path: $settingsRouter.path) {
             SettingsView(viewModel: SettingsViewModel(
                 router: settingsRouter,
-                storeManager: ServiceLayer.storeManager
+                storeManager: ServiceLayer.storeManager,
+                permissionManager: ServiceLayer.permissionManager,
+                notificationManager: ServiceLayer.notificationManager
             ))
             .toolbar(isTabBarHidden ? .hidden : .visible, for: .tabBar)
             .navigationDestination(for: AnyRouter.self) { router in
