@@ -162,26 +162,25 @@ struct StepTreeView: View {
                 if isLocked {
                     Image(.crownYellow)
                         .resizable()
-                        .frame(width: 16.fitW, height: 16.fitW)
+                        .frame(width: 18.fitW, height: 18.fitW)
                 }
                 Text(String(format: String(localized: "shortWeekFormat"), week.number))
                     .font(.system(size: 13.fitW, weight: .semibold))
                     .foregroundStyle(
-                        isLocked
-                        ? .black090909
-                        : (isSelected ? .white : .grayD1D1D6)
+                        isSelected
+                        ? .white
+                        : (isLocked ? .yellowFFCC00 : .grayD1D1D6)
                     )
             }
             .frame(height: 36.fitW)
             .padding(.horizontal, 16.fitW)
             .background(
-                isLocked
-                ? .yellowFFCC00
-                : (isSelected ? .blue007AFF : .gray787880.opacity(0.12))
+                isSelected
+                ? .blue007AFF
+                : (isLocked ? .yellowFFCC00.opacity(0.12) : .gray787880.opacity(0.12))
             )
             .clipShape(.capsule)
             .contentShape(.rect)
-            .animation(.easeInOut, value: isLocked)
         }
         .buttonStyle(.plain)
         .hapticFeedback()
