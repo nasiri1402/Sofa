@@ -12,6 +12,7 @@ struct Project: Identifiable {
     let brief: Brief
     let summary: String
     var plans: [Plan]
+    var hasLifetimeAccess: Bool
     let createdAt: Date
     var updatedAt: Date
     var isCompleted: Bool {
@@ -357,6 +358,7 @@ extension Project {
                 createdAt: .now
             )
         ],
+        hasLifetimeAccess: false,
         createdAt: Date().addingTimeInterval(-86400 * 10),
         updatedAt: Date()
     )

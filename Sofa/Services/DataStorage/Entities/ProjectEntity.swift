@@ -20,6 +20,7 @@ final class ProjectEntity {
     var summary: String
     @Relationship(deleteRule: .cascade)
     var plans: [PlanEntity]
+    var hasLifetimeAccess = false
     var createdAt: Date
     var updatedAt: Date
 
@@ -30,6 +31,7 @@ final class ProjectEntity {
         self.brief = BriefEntity(from: model.brief)
         self.summary = model.summary
         self.plans = model.plans.map { PlanEntity(from: $0) }
+        self.hasLifetimeAccess = model.hasLifetimeAccess
         self.createdAt = model.createdAt
         self.updatedAt = model.updatedAt
     }
@@ -42,6 +44,7 @@ final class ProjectEntity {
             brief: brief.toBrief(),
             summary: summary,
             plans: plans.map { $0.toPlan() }.sorted { $0.createdAt < $1.createdAt },
+            hasLifetimeAccess: hasLifetimeAccess,
             createdAt: createdAt,
             updatedAt: updatedAt
         )

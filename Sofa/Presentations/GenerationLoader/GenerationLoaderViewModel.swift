@@ -95,11 +95,12 @@ extension GenerationLoaderViewModel {
         }
         Task { @MainActor in
             do {
-                let generatedProject = try await projectGenerator.generate(brief: brief, difficulty: difficulty)
-                let resultProject = try mergePlansIfNeeded(with: generatedProject)
-                if !isBeforeLaunched {
+                var generatedProject = try await projectGenerator.generate(brief: brief, difficulty: difficulty)
+                if project == nil, !isBeforeLaunched {
+                    generatedProject.hasLifetimeAccess = true
                     isBeforeLaunched = true
                 }
+                let resultProject = try mergePlansIfNeeded(with: generatedProject)
                 feedbackTrigger = UUID()
                 router.route(to: .generationResult(resultProject))
             } catch {

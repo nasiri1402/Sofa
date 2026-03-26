@@ -290,6 +290,7 @@ final class DefaultProjectGenerator: ProjectGenerator {
                     createdAt: .now,
                 )
             ],
+            hasLifetimeAccess: false,
             createdAt: .now,
             updatedAt: .now
         )
