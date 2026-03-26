@@ -32,7 +32,9 @@ final class LaunchViewModel {
     func didFinishStage(_ stage: LaunchModel.Stage) {
         switch stage {
         case .splash:
-            currentStage = isProfileCreated ? .tabBar : .onboarding
+            currentStage = isProfileCreated ? .tabBar : .welcome
+        case .welcome:
+            currentStage = .onboarding
         case .onboarding:
             isProfileCreated = true
             currentStage = .tabBar

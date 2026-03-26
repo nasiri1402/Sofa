@@ -19,6 +19,7 @@ struct LaunchView: View {
         Group {
             switch viewModel.currentStage {
             case .splash: Splash()
+            case .welcome: Welcome()
             case .onboarding: Onboarding()
             case .tabBar: TabBar()
             }
@@ -32,6 +33,14 @@ struct LaunchView: View {
     private func Splash() -> some View {
         SplashView {
             viewModel.didFinishStage(.splash)
+        }
+        .transition(.opacity)
+        .ignoresSafeArea()
+    }
+
+    private func Welcome() -> some View {
+        WelcomeView {
+            viewModel.didFinishStage(.welcome)
         }
         .transition(.opacity)
         .ignoresSafeArea()
