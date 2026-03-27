@@ -16,9 +16,17 @@ final class StepTreeViewModel {
 
     private(set) var plan: Project.Plan
     private(set) var selectedWeek: Project.Plan.Week?
+    private(set) var lockedWeeks: [Project.Plan.Week] = []
     var alertItem: AlertItem?
     var isWellDone = false
-    var isPaywallPresented = false
+    var isPaywallPresented = false {
+        didSet {
+            guard oldValue != isPaywallPresented else { return }
+            if !isPaywallPresented {
+                lockedWeeks = plan.weeks.filter(isWeekLocked)
+            }
+        }
+    }
 
     // MARK: - Private Properties
 
@@ -50,13 +58,6 @@ final class StepTreeViewModel {
 // MARK: - Public Properties
 
 extension StepTreeViewModel {
-
-    // MARK: - Output
-
-    func isWeekLocked(_ week: Project.Plan.Week) -> Bool {
-        guard !storeManager.hasPurchasedProduct(), !project.hasLifetimeAccess else { return false }
-        return week.number != 1
-    }
 
     // MARK: - Input
 
@@ -110,6 +111,7 @@ extension StepTreeViewModel {
         selectedWeek = storeManager.hasPurchasedProduct() || project.hasLifetimeAccess
         ? plan.weeks.first { !$0.isCompleted } ?? plan.weeks.last
         : plan.weeks.min { $0.number < $1.number }
+        lockedWeeks = plan.weeks.filter(isWeekLocked)
     }
 
     private func saveProject() {
@@ -122,5 +124,10 @@ extension StepTreeViewModel {
                 alertItem = .error(message: error.localizedDescription)
             }
         }
+    }
+
+    private func isWeekLocked(_ week: Project.Plan.Week) -> Bool {
+        guard !storeManager.hasPurchasedProduct(), !project.hasLifetimeAccess else { return false }
+        return week.number != 1
     }
 }

@@ -25,7 +25,7 @@ struct SplashView: View {
         .background(.blue007AFF)
         .transition(.opacity)
         .onAppear {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 withAnimation(.easeInOut(duration: 0.3)) {
                     onFinish()
                 }

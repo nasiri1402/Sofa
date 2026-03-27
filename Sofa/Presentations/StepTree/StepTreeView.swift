@@ -156,7 +156,7 @@ struct StepTreeView: View {
 
     private func WeekButton(_ week: Project.Plan.Week, onTap: @escaping () -> Void) -> some View {
         Button(action: onTap) {
-            let isLocked = viewModel.isWeekLocked(week)
+            let isLocked = viewModel.lockedWeeks.contains { $0.id == week.id }
             let isSelected = viewModel.selectedWeek?.id == week.id
             HStack(spacing: 4.fitW) {
                 if isLocked {
