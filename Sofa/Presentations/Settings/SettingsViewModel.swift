@@ -123,8 +123,8 @@ extension SettingsViewModel {
             guard !isNotificationPermissionUpdating else { return }
             guard isOn else {
                 alertItem = .settings(
-                    title: String(localized: "alertConfirmNotificationDisableTitle"),
-                    message: String(localized: "alertConfirmNotificationDisableMessage")
+                    title: String(localized: "notificationDisable"),
+                    message: String(localized: "notificationDisableMessage")
                 )
                 return
             }
@@ -137,8 +137,8 @@ extension SettingsViewModel {
                 } else {
                     notificationManager.cancelInactiveNotifications()
                     alertItem = .settings(
-                        title: String(localized: "alertNotificationAccessTitle"),
-                        message: String(localized: "alertNotificationAccessMessage")
+                        title: String(localized: "notificationAccessDenied"),
+                        message: String(localized: "notificationAccessDeniedMessage")
                     )
                 }
                 isNotificationPermissionUpdating = false

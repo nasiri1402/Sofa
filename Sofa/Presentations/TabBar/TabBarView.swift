@@ -39,7 +39,9 @@ struct TabBarView: View {
             GeneratorView(viewModel: GeneratorViewModel(
                 router: generatorRouter,
                 storeManager: ServiceLayer.storeManager,
-                dataStorage: ServiceLayer.dataStorage
+                dataStorage: ServiceLayer.dataStorage,
+                permissionManager: ServiceLayer.permissionManager,
+                notificationManager: ServiceLayer.notificationManager
             ))
             .toolbar(isTabBarHidden ? .hidden : .visible, for: .tabBar)
             .navigationDestination(for: AnyRouter.self) { router in

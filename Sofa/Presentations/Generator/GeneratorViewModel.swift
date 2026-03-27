@@ -30,20 +30,28 @@ final class GeneratorViewModel {
     private let router: GeneratorRouter
     private let storeManager: StoreManager
     private let dataStorage: DataStorage
+    private let permissionManager: PermissionManager
+    private let notificationManager: NotificationManager
 
     @ObservationIgnored @AppStorage(SofaConstants.AppStorage.isBeforeLaunched)
     private var isBeforeLaunched = false
+    @ObservationIgnored @AppStorage(SofaConstants.AppStorage.isNotificationsEnabled)
+    private var isNotificationsEnabled = false
 
     // MARK: - Inits
 
     init(
         router: GeneratorRouter,
         storeManager: StoreManager,
-        dataStorage: DataStorage
+        dataStorage: DataStorage,
+        permissionManager: PermissionManager,
+        notificationManager: NotificationManager
     ) {
         self.router = router
         self.storeManager = storeManager
         self.dataStorage = dataStorage
+        self.permissionManager = permissionManager
+        self.notificationManager = notificationManager
     }
 }
 
@@ -97,6 +105,7 @@ extension GeneratorViewModel {
         Task { @MainActor in
             do {
                 projects = try dataStorage.fetchProjects()
+                requestNotificationPermissionIfNeeded()
             } catch {
                 alertItem = .error(message: error.localizedDescription)
             }
@@ -113,6 +122,19 @@ extension GeneratorViewModel {
                 }
             } catch {
                 alertItem = .error(message: error.localizedDescription)
+            }
+        }
+    }
+
+    private func requestNotificationPermissionIfNeeded() {
+        guard !projects.isEmpty else { return }
+        permissionManager.requestNotification { [weak self] isGranted in
+            guard let self else { return }
+            isNotificationsEnabled = isGranted
+            if isGranted {
+                notificationManager.rescheduleInactiveNotifications()
+            } else {
+                notificationManager.cancelInactiveNotifications()
             }
         }
     }
