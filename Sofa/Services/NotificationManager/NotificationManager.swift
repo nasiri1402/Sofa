@@ -27,23 +27,14 @@ final class DefaultNotificationManager: NotificationManager {
     private let notificationCenter: UNUserNotificationCenter = .current()
     private let calendar: Calendar = .current
 
-    private let inactiveContent: [(title: String, message: String)] = [
-        ("Your idea is waiting", "Come back to Sofa and continue building your plan."),
-        ("Small step today?", "Open Sofa and move your project one step forward."),
-        ("Stay on track", "Your next milestone is closer than you think."),
-        ("Quick progress check", "Take 2 minutes in Sofa and keep momentum."),
-        ("Your project misses you", "Return to Sofa and pick up where you left off."),
-        ("Back to your roadmap", "Your plan is ready for the next update."),
-        ("Keep building", "Consistency beats intensity. Continue in Sofa."),
-        ("One more action", "Open Sofa and complete the next tiny task."),
-        ("Progress reminder", "You are closer than yesterday. Keep going."),
-        ("Time to execute", "Review your steps in Sofa and take action today."),
-        ("Ready for round two?", "Jump back into Sofa and refine your plan."),
-        ("Momentum check", "A short session in Sofa can move things ahead."),
-        ("Your plan is still there", "Continue your project in Sofa anytime."),
-        ("Build with clarity", "Reopen Sofa and align your next priorities."),
-        ("Final reminder", "Return to Sofa and keep your project alive.")
-    ]
+    private var inactiveContent: [(title: String, message: String)] {
+        (1...15).map { index in
+            (
+                String(localized: "inactiveUserNotificationTitle\(index)"),
+                String(localized: "inactiveUserNotificationMessage\(index)")
+            )
+        }
+    }
 
     // MARK: - Public Methods
 
