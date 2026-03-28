@@ -69,9 +69,9 @@ final class DefaultStoreManager: StoreManager {
     func configure() {
         updatesTask = observeTransactionUpdates()
         Task {
+            try? await finishUnfinishedTransactions()
             try? await loadProducts()
             await updatePurchasedProducts()
-            try? await finishUnfinishedTransactions()
         }
     }
 
@@ -82,7 +82,7 @@ final class DefaultStoreManager: StoreManager {
 
         for await result in Transaction.currentEntitlements {
             guard case .verified(let transaction) = result else { continue }
-            if transaction.revocationDate == nil, transaction.expirationDate.map({ $0 > Date() }) == true {
+            if transaction.revocationDate == nil {
                 purchasedProductIDs.insert(transaction.productID)
             }
         }
