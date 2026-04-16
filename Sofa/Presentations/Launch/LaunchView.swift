@@ -48,7 +48,8 @@ struct LaunchView: View {
 
     private func Onboarding() -> some View {
         OnboardingView(viewModel: OnboardingViewModel(
-            dataStorage: ServiceLayer.dataStorage
+            dataStorage: ServiceLayer.dataStorage,
+            onboardingLogger: ServiceLayer.onboardingLogger
         ) {
             viewModel.didFinishStage(.onboarding)
         })

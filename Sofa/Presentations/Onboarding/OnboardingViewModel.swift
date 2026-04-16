@@ -56,12 +56,18 @@ final class OnboardingViewModel {
     // MARK: - Private Properties
 
     private let dataStorage: DataStorage
+    private let onboardingLogger: OnboardingLogger
     private let onFinish: () -> Void
 
     // MARK: - Inits
 
-    init(dataStorage: DataStorage, onFinish: @escaping () -> Void) {
+    init(
+        dataStorage: DataStorage,
+        onboardingLogger: OnboardingLogger,
+        onFinish: @escaping () -> Void
+    ) {
         self.dataStorage = dataStorage
+        self.onboardingLogger = onboardingLogger
         self.onFinish = onFinish
     }
 }
@@ -205,7 +211,6 @@ extension OnboardingViewModel {
     }
 
     private func saveProfile() {
-        guard !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
         let profile = Profile(
             id: UUID(),
             name: name.trimmingCharacters(in: .whitespacesAndNewlines),
@@ -220,6 +225,16 @@ extension OnboardingViewModel {
         Task { @MainActor in
             do {
                 try dataStorage.saveProfile(profile)
+                try await onboardingLogger.logResponses(
+                    name: name.trimmingCharacters(in: .whitespacesAndNewlines),
+                    gender: gender,
+                    age: age == .zero ? nil : age,
+                    country: country,
+                    source: source,
+                    otherSourceText: otherSourceText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+                    ? nil
+                    : otherSourceText.trimmingCharacters(in: .whitespacesAndNewlines)
+                )
                 onFinish()
             } catch {
                 alertItem = .error(message: error.localizedDescription)
