@@ -22,6 +22,16 @@ protocol AuthService {
 
 final class DefaultAuthService: AuthService {
 
+    // MARK: - Private Properties
+
+    private let analyticsManager: AnalyticsManager
+
+    // MARK: - Inits
+
+    init(analyticsManager: AnalyticsManager) {
+        self.analyticsManager = analyticsManager
+    }
+
     // MARK: - Public Methods
 
     func configure() {
@@ -41,6 +51,7 @@ final class DefaultAuthService: AuthService {
         do {
             let result = try await Auth.auth().signInAnonymously()
             debugPrint("✅ anonymous login successful, uid =", result.user.uid)
+            analyticsManager.identify(uid: result.user.uid)
             return result.user
         } catch {
             debugPrint("❌ anonymous login failed:", error.localizedDescription)

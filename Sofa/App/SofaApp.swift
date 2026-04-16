@@ -49,9 +49,9 @@ final class SofaAppDelegate: NSObject, UIApplicationDelegate {
         appChecker.configure()
         FirebaseApp.configure()
         appChecker.isTokenAutoRefreshEnabled(true)
+        analyticsManager.configure()
         authService.configure()
         storeManager.configure()
-        analyticsManager.configure()
         networkMonitor.startMonitoring()
         return true
     }

@@ -40,6 +40,16 @@ final class AnalyticsManager: NSObject {
         Analytics.setAnalyticsCollectionEnabled(true)
         #endif
     }
+
+    func identify(uid: String) {
+        #if !DEBUG
+        Adapty.identify(uid) { error in
+            if let error {
+                debugPrint("Failed to identify Adapty user: \(error.localizedDescription)")
+            }
+        }
+        #endif
+    }
 }
 
 // MARK: - Adapty

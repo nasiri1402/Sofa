@@ -11,9 +11,9 @@ enum ServiceLayer {
 
     // MARK: - Public Properties
 
-    static let authService: AuthService = DefaultAuthService()
+    static let analyticsManager = AnalyticsManager()
+    static let authService: AuthService = DefaultAuthService(analyticsManager: analyticsManager)
     static let appChecker: AppChecker = DefaultAppChecker()
-    static let analyticsManager = AnalyticsManager(authService: authService)
     static let storeManager: StoreManager = DefaultStoreManager()
     static let networkMonitor: NetworkMonitor = DefaultNetworkMonitor()
     static let dataStorage: DataStorage = DefaultDataStorage()
