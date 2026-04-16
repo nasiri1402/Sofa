@@ -11,6 +11,7 @@ import Foundation
 
 protocol FunctionsClient {
     func generator(request: GeneratorRequest) async throws -> GeneratorResponse
+    func onboardingResponses(request: OnboardingResponsesRequest) async throws
 }
 
 final class DefaultFunctionsClient: FunctionsClient {
@@ -31,16 +32,27 @@ final class DefaultFunctionsClient: FunctionsClient {
     // MARK: - Public Methods
 
     func generator(request: GeneratorRequest) async throws -> GeneratorResponse {
+        let data = try await call(Function.generator, request: request)
+        return try decoder.decode(GeneratorResponse.self, from: data)
+    }
+
+    func onboardingResponses(request: OnboardingResponsesRequest) async throws {
+        try await call(Function.onboardingResponses, request: request)
+    }
+
+    // MARK: - Private Methods
+
+    @discardableResult
+    private func call<T: Encodable>(_ function: String, request: T) async throws -> Data {
         let request = try encoder.encode(request)
         let payload = try JSONSerialization.jsonObject(with: request)
-        let call = try await functions.httpsCallable(Function.generator).call(payload)
+        let call = try await functions.httpsCallable(function).call(payload)
         let data = try JSONSerialization.data(withJSONObject: call.data)
         #if DEBUG
         let jsonString = String(data: data, encoding: .utf8) ?? ""
         debugPrint(jsonString)
         #endif
-        let response = try decoder.decode(GeneratorResponse.self, from: data)
-        return response
+        return data
     }
 }
 
@@ -49,5 +61,6 @@ final class DefaultFunctionsClient: FunctionsClient {
 extension DefaultFunctionsClient {
     enum Function {
         static let generator = "generator"
+        static let onboardingResponses = "onboardingResponses"
     }
 }

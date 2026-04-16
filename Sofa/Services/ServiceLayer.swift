@@ -13,10 +13,11 @@ enum ServiceLayer {
 
     static let authService: AuthService = DefaultAuthService()
     static let appChecker: AppChecker = DefaultAppChecker()
-    static let analyticsManager = AnalyticsManager()
+    static let analyticsManager = AnalyticsManager(authService: authService)
     static let storeManager: StoreManager = DefaultStoreManager()
     static let networkMonitor: NetworkMonitor = DefaultNetworkMonitor()
     static let dataStorage: DataStorage = DefaultDataStorage()
+    static let onboardingLogger: OnboardingLogger = DefaultOnboardingLogger(functionsClient: functionsClient)
     static let notificationManager: NotificationManager = DefaultNotificationManager()
     static let permissionManager: PermissionManager = DefaultPermissionManager()
     static let projectGenerator: ProjectGenerator = DefaultProjectGenerator(
