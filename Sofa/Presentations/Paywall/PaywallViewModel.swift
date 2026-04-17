@@ -26,7 +26,7 @@ final class PaywallViewModel {
     var isTrialOn: Bool {
         didSet {
             guard oldValue != isTrialOn else { return }
-            selectedSubscription = isTrialOn ? .weekly : .monthly
+            selectedSubscription = isTrialOn ? .weekly : .yearly
         }
     }
 
@@ -49,7 +49,7 @@ final class PaywallViewModel {
         self.networkMonitor = networkMonitor
         self.analyticsManager = analyticsManager
         self.placement = placement
-        self.selectedSubscription = .monthly
+        self.selectedSubscription = .weekly
         self.isTrialOn = false
 
         initialize()
@@ -129,7 +129,7 @@ extension PaywallViewModel {
 
     func formatPriceDescription(for subscription: PaywallModel.Subscription) -> String {
         let description = switch subscription {
-        case .monthly: String(localized: "just") + " " + getPricePerWeek(for: subscription)
+        case .yearly: String(localized: "just") + " " + getPricePerWeek(for: subscription)
         case .weekly: String(localized: "cheaperThanCoffee") + " ☕"
         }
         return description.lowercased()

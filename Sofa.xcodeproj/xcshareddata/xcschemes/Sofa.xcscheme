@@ -51,7 +51,7 @@
          </BuildableReference>
       </BuildableProductRunnable>
       <StoreKitConfigurationFileReference
-         identifier = "../../Sofa/Sources/SupportingFiles/StoreConfig_En-US.storekit">
+         identifier = "../../Sofa/Sources/SupportingFiles/Sofa.storekit">
       </StoreKitConfigurationFileReference>
    </LaunchAction>
    <ProfileAction

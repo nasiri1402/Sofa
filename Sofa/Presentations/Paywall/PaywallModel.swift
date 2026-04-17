@@ -18,39 +18,39 @@ enum PaywallModel {
     // MARK: - Subscription
 
     enum Subscription: Identifiable, CaseIterable {
-        case monthly, weekly
+        case yearly, weekly
 
         var id: String {
             switch self {
-            case .monthly: "com.ai.sofa.subscriptions.month"
+            case .yearly: "com.ai.sofa.subscriptions.year"
             case .weekly: "com.ai.sofa.subscriptions.week.3trial"
             }
         }
 
         var title: String {
             switch self {
-            case .monthly: String(format: String(localized: "monthsPluralFormat"), 1).capitalized
+            case .yearly: String(format: String(localized: "yearsPluralFormat"), 1).capitalized
             case .weekly: String(format: String(localized: "weeksPluralFormat"), 1).capitalized
             }
         }
 
         var isBestValue: Bool {
             switch self {
-            case .monthly: true
+            case .yearly: true
             case .weekly: false
             }
         }
 
         var withTrial: Bool {
             switch self {
-            case .monthly: false
+            case .yearly: false
             case .weekly: true
             }
         }
 
         init?(id: String) {
             switch id {
-            case Subscription.monthly.id: self = .monthly
+            case Subscription.yearly.id: self = .yearly
             case Subscription.weekly.id: self = .weekly
             default: return nil
             }

@@ -20,6 +20,11 @@ protocol StoreManager {
     @MainActor
     func getProducts() async throws -> [Product]
 
+    /// Получить продукт по ID
+    /// - Parameter id: Идентификатор продукта
+    @MainActor
+    func getProduct(id: String) async throws -> Product?
+
     /// Купить продукт
     /// - Parameter product: Продукт
     @MainActor @discardableResult
@@ -94,6 +99,14 @@ final class DefaultStoreManager: StoreManager {
             try await loadProducts()
         }
         return products
+    }
+
+    @MainActor
+    func getProduct(id: String) async throws -> Product? {
+        if let product = products.first(where: { $0.id == id }) {
+            return product
+        }
+        return try await Product.products(for: [id]).first
     }
 
     @MainActor @discardableResult
