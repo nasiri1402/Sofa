@@ -14007,91 +14007,91 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%d%% RABATT"
+            "value" : "%@ RABATT"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%d%% OFF"
+            "value" : "%@ OFF"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%d%% DE DESCUENTO"
+            "value" : "%@ DE DESCUENTO"
           }
         },
         "es-MX" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%d%% DE DESCUENTO"
+            "value" : "%@ DE DESCUENTO"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "-%d%%"
+            "value" : "-%@"
           }
         },
         "fr-CA" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "-%d%%"
+            "value" : "-%@"
           }
         },
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%d%% OFF"
+            "value" : "%@ की छूट"
           }
         },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%d%% OFF"
+            "value" : "%@ OFF"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "-%d%%"
+            "value" : "-%@"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%d%% OFF"
+            "value" : "%@ OFF"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%d%% 할인"
+            "value" : "%@ 할인"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%d%% OFF"
+            "value" : "%@ OFF"
           }
         },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%d%% OFF"
+            "value" : "%@ OFF"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "СКИДКА %d%%"
+            "value" : "СКИДКА %@"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%d%% İNDİRİM"
+            "value" : "%@ İNDİRİM"
           }
         }
       }

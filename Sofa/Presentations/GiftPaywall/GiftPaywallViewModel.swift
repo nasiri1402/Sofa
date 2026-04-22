@@ -68,11 +68,16 @@ extension GiftPaywallViewModel {
     }
 
     func formatOfferDiscount() -> String {
-        String(format: String(localized: "percentOffFormat"), calculateDiscountPercent())
+        let percent = calculateDiscountFraction()
+        return String(
+            format: String(localized: "percentOffFormat"),
+            percent.formatted(.percent.precision(.fractionLength(0)))
+        )
     }
 
     func formatDiscountBadge() -> String {
-        "-\(calculateDiscountPercent())%"
+        let percent = calculateDiscountFraction()
+        return "-\(percent.formatted(.percent.precision(.fractionLength(0))))"
     }
 
     // MARK: - Input
@@ -200,6 +205,13 @@ extension GiftPaywallViewModel {
     private func formattedPrice(for product: Product?) -> String {
         guard let product else { return "" }
         return product.price.formatted(product.priceFormatStyle)
+    }
+
+    private func calculateDiscountFraction() -> Decimal {
+        let defaultDiscount: Decimal = 0.3
+        guard let standardProduct, let giftProduct, standardProduct.price > .zero else { return defaultDiscount }
+        let discount = (standardProduct.price - giftProduct.price) / standardProduct.price
+        return max(discount, .zero)
     }
 
     private func calculateDiscountPercent() -> Int {
