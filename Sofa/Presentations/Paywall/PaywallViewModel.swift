@@ -50,7 +50,7 @@ final class PaywallViewModel {
         self.analyticsManager = analyticsManager
         self.placement = placement
         self.selectedSubscription = .weekly
-        self.isTrialOn = false
+        self.isTrialOn = true
 
         initialize()
     }

@@ -12,7 +12,7 @@ enum PaywallModel {
     // MARK: - Placement
 
     enum Placement: String, CaseIterable {
-        case generator, settings, generationResult, stepTree
+        case generator, settings, generationResult, stepTree, gift
     }
 
     // MARK: - Subscription
