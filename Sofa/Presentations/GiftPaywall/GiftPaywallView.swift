@@ -80,10 +80,17 @@ struct GiftPaywallView: View {
 extension GiftPaywallView {
     private func TeaserState() -> some View {
         VStack(spacing: .zero) {
-            Image(.giftPaywallBox)
-                .resizable()
-                .frame(width: 256.fitW, height: 256.fitW)
-                .padding(.bottom, 40.fitH)
+            ZStack {
+                Circle()
+                    .fill(.blue007AFF)
+                    .frame(width: 180.fitW, height: 180.fitW)
+                    .blur(radius: 50.fitW)
+
+                Image(.giftPaywallBox)
+                    .resizable()
+                    .frame(width: 256.fitW, height: 256.fitW)
+            }
+            .padding(.bottom, 40.fitH)
 
             Text(viewModel.state.subtitle)
                 .multilineMinimumScale()
