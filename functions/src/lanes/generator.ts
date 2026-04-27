@@ -1,12 +1,25 @@
 import {onCall, HttpsError} from "firebase-functions/v2/https";
-import {initializeApp} from "firebase-admin/app";
+import {getApps, initializeApp} from "firebase-admin/app";
 import {getFirestore, FieldValue} from "firebase-admin/firestore";
 import {defineSecret} from "firebase-functions/params";
 
-initializeApp();
+if (getApps().length === 0) {
+  initializeApp();
+}
 
 const db = getFirestore();
 const OPENAI_API_KEY = defineSecret("OPENAI_API_KEY");
+
+function userDocument(uid: string) {
+  return db.collection("users").doc(uid);
+}
+
+function generatorRequestCollection(uid: string) {
+  return userDocument(uid)
+    .collection("assistants")
+    .doc("generator")
+    .collection("requests");
+}
 
 export const generator = onCall(
   {
@@ -44,6 +57,30 @@ export const generator = onCall(
       text: {format: responseFormat},
     };
 
+    const requestLogRef = generatorRequestCollection(uid).doc();
+    const requestStartedAt = FieldValue.serverTimestamp();
+
+    await Promise.all([
+      userDocument(uid).set(
+        {
+          uid,
+          updatedAt: requestStartedAt,
+        },
+        {merge: true},
+      ),
+      requestLogRef.set(
+        {
+          requestId: requestLogRef.id,
+          assistant: "generator",
+          status: "started",
+          requestJson: body,
+          createdAt: requestStartedAt,
+          updatedAt: requestStartedAt,
+        },
+        {merge: true},
+      ),
+    ]);
+
     const resp = await fetch("https://api.openai.com/v1/responses", {
       method: "POST",
       headers: {
@@ -54,37 +91,58 @@ export const generator = onCall(
     });
 
     const raw = await resp.text();
+    const requestId = resp.headers.get("x-request-id") ?? undefined;
+
+    let parsedRaw: unknown = raw;
+    try {
+      parsedRaw = JSON.parse(raw);
+    } catch {
+      parsedRaw = {raw};
+    }
 
     if (!resp.ok) {
       console.error("OpenAI error", {
         uid,
         status: resp.status,
         statusText: resp.statusText,
-        requestId: resp.headers.get("x-request-id") ?? undefined,
+        requestId,
       });
 
-      // Не пробрасываем сырые данные клиенту!
+      await requestLogRef.set(
+        {
+          status: "error",
+          responseJson: parsedRaw,
+          errorJson: {
+            status: resp.status,
+            statusText: resp.statusText,
+            requestId: requestId ?? null,
+            body: parsedRaw,
+          },
+          updatedAt: FieldValue.serverTimestamp(),
+          finishedAt: FieldValue.serverTimestamp(),
+        },
+        {merge: true},
+      );
+
       throw new HttpsError(
         "unknown",
         "The service is temporarily unavailable.\nPlease try again shortly.",
       );
     }
 
-    const data = JSON.parse(raw);
+    const data = parsedRaw as Record<string, unknown>;
 
-    // Token stats
     const usage = data?.usage ?? {};
-    const inputTokens = Number(usage.input_tokens ?? 0);
-    const outputTokens = Number(usage.output_tokens ?? 0);
+    const inputTokens = Number((usage as any).input_tokens ?? 0);
+    const outputTokens = Number((usage as any).output_tokens ?? 0);
     const totalTokens = Number(
-      usage.total_tokens ?? inputTokens + outputTokens,
+      (usage as any).total_tokens ?? inputTokens + outputTokens,
     );
     const reasoningTokens = Number(
-      usage?.output_tokens_details?.reasoning_tokens ?? 0,
+      (usage as any)?.output_tokens_details?.reasoning_tokens ?? 0,
     );
     const visibleOutputTokens = Math.max(0, outputTokens - reasoningTokens);
 
-    // Безопасный лог
     console.log("OpenAI responses usage", {
       uid,
       model: data?.model,
@@ -93,40 +151,26 @@ export const generator = onCall(
       reasoningTokens,
       visibleOutputTokens,
       totalTokens,
-      requestId: resp.headers.get("x-request-id") ?? undefined,
+      requestId,
     });
 
-    // Firestore write
-    await Promise.all([
-      db
-        .collection("assistants")
-        .doc("generator").set(
-          {
-            promptTokens: FieldValue.increment(inputTokens),
-            completionTokens: FieldValue.increment(outputTokens),
-            totalTokens: FieldValue.increment(totalTokens),
-            reasoningTokens: FieldValue.increment(reasoningTokens),
-            outputTokens: FieldValue.increment(visibleOutputTokens),
-            requestCount: FieldValue.increment(1),
-          },
-          {merge: true},
-        ),
-      db
-        .collection("users")
-        .doc(uid)
-        .collection("assistants")
-        .doc("generator").set(
-          {
-            promptTokens: FieldValue.increment(inputTokens),
-            completionTokens: FieldValue.increment(outputTokens),
-            totalTokens: FieldValue.increment(totalTokens),
-            reasoningTokens: FieldValue.increment(reasoningTokens),
-            outputTokens: FieldValue.increment(visibleOutputTokens),
-            requestCount: FieldValue.increment(1),
-          },
-          {merge: true},
-        ),
-    ]);
+    await requestLogRef.set(
+      {
+        status: "success",
+        model: data?.model ?? body.model,
+        tokenUsage: {
+          promptTokens: inputTokens,
+          completionTokens: outputTokens,
+          totalTokens,
+          reasoningTokens,
+          outputTokens: visibleOutputTokens,
+        },
+        responseJson: data,
+        updatedAt: FieldValue.serverTimestamp(),
+        finishedAt: FieldValue.serverTimestamp(),
+      },
+      {merge: true},
+    );
 
     return data;
   },
