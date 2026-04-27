@@ -29,6 +29,14 @@ struct GiftPaywallView: View {
             case .offer: OfferState()
             }
         }
+        .animation(.easeInOut, value: viewModel.state)
+        .overlay(alignment: .topLeading) {
+            if viewModel.state == .offer {
+                CloseButton()
+                    .padding(.horizontal, 16.fitW)
+                    .transition(.opacity)
+            }
+        }
         .overlay {
             ActivityIndicator(isLoading: viewModel.isLoading)
         }
@@ -53,59 +61,63 @@ extension GiftPaywallView {
         VStack(spacing: .zero) {
             Image(.giftPaywallBox)
                 .resizable()
-                .scaledToFit()
                 .frame(width: 256.fitW, height: 256.fitW)
-                .padding(.top, 56.fitW)
-                .padding(.bottom, 40.fitW)
+                .padding(.top, 56.fitH)
+                .padding(.bottom, 40.fitH)
 
             Text(viewModel.state.subtitle)
+                .multilineMinimumScale()
                 .font(.system(size: 46.fitW, weight: .heavy))
                 .foregroundStyle(.white.opacity(0.3))
                 .multilineTextAlignment(.center)
-                .padding(.bottom, 32.fitW)
+                .padding(.bottom, 32.fitH)
 
             Text(viewModel.state.title)
+                .multilineMinimumScale(lineLimit: 3)
                 .font(.system(size: 46.fitW, weight: .heavy))
                 .foregroundStyle(.white.opacity(0.95))
                 .multilineTextAlignment(.center)
 
-            Spacer(minLength: 16.fitW)
+            Spacer(minLength: .zero)
 
             PrimaryButton(
                 title: viewModel.state.action,
                 onTap: viewModel.didTapContinueButton
             )
-            .padding(.bottom, 82.fitW)
         }
+        .padding(.top, 20.fitH)
         .padding(.horizontal, 16.fitW)
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .padding(.bottom, 16.fitH)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+        .transition(.opacity)
     }
 
     private func OfferState() -> some View {
-        VStack(alignment: .leading, spacing: .zero) {
-            CloseButton()
-
-            Text(viewModel.state.title)
-                .font(.system(size: 76.fitW, weight: .black))
-                .foregroundStyle(.white.opacity(0.95))
-                .lineSpacing(-10.fitW)
-
-            Text(viewModel.formatOfferDiscount())
-                .font(.system(size: 76.fitW, weight: .black))
-                .foregroundStyle(.blue007AFF)
-                .padding(.bottom, 36.fitW)
-
-            Text(viewModel.state.subtitle)
-                .font(.system(size: 46.fitW, weight: .heavy))
-                .foregroundStyle(.white.opacity(0.3))
-                .lineSpacing(-8.fitW)
-                .padding(.bottom, 36.fitW)
-
-            PriceHighlight()
-
+        VStack(alignment: .leading, spacing: 16.fitH) {
             Spacer(minLength: .zero)
+            VStack(alignment: .leading, spacing: .zero) {
+                Text(viewModel.state.title)
+                    .multilineMinimumScale(lineLimit: 2)
+                    .font(.system(size: 76.fitW, weight: .black))
+                    .foregroundStyle(.white.opacity(0.95))
+                    .lineSpacing(-10.fitH)
 
-            VStack(spacing: 10.fitW) {
+                Text(viewModel.formatOfferDiscount())
+                    .multilineMinimumScale()
+                    .font(.system(size: 76.fitW, weight: .black))
+                    .foregroundStyle(.blue007AFF)
+                    .padding(.bottom, 32.fitH)
+
+                Text(viewModel.state.subtitle)
+                    .multilineMinimumScale(lineLimit: 2)
+                    .font(.system(size: 46.fitW, weight: .heavy))
+                    .foregroundStyle(.white.opacity(0.3))
+                    .lineSpacing(-8.fitH)
+            }
+            PriceHighlight()
+                .padding(.bottom, 16.fitH)
+
+            VStack(spacing: 10.fitH) {
                 PrimaryButton(
                     title: viewModel.state.action,
                     onTap: viewModel.didTapContinueButton
@@ -121,8 +133,10 @@ extension GiftPaywallView {
                 }
             }
         }
-        .padding(.top, 20.fitW)
-        .padding([.horizontal, .bottom], 16.fitW)
+        .padding(.top, 20.fitH)
+        .padding(.horizontal, 16.fitW)
+        .padding(.bottom, 8.fitH)
+        .transition(.opacity)
     }
 
     private func CloseButton() -> some View {
@@ -136,39 +150,42 @@ extension GiftPaywallView {
     }
 
     private func PriceHighlight() -> some View {
-        HStack(alignment: .center, spacing: 16.fitW) {
+        HStack(alignment: .center, spacing: 16.fitH) {
             Image(.giftPaywallWreathLeft)
                 .resizable()
                 .scaledToFit()
-                .frame(width: 50.fitW, height: 100.fitW)
+                .frame(width: 50.fitW, height: 100.fitH)
 
             VStack(spacing: .zero) {
                 Text(viewModel.formatGiftPrice())
+                    .multilineMinimumScale()
                     .font(.system(size: 20.fitW, weight: .semibold))
                     .foregroundStyle(.white)
-                    .frame(height: 25.fitW)
-                    .padding(.bottom, 2.fitW)
+                    .frame(height: 25.fitH)
+                    .padding(.bottom, 2.fitH)
 
                 Text(viewModel.formatStandardPrice())
+                    .multilineMinimumScale()
                     .font(.system(size: 15.fitW, weight: .semibold))
                     .foregroundStyle(.gray8E8E93)
-                    .frame(height: 20.fitW)
+                    .frame(height: 20.fitH)
 
                 Text(viewModel.formatDiscountBadge())
-                    .font(.system(size: 16.fitW, weight: .semibold))
+                    .multilineMinimumScale()
+                    .font(.system(size: 15.fitW, weight: .semibold))
                     .foregroundStyle(.black)
-                    .padding(.horizontal, 14.fitW)
-                    .frame(height: 38.fitW)
+                    .padding(.horizontal, 10.fitW)
+                    .frame(height: 32.fitH)
                     .background(.green34C759)
-                    .clipShape(.rect(cornerRadius: 10.fitW))
-                    .padding(.top, 16.fitW)
+                    .clipShape(.rect(cornerRadius: 8.fitW))
+                    .padding(.top, 16.fitH)
             }
             .frame(maxWidth: .infinity)
 
             Image(.giftPaywallWreathRight)
                 .resizable()
                 .scaledToFit()
-                .frame(width: 50.fitW, height: 100.fitW)
+                .frame(width: 50.fitW, height: 100.fitH)
         }
         .padding(.horizontal, 6.fitW)
     }

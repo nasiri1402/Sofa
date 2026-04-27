@@ -53,7 +53,7 @@ struct PaywallView: View {
             .padding(.horizontal, 16.fitW)
         }
         .padding(.top, 20.fitH)
-        .padding(.bottom, 16.fitH)
+        .padding(.bottom, 8.fitH)
         .background(.black090909)
         .overlay(alignment: .topLeading) {
             HStack(spacing: 16.fitW) {
