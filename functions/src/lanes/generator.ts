@@ -10,10 +10,20 @@ if (getApps().length === 0) {
 const db = getFirestore();
 const OPENAI_API_KEY = defineSecret("OPENAI_API_KEY");
 
+/**
+ * Returns the Firestore user document reference for the given uid.
+ * @param {string} uid
+ * @return {FirebaseFirestore.DocumentReference}
+ */
 function userDocument(uid: string) {
   return db.collection("users").doc(uid);
 }
 
+/**
+ * Returns the request log collection used by the generator assistant.
+ * @param {string} uid
+ * @return {FirebaseFirestore.CollectionReference}
+ */
 function generatorRequestCollection(uid: string) {
   return userDocument(uid)
     .collection("assistants")
@@ -21,6 +31,9 @@ function generatorRequestCollection(uid: string) {
     .collection("requests");
 }
 
+/**
+ * Generates a structured project plan with the OpenAI Responses API.
+ */
 export const generator = onCall(
   {
     region: "us-central1",
@@ -131,15 +144,16 @@ export const generator = onCall(
     }
 
     const data = parsedRaw as Record<string, unknown>;
+    const usage = asRecord(data.usage);
+    const outputTokensDetails = asRecord(usage?.["output_tokens_details"]);
 
-    const usage = data?.usage ?? {};
-    const inputTokens = Number((usage as any).input_tokens ?? 0);
-    const outputTokens = Number((usage as any).output_tokens ?? 0);
+    const inputTokens = numberValue(usage?.["input_tokens"]);
+    const outputTokens = numberValue(usage?.["output_tokens"]);
     const totalTokens = Number(
-      (usage as any).total_tokens ?? inputTokens + outputTokens,
+      usage?.["total_tokens"] ?? inputTokens + outputTokens,
     );
     const reasoningTokens = Number(
-      (usage as any)?.output_tokens_details?.reasoning_tokens ?? 0,
+      outputTokensDetails?.["reasoning_tokens"] ?? 0,
     );
     const visibleOutputTokens = Math.max(0, outputTokens - reasoningTokens);
 
@@ -175,3 +189,23 @@ export const generator = onCall(
     return data;
   },
 );
+
+/**
+ * Safely converts an unknown value into a record if possible.
+ * @param {unknown} value
+ * @return {Record<string, unknown> | null}
+ */
+function asRecord(value: unknown): Record<string, unknown> | null {
+  return typeof value === "object" && value !== null ?
+    value as Record<string, unknown> :
+    null;
+}
+
+/**
+ * Converts an unknown numeric payload field into a number.
+ * @param {unknown} value
+ * @return {number}
+ */
+function numberValue(value: unknown): number {
+  return Number(value ?? 0);
+}

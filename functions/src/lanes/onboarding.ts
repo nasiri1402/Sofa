@@ -8,10 +8,47 @@ if (getApps().length === 0) {
 
 const db = getFirestore();
 
+/**
+ * Returns the Firestore user document reference for the given uid.
+ * @param {string} uid
+ * @return {FirebaseFirestore.DocumentReference}
+ */
 function userDocument(uid: string) {
   return db.collection("users").doc(uid);
 }
 
+/**
+ * Safely converts an unknown value into a record if possible.
+ * @param {unknown} value
+ * @return {Record<string, unknown> | null}
+ */
+function asRecord(value: unknown): Record<string, unknown> | null {
+  return typeof value === "object" && value !== null ?
+    value as Record<string, unknown> :
+    null;
+}
+
+/**
+ * Returns a string value when the payload field is a string.
+ * @param {unknown} value
+ * @return {string | null}
+ */
+function stringValue(value: unknown): string | null {
+  return typeof value === "string" ? value : null;
+}
+
+/**
+ * Returns a number value when the payload field is a finite number.
+ * @param {unknown} value
+ * @return {number | null}
+ */
+function numberValue(value: unknown): number | null {
+  return typeof value === "number" && Number.isFinite(value) ? value : null;
+}
+
+/**
+ * Stores onboarding answers for the authenticated user.
+ */
 export const onboardingResponses = onCall(
   {
     region: "us-central1",
@@ -44,11 +81,17 @@ export const onboardingResponses = onCall(
         .doc("responses")
         .set(
           {
-            name: typeof name === "object" && name ? name : null,
-            gender: typeof gender === "object" && gender ? gender : null,
-            age: typeof age === "object" && age ? age : null,
-            country: typeof country === "object" && country ? country : null,
-            aboutUs: typeof aboutUs === "object" && aboutUs ? aboutUs : null,
+            name: stringValue(asRecord(name)?.["name"]),
+            gender: stringValue(asRecord(gender)?.["gender"]),
+            age: numberValue(asRecord(age)?.["age"]),
+            country: {
+              isoCode: stringValue(asRecord(country)?.["isoCode"]),
+              name: stringValue(asRecord(country)?.["name"]),
+            },
+            aboutUs: {
+              source: stringValue(asRecord(aboutUs)?.["source"]),
+              other: stringValue(asRecord(aboutUs)?.["other"]),
+            },
             updatedAt: FieldValue.serverTimestamp(),
           },
           {merge: true},
