@@ -20,16 +20,37 @@ struct GiftPaywallView: View {
     // MARK: - Body
 
     var body: some View {
-        ZStack(alignment: .topLeading) {
-            Color.black090909
-                .ignoresSafeArea()
+        VStack(spacing: 16.fitW) {
+            Spacer(minLength: .zero)
 
             switch viewModel.state {
             case .teaser: TeaserState()
             case .offer: OfferState()
             }
+            VStack(spacing: 10.fitH) {
+                PrimaryButton(
+                    title: viewModel.state.action,
+                    onTap: viewModel.didTapContinueButton
+                )
+                CancelAnytimeView()
+                    .opacity(viewModel.state == .offer ? 1 : 0)
+            }
+            .padding(.horizontal, 16.fitW)
+
+            HStack(spacing: .zero) {
+                PrivacyButton(title: String(localized: "terms"), onTap: viewModel.didTapTermsButton)
+                Spacer(minLength: 6.fitW)
+                PrivacyButton(title: String(localized: "privacy"), onTap: viewModel.didTapPrivacyButton)
+                Spacer(minLength: 6.fitW)
+                PrivacyButton(title: String(localized: "restore"), onTap: viewModel.didTapRestoreButton)
+            }
+            .opacity(viewModel.state == .offer ? 1 : 0)
+            .padding(.horizontal, 16.fitW)
         }
         .animation(.easeInOut, value: viewModel.state)
+        .padding(.top, 20.fitH)
+        .padding(.bottom, 8.fitH)
+        .background(.black090909)
         .overlay(alignment: .topLeading) {
             if viewModel.state == .offer {
                 CloseButton()
@@ -62,7 +83,6 @@ extension GiftPaywallView {
             Image(.giftPaywallBox)
                 .resizable()
                 .frame(width: 256.fitW, height: 256.fitW)
-                .padding(.top, 56.fitH)
                 .padding(.bottom, 40.fitH)
 
             Text(viewModel.state.subtitle)
@@ -77,65 +97,37 @@ extension GiftPaywallView {
                 .font(.system(size: 46.fitW, weight: .heavy))
                 .foregroundStyle(.white.opacity(0.95))
                 .multilineTextAlignment(.center)
-
-            Spacer(minLength: .zero)
-
-            PrimaryButton(
-                title: viewModel.state.action,
-                onTap: viewModel.didTapContinueButton
-            )
         }
-        .padding(.top, 20.fitH)
         .padding(.horizontal, 16.fitW)
         .padding(.bottom, 16.fitH)
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .transition(.opacity)
     }
 
     private func OfferState() -> some View {
-        VStack(alignment: .leading, spacing: 16.fitH) {
-            Spacer(minLength: .zero)
+        VStack(alignment: .leading, spacing: 32.fitH) {
             VStack(alignment: .leading, spacing: .zero) {
                 Text(viewModel.state.title)
                     .multilineMinimumScale(lineLimit: 2)
                     .font(.system(size: 76.fitW, weight: .black))
                     .foregroundStyle(.white.opacity(0.95))
-                    .lineSpacing(-10.fitH)
+                    .lineSpacing(-20.fitH)
 
                 Text(viewModel.formatOfferDiscount())
                     .multilineMinimumScale()
                     .font(.system(size: 76.fitW, weight: .black))
                     .foregroundStyle(.blue007AFF)
-                    .padding(.bottom, 32.fitH)
-
-                Text(viewModel.state.subtitle)
-                    .multilineMinimumScale(lineLimit: 2)
-                    .font(.system(size: 46.fitW, weight: .heavy))
-                    .foregroundStyle(.white.opacity(0.3))
-                    .lineSpacing(-8.fitH)
             }
+
+            Text(viewModel.state.subtitle)
+                .multilineMinimumScale(lineLimit: 2)
+                .font(.system(size: 46.fitW, weight: .heavy))
+                .foregroundStyle(.white.opacity(0.3))
+                .lineSpacing(-12.fitH)
+
             PriceHighlight()
-                .padding(.bottom, 16.fitH)
-
-            VStack(spacing: 10.fitH) {
-                PrimaryButton(
-                    title: viewModel.state.action,
-                    onTap: viewModel.didTapContinueButton
-                )
-                CancelAnytimeView()
-
-                HStack(spacing: .zero) {
-                    PrivacyButton(title: String(localized: "terms"), onTap: viewModel.didTapTermsButton)
-                    Spacer(minLength: 6.fitW)
-                    PrivacyButton(title: String(localized: "privacy"), onTap: viewModel.didTapPrivacyButton)
-                    Spacer(minLength: 6.fitW)
-                    PrivacyButton(title: String(localized: "restore"), onTap: viewModel.didTapRestoreButton)
-                }
-            }
         }
-        .padding(.top, 20.fitH)
         .padding(.horizontal, 16.fitW)
-        .padding(.bottom, 8.fitH)
+        .padding(.bottom, 16.fitH)
         .transition(.opacity)
     }
 
@@ -178,7 +170,7 @@ extension GiftPaywallView {
                     .frame(height: 32.fitH)
                     .background(.green34C759)
                     .clipShape(.rect(cornerRadius: 8.fitW))
-                    .padding(.top, 16.fitH)
+                    .padding(.top, 10.fitH)
             }
             .frame(maxWidth: .infinity)
 
