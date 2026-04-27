@@ -225,7 +225,7 @@ extension OnboardingViewModel {
         Task { @MainActor in
             do {
                 try dataStorage.saveProfile(profile)
-                try await onboardingLogger.logResponses(
+                try? await onboardingLogger.logResponses(
                     name: name.trimmingCharacters(in: .whitespacesAndNewlines),
                     gender: gender,
                     age: age == .zero ? nil : age,
