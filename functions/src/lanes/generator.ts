@@ -83,8 +83,6 @@ export const generator = onCall(
       ),
       requestLogRef.set(
         {
-          requestId: requestLogRef.id,
-          assistant: "generator",
           status: "started",
           requestJson: body,
           createdAt: requestStartedAt,
