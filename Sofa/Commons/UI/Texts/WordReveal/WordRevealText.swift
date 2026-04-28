@@ -15,8 +15,8 @@ struct WordRevealText: View {
     let font: Font
     var revealedColor: Color = .white
     var hiddenColor: Color = .white.opacity(.zero)
-    var wordRevealDelay: Double = 0.25
-    var pauseAfterReveal: Double = 1.25
+    var wordRevealDelay: Double = 0.23
+    var pauseAfterReveal: Double = 1.15
     var animationDuration: Double = 0.25
     var onFinished: (() -> Void)?
 
