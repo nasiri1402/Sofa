@@ -35,10 +35,9 @@ final class GenerationResultViewModel {
     private let dataStorage: DataStorage
     private let storeManager: StoreManager
     private let isAfterLoader: Bool
-    private let shouldOfferGift: Bool
 
-    @ObservationIgnored @AppStorage(SofaConstants.AppStorage.isGiftOffered)
-    private var isGiftOffered = false
+    @ObservationIgnored @AppStorage(SofaConstants.AppStorage.isGiftAvailable)
+    private var isGiftAvailable = true
 
     // MARK: - Inits
 
@@ -54,7 +53,6 @@ final class GenerationResultViewModel {
         self.storeManager = storeManager
         self.project = project
         self.isAfterLoader = isAfterLoader
-        self.shouldOfferGift = isAfterLoader && project.hasLifetimeAccess
 
         initialize()
     }
@@ -118,8 +116,8 @@ extension GenerationResultViewModel {
     }
 
     private func offerGiftIfNeeded() {
-        guard !isPro, !isGiftOffered else { return }
-        isGiftOffered = true
+        guard isAfterLoader, project.hasLifetimeAccess, !isPro, isGiftAvailable else { return }
+        isGiftAvailable = false
         isGiftPaywallPresented = true
     }
 }

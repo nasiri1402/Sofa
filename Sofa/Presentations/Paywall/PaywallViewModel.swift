@@ -37,6 +37,9 @@ final class PaywallViewModel {
     private let analyticsManager: AnalyticsManager
     private let placement: PaywallModel.Placement
 
+    @ObservationIgnored @AppStorage(SofaConstants.AppStorage.isGiftAvailable)
+    private var isGiftAvailable = true
+
     // MARK: - Inits
 
     init(
@@ -201,6 +204,7 @@ extension PaywallViewModel {
             do {
                 let transaction = try await storeManager.purchaseProduct(product)
                 analyticsManager.logTransaction(transaction, product: product, for: placement)
+                isGiftAvailable = false
                 dismissTrigger = UUID()
             } catch StoreManagerError.purchaseCancelled {
                 return
