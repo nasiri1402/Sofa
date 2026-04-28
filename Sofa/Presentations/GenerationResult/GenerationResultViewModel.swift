@@ -17,7 +17,13 @@ final class GenerationResultViewModel {
     private(set) var project: Project
     var alertItem: AlertItem?
     var isDifficultyDialogPresented = false
-    var isPaywallPresented = false
+    var isPaywallPresented = false {
+        didSet {
+            guard oldValue != isPaywallPresented, !isPaywallPresented else { return }
+            offerGiftIfNeeded()
+        }
+    }
+    var isGiftPaywallPresented = false
 
     var isPro: Bool {
         storeManager.hasPurchasedProduct()
@@ -29,6 +35,10 @@ final class GenerationResultViewModel {
     private let dataStorage: DataStorage
     private let storeManager: StoreManager
     private let isAfterLoader: Bool
+    private let shouldOfferGift: Bool
+
+    @ObservationIgnored @AppStorage(SofaConstants.AppStorage.isGiftOffered)
+    private var isGiftOffered = false
 
     // MARK: - Inits
 
@@ -44,6 +54,7 @@ final class GenerationResultViewModel {
         self.storeManager = storeManager
         self.project = project
         self.isAfterLoader = isAfterLoader
+        self.shouldOfferGift = isAfterLoader && project.hasLifetimeAccess
 
         initialize()
     }
@@ -104,5 +115,11 @@ extension GenerationResultViewModel {
     private func initialize() {
         guard isAfterLoader, !isPro else { return }
         isPaywallPresented = true
+    }
+
+    private func offerGiftIfNeeded() {
+        guard !isPro, !isGiftOffered else { return }
+        isGiftOffered = true
+        isGiftPaywallPresented = true
     }
 }

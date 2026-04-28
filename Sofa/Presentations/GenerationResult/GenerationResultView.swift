@@ -58,6 +58,9 @@ struct GenerationResultView: View {
         .fullScreenCover(isPresented: $viewModel.isPaywallPresented) {
             PaywallCover()
         }
+        .fullScreenCover(isPresented: $viewModel.isGiftPaywallPresented) {
+            GiftPaywallCover()
+        }
         .alert(item: $viewModel.alertItem) { item in
             item.alert()
         }
@@ -141,6 +144,13 @@ struct GenerationResultView: View {
             networkMonitor: ServiceLayer.networkMonitor,
             analyticsManager: ServiceLayer.analyticsManager,
             placement: .generationResult
+        ))
+    }
+
+    private func GiftPaywallCover() -> some View {
+        GiftPaywallView(viewModel: GiftPaywallViewModel(
+            analyticsManager: ServiceLayer.analyticsManager,
+            storeManager: ServiceLayer.storeManager
         ))
     }
 }

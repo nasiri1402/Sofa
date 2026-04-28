@@ -37,6 +37,7 @@ enum SofaConstants {
         static let isBeforeLaunched = "isBeforeLaunched"
         static let isProfileCreated = "isProfileCreated"
         static let isNotificationsEnabled = "isNotificationsEnabled"
+        static let isGiftOffered = "isGiftOffered"
     }
 
     // MARK: - AppStore
