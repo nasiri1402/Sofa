@@ -20,7 +20,6 @@ struct BriefExperiencePage: View {
 
     // MARK: - Private Properties
 
-    @State private var phase: Phase = .one
     @State private var isSelectionEnabled = false
     @State private var topPadding: CGFloat = 256.fitH
     @State private var transitionTask: Task<Void, Never>?
@@ -31,9 +30,9 @@ struct BriefExperiencePage: View {
         VStack(alignment: .leading, spacing: 32.fitW) {
             if needsReveal {
                 WordRevealText(
-                    text: phase.text(timeframe: timeframe.name),
+                    text: String(localized: "howExperiencedAreYou"),
                     font: .system(size: 34.fitW, weight: .bold),
-                    onFinished: advanceToNextPhase
+                    onFinished: completeTitleReveal
                 )
                 .multilineTextAlignment(.leading)
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -60,7 +59,6 @@ struct BriefExperiencePage: View {
         .transition(.opacity)
         .onAppear {
             if needsReveal {
-                phase = .one
                 isSelectionEnabled = false
                 topPadding = 256.fitH
             } else {
@@ -106,20 +104,6 @@ struct BriefExperiencePage: View {
     // MARK: - Private Methods
 
     @MainActor
-    func advanceToNextPhase() {
-        guard let next = nextPhase(after: phase) else {
-            completeTitleReveal()
-            return
-        }
-        phase = next
-    }
-
-    func nextPhase(after phase: Phase) -> Phase? {
-        guard let index = Phase.allCases.firstIndex(of: phase) else { return nil }
-        return Phase.allCases[safe: index + 1]
-    }
-
-    @MainActor
     private func completeTitleReveal() {
         isPreviousEnabled = true
         transitionTask?.cancel()
@@ -127,24 +111,6 @@ struct BriefExperiencePage: View {
             withAnimation(.easeInOut) {
                 topPadding = 72.fitW
                 isSelectionEnabled = true
-            }
-        }
-    }
-}
-
-// MARK: - Types
-
-extension BriefExperiencePage {
-    enum Phase: Int, CaseIterable {
-        case one, two
-
-        func text(timeframe: String) -> String {
-            switch self {
-            case .one: String(
-                format: String(localized: "youHaveMonthItsGoodTimeframeForYourFirstExperiments") + " 🚀",
-                timeframe
-            )
-            case .two: String(localized: "howExperiencedAreYou")
             }
         }
     }

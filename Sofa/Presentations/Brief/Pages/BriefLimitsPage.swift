@@ -19,7 +19,6 @@ struct BriefLimitsPage: View {
 
     // MARK: - Private Properties
 
-    @State private var phase: Phase = .one
     @FocusState private var isFocused
     @State private var isInputEnabled = false
     @State private var topPadding: CGFloat = 256.fitH
@@ -31,9 +30,9 @@ struct BriefLimitsPage: View {
         VStack(alignment: .leading, spacing: 16.fitW) {
             if needsReveal {
                 WordRevealText(
-                    text: hasBudget ? phase.text : String(localized: "whatAreTheLimitsOrRequests"),
+                    text: String(localized: "whatAreTheLimitsOrRequests"),
                     font: .system(size: 34.fitW, weight: .bold),
-                    onFinished: hasBudget ? advanceToNextPhase : completeTitleReveal
+                    onFinished: completeTitleReveal
                 )
                 .multilineTextAlignment(.leading)
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -96,20 +95,6 @@ struct BriefLimitsPage: View {
     // MARK: - Private Methods
 
     @MainActor
-    func advanceToNextPhase() {
-        guard let next = nextPhase(after: phase) else {
-            completeTitleReveal()
-            return
-        }
-        phase = next
-    }
-
-    func nextPhase(after phase: Phase) -> Phase? {
-        guard let index = Phase.allCases.firstIndex(of: phase) else { return nil }
-        return Phase.allCases[safe: index + 1]
-    }
-
-    @MainActor
     private func completeTitleReveal() {
         isPreviousEnabled = true
         transitionTask?.cancel()
@@ -119,21 +104,6 @@ struct BriefLimitsPage: View {
                 isInputEnabled = true
             } completion: {
                 isFocused = true
-            }
-        }
-    }
-}
-
-// MARK: - Types
-
-extension BriefLimitsPage {
-    enum Phase: Int, CaseIterable {
-        case one, two
-
-        var text: String {
-            switch self {
-            case .one: String(localized: "goodBudgetToStartTakingAction") + " 💵"
-            case .two: String(localized: "whatAreTheLimitsOrRequests")
             }
         }
     }
