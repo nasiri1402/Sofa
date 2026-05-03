@@ -56,18 +56,18 @@ final class OnboardingViewModel {
     // MARK: - Private Properties
 
     private let dataStorage: DataStorage
-    private let onboardingLogger: OnboardingLogger
+    private let remoteStorage: RemoteStorage
     private let onFinish: () -> Void
 
     // MARK: - Inits
 
     init(
         dataStorage: DataStorage,
-        onboardingLogger: OnboardingLogger,
+        remoteStorage: RemoteStorage,
         onFinish: @escaping () -> Void
     ) {
         self.dataStorage = dataStorage
-        self.onboardingLogger = onboardingLogger
+        self.remoteStorage = remoteStorage
         self.onFinish = onFinish
     }
 }
@@ -225,7 +225,7 @@ extension OnboardingViewModel {
         Task { @MainActor in
             do {
                 try dataStorage.saveProfile(profile)
-                try? await onboardingLogger.logResponses(
+                try? await remoteStorage.setOnboardingResponses(
                     name: name.trimmingCharacters(in: .whitespacesAndNewlines),
                     gender: gender,
                     age: age == .zero ? nil : age,

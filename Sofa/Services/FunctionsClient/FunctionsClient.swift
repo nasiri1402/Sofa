@@ -11,7 +11,6 @@ import Foundation
 
 protocol FunctionsClient {
     func generator(request: GeneratorRequest) async throws -> GeneratorResponse
-    func onboardingResponses(request: OnboardingResponsesRequest) async throws
 }
 
 final class DefaultFunctionsClient: FunctionsClient {
@@ -36,10 +35,6 @@ final class DefaultFunctionsClient: FunctionsClient {
         return try decoder.decode(GeneratorResponse.self, from: data)
     }
 
-    func onboardingResponses(request: OnboardingResponsesRequest) async throws {
-        try await call(Function.onboardingResponses, request: request)
-    }
-
     // MARK: - Private Methods
 
     @discardableResult
@@ -61,6 +56,5 @@ final class DefaultFunctionsClient: FunctionsClient {
 extension DefaultFunctionsClient {
     enum Function {
         static let generator = "generator"
-        static let onboardingResponses = "onboardingResponses"
     }
 }

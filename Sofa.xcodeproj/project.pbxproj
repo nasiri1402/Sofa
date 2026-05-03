@@ -16,6 +16,7 @@
 		AB76C1C32EB9B06500419E57 /* Adapty in Frameworks */ = {isa = PBXBuildFile; productRef = AB76C1C22EB9B06500419E57 /* Adapty */; };
 		AB76C74F2EBAFB6100419E57 /* SwipeActions in Frameworks */ = {isa = PBXBuildFile; productRef = AB76C74E2EBAFB6100419E57 /* SwipeActions */; };
 		ABC95FB22EC7B96F00DF7127 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = ABC95FB12EC7B96F00DF7127 /* FirebaseAuth */; };
+		ABC978062FA7989600C0633C /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = ABC978052FA7989600C0633C /* FirebaseFirestore */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -51,6 +52,7 @@
 				AB76BD2D2EB9298900419E57 /* Lottie in Frameworks */,
 				AB76C74F2EBAFB6100419E57 /* SwipeActions in Frameworks */,
 				AB043E792EC4212600FAF796 /* FirebaseAnalytics in Frameworks */,
+				ABC978062FA7989600C0633C /* FirebaseFirestore in Frameworks */,
 				AB043E812EC4212600FAF796 /* FirebaseFunctions in Frameworks */,
 				ABC95FB22EC7B96F00DF7127 /* FirebaseAuth in Frameworks */,
 				AB043E7F2EC4212600FAF796 /* FirebaseCrashlytics in Frameworks */,
@@ -118,6 +120,7 @@
 				AB043E7E2EC4212600FAF796 /* FirebaseCrashlytics */,
 				AB043E802EC4212600FAF796 /* FirebaseFunctions */,
 				ABC95FB12EC7B96F00DF7127 /* FirebaseAuth */,
+				ABC978052FA7989600C0633C /* FirebaseFirestore */,
 			);
 			productName = Sofa;
 			productReference = AB6285FB2EB8FA65008669A0 /* Sofa.app */;
@@ -554,6 +557,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = AB043E772EC4212600FAF796 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseAuth;
+		};
+		ABC978052FA7989600C0633C /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AB043E772EC4212600FAF796 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
