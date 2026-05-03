@@ -92,16 +92,16 @@ export const generator = onCall(
         userDocument(uid).set(
           {
             uid,
-            updatedAt: requestStartedAt,
+            updated_at: requestStartedAt,
           },
           {merge: true},
         ),
         requestLogRef.set(
           {
             status: "started",
-            requestJson: body,
-            createdAt: requestStartedAt,
-            updatedAt: requestStartedAt,
+            request_json: body,
+            created_at: requestStartedAt,
+            updated_at: requestStartedAt,
           },
           {merge: true},
         ),
@@ -140,15 +140,15 @@ export const generator = onCall(
         requestLogRef.set(
           {
             status: "error",
-            responseJson: parsedRaw,
-            errorJson: {
+            response_json: parsedRaw,
+            error_json: {
               status: resp.status,
-              statusText: resp.statusText,
-              requestId: requestId ?? null,
+              status_text: resp.statusText,
+              request_id: requestId ?? null,
               body: parsedRaw,
             },
-            updatedAt: FieldValue.serverTimestamp(),
-            finishedAt: FieldValue.serverTimestamp(),
+            updated_at: FieldValue.serverTimestamp(),
+            finished_at: FieldValue.serverTimestamp(),
           },
           {merge: true},
         ),
@@ -191,16 +191,16 @@ export const generator = onCall(
         {
           status: "success",
           model: data?.model ?? body.model,
-          tokenUsage: {
-            promptTokens: inputTokens,
-            completionTokens: outputTokens,
-            totalTokens,
-            reasoningTokens,
-            outputTokens: visibleOutputTokens,
+          token_usage: {
+            prompt_tokens: inputTokens,
+            completion_tokens: outputTokens,
+            total_tokens: totalTokens,
+            reasoning_tokens: reasoningTokens,
+            output_tokens: visibleOutputTokens,
           },
-          responseJson: data,
-          updatedAt: FieldValue.serverTimestamp(),
-          finishedAt: FieldValue.serverTimestamp(),
+          response_json: data,
+          updated_at: FieldValue.serverTimestamp(),
+          finished_at: FieldValue.serverTimestamp(),
         },
         {merge: true},
       ),
