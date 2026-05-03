@@ -52,7 +52,7 @@ function numberValue(value: unknown): number | null {
 export const onboardingResponses = onCall(
   {
     region: "us-central1",
-    enforceAppCheck: false,
+    enforceAppCheck: true,
   },
   async (request) => {
     const uid = request.auth?.uid;

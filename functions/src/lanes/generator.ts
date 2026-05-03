@@ -32,13 +32,27 @@ function generatorRequestCollection(uid: string) {
 }
 
 /**
+ * Writes a generator log entry without failing the main function flow.
+ * @param {Promise<unknown>} operation
+ * @param {string} stage
+ * @return {Promise<void>}
+ */
+async function logSafely(operation: Promise<unknown>, stage: string) {
+  try {
+    await operation;
+  } catch (error) {
+    console.error("Generator logging failed", {stage, error});
+  }
+}
+
+/**
  * Generates a structured project plan with the OpenAI Responses API.
  */
 export const generator = onCall(
   {
     region: "us-central1",
     secrets: [OPENAI_API_KEY],
-    enforceAppCheck: false,
+    enforceAppCheck: true,
   },
   async (request) => {
     const uid = request.auth?.uid;
@@ -73,24 +87,27 @@ export const generator = onCall(
     const requestLogRef = generatorRequestCollection(uid).doc();
     const requestStartedAt = FieldValue.serverTimestamp();
 
-    await Promise.all([
-      userDocument(uid).set(
-        {
-          uid,
-          updatedAt: requestStartedAt,
-        },
-        {merge: true},
-      ),
-      requestLogRef.set(
-        {
-          status: "started",
-          requestJson: body,
-          createdAt: requestStartedAt,
-          updatedAt: requestStartedAt,
-        },
-        {merge: true},
-      ),
-    ]);
+    await logSafely(
+      Promise.all([
+        userDocument(uid).set(
+          {
+            uid,
+            updatedAt: requestStartedAt,
+          },
+          {merge: true},
+        ),
+        requestLogRef.set(
+          {
+            status: "started",
+            requestJson: body,
+            createdAt: requestStartedAt,
+            updatedAt: requestStartedAt,
+          },
+          {merge: true},
+        ),
+      ]),
+      "started",
+    );
 
     const resp = await fetch("https://api.openai.com/v1/responses", {
       method: "POST",
@@ -119,20 +136,23 @@ export const generator = onCall(
         requestId,
       });
 
-      await requestLogRef.set(
-        {
-          status: "error",
-          responseJson: parsedRaw,
-          errorJson: {
-            status: resp.status,
-            statusText: resp.statusText,
-            requestId: requestId ?? null,
-            body: parsedRaw,
+      await logSafely(
+        requestLogRef.set(
+          {
+            status: "error",
+            responseJson: parsedRaw,
+            errorJson: {
+              status: resp.status,
+              statusText: resp.statusText,
+              requestId: requestId ?? null,
+              body: parsedRaw,
+            },
+            updatedAt: FieldValue.serverTimestamp(),
+            finishedAt: FieldValue.serverTimestamp(),
           },
-          updatedAt: FieldValue.serverTimestamp(),
-          finishedAt: FieldValue.serverTimestamp(),
-        },
-        {merge: true},
+          {merge: true},
+        ),
+        "error",
       );
 
       throw new HttpsError(
@@ -166,22 +186,25 @@ export const generator = onCall(
       requestId,
     });
 
-    await requestLogRef.set(
-      {
-        status: "success",
-        model: data?.model ?? body.model,
-        tokenUsage: {
-          promptTokens: inputTokens,
-          completionTokens: outputTokens,
-          totalTokens,
-          reasoningTokens,
-          outputTokens: visibleOutputTokens,
+    await logSafely(
+      requestLogRef.set(
+        {
+          status: "success",
+          model: data?.model ?? body.model,
+          tokenUsage: {
+            promptTokens: inputTokens,
+            completionTokens: outputTokens,
+            totalTokens,
+            reasoningTokens,
+            outputTokens: visibleOutputTokens,
+          },
+          responseJson: data,
+          updatedAt: FieldValue.serverTimestamp(),
+          finishedAt: FieldValue.serverTimestamp(),
         },
-        responseJson: data,
-        updatedAt: FieldValue.serverTimestamp(),
-        finishedAt: FieldValue.serverTimestamp(),
-      },
-      {merge: true},
+        {merge: true},
+      ),
+      "success",
     );
 
     return data;
