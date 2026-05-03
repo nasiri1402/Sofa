@@ -162,42 +162,11 @@ export const generator = onCall(
     }
 
     const data = parsedRaw as Record<string, unknown>;
-    const usage = asRecord(data.usage);
-    const outputTokensDetails = asRecord(usage?.["output_tokens_details"]);
-
-    const inputTokens = numberValue(usage?.["input_tokens"]);
-    const outputTokens = numberValue(usage?.["output_tokens"]);
-    const totalTokens = Number(
-      usage?.["total_tokens"] ?? inputTokens + outputTokens,
-    );
-    const reasoningTokens = Number(
-      outputTokensDetails?.["reasoning_tokens"] ?? 0,
-    );
-    const visibleOutputTokens = Math.max(0, outputTokens - reasoningTokens);
-
-    console.log("OpenAI responses usage", {
-      uid,
-      model: data?.model,
-      inputTokens,
-      outputTokens,
-      reasoningTokens,
-      visibleOutputTokens,
-      totalTokens,
-      requestId,
-    });
-
     await logSafely(
       requestLogRef.set(
         {
           status: "success",
           model: data?.model ?? body.model,
-          token_usage: {
-            prompt_tokens: inputTokens,
-            completion_tokens: outputTokens,
-            total_tokens: totalTokens,
-            reasoning_tokens: reasoningTokens,
-            output_tokens: visibleOutputTokens,
-          },
           response_json: data,
           updated_at: FieldValue.serverTimestamp(),
           finished_at: FieldValue.serverTimestamp(),
@@ -210,23 +179,3 @@ export const generator = onCall(
     return data;
   },
 );
-
-/**
- * Safely converts an unknown value into a record if possible.
- * @param {unknown} value
- * @return {Record<string, unknown> | null}
- */
-function asRecord(value: unknown): Record<string, unknown> | null {
-  return typeof value === "object" && value !== null ?
-    value as Record<string, unknown> :
-    null;
-}
-
-/**
- * Converts an unknown numeric payload field into a number.
- * @param {unknown} value
- * @return {number}
- */
-function numberValue(value: unknown): number {
-  return Number(value ?? 0);
-}
