@@ -16,6 +16,6 @@ struct TextFieldAlertItem: Identifiable {
     let message: String
     let submitTitle: String
     let placeholder: String
-    @Binding var inputText: String
-    let onSubmit: () -> Void
+    var inputText: String
+    let onSubmit: (String) -> Void
 }

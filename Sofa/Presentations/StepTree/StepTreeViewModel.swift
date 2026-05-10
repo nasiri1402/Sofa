@@ -18,8 +18,6 @@ final class StepTreeViewModel {
     private(set) var selectedWeek: Project.Plan.Week?
     private(set) var lockedWeeks: [Project.Plan.Week] = []
     var stepToMenu: Project.Plan.Step?
-    var stepToRename: Project.Plan.Step?
-    var renameStepInput = ""
     var textFieldAlertItem: TextFieldAlertItem?
     var alertItem: AlertItem?
     var isWellDone = false
@@ -113,23 +111,15 @@ extension StepTreeViewModel {
     func didTapRenameStepButton() {
         guard let step = stepToMenu else { return }
         stepToMenu = nil
-        stepToRename = step
-        renameStepInput = step.title
         textFieldAlertItem = TextFieldAlertItem(
             title: String(localized: "changeTheNameOfTheStep"),
             message: String(localized: "youCanRenameTheStepAtAnyTime"),
             submitTitle: String(localized: "rename"),
             placeholder: String(localized: "enterStepName"),
-            inputText: Binding(
-                get: { [weak self] in self?.renameStepInput ?? "" },
-                set: { [weak self] in self?.renameStepInput = $0 }
-            ),
-            onSubmit: { [weak self] in
-                guard let self, let step = stepToRename else { return }
-                let renamed = renameStepInput.trimmingCharacters(in: .whitespacesAndNewlines)
-                textFieldAlertItem = nil
-                stepToRename = nil
-                renameStepInput.removeAll()
+            inputText: step.title,
+            onSubmit: { [weak self] newValue in
+                guard let self else { return }
+                let renamed = newValue.trimmingCharacters(in: .whitespacesAndNewlines)
                 guard !renamed.isEmpty, renamed != step.title else { return }
                 renameStep(step, title: renamed)
             }

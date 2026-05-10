@@ -60,7 +60,7 @@ extension View {
                 item.wrappedValue = nil
             }
             Button(item.wrappedValue?.submitTitle ?? "") {
-                item.wrappedValue?.onSubmit()
+                item.wrappedValue?.onSubmit(item.wrappedValue?.inputText ?? "")
                 item.wrappedValue = nil
             }
         } message: {
