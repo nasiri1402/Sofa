@@ -17,6 +17,7 @@ final class StepTreeViewModel {
     private(set) var plan: Project.Plan
     private(set) var selectedWeek: Project.Plan.Week?
     private(set) var lockedWeeks: [Project.Plan.Week] = []
+    var stepToMenu: Project.Plan.Step?
     var alertItem: AlertItem?
     var isWellDone = false
     var isPaywallPresented = false {
@@ -96,6 +97,22 @@ extension StepTreeViewModel {
         selectedWeek = week
         isWellDone = plan.isCompleted
         saveProject()
+    }
+
+    func didTapStepMenuButton(_ step: Project.Plan.Step) {
+        stepToMenu = step
+    }
+
+    func didTapAskAssistantStepButton() {
+        stepToMenu = nil
+    }
+
+    func didTapRenameStepButton() {
+        stepToMenu = nil
+    }
+
+    func didTapDeleteStepButton() {
+        stepToMenu = nil
     }
 
     func didTapViewPlanButton() {

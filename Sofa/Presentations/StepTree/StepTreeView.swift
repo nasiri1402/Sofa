@@ -187,20 +187,67 @@ struct StepTreeView: View {
     }
 
     private func StepButton(_ step: Project.Plan.Step) -> some View {
-        Button {
-            viewModel.didTapStepButton(step)
-        } label: {
-            HStack(alignment: .top, spacing: 6.fitW) {
-                Image(step.isCompleted ? .checkboxCircleSelectedYellow : .checkboxCircleUnselected)
-                    .resizable()
-                    .frame(width: 24.fitW, height: 24.fitW)
+        HStack(alignment: .top, spacing: .zero) {
+            Button {
+                viewModel.didTapStepButton(step)
+            } label: {
+                HStack(alignment: .top, spacing: .zero) {
+                    Image(step.isCompleted ? .checkboxCircleSelectedYellow : .checkboxCircleUnselected)
+                        .resizable()
+                        .frame(width: 24.fitW, height: 24.fitW)
 
-                Text(step.title)
-                    .font(.system(size: 15.fitW))
-                    .foregroundStyle(.grayD1D1D6)
-                    .frame(minHeight: 24.fitW)
+                    Text(step.title)
+                        .font(.system(size: 15.fitW))
+                        .foregroundStyle(.grayD1D1D6)
+                        .frame(minHeight: 24.fitW)
+                        .padding(.horizontal, 6.fitW)
+
+                    Spacer(minLength: .zero)
+                }
+                .contentShape(.rect)
             }
-            .contentShape(.rect)
+            .buttonStyle(.plain)
+            .hapticFeedback()
+
+            StepMenuButton(step)
+                .confirmationDialog(
+                    String(localized: "stepMenuDialogTitle"),
+                    isPresented: Binding(
+                        get: { viewModel.stepToMenu == step },
+                        set: {
+                            if $0 {
+                                viewModel.stepToMenu = nil
+                            }
+                        }
+                    ),
+                    titleVisibility: .visible
+                ) {
+                    Button(String(localized: "askAIAssistant")) {
+                        viewModel.didTapAskAssistantStepButton()
+                    }
+                    Button(String(localized: "rename")) {
+                        viewModel.didTapRenameStepButton()
+                    }
+                    Button(String(localized: "delete"), role: .destructive) {
+                        viewModel.didTapDeleteStepButton()
+                    }
+                    Button(String(localized: "cancel"), role: .cancel) {}
+                } message: {
+                    if let step = viewModel.stepToMenu {
+                        Text(step.title)
+                    }
+                }
+        }
+    }
+
+    private func StepMenuButton(_ step: Project.Plan.Step) -> some View {
+        Button {
+            viewModel.didTapStepMenuButton(step)
+        } label: {
+            Image(.menu)
+                .resizable()
+                .frame(width: 24.fitW, height: 24.fitW)
+                .contentShape(.rect)
         }
         .buttonStyle(.plain)
         .hapticFeedback()
