@@ -116,6 +116,20 @@ extension StepTreeViewModel {
         saveProject()
     }
 
+    func didMoveStep(from offsets: IndexSet, to offset: Int) {
+        guard var week = selectedWeek else { return }
+        week.steps.move(fromOffsets: offsets, toOffset: offset)
+        week.steps = week.steps.enumerated().map { index, step in
+            Project.Plan.Step(
+                id: step.id,
+                title: step.title,
+                number: index + 1,
+                isCompleted: step.isCompleted
+            )
+        }
+        updateWeek(week)
+    }
+
     func didTapStepMenuButton(_ step: Project.Plan.Step) {
         stepToMenu = step
     }

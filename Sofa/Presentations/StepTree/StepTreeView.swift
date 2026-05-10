@@ -25,26 +25,37 @@ struct StepTreeView: View {
             Color.black090909
                 .ignoresSafeArea()
 
-            ScrollView {
-                VStack(alignment: .leading, spacing: 16.fitW) {
-                    PlanInfoView()
-                        .padding(.horizontal, 16.fitW)
-                        .padding(.bottom, 8.fitW)
+            List {
+                PlanInfoView()
+                    .padding(.horizontal, 16.fitW)
+                    .padding(.bottom, 24.fitW)
+                    .plainListRowStyle()
 
-                    if viewModel.isWellDone {
-                        WellDoneView()
+                if viewModel.isWellDone {
+                    WellDoneView()
+                        .padding(.horizontal, 16.fitW)
+                        .plainListRowStyle()
+                } else {
+                    WeeksScrollView()
+                        .padding(.bottom, 8.fitW)
+                        .plainListRowStyle()
+
+                    ForEach(viewModel.selectedWeek?.steps ?? [], id: \.id) { step in
+                        StepButton(step)
                             .padding(.horizontal, 16.fitW)
-                    } else {
-                        WeeksScrollView()
-                        ForEach(viewModel.selectedWeek?.steps ?? [], id: \.id) { step in
-                            StepButton(step)
-                                .padding(.horizontal, 16.fitW)
-                        }
-                        AddStepButton()
-                            .padding(.horizontal, 16.fitW)
+                            .padding(.vertical, 8.fitW)
+                            .plainListRowStyle()
                     }
+                    .onMove(perform: viewModel.didMoveStep)
+
+                    AddStepButton()
+                        .padding(.horizontal, 16.fitW)
+                        .padding(.top, 8.fitW)
+                        .plainListRowStyle()
                 }
             }
+            .listStyle(.plain)
+            .scrollContentBackground(.hidden)
             .scrollIndicators(.hidden)
             .scrollBounceBehavior(.basedOnSize)
             .contentMargins(.vertical, 24.fitW, for: .scrollContent)

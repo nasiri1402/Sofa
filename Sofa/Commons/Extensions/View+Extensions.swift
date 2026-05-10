@@ -67,6 +67,13 @@ extension View {
             Text(item.wrappedValue?.message ?? "")
         }
     }
+
+    func plainListRowStyle() -> some View {
+        self
+            .listRowInsets(EdgeInsets(top: .zero, leading: .zero, bottom: .zero, trailing: .zero))
+            .listRowBackground(Color.clear)
+            .listRowSeparator(.hidden)
+    }
 }
 
 // MARK: - Modifiers
