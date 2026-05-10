@@ -8,11 +8,16 @@
 import SwiftUI
 
 struct AlertItem: Identifiable {
+
+    // MARK: - Public Properties
+
     let id = UUID()
     let title: Text
     let message: Text
     let primaryButton: Alert.Button
     var secondaryButton: Alert.Button?
+
+    // MARK: - Public Methods
 
     func alert() -> Alert {
         if let secondaryButton {
@@ -27,6 +32,8 @@ struct AlertItem: Identifiable {
         }
     }
 }
+
+// MARK: - Defaults
 
 extension AlertItem {
     static func error(message: String, action: @escaping () -> Void = {}) -> AlertItem {

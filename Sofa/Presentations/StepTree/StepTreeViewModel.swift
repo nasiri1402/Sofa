@@ -18,6 +18,9 @@ final class StepTreeViewModel {
     private(set) var selectedWeek: Project.Plan.Week?
     private(set) var lockedWeeks: [Project.Plan.Week] = []
     var stepToMenu: Project.Plan.Step?
+    var stepToRename: Project.Plan.Step?
+    var renameStepInput = ""
+    var textFieldAlertItem: TextFieldAlertItem?
     var alertItem: AlertItem?
     var isWellDone = false
     var isPaywallPresented = false {
@@ -108,7 +111,29 @@ extension StepTreeViewModel {
     }
 
     func didTapRenameStepButton() {
+        guard let step = stepToMenu else { return }
         stepToMenu = nil
+        stepToRename = step
+        renameStepInput = step.title
+        textFieldAlertItem = TextFieldAlertItem(
+            title: String(localized: "changeTheNameOfTheStep"),
+            message: String(localized: "youCanRenameTheStepAtAnyTime"),
+            submitTitle: String(localized: "rename"),
+            placeholder: String(localized: "enterStepName"),
+            inputText: Binding(
+                get: { [weak self] in self?.renameStepInput ?? "" },
+                set: { [weak self] in self?.renameStepInput = $0 }
+            ),
+            onSubmit: { [weak self] in
+                guard let self, let step = stepToRename else { return }
+                let renamed = renameStepInput.trimmingCharacters(in: .whitespacesAndNewlines)
+                textFieldAlertItem = nil
+                stepToRename = nil
+                renameStepInput.removeAll()
+                guard !renamed.isEmpty, renamed != step.title else { return }
+                renameStep(step, title: renamed)
+            }
+        )
     }
 
     func didTapDeleteStepButton() {
@@ -162,9 +187,32 @@ extension StepTreeViewModel {
         guard var week = selectedWeek,
               let stepIndex = week.steps.firstIndex(where: { $0.id == step.id })
         else { return }
-        
+
         week.steps.remove(at: stepIndex)
 
+        guard let weekIndex = plan.weeks.firstIndex(where: { $0.id == week.id }),
+              let planIndex = project.plans.firstIndex(where: { $0.id == plan.id })
+        else { return }
+
+        plan.weeks[weekIndex] = week
+        project.plans[planIndex] = plan
+        selectedWeek = week
+        isWellDone = plan.isCompleted
+        saveProject()
+    }
+
+    private func renameStep(_ step: Project.Plan.Step, title: String) {
+        guard var week = selectedWeek,
+              let stepIndex = week.steps.firstIndex(where: { $0.id == step.id })
+        else { return }
+
+        let step = week.steps[stepIndex]
+        week.steps[stepIndex] = Project.Plan.Step(
+            id: step.id,
+            title: title,
+            number: step.number,
+            isCompleted: step.isCompleted
+        )
         guard let weekIndex = plan.weeks.firstIndex(where: { $0.id == week.id }),
               let planIndex = project.plans.firstIndex(where: { $0.id == plan.id })
         else { return }

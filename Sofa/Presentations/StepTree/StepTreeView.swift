@@ -64,6 +64,7 @@ struct StepTreeView: View {
         .alert(item: $viewModel.alertItem) { item in
             item.alert()
         }
+        .textFieldAlert(item: $viewModel.textFieldAlertItem)
         .fullScreenCover(isPresented: $viewModel.isPaywallPresented) {
             PaywallCover()
         }
@@ -201,6 +202,8 @@ struct StepTreeView: View {
                         .foregroundStyle(.grayD1D1D6)
                         .frame(minHeight: 24.fitW)
                         .padding(.horizontal, 6.fitW)
+                        .contentTransition(.numericText())
+                        .animation(.easeInOut, value: step.title)
 
                     Spacer(minLength: .zero)
                 }

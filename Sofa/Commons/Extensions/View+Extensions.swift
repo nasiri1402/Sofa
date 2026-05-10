@@ -9,35 +9,63 @@ import SwiftUI
 
 extension View {
     func navigationBarLeadingButton(icon: ImageResource, action: @escaping () -> Void) -> some View {
-        self
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Button(action: action) {
-                        Image(icon)
-                            .resizable()
-                            .frame(width: 24.fitW, height: 24.fitW)
-                            .animation(.easeInOut, value: icon)
-                            .contentShape(.rect)
-                    }
-                    .buttonStyle(.plain)
+        toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Button(action: action) {
+                    Image(icon)
+                        .resizable()
+                        .frame(width: 24.fitW, height: 24.fitW)
+                        .animation(.easeInOut, value: icon)
+                        .contentShape(.rect)
                 }
+                .buttonStyle(.plain)
             }
+        }
     }
 
     func navigationBarTrailingButton(icon: ImageResource, action: @escaping () -> Void) -> some View {
-        self
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button(action: action) {
-                        Image(icon)
-                            .resizable()
-                            .frame(width: 24.fitW, height: 24.fitW)
-                            .animation(.easeInOut, value: icon)
-                            .contentShape(.rect)
-                    }
-                    .buttonStyle(.plain)
+        toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button(action: action) {
+                    Image(icon)
+                        .resizable()
+                        .frame(width: 24.fitW, height: 24.fitW)
+                        .animation(.easeInOut, value: icon)
+                        .contentShape(.rect)
                 }
+                .buttonStyle(.plain)
             }
+        }
+    }
+
+    func textFieldAlert(item: Binding<TextFieldAlertItem?>) -> some View {
+        alert(
+            item.wrappedValue?.title ?? "",
+            isPresented: Binding(
+                get: { item.wrappedValue != nil },
+                set: {
+                    guard !$0 else { return }
+                    item.wrappedValue = nil
+                }
+            )
+        ) {
+            TextField(
+                item.wrappedValue?.placeholder ?? "",
+                text: Binding(
+                    get: { item.wrappedValue?.inputText ?? "" },
+                    set: { item.wrappedValue?.inputText = $0 }
+                )
+            )
+            Button(String(localized: "cancel"), role: .cancel) {
+                item.wrappedValue = nil
+            }
+            Button(item.wrappedValue?.submitTitle ?? "") {
+                item.wrappedValue?.onSubmit()
+                item.wrappedValue = nil
+            }
+        } message: {
+            Text(item.wrappedValue?.message ?? "")
+        }
     }
 }
 
@@ -52,12 +80,7 @@ extension View {
         _ feedbackType: HapticFeedbackType = .impact(.light),
         isEnabled: Bool = true
     ) -> some View {
-        modifier(
-            HapticFeedbackModifier(
-                feedbackType: feedbackType,
-                isEnabled: isEnabled
-            )
-        )
+        modifier(HapticFeedbackModifier(feedbackType: feedbackType, isEnabled: isEnabled))
     }
 
     /// Отслеживает высоту клавиатуры и передает её в замыкание.
