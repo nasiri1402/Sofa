@@ -112,7 +112,17 @@ extension StepTreeViewModel {
     }
 
     func didTapDeleteStepButton() {
+        guard let step = stepToMenu else { return }
         stepToMenu = nil
+        alertItem = AlertItem(
+            title: Text(String(localized: "deleteStep")),
+            message: Text(String(localized: "deleteStepMessage")),
+            primaryButton: .destructive(Text(String(localized: "delete"))) { [weak self] in
+                guard let self else { return }
+                deleteStep(step)
+            },
+            secondaryButton: .cancel(Text(String(localized: "cancel")))
+        )
     }
 
     func didTapViewPlanButton() {
@@ -146,5 +156,23 @@ extension StepTreeViewModel {
     private func isWeekLocked(_ week: Project.Plan.Week) -> Bool {
         guard !storeManager.hasPurchasedProduct(), !project.hasLifetimeAccess else { return false }
         return week.number != 1
+    }
+
+    private func deleteStep(_ step: Project.Plan.Step) {
+        guard var week = selectedWeek,
+              let stepIndex = week.steps.firstIndex(where: { $0.id == step.id })
+        else { return }
+        
+        week.steps.remove(at: stepIndex)
+
+        guard let weekIndex = plan.weeks.firstIndex(where: { $0.id == week.id }),
+              let planIndex = project.plans.firstIndex(where: { $0.id == plan.id })
+        else { return }
+
+        plan.weeks[weekIndex] = week
+        project.plans[planIndex] = plan
+        selectedWeek = week
+        isWellDone = plan.isCompleted
+        saveProject()
     }
 }

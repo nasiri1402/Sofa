@@ -215,7 +215,7 @@ struct StepTreeView: View {
                     isPresented: Binding(
                         get: { viewModel.stepToMenu == step },
                         set: {
-                            if $0 {
+                            if !$0 {
                                 viewModel.stepToMenu = nil
                             }
                         }

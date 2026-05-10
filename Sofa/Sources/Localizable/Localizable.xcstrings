@@ -2868,6 +2868,116 @@
         }
       }
     },
+    "deleteStep" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete step"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Удалить шаг"
+          }
+        }
+      }
+    },
+    "deleteStepMessage" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Das Loschen erfolgt sofort und dieser Schritt kann nicht ruckgangig gemacht werden."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The deletion will be instant, you will not be able to undo this step"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La eliminacion sera inmediata y no podras deshacer este paso."
+          }
+        },
+        "es-MX" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La eliminacion sera inmediata y no podras deshacer este paso."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La suppression sera immediate et vous ne pourrez pas annuler cette etape."
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La suppression sera immediate et vous ne pourrez pas annuler cette etape."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yeh turant delete ho jayega, aap is step ko undo nahi kar paenge."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Penghapusan akan langsung dilakukan, Anda tidak akan bisa membatalkan langkah ini."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L'eliminazione sara immediata e non potrai annullare questo passaggio."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "削除はすぐに実行され、このステップは元に戻せません。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "삭제는 즉시 진행되며 이 단계는 되돌릴 수 없습니다."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A exclusao sera instantanea e voce nao podera desfazer esta etapa."
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A eliminacao sera imediata e nao podera desfazer este passo."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Удаление произойдет сразу, отменить удаление этого шага будет нельзя"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Silme islemi aninda gerceklesecek ve bu adimi geri alamayacaksiniz."
+          }
+        }
+      }
+    },
     "deviceModelFormat" : {
       "localizations" : {
         "de" : {
