@@ -76,7 +76,19 @@ extension StepTreeViewModel {
     }
 
     func didTapAddStepButton() {
-        
+        textFieldAlertItem = TextFieldAlertItem(
+            title: String(localized: "addNewStep"),
+            message: String(localized: "youCanRenameTheStepAtAnyTime"),
+            submitTitle: String(localized: "add"),
+            placeholder: String(localized: "nameYourStep"),
+            inputText: "",
+            onSubmit: { [weak self] newValue in
+                guard let self else { return }
+                let title = newValue.trimmingCharacters(in: .whitespacesAndNewlines)
+                guard !title.isEmpty else { return }
+                addStep(title: title)
+            }
+        )
     }
 
     func didTapWeekButton(_ week: Project.Plan.Week) {
@@ -119,7 +131,7 @@ extension StepTreeViewModel {
             title: String(localized: "changeTheNameOfTheStep"),
             message: String(localized: "youCanRenameTheStepAtAnyTime"),
             submitTitle: String(localized: "rename"),
-            placeholder: String(localized: "enterStepName"),
+            placeholder: String(localized: "nameYourStep"),
             inputText: step.title,
             onSubmit: { [weak self] newValue in
                 guard let self else { return }
@@ -177,22 +189,27 @@ extension StepTreeViewModel {
         return week.number != 1
     }
 
-    private func deleteStep(_ step: Project.Plan.Step) {
-        guard var week = selectedWeek,
-              let stepIndex = week.steps.firstIndex(where: { $0.id == step.id })
-        else { return }
-
-        week.steps.remove(at: stepIndex)
-
+    private func updateWeek(_ week: Project.Plan.Week) {
         guard let weekIndex = plan.weeks.firstIndex(where: { $0.id == week.id }),
               let planIndex = project.plans.firstIndex(where: { $0.id == plan.id })
         else { return }
-
         plan.weeks[weekIndex] = week
         project.plans[planIndex] = plan
         selectedWeek = week
         isWellDone = plan.isCompleted
         saveProject()
+    }
+
+    private func addStep(title: String) {
+        guard var week = selectedWeek else { return }
+        let step = Project.Plan.Step(
+            id: UUID(),
+            title: title,
+            number: (week.steps.map(\.number).max() ?? .zero) + 1,
+            isCompleted: false
+        )
+        week.steps.append(step)
+        updateWeek(week)
     }
 
     private func renameStep(_ step: Project.Plan.Step, title: String) {
@@ -207,14 +224,14 @@ extension StepTreeViewModel {
             number: step.number,
             isCompleted: step.isCompleted
         )
-        guard let weekIndex = plan.weeks.firstIndex(where: { $0.id == week.id }),
-              let planIndex = project.plans.firstIndex(where: { $0.id == plan.id })
-        else { return }
+        updateWeek(week)
+    }
 
-        plan.weeks[weekIndex] = week
-        project.plans[planIndex] = plan
-        selectedWeek = week
-        isWellDone = plan.isCompleted
-        saveProject()
+    private func deleteStep(_ step: Project.Plan.Step) {
+        guard var week = selectedWeek,
+              let stepIndex = week.steps.firstIndex(where: { $0.id == step.id })
+        else { return }
+        week.steps.remove(at: stepIndex)
+        updateWeek(week)
     }
 }
