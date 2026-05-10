@@ -75,6 +75,10 @@ extension StepTreeViewModel {
         saveProject()
     }
 
+    func didTapAddStepButton() {
+        
+    }
+
     func didTapWeekButton(_ week: Project.Plan.Week) {
         guard !isWeekLocked(week) else {
             isPaywallPresented = true

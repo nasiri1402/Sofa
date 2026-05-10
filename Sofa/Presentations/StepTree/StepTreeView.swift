@@ -40,6 +40,8 @@ struct StepTreeView: View {
                             StepButton(step)
                                 .padding(.horizontal, 16.fitW)
                         }
+                        AddStepButton()
+                            .padding(.horizontal, 16.fitW)
                     }
                 }
             }
@@ -213,33 +215,6 @@ struct StepTreeView: View {
             .hapticFeedback()
 
             StepMenuButton(step)
-                .confirmationDialog(
-                    String(localized: "stepMenuDialogTitle"),
-                    isPresented: Binding(
-                        get: { viewModel.stepToMenu == step },
-                        set: {
-                            if !$0 {
-                                viewModel.stepToMenu = nil
-                            }
-                        }
-                    ),
-                    titleVisibility: .visible
-                ) {
-                    Button(String(localized: "askAIAssistant")) {
-                        viewModel.didTapAskAssistantStepButton()
-                    }
-                    Button(String(localized: "rename")) {
-                        viewModel.didTapRenameStepButton()
-                    }
-                    Button(String(localized: "delete"), role: .destructive) {
-                        viewModel.didTapDeleteStepButton()
-                    }
-                    Button(String(localized: "cancel"), role: .cancel) {}
-                } message: {
-                    if let step = viewModel.stepToMenu {
-                        Text(step.title)
-                    }
-                }
         }
     }
 
@@ -251,6 +226,51 @@ struct StepTreeView: View {
                 .resizable()
                 .frame(width: 24.fitW, height: 24.fitW)
                 .contentShape(.rect)
+        }
+        .buttonStyle(.plain)
+        .hapticFeedback()
+        .confirmationDialog(
+            String(localized: "stepMenuDialogTitle"),
+            isPresented: Binding(
+                get: { viewModel.stepToMenu == step },
+                set: {
+                    if !$0 {
+                        viewModel.stepToMenu = nil
+                    }
+                }
+            ),
+            titleVisibility: .visible
+        ) {
+            Button(String(localized: "askAIAssistant")) {
+                viewModel.didTapAskAssistantStepButton()
+            }
+            Button(String(localized: "rename")) {
+                viewModel.didTapRenameStepButton()
+            }
+            Button(String(localized: "delete"), role: .destructive) {
+                viewModel.didTapDeleteStepButton()
+            }
+            Button(String(localized: "cancel"), role: .cancel) {}
+        } message: {
+            if let step = viewModel.stepToMenu {
+                Text(step.title)
+            }
+        }
+    }
+
+    private func AddStepButton() -> some View {
+        Button(action: viewModel.didTapAddStepButton) {
+            HStack(spacing: 4.fitW) {
+                Image(.plusCircle)
+                    .resizable()
+                    .frame(width: 24.fitW, height: 24.fitW)
+
+                Text(String(localized: "addNewOwnStep"))
+                    .font(.system(size: 15.fitW))
+                    .foregroundStyle(.blue007AFF)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .contentShape(.rect)
         }
         .buttonStyle(.plain)
         .hapticFeedback()
