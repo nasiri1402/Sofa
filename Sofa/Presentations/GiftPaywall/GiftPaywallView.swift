@@ -113,24 +113,34 @@ extension GiftPaywallView {
     private func OfferState() -> some View {
         VStack(alignment: .leading, spacing: 32.fitH) {
             VStack(alignment: .leading, spacing: .zero) {
-                Text(viewModel.state.title)
-                    .multilineMinimumScale(lineLimit: 2)
-                    .font(.system(size: 76.fitW, weight: .black))
-                    .foregroundStyle(.white.opacity(0.95))
-                    .lineSpacing(-20.fitH)
-
-                Text(viewModel.formatOfferDiscount())
-                    .multilineMinimumScale()
-                    .font(.system(size: 76.fitW, weight: .black))
-                    .foregroundStyle(.blue007AFF)
+                AdaptiveText(
+                    viewModel.state.title,
+                    fonts: [76, 72, 68, 64, 60, 56].map {
+                        .system(size: $0, weight: .black)
+                    },
+                    color: .white.opacity(0.95),
+                    lineLimit: 2,
+                    lineSpacing: -20.fitH
+                )
+                AdaptiveText(
+                    viewModel.formatOfferDiscount(),
+                    fonts: [76, 72, 68, 64, 60, 56].map {
+                        .system(size: $0, weight: .black)
+                    },
+                    color: .blue007AFF,
+                    lineLimit: 1,
+                    lineSpacing: -20.fitH
+                )
             }
-
-            Text(viewModel.state.subtitle)
-                .multilineMinimumScale(lineLimit: 2)
-                .font(.system(size: 46.fitW, weight: .heavy))
-                .foregroundStyle(.white.opacity(0.3))
-                .lineSpacing(-12.fitH)
-
+            AdaptiveText(
+                viewModel.state.subtitle,
+                fonts: [46, 42, 38, 34, 30].map {
+                    .system(size: $0, weight: .heavy)
+                },
+                color: .white.opacity(0.3),
+                lineLimit: 3,
+                lineSpacing: -12.fitH
+            )
             PriceHighlight()
         }
         .padding(.horizontal, 16.fitW)
@@ -214,5 +224,24 @@ extension GiftPaywallView {
         }
         .buttonStyle(.plain)
         .hapticFeedback()
+    }
+
+    private func AdaptiveText(
+        _ text: String,
+        fonts: [Font],
+        color: Color,
+        lineLimit: Int,
+        lineSpacing: CGFloat
+    ) -> some View {
+        ViewThatFits(in: .vertical) {
+            ForEach(fonts, id: \.self) { font in
+                Text(text)
+                    .multilineMinimumScale(lineLimit: lineLimit)
+                    .font(font)
+                    .foregroundStyle(color)
+                    .lineSpacing(lineSpacing)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
+        }
     }
 }
