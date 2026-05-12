@@ -27,13 +27,11 @@ struct StepTreeView: View {
 
             List {
                 PlanInfoView()
-                    .padding(.horizontal, 16.fitW)
                     .padding(.bottom, 24.fitW)
                     .plainListRowStyle()
 
                 if viewModel.isWellDone {
                     WellDoneView()
-                        .padding(.horizontal, 16.fitW)
                         .plainListRowStyle()
                 } else {
                     WeeksScrollView()
@@ -42,14 +40,12 @@ struct StepTreeView: View {
 
                     ForEach(viewModel.selectedWeek?.steps ?? [], id: \.id) { step in
                         StepButton(step)
-                            .padding(.horizontal, 16.fitW)
                             .padding(.vertical, 8.fitW)
                             .plainListRowStyle()
                     }
                     .onMove(perform: viewModel.didMoveStep)
 
                     AddStepButton()
-                        .padding(.horizontal, 16.fitW)
                         .padding(.top, 8.fitW)
                         .plainListRowStyle()
                 }
@@ -59,6 +55,7 @@ struct StepTreeView: View {
             .scrollIndicators(.hidden)
             .scrollBounceBehavior(.basedOnSize)
             .contentMargins(.vertical, 24.fitW, for: .scrollContent)
+            .padding(.horizontal, 16.fitW)
             .overlay(alignment: .bottom) {
                 ViewPlanButton()
                     .padding(16.fitW)
@@ -164,7 +161,7 @@ struct StepTreeView: View {
             }
             .scrollIndicators(.hidden)
             .scrollBounceBehavior(.basedOnSize, axes: .horizontal)
-            .contentMargins(.horizontal, 16.fitW, for: .scrollContent)
+            .scrollClipDisabled()
         }
     }
 
