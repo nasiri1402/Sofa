@@ -136,6 +136,7 @@ extension StepTreeViewModel {
 
     func didTapAskAssistantStepButton() {
         stepToMenu = nil
+        // TODO: навигация к чату
     }
 
     func didTapRenameStepButton() {
@@ -168,6 +169,10 @@ extension StepTreeViewModel {
             },
             secondaryButton: .cancel(Text(String(localized: "cancel")))
         )
+    }
+
+    func didTapAskAssistantButton() {
+        // TODO: навигация к чату
     }
 
     func didTapViewPlanButton() {

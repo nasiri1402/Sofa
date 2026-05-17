@@ -57,8 +57,14 @@ struct StepTreeView: View {
             .contentMargins(.vertical, 24.fitW, for: .scrollContent)
             .padding(.horizontal, 16.fitW)
             .overlay(alignment: .bottom) {
-                ViewPlanButton()
-                    .padding(16.fitW)
+                VStack {
+                    if viewModel.isWellDone {
+                        ViewPlanButton()
+                    } else {
+                        AskAssistantButton()
+                    }
+                }
+                .padding(16.fitW)
             }
             .animation(.easeInOut, value: viewModel.isWellDone)
         }
@@ -282,6 +288,41 @@ struct StepTreeView: View {
         }
         .buttonStyle(.plain)
         .hapticFeedback()
+    }
+
+    private func AskAssistantButton() -> some View {
+        Button(action: viewModel.didTapAskAssistantButton) {
+            HStack(spacing: 6.fitW) {
+                Image(.chatAura)
+                    .resizable()
+                    .frame(width: 22.fitW, height: 22.fitW)
+
+                Text(String(localized: "needHelpWithPlanAskAIAssistant"))
+                    .multilineMinimumScale()
+                    .multilineTextAlignment(.leading)
+                    .font(.system(size: 13.fitW, weight: .semibold))
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
+            .frame(height: 46.fitW)
+            .padding(.horizontal, 12.fitW)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background {
+                Capsule()
+                    .fill(.gray787880.opacity(0.12))
+                    .blur(radius: 30.fitW)
+                    .clipped()
+            }
+            .overlay {
+                Capsule()
+                    .strokeBorder(.gray545456.opacity(0.34), lineWidth: 1)
+            }
+            .clipShape(.capsule)
+            .contentShape(.rect)
+        }
+        .buttonStyle(.plain)
+        .hapticFeedback()
+        .transition(.opacity)
+        .opacity(viewModel.isWellDone ? 0 : 1)
     }
 
     private func WellDoneView() -> some View {
