@@ -29,8 +29,6 @@ struct ChatView: View {
                 ScrollView {
                     VStack(spacing: .zero) {
                         GreetingView()
-                            .padding(.top, viewModel.messages.isEmpty ? 52.fitW : 24.fitW)
-                            .padding(.bottom, viewModel.messages.isEmpty ? .zero : 32.fitW)
 
                         if viewModel.messages.isEmpty {
                             Spacer(minLength: 180.fitW)
@@ -48,12 +46,10 @@ struct ChatView: View {
                 }
                 .scrollIndicators(.hidden)
                 .scrollDismissesKeyboard(.interactively)
+                .contentMargins(.top, 16.fitW, for: .scrollContent)
                 .safeAreaInset(edge: .bottom) {
                     ComposerView()
-                        .padding(.horizontal, 16.fitW)
-                        .padding(.top, 8.fitW)
-                        .padding(.bottom, 16.fitW)
-                        .background(.black090909)
+                        .padding(16.fitW)
                 }
                 .onAppear {
                     reader.scrollTo(viewModel.messages.last?.id, anchor: .bottom)
@@ -84,16 +80,20 @@ struct ChatView: View {
                 isInputFocused = true
             }
         }
+        .contentShape(.rect)
+        .onTapGesture {
+            isInputFocused = false
+        }
     }
 
     // MARK: - Views
 
     private func GreetingView() -> some View {
-        VStack(spacing: 16.fitW) {
+        VStack(spacing: .zero) {
             Image(.chatAura)
                 .resizable()
                 .frame(width: 100.fitW, height: 100.fitW)
-                .padding(.bottom, 9.fitW)
+                .padding(50.fitW)
 
             Text(String(
                 format: String(localized: "chatGreetingFormat"),
@@ -103,6 +103,7 @@ struct ChatView: View {
             .multilineTextAlignment(.center)
             .font(.system(size: 34.fitW, weight: .bold))
             .foregroundStyle(.white)
+            .padding(.bottom, 16.fitW)
 
             Text( String(localized: "chatGreetingDescription"))
                 .multilineMinimumScale(lineLimit: 2)
@@ -140,34 +141,41 @@ struct ChatView: View {
         HStack(alignment: .bottom, spacing: 8.fitW) {
             TextField( String(localized: "writeHere"), text: $viewModel.messageInput, axis: .vertical)
                 .focused($isInputFocused)
-                .font(.system(size: 17.fitW))
+                .font(.system(size: 15.fitW))
                 .foregroundStyle(.white)
                 .tint(.blue007AFF)
                 .lineLimit(1 ... 4)
-                .padding(.leading, 16.fitW)
+                .padding(.leading, 15.fitW)
                 .padding(.vertical, 14.fitW)
 
             Button(action: viewModel.didTapSendButton) {
-                Image(.arrowRight)
+                Image(.arrowTop)
                     .resizable()
-                    .rotationEffect(.degrees(-90))
-                    .frame(width: 16.fitW, height: 16.fitW)
+                    .frame(width: 24.fitW, height: 24.fitW)
                     .foregroundStyle(.white)
-                    .frame(width: 36.fitW, height: 36.fitW)
-                    .background(viewModel.canSendMessage ? .blue007AFF : .black090909)
+                    .padding(6.fitW)
+                    .background(viewModel.canSendMessage ? .blue007AFF : .black)
                     .clipShape(.circle)
             }
             .buttonStyle(.plain)
-            .disabled(!viewModel.canSendMessage)
-            .padding(.trailing, 6.fitW)
-            .padding(.bottom, 6.fitW)
+            .allowsHitTesting(viewModel.canSendMessage)
+            .padding(6.fitW)
         }
         .frame(minHeight: 48.fitW)
-        .background(.gray787880.opacity(0.12))
-        .clipShape(.rect(cornerRadius: 24.fitW))
+        .background {
+            RoundedRectangle(cornerRadius: 20.fitW)
+                .fill(.gray787880.opacity(0.12))
+                .blur(radius: 30.fitW)
+                .clipped()
+        }
         .overlay {
-            RoundedRectangle(cornerRadius: 24.fitW)
-                .stroke(.gray545456.opacity(0.34), lineWidth: 1)
+            RoundedRectangle(cornerRadius: 20.fitW)
+                .strokeBorder(.gray545456.opacity(0.34), lineWidth: 1.fitW)
+        }
+        .clipShape(.rect(cornerRadius: 20.fitW))
+        .contentShape(.rect)
+        .onTapGesture {
+            isInputFocused = true
         }
     }
 }

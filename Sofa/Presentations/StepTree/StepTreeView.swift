@@ -314,7 +314,7 @@ struct StepTreeView: View {
             }
             .overlay {
                 Capsule()
-                    .strokeBorder(.gray545456.opacity(0.34), lineWidth: 1)
+                    .strokeBorder(.gray545456.opacity(0.34), lineWidth: 1.fitW)
             }
             .clipShape(.capsule)
             .contentShape(.rect)
