@@ -59,6 +59,7 @@ extension Project {
         let result: String
         let difficulty: Difficulty
         var weeks: [Week]
+        var chat: Chat?
         var isFavorite: Bool
         let createdAt: Date
         var allSteps: [Step] {
@@ -84,6 +85,7 @@ extension Project {
                 result: result,
                 difficulty: difficulty,
                 weeks: weeks,
+                chat: chat,
                 isFavorite: isFavorite,
                 createdAt: createdAt
             )
@@ -190,6 +192,49 @@ extension Project.Plan {
             case .difficult: .redFF3B30
             }
         }
+    }
+
+    // MARK: - Chat
+
+    struct Chat: Identifiable, Hashable {
+        let id: UUID
+        let threadID: String
+        private(set) var messages: [Message] = []
+
+        init(id: UUID, threadID: String, messages: [Message]) {
+            self.id = id
+            self.threadID = threadID
+            self.messages = messages
+        }
+
+        /// Добавляет новое сообщение в чат
+        mutating func addMessage(
+            text: String,
+            additional: String? = nil,
+            isFromUser: Bool = true
+        ) {
+            let message = Message(
+                id: UUID(),
+                text: text,
+                additional: additional,
+                isFromUser: isFromUser,
+                sentAt: .now
+            )
+            messages.insert(message, at: .zero)
+        }
+    }
+}
+
+extension Project.Plan.Chat {
+
+    // MARK: - Message
+
+    struct Message: Identifiable, Hashable {
+        let id: UUID
+        let text: String
+        let additional: String?
+        let isFromUser: Bool
+        let sentAt: Date
     }
 }
 

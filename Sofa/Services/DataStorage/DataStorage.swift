@@ -74,6 +74,8 @@ final class DefaultDataStorage: DataStorage {
             ProjectEntity.self,
             BriefEntity.self,
             PlanEntity.self,
+            ChatEntity.self,
+            MessageEntity.self,
             WeekEntity.self,
             StepEntity.self
         ])
