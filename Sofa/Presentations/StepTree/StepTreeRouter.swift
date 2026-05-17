@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 enum StepTreeRoute {
-    case stepTree
+    case chat(Project, Project.Plan, Project.Plan.Step?)
 }
 
 final class StepTreeRouter: HashableRouter {
@@ -31,7 +31,16 @@ final class StepTreeRouter: HashableRouter {
     // MARK: - Public Methods
 
     func route(to route: StepTreeRoute) {
-
+        switch route {
+        case .chat(let project, let plan, let step):
+            let router = ChatRouter(
+                navigator: navigator,
+                project: project,
+                plan: plan,
+                step: step
+            )
+            navigator.push(router)
+        }
     }
 
     func back() {

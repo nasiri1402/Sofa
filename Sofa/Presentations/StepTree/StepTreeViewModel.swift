@@ -135,8 +135,9 @@ extension StepTreeViewModel {
     }
 
     func didTapAskAssistantStepButton() {
+        let step = stepToMenu
         stepToMenu = nil
-        // TODO: навигация к чату
+        openChat(step: step)
     }
 
     func didTapRenameStepButton() {
@@ -172,7 +173,7 @@ extension StepTreeViewModel {
     }
 
     func didTapAskAssistantButton() {
-        // TODO: навигация к чату
+        openChat(step: nil)
     }
 
     func didTapViewPlanButton() {
@@ -252,5 +253,12 @@ extension StepTreeViewModel {
         else { return }
         week.steps.remove(at: stepIndex)
         updateWeek(week)
+    }
+
+    private func openChat(step: Project.Plan.Step?) {
+        if let planIndex = project.plans.firstIndex(where: { $0.id == plan.id }) {
+            project.plans[planIndex] = plan
+        }
+        router.route(to: .chat(project, plan, step))
     }
 }

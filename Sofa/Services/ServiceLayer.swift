@@ -17,6 +17,7 @@ enum ServiceLayer {
     static let storeManager: StoreManager = DefaultStoreManager()
     static let networkMonitor: NetworkMonitor = DefaultNetworkMonitor()
     static let dataStorage: DataStorage = DefaultDataStorage()
+    static let chatter: Chatter = DefaultChatter(functionsClient: functionsClient)
     static let remoteStorage: RemoteStorage = DefaultRemoteStorage(authService: authService)
     static let notificationManager: NotificationManager = DefaultNotificationManager()
     static let permissionManager: PermissionManager = DefaultPermissionManager()
