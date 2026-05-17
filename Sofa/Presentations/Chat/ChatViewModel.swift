@@ -7,6 +7,7 @@
 
 import Foundation
 import Observation
+import SwiftUI
 
 @MainActor @Observable
 final class ChatViewModel {
@@ -60,16 +61,15 @@ final class ChatViewModel {
 extension ChatViewModel {
     func didTapNavigationBarLeadingButton() {
         guard !isSending else { return }
-        plan.chat = nil
-        messageInput = ""
-
-        Task { @MainActor in
-            do {
-                try saveProject()
-            } catch {
-                alertItem = .error(message: error.localizedDescription)
-            }
-        }
+        alertItem = AlertItem(
+            title: Text(String(localized: "clearTheEntireChat")),
+            message: Text(String(localized: "clearChatMessage")),
+            primaryButton: .destructive(Text(String(localized: "clear"))) { [weak self] in
+                guard let self else { return }
+                clearChat()
+            },
+            secondaryButton: .cancel(Text(String(localized: "cancel")))
+        )
     }
 
     func didTapNavigationBarTrailingButton() {
@@ -123,6 +123,18 @@ extension ChatViewModel {
             alertItem = .error(message: error.localizedDescription)
         }
         isSending = false
+    }
+
+    private func clearChat() {
+        plan.chat = nil
+        messageInput = ""
+        Task { @MainActor in
+            do {
+                try saveProject()
+            } catch {
+                alertItem = .error(message: error.localizedDescription)
+            }
+        }
     }
 
     private func saveProject() throws {
