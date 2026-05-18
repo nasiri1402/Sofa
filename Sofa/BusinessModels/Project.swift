@@ -210,13 +210,13 @@ extension Project.Plan {
         /// Добавляет новое сообщение в чат
         mutating func addMessage(
             text: String,
-            additional: String? = nil,
+            context: String? = nil,
             isFromUser: Bool = true
         ) {
             let message = Message(
                 id: UUID(),
                 text: text,
-                additional: additional,
+                context: context,
                 isFromUser: isFromUser,
                 sentAt: .now
             )
@@ -232,7 +232,7 @@ extension Project.Plan.Chat {
     struct Message: Identifiable, Hashable {
         let id: UUID
         let text: String
-        let additional: String?
+        let context: String?
         let isFromUser: Bool
         let sentAt: Date
     }

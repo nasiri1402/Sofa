@@ -16,6 +16,7 @@ final class ChatViewModel {
 
     private(set) var plan: Project.Plan
     private(set) var profile: Profile?
+    private(set) var step: Project.Plan.Step?
     var messageInput = ""
     private(set) var isSending = false
     var alertItem: AlertItem?
@@ -51,6 +52,7 @@ final class ChatViewModel {
         self.chatter = chatter
         self.project = project
         self.plan = plan
+        self.step = step
 
         initialize()
     }
@@ -76,12 +78,18 @@ extension ChatViewModel {
         router.back()
     }
 
+    func didTapStepClearButton() {
+        step = nil
+    }
+
     func didTapSendButton() {
         guard canSendMessage else { return }
         let text = messageInput.trimmingCharacters(in: .whitespacesAndNewlines)
+        let attachedStepTitle = step?.title
         messageInput = ""
+        step = nil
         Task { @MainActor in
-            await sendMessage(text)
+            await sendMessage(text, context: attachedStepTitle)
         }
     }
 }
@@ -103,13 +111,13 @@ extension ChatViewModel {
         }
     }
 
-    private func sendMessage(_ text: String) async {
+    private func sendMessage(_ text: String, context: String?) async {
         isSending = true
         do {
             if plan.chat == nil {
                 plan.chat = try await chatter.createChat()
             }
-            plan.chat?.addMessage(text: text, additional: nil)
+            plan.chat?.addMessage(text: text, context: context)
             try saveProject()
 
             if let threadID = plan.chat?.threadID {

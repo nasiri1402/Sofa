@@ -127,39 +127,47 @@ struct ChatView: View {
     }
 
     private func BubbleText(_ message: Project.Plan.Chat.Message) -> some View {
-        Text(.init(message.text))
-            .font(.system(size: 15.fitW))
-            .foregroundStyle(.white)
-            .multilineTextAlignment(.leading)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(12.fitW)
-            .background(message.isFromUser ? .blue007AFF : .clear)
-            .clipShape(.rect(cornerRadius: 20.fitW))
+        VStack(alignment: .leading, spacing: 8.fitW) {
+            if let context = message.context, !context.isEmpty {
+                StepText(context, lineLimit: 3)
+                    .padding(.vertical, 6.fitW)
+            }
+            Text(.init(message.text))
+                .font(.system(size: 15.fitW))
+                .foregroundStyle(.white)
+                .multilineTextAlignment(.leading)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(12.fitW)
+                .background(message.isFromUser ? .blue007AFF : .clear)
+                .clipShape(.rect(cornerRadius: 20.fitW))
+        }
     }
 
     private func ComposerView() -> some View {
-        HStack(alignment: .bottom, spacing: 8.fitW) {
-            TextField( String(localized: "writeHere"), text: $viewModel.messageInput, axis: .vertical)
-                .focused($isInputFocused)
-                .font(.system(size: 15.fitW))
-                .foregroundStyle(.white)
-                .tint(.blue007AFF)
-                .lineLimit(1 ... 4)
-                .padding(.leading, 15.fitW)
-                .padding(.vertical, 14.fitW)
-
-            Button(action: viewModel.didTapSendButton) {
-                Image(.arrowTop)
-                    .resizable()
-                    .frame(width: 24.fitW, height: 24.fitW)
-                    .foregroundStyle(.white)
-                    .padding(6.fitW)
-                    .background(viewModel.canSendMessage ? .blue007AFF : .black)
-                    .clipShape(.circle)
+        VStack(alignment: .leading, spacing: .zero) {
+            if let step = viewModel.step {
+                HStack(spacing: 6.fitW) {
+                    StepText(step.title, lineLimit: 1)
+                    StepClearButton()
+                }
+                .padding(6.fitW)
+                .background(.blue007AFF.opacity(0.15))
+                .clipShape(.capsule)
+                .padding([.top, .horizontal], 6.fitW)
             }
-            .buttonStyle(.plain)
-            .allowsHitTesting(viewModel.canSendMessage)
-            .padding(6.fitW)
+            HStack(alignment: .bottom, spacing: 8.fitW) {
+                TextField(String(localized: "writeHere"), text: $viewModel.messageInput, axis: .vertical)
+                    .focused($isInputFocused)
+                    .font(.system(size: 15.fitW))
+                    .foregroundStyle(.white)
+                    .tint(.blue007AFF)
+                    .lineLimit(1 ... 4)
+                    .padding(.leading, 15.fitW)
+                    .padding(.vertical, 14.fitW)
+
+                SendButton()
+                    .padding(6.fitW)
+            }
         }
         .frame(minHeight: 48.fitW)
         .background {
@@ -177,5 +185,48 @@ struct ChatView: View {
         .onTapGesture {
             isInputFocused = true
         }
+        .animation(.easeInOut, value: viewModel.step == nil)
+    }
+
+    private func StepText(_ context: String, lineLimit: Int) -> some View {
+        HStack(spacing: 6.fitW) {
+            Image(.reply)
+                .resizable()
+                .frame(width: 24.fitW, height: 24.fitW)
+
+            Text(context)
+                .font(.system(size: 13.fitW))
+                .foregroundStyle(.blue007AFF)
+                .lineLimit(lineLimit)
+                .multilineTextAlignment(.leading)
+                .frame(maxWidth: .infinity, alignment: .leading)
+        }
+    }
+
+    private func StepClearButton() -> some View {
+        Button(action: viewModel.didTapStepClearButton) {
+            Image(.cross)
+                .resizable()
+                .frame(width: 24.fitW, height: 24.fitW)
+                .foregroundStyle(.blue007AFF)
+                .contentShape(.rect)
+        }
+        .buttonStyle(.plain)
+        .hapticFeedback()
+    }
+
+    private func SendButton() -> some View {
+        Button(action: viewModel.didTapSendButton) {
+            Image(.arrowTop)
+                .resizable()
+                .frame(width: 24.fitW, height: 24.fitW)
+                .foregroundStyle(.white)
+                .padding(6.fitW)
+                .background(viewModel.canSendMessage ? .blue007AFF : .black)
+                .clipShape(.circle)
+        }
+        .buttonStyle(.plain)
+        .allowsHitTesting(viewModel.canSendMessage)
+        .animation(.easeInOut, value: viewModel.canSendMessage)
     }
 }

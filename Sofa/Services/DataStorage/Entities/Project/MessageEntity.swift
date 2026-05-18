@@ -16,7 +16,7 @@ final class MessageEntity {
     @Attribute(.unique)
     var id: UUID
     var text: String
-    var additional: String?
+    var context: String?
     var isFromUser: Bool
     var sentAt: Date
 
@@ -25,7 +25,7 @@ final class MessageEntity {
     init(from model: Project.Plan.Chat.Message) {
         self.id = model.id
         self.text = model.text
-        self.additional = model.additional
+        self.context = model.context
         self.isFromUser = model.isFromUser
         self.sentAt = model.sentAt
     }
@@ -36,7 +36,7 @@ final class MessageEntity {
         Project.Plan.Chat.Message(
             id: id,
             text: text,
-            additional: additional,
+            context: context,
             isFromUser: isFromUser,
             sentAt: sentAt
         )
