@@ -28,19 +28,17 @@ struct ChatView: View {
             ScrollViewReader { reader in
                 ScrollView {
                     VStack(spacing: .zero) {
-                        GreetingView()
-
                         if viewModel.messages.isEmpty {
-                            Spacer(minLength: 180.fitW)
+                            GreetingView()
+                                .transition(.blurReplace.combined(with: .opacity).combined(with: .scale))
+
+                            Spacer(minLength: 100.fitW)
                         } else {
-                            LazyVStack(spacing: 12.fitW) {
-                                ForEach(viewModel.messages, id: \.id) { message in
-                                    MessageBubble(message)
-                                        .id(message.id)
-                                }
-                            }
+                            MessagesList()
+                                .transition(.blurReplace.combined(with: .opacity))
                         }
                     }
+                    .animation(.easeInOut, value: viewModel.messages.isEmpty)
                     .padding(.horizontal, 16.fitW)
                     .padding(.bottom, 16.fitW)
                 }
@@ -76,9 +74,7 @@ struct ChatView: View {
         }
         .onAppear {
             isTabBarHidden.wrappedValue = true
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-                isInputFocused = true
-            }
+            isInputFocused = true
         }
         .contentShape(.rect)
         .onTapGesture {
@@ -114,6 +110,16 @@ struct ChatView: View {
         .frame(maxWidth: .infinity)
     }
 
+    private func MessagesList() -> some View {
+        LazyVStack(spacing: 12.fitW) {
+            ForEach(viewModel.messages, id: \.id) { message in
+                MessageBubble(message)
+                    .id(message.id)
+            }
+        }
+        .animation(.easeInOut, value: viewModel.messages.count)
+    }
+
     private func MessageBubble(_ message: Project.Plan.Chat.Message) -> some View {
         HStack {
             if !message.isFromUser {
@@ -128,7 +134,9 @@ struct ChatView: View {
 
     private func BubbleText(_ message: Project.Plan.Chat.Message) -> some View {
         VStack(alignment: .leading, spacing: 8.fitW) {
-            if let context = message.context, !context.isEmpty {
+            let context = viewModel.getContext(message) ?? ""
+
+            if !context.isEmpty {
                 StepText(context, lineLimit: 3)
                     .padding(.vertical, 6.fitW)
             }
@@ -137,7 +145,7 @@ struct ChatView: View {
                 .foregroundStyle(.white)
                 .multilineTextAlignment(.leading)
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(12.fitW)
+                .padding(context.isEmpty ? 12.fitW : 10.fitW)
                 .background(message.isFromUser ? .blue007AFF : .clear)
                 .clipShape(.rect(cornerRadius: 20.fitW))
         }

@@ -63,6 +63,10 @@ extension StepTreeViewModel {
 
     // MARK: - Input
 
+    func didViewAppear() {
+        fetchProject()
+    }
+
     func didTapNavigationBarLeadingButton() {
         router.back()
     }
@@ -186,10 +190,27 @@ extension StepTreeViewModel {
 extension StepTreeViewModel {
     private func initialize() {
         isWellDone = plan.isCompleted
-        selectedWeek = storeManager.hasPurchasedProduct() || project.hasLifetimeAccess
-        ? plan.weeks.first { !$0.isCompleted } ?? plan.weeks.last
-        : plan.weeks.min { $0.number < $1.number }
-        lockedWeeks = plan.weeks.filter(isWeekLocked)
+        lockWeeks()
+    }
+
+    private func fetchProject() {
+        do {
+            guard let storedProject = try dataStorage.fetchProject(id: project.id),
+                  let storedPlan = storedProject.plans.first(where: { $0.id == plan.id })
+            else { return }
+
+            project = storedProject
+            plan = storedPlan
+            isWellDone = plan.isCompleted
+
+            if let week = selectedWeek {
+                selectedWeek = plan.weeks.first(where: { $0.id == week.id })
+            } else {
+                lockWeeks()
+            }
+        } catch {
+            alertItem = .error(message: error.localizedDescription)
+        }
     }
 
     private func saveProject() {
@@ -204,11 +225,6 @@ extension StepTreeViewModel {
         }
     }
 
-    private func isWeekLocked(_ week: Project.Plan.Week) -> Bool {
-        guard !storeManager.hasPurchasedProduct(), !project.hasLifetimeAccess else { return false }
-        return week.number != 1
-    }
-
     private func updateWeek(_ week: Project.Plan.Week) {
         guard let weekIndex = plan.weeks.firstIndex(where: { $0.id == week.id }),
               let planIndex = project.plans.firstIndex(where: { $0.id == plan.id })
@@ -218,6 +234,18 @@ extension StepTreeViewModel {
         selectedWeek = week
         isWellDone = plan.isCompleted
         saveProject()
+    }
+
+    private func lockWeeks() {
+        selectedWeek = storeManager.hasPurchasedProduct() || project.hasLifetimeAccess
+        ? plan.weeks.first { !$0.isCompleted } ?? plan.weeks.last
+        : plan.weeks.min { $0.number < $1.number }
+        lockedWeeks = plan.weeks.filter(isWeekLocked)
+    }
+
+    private func isWeekLocked(_ week: Project.Plan.Week) -> Bool {
+        guard !storeManager.hasPurchasedProduct(), !project.hasLifetimeAccess else { return false }
+        return week.number != 1
     }
 
     private func addStep(title: String) {

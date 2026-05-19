@@ -86,6 +86,7 @@ struct StepTreeView: View {
         }
         .onAppear {
             isTabBarHidden.wrappedValue = true
+            viewModel.didViewAppear()
         }
     }
 

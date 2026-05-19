@@ -58,9 +58,12 @@ final class ChatViewModel {
     }
 }
 
-// MARK: - Input
+// MARK: - Public Methods
 
 extension ChatViewModel {
+
+    // MARK: - Input
+
     func didTapNavigationBarLeadingButton() {
         guard !isSending else { return }
         alertItem = AlertItem(
@@ -91,6 +94,13 @@ extension ChatViewModel {
         Task { @MainActor in
             await sendMessage(text, context: attachedStepTitle)
         }
+    }
+
+    // MARK: - Output
+
+    func getContext(_ message: Project.Plan.Chat.Message) -> String? {
+        guard let context = message.context, !context.isEmpty else { return nil }
+        return context
     }
 }
 
