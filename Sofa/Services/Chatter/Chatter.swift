@@ -107,6 +107,7 @@ final class DefaultChatter: Chatter {
             let response = try await functionsClient.chatter(
                 request: ChatterRequest(action: .sendMessage(ChatterRequest.SendMessagePayload(
                     conversationID: conversation.id,
+                    instructions: makeSendMessageInstructions(),
                     message: message,
                     context: context
                 )))
@@ -150,31 +151,88 @@ final class DefaultChatter: Chatter {
             .map { week in
                 let steps = week.steps
                     .sorted { $0.number < $1.number }
-                    .map { "- Step \($0.number): \($0.title) [\($0.isCompleted ? "completed" : "in progress")]" }
+                    .map {
+                        """
+                        - Step ID: \($0.id.uuidString)
+                          Step Number: \($0.number)
+                          Title: \($0.title)
+                          Status: \($0.isCompleted ? "completed" : "in_progress")
+                        """
+                    }
                     .joined(separator: "\n")
                 return """
-                Week \(week.number):
+                WEEK \(week.number)
+                Week ID: \(week.id.uuidString)
+                Status: \(week.isCompleted ? "completed" : "in_progress")
+                Steps:
                 \(steps)
                 """
             }
             .joined(separator: "\n\n")
 
         return """
-        [CONVERSATION CONTEXT]:
+        [CONVERSATION CONTEXT]
+        
+        This is the ONLY source of truth for the current plan.
+        
+        PLAN METADATA:
+        - Plan ID: \(plan.id.uuidString)
+        - Title: \(plan.title)
+        - Emoji: \(plan.emoji)
+        - First Results: \(plan.firstResults)
+        - Budget: \(plan.budget)
+        - Expected Result: \(plan.result)
+        - Difficulty: \(plan.difficulty.name)
+        - Favorite: \(plan.isFavorite ? "yes" : "no")
+        - Created At: \(plan.createdAt)
+        - Progress: \(Int((plan.progress * 100).rounded()))%
+        - Status: \(plan.isCompleted ? "completed" : "in_progress")
 
-        Current plan snapshot. Treat this as the source of truth for the this plan.
-
-        Plan title: \(plan.title)
-        Plan emoji: \(plan.emoji)
-        First results: \(plan.firstResults)
-        Budget: \(plan.budget)
-        Expected result: \(plan.result)
-        Difficulty: \(plan.difficulty.name)
-        Is favorite: \(plan.isFavorite ? "yes" : "no")
-        Progress: \(Int((plan.progress * 100).rounded()))%
-
-        Weeks and Steps:
+        PLAN WEEKS:
         \(weeks)
+        """
+
+    }
+
+    // MARK: - Private Methods
+
+    private func makeSendMessageInstructions() -> String {
+        """
+        You are a constrained assistant that helps the user only with the current plan.
+
+        CONTEXT RULES:
+        - Find the latest message that starts with "[CONVERSATION CONTEXT]".
+        - Treat that message as the ONLY source of truth.
+        - Ignore external knowledge, assumptions, and generic advice.
+        - If no "[CONVERSATION CONTEXT]" message exists, refuse briefly.
+
+        INPUT FORMAT:
+        {
+          "message": "<string, the user's current question>",
+          "context": "<string, optional step title>"
+        }
+
+        INPUT RULES:
+        - `message` is the user's request.
+        - `context` is optional. If it is present, treat it as the exact title of a step from the current plan.
+        - Use `context` only to narrow the scope of the answer.
+
+        OUTPUT FORMAT:
+        - Return one short plain-text user-facing answer.
+        - Do not return JSON.
+
+        OUTPUT RULES:
+        - Reply briefly, clearly, and directly.
+        - Answer only using information explicitly present in the current plan context.
+        - You may answer questions about plan metadata, weeks, steps, statuses, progress, and completion.
+        - You may clarify a step or discuss how to execute it only if the answer stays directly grounded in the current plan context.
+        - Do not invent missing details.
+        - Do not infer goals, intentions, timelines, or advice from metadata.
+        - Do not provide coaching, motivational, or educational advice unless explicitly requested and supported by the current plan context.
+        - If the plan context does not contain enough information, say so briefly.
+
+        REFUSAL RULE:
+        - If the request is not directly related to the current plan, refuse briefly.
         """
     }
 }

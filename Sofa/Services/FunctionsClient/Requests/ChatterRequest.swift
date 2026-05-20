@@ -52,12 +52,13 @@ extension ChatterRequest {
 
     struct SendMessagePayload: Encodable {
         let conversationID: String
+        let instructions: String
         let message: String
         let context: String?
 
         private enum CodingKeys: String, CodingKey {
             case conversationID = "conversation_id"
-            case message, context
+            case instructions, message, context
         }
     }
 }

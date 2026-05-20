@@ -18,6 +18,7 @@ type ChatterPayload = {
   conversation_id?: string;
   message?: string;
   context?: string;
+  instructions?: string;
 };
 
 type OpenAIResponse = {
@@ -241,6 +242,7 @@ async function handleSendMessage(
   conversationID: string,
   message: string,
   context: string,
+  instructions: string,
 ) {
   if (!message) {
     throw new HttpsError("invalid-argument", "Missing 'payload.message'.");
@@ -252,13 +254,7 @@ async function handleSendMessage(
     body: {
       model: OPENAI_CHAT_MODEL,
       conversation: conversationID,
-      instructions: [
-        "When replying, search this conversation for the most recent " +
-          "message that starts with \"" +
-          CONVERSATION_CONTEXT_PREFIX +
-          "\".",
-        "Treat that message as the current source of truth for the plan.",
-      ].join("\n"),
+      instructions,
       input: [{
         type: "message",
         role: "user",
@@ -330,6 +326,9 @@ export const chatter = onCall(
     const context = typeof payload.context === "string" ?
       payload.context.trim() :
       "";
+    const instructions = typeof payload.instructions === "string" ?
+      payload.instructions.trim() :
+      "";
 
     if (!action) {
       throw new HttpsError("invalid-argument", "Missing 'action'.");
@@ -363,13 +362,7 @@ export const chatter = onCall(
           body: {
             model: OPENAI_CHAT_MODEL,
             conversation: conversationID,
-            instructions: [
-              "When replying, search this conversation for the most " +
-                "recent message that starts with \"" +
-                CONVERSATION_CONTEXT_PREFIX +
-                "\".",
-              "Treat that message as the current source of truth for the plan.",
-            ].join("\n"),
+            instructions,
             input: [{
               type: "message",
               role: "user",
@@ -415,6 +408,7 @@ export const chatter = onCall(
           conversationID,
           message,
           context,
+          instructions,
         );
       default:
         throw new HttpsError(
