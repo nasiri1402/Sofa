@@ -17,6 +17,7 @@ struct ChatView: View {
 
     @Environment(\.isTabBarHidden) private var isTabBarHidden
     @FocusState private var isInputFocused: Bool
+    private let scrollBottomID = "scrollBottomID"
 
     // MARK: - Body
 
@@ -30,32 +31,44 @@ struct ChatView: View {
                     VStack(spacing: .zero) {
                         if viewModel.messages.isEmpty {
                             GreetingView()
-                                .transition(.blurReplace.combined(with: .opacity).combined(with: .scale))
-
-                            Spacer(minLength: 100.fitW)
+                            Spacer(minLength: .zero)
                         } else {
                             MessagesList()
-                                .transition(.blurReplace.combined(with: .opacity))
                         }
+                        Color.black
+                            .opacity(0.001)
+                            .frame(height: 1)
+                            .id(scrollBottomID)
                     }
                     .animation(.easeInOut, value: viewModel.messages.isEmpty)
                     .padding(.horizontal, 16.fitW)
-                    .padding(.bottom, 16.fitW)
                 }
                 .scrollIndicators(.hidden)
                 .scrollDismissesKeyboard(.interactively)
-                .contentMargins(.top, 16.fitW, for: .scrollContent)
+                .scrollBounceBehavior(viewModel.messages.isEmpty ? .basedOnSize : .automatic)
+                .contentMargins(.top, 24.fitW, for: .scrollContent)
+                .contentMargins(.bottom, 16.fitW, for: .scrollContent)
                 .safeAreaInset(edge: .bottom) {
                     ComposerView()
                         .padding(16.fitW)
                 }
                 .onAppear {
-                    reader.scrollTo(viewModel.messages.last?.id, anchor: .bottom)
+                    scrollToBottom(reader, isAnimated: false)
                 }
                 .onChange(of: viewModel.messages.count) { oldValue, newValue in
                     guard oldValue != newValue else { return }
-                    withAnimation {
-                        reader.scrollTo(viewModel.messages.last?.id, anchor: .bottom)
+                    if newValue > .zero {
+                        scrollToBottom(reader)
+                    }
+                }
+                .onChange(of: viewModel.isSending) { oldValue, newValue in
+                    guard oldValue != newValue, !viewModel.messages.isEmpty else { return }
+                    scrollToBottom(reader)
+                }
+                .onChange(of: isInputFocused) { oldValue, newValue in
+                    guard oldValue != newValue else { return }
+                    if newValue, !viewModel.messages.isEmpty {
+                        scrollToBottom(reader)
                     }
                 }
             }
@@ -74,7 +87,6 @@ struct ChatView: View {
         }
         .onAppear {
             isTabBarHidden.wrappedValue = true
-            isInputFocused = true
         }
         .contentShape(.rect)
         .onTapGesture {
@@ -108,54 +120,71 @@ struct ChatView: View {
                 .foregroundStyle(.white.opacity(0.4))
         }
         .frame(maxWidth: .infinity)
+        .transition(.blurReplace.combined(with: .opacity))
     }
 
     private func MessagesList() -> some View {
         LazyVStack(spacing: 12.fitW) {
             ForEach(viewModel.messages, id: \.id) { message in
-                MessageBubble(message)
+                MessageView(message)
                     .id(message.id)
+            }
+            if viewModel.isSending {
+                ThinkingText()
+                    .padding(.top, 12.fitW)
             }
         }
         .animation(.easeInOut, value: viewModel.messages.count)
+        .animation(.easeInOut, value: viewModel.isSending)
+        .transition(.blurReplace.combined(with: .opacity))
     }
 
-    private func MessageBubble(_ message: Project.Plan.Chat.Message) -> some View {
-        HStack {
-            if !message.isFromUser {
+    @ViewBuilder
+    private func MessageView(_ message: Project.Plan.Chat.Message) -> some View {
+        if message.isFromUser {
+            VStack(alignment: .leading, spacing: 8.fitW) {
+                let context = viewModel.getContext(message) ?? ""
+                if !context.isEmpty {
+                    Button {
+                        viewModel.didTapMessageContext(message)
+                    } label: {
+                        StepText(context, lineLimit: 3)
+                    }
+                    .buttonStyle(.plain)
+                    .hapticFeedback()
+                    .padding(.vertical, 6.fitW)
+                }
+                HStack(spacing: .zero) {
+                    Spacer(minLength: 50.fitW)
+                    BubbleText(message)
+                }
+            }
+        } else {
+            HStack(spacing: .zero) {
                 BubbleText(message)
                 Spacer(minLength: 50.fitW)
-            } else {
-                Spacer(minLength: 50.fitW)
-                BubbleText(message)
             }
         }
     }
 
     private func BubbleText(_ message: Project.Plan.Chat.Message) -> some View {
-        VStack(alignment: .leading, spacing: 8.fitW) {
-            let context = viewModel.getContext(message) ?? ""
-
-            if !context.isEmpty {
-                StepText(context, lineLimit: 3)
-                    .padding(.vertical, 6.fitW)
-            }
-            Text(.init(message.text))
-                .font(.system(size: 15.fitW))
-                .foregroundStyle(.white)
-                .multilineTextAlignment(.leading)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(context.isEmpty ? 12.fitW : 10.fitW)
-                .background(message.isFromUser ? .blue007AFF : .clear)
-                .clipShape(.rect(cornerRadius: 20.fitW))
-        }
+        Text(.init(message.text))
+            .font(.system(size: 15.fitW))
+            .foregroundStyle(.white)
+            .multilineTextAlignment(.leading)
+            .frame(alignment: .leading)
+            .padding(.vertical, 12.fitW)
+            .padding(.horizontal, message.isFromUser ? 12.fitW : .zero)
+            .background(message.isFromUser ? .blue007AFF : .clear)
+            .clipShape(.rect(cornerRadius: 20.fitW))
     }
 
     private func ComposerView() -> some View {
         VStack(alignment: .leading, spacing: .zero) {
             if let step = viewModel.step {
-                HStack(spacing: 6.fitW) {
+                HStack(spacing: .zero) {
                     StepText(step.title, lineLimit: 1)
+                    Spacer(minLength: 6.fitW)
                     StepClearButton()
                 }
                 .padding(6.fitW)
@@ -179,10 +208,16 @@ struct ChatView: View {
         }
         .frame(minHeight: 48.fitW)
         .background {
-            RoundedRectangle(cornerRadius: 20.fitW)
-                .fill(.gray787880.opacity(0.12))
-                .blur(radius: 30.fitW)
-                .clipped()
+            ZStack {
+                RoundedRectangle(cornerRadius: 20.fitW)
+                    .fill(.ultraThinMaterial)
+                    .clipped()
+
+                RoundedRectangle(cornerRadius: 20.fitW)
+                    .fill(.gray787880.opacity(0.12))
+                    .blur(radius: 30.fitW)
+                    .clipped()
+            }
         }
         .overlay {
             RoundedRectangle(cornerRadius: 20.fitW)
@@ -193,7 +228,9 @@ struct ChatView: View {
         .onTapGesture {
             isInputFocused = true
         }
-        .animation(.easeInOut, value: viewModel.step == nil)
+        .animation(.easeInOut(duration: 0.25), value: viewModel.step == nil)
+        .animation(.easeInOut(duration: 0.25), value: viewModel.canSendMessage)
+        .animation(.easeInOut(duration: 0.1), value: viewModel.messageInput.count)
     }
 
     private func StepText(_ context: String, lineLimit: Int) -> some View {
@@ -207,12 +244,15 @@ struct ChatView: View {
                 .foregroundStyle(.blue007AFF)
                 .lineLimit(lineLimit)
                 .multilineTextAlignment(.leading)
-                .frame(maxWidth: .infinity, alignment: .leading)
+                .frame(alignment: .leading)
         }
     }
 
     private func StepClearButton() -> some View {
-        Button(action: viewModel.didTapStepClearButton) {
+        Button {
+            isInputFocused = false
+            viewModel.didTapStepClearButton()
+        } label: {
             Image(.cross)
                 .resizable()
                 .frame(width: 24.fitW, height: 24.fitW)
@@ -223,8 +263,25 @@ struct ChatView: View {
         .hapticFeedback()
     }
 
+    private func ThinkingText() -> some View {
+        Text(String(localized: "thinking") + "...")
+            .font(.system(size: 15.fitW))
+            .foregroundStyle(.gray8E8E93)
+            .overlay(alignment: .leading) {
+                Text(String(localized: "thinking") + "...")
+                    .font(.system(size: 15.fitW))
+                    .foregroundStyle(.white.opacity(0.6))
+                    .shimmering(bandWidth: 1.fitW / 2)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .transition(.opacity.combined(with: .blurReplace))
+    }
+
     private func SendButton() -> some View {
-        Button(action: viewModel.didTapSendButton) {
+        Button {
+            isInputFocused = false
+            viewModel.didTapSendButton()
+        } label: {
             Image(.arrowTop)
                 .resizable()
                 .frame(width: 24.fitW, height: 24.fitW)
@@ -235,6 +292,24 @@ struct ChatView: View {
         }
         .buttonStyle(.plain)
         .allowsHitTesting(viewModel.canSendMessage)
-        .animation(.easeInOut, value: viewModel.canSendMessage)
+    }
+
+    // MARK: - Private Methods
+
+    private func scrollToBottom(_ reader: ScrollViewProxy, isAnimated: Bool = true) {
+        let onScroll = {
+            reader.scrollTo(scrollBottomID, anchor: .bottom)
+        }
+        if isAnimated {
+            DispatchQueue.main.async {
+                withAnimation(.easeInOut) {
+                    onScroll()
+                }
+            }
+        } else {
+            DispatchQueue.main.async {
+                onScroll()
+            }
+        }
     }
 }

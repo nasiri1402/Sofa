@@ -35,6 +35,7 @@
 # c.f. http://www.westwind.com/reference/os-x/invisibles.html
 
 .DS_Store
+**/firebase-debug.log
 
 # c.f. http://www.westwind.com/reference/os-x/invisibles.html
 

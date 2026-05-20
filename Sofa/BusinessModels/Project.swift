@@ -198,30 +198,8 @@ extension Project.Plan {
 
     struct Chat: Identifiable, Hashable {
         let id: UUID
-        let threadID: String
-        private(set) var messages: [Message] = []
-
-        init(id: UUID, threadID: String, messages: [Message]) {
-            self.id = id
-            self.threadID = threadID
-            self.messages = messages
-        }
-
-        /// Добавляет новое сообщение в чат
-        mutating func addMessage(
-            text: String,
-            context: String? = nil,
-            isFromUser: Bool = true
-        ) {
-            let message = Message(
-                id: UUID(),
-                text: text,
-                context: context,
-                isFromUser: isFromUser,
-                sentAt: .now
-            )
-            messages.insert(message, at: .zero)
-        }
+        let conversation: Conversation
+        var messages: [Message] = []
     }
 }
 
@@ -235,6 +213,11 @@ extension Project.Plan.Chat {
         let context: String?
         let isFromUser: Bool
         let sentAt: Date
+    }
+
+    struct Conversation: Identifiable, Hashable {
+        let id: String
+        let context: String
     }
 }
 

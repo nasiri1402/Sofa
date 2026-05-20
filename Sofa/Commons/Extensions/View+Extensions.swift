@@ -96,6 +96,28 @@ extension View {
         modifier(KeyboardHeightModifier(onChange: onChange))
     }
 
+    /// Добавляет анимированный эффект "переливающейся полосы").
+    /// - Parameters:
+    ///   - isActive: Флаг, для включения эффекта. По умолчанию равен `true`.
+    ///   - animation: Анимация. По умолчанию `linear`, продолжительностью `1`, задержкой `0.1` и бесконечным повторением без обратного воспроизведения.
+    ///   - gradient: Градиент для эффекта переливания. По умолчанию градиент состоит из `clear`, `white` и `clear`.
+    ///   - bandWidth: Ширина "полосы". По умолчанию `1`.
+    ///   - mode: Режим применения эффекта. По умолчанию `mask`.
+    @ViewBuilder
+    func shimmering(
+        isActive: Bool = true,
+        animation: Animation = .linear(duration: 1).delay(0.1).repeatForever(autoreverses: false),
+        gradient: Gradient = Gradient(colors: [.clear, .white, .clear]),
+        bandWidth: CGFloat = 1.fitW,
+        mode: ShimmerModifier.Mode = .mask
+    ) -> some View {
+        if isActive {
+            modifier(ShimmerModifier(animation: animation, gradient: gradient, bandWidth: bandWidth, mode: mode))
+        } else {
+            self
+        }
+    }
+
     func wakeLock() -> some View {
         modifier(WakeLockModifier())
     }

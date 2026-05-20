@@ -17,6 +17,7 @@ final class StepTreeViewModel {
     private(set) var plan: Project.Plan
     private(set) var selectedWeek: Project.Plan.Week?
     private(set) var lockedWeeks: [Project.Plan.Week] = []
+    private(set) var highlightedStep: Project.Plan.Step?
     var stepToMenu: Project.Plan.Step?
     var textFieldAlertItem: TextFieldAlertItem?
     var alertItem: AlertItem?
@@ -35,8 +36,10 @@ final class StepTreeViewModel {
     private let router: StepTreeRouter
     private let dataStorage: DataStorage
     private let storeManager: StoreManager
+    private let chatter: Chatter
 
     private var project: Project
+    private var highlightStepTask: Task<Void, Never>?
 
     // MARK: - Inits
 
@@ -44,12 +47,14 @@ final class StepTreeViewModel {
         router: StepTreeRouter,
         dataStorage: DataStorage,
         storeManager: StoreManager,
+        chatter: Chatter,
         project: Project,
         plan: Project.Plan
     ) {
         self.router = router
         self.dataStorage = dataStorage
         self.storeManager = storeManager
+        self.chatter = chatter
         self.project = project
         self.plan = plan
 
@@ -216,9 +221,15 @@ extension StepTreeViewModel {
     private func saveProject() {
         Task { @MainActor in
             do {
-                var updatedProject = project
-                updatedProject.updatedAt = .now
-                try dataStorage.saveProject(updatedProject)
+                updateChatConversationContextIfNeeded()
+                if let planIndex = project.plans.firstIndex(where: { $0.id == plan.id }) {
+                    project.plans[planIndex] = plan
+                }
+                project.updatedAt = .now
+                try dataStorage.saveProject(project)
+                if let conversation = plan.chat?.conversation {
+                    try await chatter.updateChatContext(conversation: conversation)
+                }
             } catch {
                 alertItem = .error(message: error.localizedDescription)
             }
@@ -234,6 +245,16 @@ extension StepTreeViewModel {
         selectedWeek = week
         isWellDone = plan.isCompleted
         saveProject()
+    }
+
+    private func findWeekByStepTitle(_ title: String) -> Project.Plan.Week? {
+        plan.weeks.first { week in
+            week.steps.contains { step in
+                step.title
+                    .trimmingCharacters(in: .whitespacesAndNewlines)
+                    .localizedCaseInsensitiveCompare(title) == .orderedSame
+            }
+        }
     }
 
     private func lockWeeks() {
@@ -283,10 +304,52 @@ extension StepTreeViewModel {
         updateWeek(week)
     }
 
+    private func highlightStep(_ step: Project.Plan.Step, duration: CGFloat = 3.2) {
+        highlightStepTask?.cancel()
+        highlightStepTask = Task { @MainActor [weak self] in
+            guard let self else { return }
+            highlightedStep = step
+            try? await Task.sleep(for: .seconds(duration))
+            guard !Task.isCancelled else { return }
+            highlightedStep = nil
+        }
+    }
+
+    private func findStepByTitle(_ title: String) -> Project.Plan.Step? {
+        guard let week = findWeekByStepTitle(title) else { return nil }
+        return week.steps.first(where: { step in
+            step.title
+                .trimmingCharacters(in: .whitespacesAndNewlines)
+                .localizedCaseInsensitiveCompare(title) == .orderedSame
+        })
+    }
+
     private func openChat(step: Project.Plan.Step?) {
         if let planIndex = project.plans.firstIndex(where: { $0.id == plan.id }) {
             project.plans[planIndex] = plan
         }
-        router.route(to: .chat(project, plan, step))
+        router.route(to: .chat(project, plan, step) { [weak self] in
+            guard let self else { return }
+            let context = $0.trimmingCharacters(in: .whitespacesAndNewlines)
+            guard !context.isEmpty,
+                  let week = findWeekByStepTitle(context),
+                  !isWeekLocked(week),
+                  let step = findStepByTitle(context)
+            else { return }
+            selectedWeek = week
+            highlightStep(step)
+        })
+    }
+
+    private func updateChatConversationContextIfNeeded() {
+        guard let chat = plan.chat else { return }
+        plan.chat = Project.Plan.Chat(
+            id: chat.id,
+            conversation: Project.Plan.Chat.Conversation(
+                id: chat.conversation.id,
+                context: chatter.createChatContext(for: plan)
+            ),
+            messages: chat.messages
+        )
     }
 }

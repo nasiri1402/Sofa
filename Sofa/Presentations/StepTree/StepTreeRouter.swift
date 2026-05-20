@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 enum StepTreeRoute {
-    case chat(Project, Project.Plan, Project.Plan.Step?)
+    case chat(Project, Project.Plan, Project.Plan.Step?, onTapContext: (String) -> Void)
 }
 
 final class StepTreeRouter: HashableRouter {
@@ -32,12 +32,13 @@ final class StepTreeRouter: HashableRouter {
 
     func route(to route: StepTreeRoute) {
         switch route {
-        case .chat(let project, let plan, let step):
+        case .chat(let project, let plan, let step, let onTapContext):
             let router = ChatRouter(
                 navigator: navigator,
                 project: project,
                 plan: plan,
-                step: step
+                step: step,
+                onTapContext: onTapContext
             )
             navigator.push(router)
         }
@@ -56,6 +57,7 @@ extension StepTreeRouter: ViewFactory {
             router: self,
             dataStorage: ServiceLayer.dataStorage,
             storeManager: ServiceLayer.storeManager,
+            chatter: ServiceLayer.chatter,
             project: project,
             plan: plan
         )

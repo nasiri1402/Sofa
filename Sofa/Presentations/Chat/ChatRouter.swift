@@ -16,6 +16,7 @@ final class ChatRouter: HashableRouter {
     private let project: Project
     private let plan: Project.Plan
     private let step: Project.Plan.Step?
+    private let onTapContext: (String) -> Void
 
     // MARK: - Inits
 
@@ -23,12 +24,14 @@ final class ChatRouter: HashableRouter {
         navigator: Navigator,
         project: Project,
         plan: Project.Plan,
-        step: Project.Plan.Step?
+        step: Project.Plan.Step?,
+        onTapContext: @escaping (String) -> Void
     ) {
         self.navigator = navigator
         self.project = project
         self.plan = plan
         self.step = step
+        self.onTapContext = onTapContext
     }
 
     // MARK: - Public Methods
@@ -48,7 +51,8 @@ extension ChatRouter: ViewFactory {
             chatter: ServiceLayer.chatter,
             project: project,
             plan: plan,
-            step: step
+            step: step,
+            onTapContext: onTapContext
         )
         let view = ChatView(viewModel: viewModel)
         return AnyView(view)

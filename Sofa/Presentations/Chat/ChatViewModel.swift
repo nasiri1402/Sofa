@@ -36,6 +36,7 @@ final class ChatViewModel {
     private let chatter: Chatter
 
     private var project: Project
+    private let onTapContext: (String) -> Void
 
     // MARK: - Inits
 
@@ -45,7 +46,8 @@ final class ChatViewModel {
         chatter: Chatter,
         project: Project,
         plan: Project.Plan,
-        step: Project.Plan.Step?
+        step: Project.Plan.Step?,
+        onTapContext: @escaping (String) -> Void
     ) {
         self.router = router
         self.dataStorage = dataStorage
@@ -53,6 +55,7 @@ final class ChatViewModel {
         self.project = project
         self.plan = plan
         self.step = step
+        self.onTapContext = onTapContext
 
         initialize()
     }
@@ -78,6 +81,20 @@ extension ChatViewModel {
     }
 
     func didTapNavigationBarTrailingButton() {
+        router.back()
+    }
+
+    func didTapMessageContext(_ message: Project.Plan.Chat.Message) {
+        guard let context = message.context else { return }
+        guard canOpenMessageContext(context) else {
+            alertItem = AlertItem(
+                title: Text(String(localized: "messageContextStepNotFoundTitle")),
+                message: Text(String(localized: "messageContextStepNotFoundMessage")),
+                primaryButton: .default(Text(String(localized: "ok")))
+            )
+            return
+        }
+        onTapContext(context)
         router.back()
     }
 
@@ -121,33 +138,28 @@ extension ChatViewModel {
         }
     }
 
-    private func sendMessage(_ text: String, context: String?) async {
-        isSending = true
-        do {
-            if plan.chat == nil {
-                plan.chat = try await chatter.createChat()
-            }
-            plan.chat?.addMessage(text: text, context: context)
-            try saveProject()
-
-            if let threadID = plan.chat?.threadID {
-                plan.chat?.addMessage(
-                    text: try await chatter.sendMessage(text, threadID: threadID),
-                    isFromUser: false
-                )
-                try saveProject()
-            }
-        } catch {
-            alertItem = .error(message: error.localizedDescription)
+    private func saveProject() throws {
+        if let planIndex = project.plans.firstIndex(where: { $0.id == plan.id }) {
+            project.plans[planIndex] = plan
         }
-        isSending = false
+        project.updatedAt = .now
+        try dataStorage.saveProject(project)
+    }
+
+    private func createChat() async throws {
+        let chat = try await chatter.createChat(for: plan)
+        plan.chat = chat
+        try await chatter.updateChatContext(conversation: chat.conversation)
     }
 
     private func clearChat() {
-        plan.chat = nil
         messageInput = ""
         Task { @MainActor in
             do {
+                if let conversation = plan.chat?.conversation {
+                    try? await chatter.closeChat(conversation: conversation)
+                }
+                plan.chat = nil
                 try saveProject()
             } catch {
                 alertItem = .error(message: error.localizedDescription)
@@ -155,11 +167,45 @@ extension ChatViewModel {
         }
     }
 
-    private func saveProject() throws {
-        if let planIndex = project.plans.firstIndex(where: { $0.id == plan.id }) {
-            project.plans[planIndex] = plan
+    private func sendMessage(_ text: String, context: String?) async {
+        isSending = true
+        do {
+            if plan.chat == nil {
+                try await createChat()
+            }
+            try addMessage(text: text, context: context)
+            guard let chat = plan.chat else { return }
+            try addMessage(
+                text: try await chatter.sendMessage(text, context: context, conversation: chat.conversation),
+                isFromUser: false
+            )
+        } catch {
+            alertItem = .error(message: error.localizedDescription)
         }
-        project.updatedAt = .now
-        try dataStorage.saveProject(project)
+        isSending = false
+    }
+
+    private func addMessage(text: String, context: String? = nil, isFromUser: Bool = true) throws {
+        let message = Project.Plan.Chat.Message(
+            id: UUID(),
+            text: text,
+            context: context,
+            isFromUser: isFromUser,
+            sentAt: .now
+        )
+        plan.chat?.messages.insert(message, at: .zero)
+        try saveProject()
+    }
+
+    private func canOpenMessageContext(_ context: String) -> Bool {
+        let normalized = context.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !normalized.isEmpty else { return false }
+        return plan.weeks.contains { week in
+            week.steps.contains { step in
+                step.title
+                    .trimmingCharacters(in: .whitespacesAndNewlines)
+                    .localizedCaseInsensitiveCompare(normalized) == .orderedSame
+            }
+        }
     }
 }

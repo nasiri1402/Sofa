@@ -11,6 +11,8 @@ import Foundation
 
 protocol FunctionsClient {
     func generator(request: GeneratorRequest) async throws -> GeneratorResponse
+    func converser(request: ConverserRequest) async throws -> ConverserResponse
+    func chatter(request: ChatterRequest) async throws -> ChatterResponse
 }
 
 final class DefaultFunctionsClient: FunctionsClient {
@@ -35,6 +37,16 @@ final class DefaultFunctionsClient: FunctionsClient {
         return try decoder.decode(GeneratorResponse.self, from: data)
     }
 
+    func converser(request: ConverserRequest) async throws -> ConverserResponse {
+        let data = try await call(Function.converser, request: request)
+        return try decoder.decode(ConverserResponse.self, from: data)
+    }
+
+    func chatter(request: ChatterRequest) async throws -> ChatterResponse {
+        let data = try await call(Function.chatter, request: request)
+        return try decoder.decode(ChatterResponse.self, from: data)
+    }
+
     // MARK: - Private Methods
 
     @discardableResult
@@ -56,5 +68,7 @@ final class DefaultFunctionsClient: FunctionsClient {
 extension DefaultFunctionsClient {
     enum Function {
         static let generator = "generator"
+        static let converser = "converser"
+        static let chatter = "chatter"
     }
 }

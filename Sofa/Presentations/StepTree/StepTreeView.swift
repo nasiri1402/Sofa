@@ -214,14 +214,16 @@ struct StepTreeView: View {
                         .resizable()
                         .frame(width: 24.fitW, height: 24.fitW)
 
-                    Text(step.title)
-                        .font(.system(size: 15.fitW))
-                        .foregroundStyle(.grayD1D1D6)
-                        .frame(minHeight: 24.fitW)
-                        .padding(.horizontal, 6.fitW)
-                        .contentTransition(.numericText())
-                        .animation(.easeInOut, value: step.title)
-
+                    StepTitle(
+                        step,
+                        foregroundColor: viewModel.highlightedStep?.id == step.id ? .yellowFFCC00 : .grayD1D1D6
+                    )
+                    .padding(.horizontal, 6.fitW)
+                    .overlay {
+                        StepTitle(step, foregroundColor: .white.opacity(0.6))
+                            .shimmering()
+                            .opacity(viewModel.highlightedStep?.id == step.id ? 1 : .zero)
+                    }
                     Spacer(minLength: .zero)
                 }
                 .contentShape(.rect)
@@ -231,6 +233,19 @@ struct StepTreeView: View {
 
             StepMenuButton(step)
         }
+    }
+
+    private func StepTitle(
+        _ step: Project.Plan.Step,
+        foregroundColor: Color
+    ) -> some View {
+        Text(step.title)
+            .font(.system(size: 15.fitW))
+            .frame(minHeight: 24.fitW)
+            .foregroundStyle(foregroundColor)
+            .contentTransition(.numericText())
+            .animation(.easeInOut, value: step.title)
+            .animation(.easeInOut, value: viewModel.highlightedStep?.id == step.id)
     }
 
     private func StepMenuButton(_ step: Project.Plan.Step) -> some View {
@@ -308,10 +323,16 @@ struct StepTreeView: View {
             .padding(.horizontal, 12.fitW)
             .frame(maxWidth: .infinity, alignment: .leading)
             .background {
-                Capsule()
-                    .fill(.gray787880.opacity(0.12))
-                    .blur(radius: 30.fitW)
-                    .clipped()
+                ZStack {
+                    Capsule()
+                        .fill(.ultraThinMaterial)
+                        .clipped()
+
+                    Capsule()
+                        .fill(.gray787880.opacity(0.12))
+                        .blur(radius: 30.fitW)
+                        .clipped()
+                }
             }
             .overlay {
                 Capsule()
