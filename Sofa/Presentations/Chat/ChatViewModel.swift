@@ -154,13 +154,14 @@ extension ChatViewModel {
 
     private func clearChat() {
         messageInput = ""
+        let conversation = plan.chat?.conversation
+        plan.chat = nil
+
         Task { @MainActor in
             do {
-                if let conversation = plan.chat?.conversation {
-                    try? await chatter.closeChat(conversation: conversation)
-                }
-                plan.chat = nil
+                await Task.yield()
                 try saveProject()
+                closeConversation(conversation)
             } catch {
                 alertItem = .error(message: error.localizedDescription)
             }
@@ -223,5 +224,12 @@ extension ChatViewModel {
             messages: chat.messages
         )
         try saveProject()
+    }
+
+    private func closeConversation(_ conversation: Project.Plan.Chat.Conversation?) {
+        guard let conversation else { return }
+        Task.detached {
+            try? await chatter.closeChat(conversation: conversation)
+        }
     }
 }

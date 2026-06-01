@@ -54,7 +54,8 @@ struct StepTreeView: View {
             .scrollContentBackground(.hidden)
             .scrollIndicators(.hidden)
             .scrollBounceBehavior(.basedOnSize)
-            .contentMargins(.vertical, 24.fitW, for: .scrollContent)
+            .contentMargins(.top, 24.fitW, for: .scrollContent)
+            .contentMargins(.bottom, 68.fitW, for: .scrollContent)
             .padding(.horizontal, 16.fitW)
             .overlay(alignment: .bottom) {
                 VStack {
