@@ -219,12 +219,13 @@ struct StepTreeView: View {
                         step,
                         foregroundColor: viewModel.highlightedStep?.id == step.id ? .yellowFFCC00 : .grayD1D1D6
                     )
-                    .padding(.horizontal, 6.fitW)
                     .overlay {
                         StepTitle(step, foregroundColor: .white.opacity(0.75))
                             .shimmering()
                             .opacity(viewModel.highlightedStep?.id == step.id ? 1 : .zero)
                     }
+                    .padding(.horizontal, 6.fitW)
+
                     Spacer(minLength: .zero)
                 }
                 .contentShape(.rect)

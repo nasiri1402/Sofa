@@ -22,7 +22,8 @@ final class ChatViewModel {
     var alertItem: AlertItem?
 
     var messages: [Project.Plan.Chat.Message] {
-        (plan.chat?.messages ?? []).sorted { $0.sentAt < $1.sentAt }
+        ((plan.chat?.messages ?? []) + [optimisticMessage].compactMap(\.self))
+            .sorted { $0.sentAt < $1.sentAt }
     }
 
     var canSendMessage: Bool {
@@ -37,6 +38,8 @@ final class ChatViewModel {
 
     private var project: Project
     private let onTapContext: (String) -> Void
+
+    private var optimisticMessage: Project.Plan.Chat.Message?
 
     // MARK: - Inits
 
@@ -170,32 +173,52 @@ extension ChatViewModel {
 
     private func sendMessage(_ text: String, context: String?) async {
         isSending = true
+        defer {
+            optimisticMessage = nil
+            isSending = false
+        }
+        let userMessage = makeMessage(text: text, context: context)
+        optimisticMessage = userMessage
+        await Task.yield()
         do {
             if plan.chat == nil {
                 try await createChat()
             }
             try await syncConversationContextIfNeeded()
-            try addMessage(text: text, context: context)
             guard let chat = plan.chat else { return }
-            try addMessage(
+            let assistantMessage = makeMessage(
                 text: try await chatter.sendMessage(text, context: context, conversation: chat.conversation),
                 isFromUser: false
             )
+            try addMessage(userMessage)
+            try addMessage(assistantMessage)
         } catch {
+            try? removeMessage(id: userMessage.id)
             alertItem = .error(message: error.localizedDescription)
         }
-        isSending = false
     }
 
-    private func addMessage(text: String, context: String? = nil, isFromUser: Bool = true) throws {
-        let message = Project.Plan.Chat.Message(
+    private func addMessage(_ message: Project.Plan.Chat.Message) throws {
+        plan.chat?.messages.insert(message, at: .zero)
+        try saveProject()
+    }
+
+    private func makeMessage(
+        text: String,
+        context: String? = nil,
+        isFromUser: Bool = true
+    ) -> Project.Plan.Chat.Message {
+        Project.Plan.Chat.Message(
             id: UUID(),
             text: text,
             context: context,
             isFromUser: isFromUser,
             sentAt: .now
         )
-        plan.chat?.messages.insert(message, at: .zero)
+    }
+
+    private func removeMessage(id: UUID) throws {
+        plan.chat?.messages.removeAll { $0.id == id }
         try saveProject()
     }
 
@@ -228,7 +251,8 @@ extension ChatViewModel {
 
     private func closeConversation(_ conversation: Project.Plan.Chat.Conversation?) {
         guard let conversation else { return }
-        Task.detached {
+        Task.detached { [weak self] in
+            guard let self else { return }
             try? await chatter.closeChat(conversation: conversation)
         }
     }
