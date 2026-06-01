@@ -11,8 +11,6 @@ const db = getFirestore();
 const OPENAI_API_KEY = defineSecret("OPENAI_API_KEY");
 const OPENAI_BASE_URL = "https://api.openai.com/v1";
 const OPENAI_CHAT_MODEL = "gpt-5-nano";
-const CONVERSATION_CONTEXT_PREFIX = "CONVERSATION CONTEXT";
-const MESSAGE_CONTEXT_PREFIX = "MESSAGE CONTEXT";
 
 type ChatterPayload = {
   conversation_id?: string;
@@ -139,33 +137,26 @@ function responseOutputText(response?: OpenAIResponse): string {
 }
 
 /**
- * Formats a conversation context block
- * that should live in conversation history.
+ * Returns the conversation context block
+ * as it should be stored in conversation history.
  * @param {string} context
  * @return {string}
  */
 function makeThreadContextMessage(context: string): string {
-  return `${CONVERSATION_CONTEXT_PREFIX}\n${context}`.trim();
+  return context.trim();
 }
 
 /**
- * Formats a user message with optional message-level context.
+ * Formats the current request as JSON for the model input.
  * @param {string} message
  * @param {string} context
  * @return {string}
  */
 function makeUserMessage(message: string, context: string): string {
-  if (!context) {
-    return message;
-  }
-
-  return [
-    MESSAGE_CONTEXT_PREFIX,
-    context,
-    "",
-    "USER MESSAGE",
-    message,
-  ].join("\n").trim();
+  const payload = context ?
+    {message, context} :
+    {message};
+  return JSON.stringify(payload, null, 2);
 }
 
 /**
