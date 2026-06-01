@@ -218,6 +218,7 @@ extension Project.Plan.Chat {
     struct Conversation: Identifiable, Hashable {
         let id: String
         let context: String
+        let isDirty: Bool
     }
 }
 

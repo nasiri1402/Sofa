@@ -16,12 +16,14 @@ final class ConversationEntity {
     @Attribute(.unique)
     var id: String
     var context: String
+    var isDirty: Bool
 
     // MARK: - Inits
 
     init(from model: Project.Plan.Chat.Conversation) {
         self.id = model.id
         self.context = model.context
+        self.isDirty = model.isDirty
     }
 
     // MARK: - Public Methods
@@ -29,7 +31,8 @@ final class ConversationEntity {
     func toConversation() -> Project.Plan.Chat.Conversation {
         Project.Plan.Chat.Conversation(
             id: id,
-            context: context
+            context: context,
+            isDirty: isDirty
         )
     }
 }

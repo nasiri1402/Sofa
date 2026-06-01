@@ -149,7 +149,7 @@ extension ChatViewModel {
     private func createChat() async throws {
         let chat = try await chatter.createChat(for: plan)
         plan.chat = chat
-        try await chatter.updateChatContext(conversation: chat.conversation)
+        try saveProject()
     }
 
     private func clearChat() {
@@ -173,6 +173,7 @@ extension ChatViewModel {
             if plan.chat == nil {
                 try await createChat()
             }
+            try await syncConversationContextIfNeeded()
             try addMessage(text: text, context: context)
             guard let chat = plan.chat else { return }
             try addMessage(
@@ -207,5 +208,20 @@ extension ChatViewModel {
                     .localizedCaseInsensitiveCompare(normalized) == .orderedSame
             }
         }
+    }
+
+    private func syncConversationContextIfNeeded() async throws {
+        guard let chat = plan.chat, chat.conversation.isDirty else { return }
+        try await chatter.updateChatContext(conversation: chat.conversation)
+        plan.chat = Project.Plan.Chat(
+            id: chat.id,
+            conversation: Project.Plan.Chat.Conversation(
+                id: chat.conversation.id,
+                context: chat.conversation.context,
+                isDirty: false
+            ),
+            messages: chat.messages
+        )
+        try saveProject()
     }
 }

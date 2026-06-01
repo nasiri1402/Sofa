@@ -146,7 +146,7 @@ extension StepTreeViewModel {
     func didTapAskAssistantStepButton() {
         let step = stepToMenu
         stepToMenu = nil
-        openChat(step: step)
+        openChatIfAvailable(step: step)
     }
 
     func didTapRenameStepButton() {
@@ -182,7 +182,7 @@ extension StepTreeViewModel {
     }
 
     func didTapAskAssistantButton() {
-        openChat(step: nil)
+        openChatIfAvailable(step: nil)
     }
 
     func didTapViewPlanButton() {
@@ -221,15 +221,12 @@ extension StepTreeViewModel {
     private func saveProject() {
         Task { @MainActor in
             do {
-                updateChatConversationContextIfNeeded()
+                updateChatConversationContext()
                 if let planIndex = project.plans.firstIndex(where: { $0.id == plan.id }) {
                     project.plans[planIndex] = plan
                 }
                 project.updatedAt = .now
                 try dataStorage.saveProject(project)
-                if let conversation = plan.chat?.conversation {
-                    try await chatter.updateChatContext(conversation: conversation)
-                }
             } catch {
                 alertItem = .error(message: error.localizedDescription)
             }
@@ -324,7 +321,11 @@ extension StepTreeViewModel {
         })
     }
 
-    private func openChat(step: Project.Plan.Step?) {
+    private func openChatIfAvailable(step: Project.Plan.Step?) {
+        guard storeManager.hasPurchasedProduct() else {
+            isPaywallPresented = true
+            return
+        }
         if let planIndex = project.plans.firstIndex(where: { $0.id == plan.id }) {
             project.plans[planIndex] = plan
         }
@@ -341,13 +342,14 @@ extension StepTreeViewModel {
         })
     }
 
-    private func updateChatConversationContextIfNeeded() {
+    private func updateChatConversationContext() {
         guard let chat = plan.chat else { return }
         plan.chat = Project.Plan.Chat(
             id: chat.id,
             conversation: Project.Plan.Chat.Conversation(
                 id: chat.conversation.id,
-                context: chatter.createChatContext(for: plan)
+                context: chatter.createChatContext(for: plan),
+                isDirty: true
             ),
             messages: chat.messages
         )

@@ -66,7 +66,8 @@ final class DefaultChatter: Chatter {
                     id: UUID(),
                     conversation: Project.Plan.Chat.Conversation(
                         id: payload.conversationID,
-                        context: createChatContext(for: plan)
+                        context: createChatContext(for: plan),
+                        isDirty: true
                     ),
                     messages: []
                 )

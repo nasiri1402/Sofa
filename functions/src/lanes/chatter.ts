@@ -234,6 +234,7 @@ async function handleUpdateContext(
  * @param {string} conversationID
  * @param {string} message
  * @param {string} context
+ * @param {string} instructions
  * @return {Promise<{action: string, payload: {message: string}}>}
  */
 async function handleSendMessage(
