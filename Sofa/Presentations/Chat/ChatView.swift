@@ -270,8 +270,8 @@ struct ChatView: View {
             .overlay(alignment: .leading) {
                 Text(String(localized: "thinking") + "...")
                     .font(.system(size: 15.fitW))
-                    .foregroundStyle(.white.opacity(0.6))
-                    .shimmering(bandWidth: 1.fitW / 2)
+                    .foregroundStyle(.white.opacity(0.75))
+                    .shimmering()
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .transition(.opacity.combined(with: .blurReplace))

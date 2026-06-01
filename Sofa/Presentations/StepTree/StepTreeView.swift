@@ -220,7 +220,7 @@ struct StepTreeView: View {
                     )
                     .padding(.horizontal, 6.fitW)
                     .overlay {
-                        StepTitle(step, foregroundColor: .white.opacity(0.6))
+                        StepTitle(step, foregroundColor: .white.opacity(0.75))
                             .shimmering()
                             .opacity(viewModel.highlightedStep?.id == step.id ? 1 : .zero)
                     }

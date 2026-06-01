@@ -99,20 +99,28 @@ extension View {
     /// Добавляет анимированный эффект "переливающейся полосы").
     /// - Parameters:
     ///   - isActive: Флаг, для включения эффекта. По умолчанию равен `true`.
-    ///   - animation: Анимация. По умолчанию `linear`, продолжительностью `1`, задержкой `0.1` и бесконечным повторением без обратного воспроизведения.
+    ///   - duration: Продолжительность анимации эффекта. По умолчанию `1.5`.
+    ///   - delay: Задержка анимации эффекта. По умолчанию `0.3`.
     ///   - gradient: Градиент для эффекта переливания. По умолчанию градиент состоит из `clear`, `white` и `clear`.
     ///   - bandWidth: Ширина "полосы". По умолчанию `1`.
     ///   - mode: Режим применения эффекта. По умолчанию `mask`.
+    /// - Note: Для эффекта используется анимация `linear` c бесконечным повторением без обратного воспроизведения.
     @ViewBuilder
     func shimmering(
         isActive: Bool = true,
-        animation: Animation = .linear(duration: 1).delay(0.1).repeatForever(autoreverses: false),
+        duration: CGFloat = 1.5,
+        delay: CGFloat = 0.3,
         gradient: Gradient = Gradient(colors: [.clear, .white, .clear]),
         bandWidth: CGFloat = 1.fitW,
         mode: ShimmerModifier.Mode = .mask
     ) -> some View {
         if isActive {
-            modifier(ShimmerModifier(animation: animation, gradient: gradient, bandWidth: bandWidth, mode: mode))
+            modifier(ShimmerModifier(
+                animation: .linear(duration: duration).delay(delay).repeatForever(autoreverses: false),
+                gradient: gradient,
+                bandWidth: bandWidth,
+                mode: mode
+            ))
         } else {
             self
         }
