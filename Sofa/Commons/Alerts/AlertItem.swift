@@ -36,11 +36,11 @@ struct AlertItem: Identifiable {
 // MARK: - Defaults
 
 extension AlertItem {
-    static func error(message: String, action: @escaping () -> Void = {}) -> AlertItem {
+    static func error(message: String, onOK: @escaping () -> Void = {}) -> AlertItem {
         AlertItem(
             title: Text(String(localized: "error")),
             message: Text(message),
-            primaryButton: .default(Text(String(localized: "ok")), action: action),
+            primaryButton: .default(Text(String(localized: "ok")), action: onOK),
             secondaryButton: nil
         )
     }
@@ -56,6 +56,18 @@ extension AlertItem {
                 UIApplication.shared.open(url)
             },
             secondaryButton: .cancel(Text(String(localized: "cancel")))
+        )
+    }
+
+    static func noInternetConnection(
+        onOK: @escaping () -> Void = {},
+        onRetry: @escaping () -> Void = {}
+    ) -> AlertItem {
+        AlertItem(
+            title: Text(String(localized: "noInternetConnection")),
+            message: Text(String(localized: "noInternetConnectionMessage")),
+            primaryButton: .default(Text(String(localized: "ok")), action: onOK),
+            secondaryButton: .default(Text(String(localized: "retry")), action: onRetry)
         )
     }
 }

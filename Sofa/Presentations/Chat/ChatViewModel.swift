@@ -38,6 +38,7 @@ final class ChatViewModel {
 
     private let router: ChatRouter
     private let dataStorage: DataStorage
+    private let networkMonitor: NetworkMonitor
     private let chatter: Chatter
 
     private var project: Project
@@ -50,6 +51,7 @@ final class ChatViewModel {
     init(
         router: ChatRouter,
         dataStorage: DataStorage,
+        networkMonitor: NetworkMonitor,
         chatter: Chatter,
         project: Project,
         plan: Project.Plan,
@@ -58,6 +60,7 @@ final class ChatViewModel {
     ) {
         self.router = router
         self.dataStorage = dataStorage
+        self.networkMonitor = networkMonitor
         self.chatter = chatter
         self.project = project
         self.plan = plan
@@ -113,6 +116,13 @@ extension ChatViewModel {
         guard canSendMessage else { return }
         let text = messageInput.trimmingCharacters(in: .whitespacesAndNewlines)
         let attachedStepTitle = step?.title
+        guard networkMonitor.isConnected else {
+            alertItem = .noInternetConnection { [weak self] in
+                guard let self else { return }
+                didTapSendButton()
+            }
+            return
+        }
         messageInput = ""
         step = nil
 
@@ -161,6 +171,13 @@ extension ChatViewModel {
     }
 
     private func clearChat() {
+        guard networkMonitor.isConnected else {
+            alertItem = .noInternetConnection { [weak self] in
+                guard let self else { return }
+                clearChat()
+            }
+            return
+        }
         messageInput = ""
         let conversation = plan.chat?.conversation
         plan.chat = nil

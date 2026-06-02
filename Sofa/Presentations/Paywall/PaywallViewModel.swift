@@ -164,17 +164,16 @@ extension PaywallViewModel {
                 products = try await storeManager.getProducts()
                 subscriptions = products.compactMap { PaywallModel.Subscription(id: $0.id) }
                 guard subscriptions.isEmpty else { return }
+                guard networkMonitor.isConnected else {
+                    alertItem = .noInternetConnection { [weak self] in
+                        guard let self else { return }
+                        loadProducts()
+                    }
+                    return
+                }
                 alertItem = AlertItem(
-                    title: Text(
-                        networkMonitor.isConnected
-                        ? String(localized: "productsEmpty")
-                        : String(localized: "noInternetConnection")
-                    ),
-                    message: Text(
-                        networkMonitor.isConnected
-                        ? String(localized: "productsEmptyMessage")
-                        : String(localized: "noInternetConnectionMessage")
-                    ),
+                    title: Text(String(localized: "productsEmpty")),
+                    message: Text(String(localized: "productsEmptyMessage")),
                     primaryButton: .default(Text(String(localized: "ok"))) { [weak self] in
                         guard let self else { return }
                         dismissTrigger = UUID()

@@ -79,14 +79,12 @@ extension GenerationLoaderViewModel {
 extension GenerationLoaderViewModel {
     private func generateProject() {
         guard networkMonitor.isConnected else {
-            alertItem = AlertItem(
-                title: Text(String(localized: "noInternetConnection")),
-                message: Text(String(localized: "noInternetConnectionMessage")),
-                primaryButton: .default(Text(String(localized: "ok"))) { [weak self] in
+            alertItem = .noInternetConnection(
+                onOK: { [weak self] in
                     guard let self else { return }
                     router.back()
                 },
-                secondaryButton: .default(Text(String(localized: "retry"))) { [weak self] in
+                onRetry: { [weak self] in
                     guard let self else { return }
                     generateProject()
                 }

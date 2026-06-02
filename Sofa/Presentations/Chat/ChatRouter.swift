@@ -48,6 +48,7 @@ extension ChatRouter: ViewFactory {
         let viewModel = ChatViewModel(
             router: self,
             dataStorage: ServiceLayer.dataStorage,
+            networkMonitor: ServiceLayer.networkMonitor,
             chatter: ServiceLayer.chatter,
             project: project,
             plan: plan,
