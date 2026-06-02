@@ -18,8 +18,12 @@ final class ChatViewModel {
     private(set) var profile: Profile?
     private(set) var step: Project.Plan.Step?
     var messageInput = ""
-    private(set) var isSending = false
+    private(set) var sendingState: ChatModel.SendingState?
     var alertItem: AlertItem?
+
+    var isSending: Bool {
+        sendingState != nil
+    }
 
     var messages: [Project.Plan.Chat.Message] {
         ((plan.chat?.messages ?? []) + [optimisticMessage].compactMap(\.self))
@@ -111,6 +115,7 @@ extension ChatViewModel {
         let attachedStepTitle = step?.title
         messageInput = ""
         step = nil
+
         Task { @MainActor in
             await sendMessage(text, context: attachedStepTitle)
         }
@@ -172,20 +177,24 @@ extension ChatViewModel {
     }
 
     private func sendMessage(_ text: String, context: String?) async {
-        isSending = true
         defer {
             optimisticMessage = nil
-            isSending = false
+            sendingState = nil
         }
         let userMessage = makeMessage(text: text, context: context)
         optimisticMessage = userMessage
         await Task.yield()
         do {
             if plan.chat == nil {
+                sendingState = .initializingChat
                 try await createChat()
             }
-            try await syncConversationContextIfNeeded()
             guard let chat = plan.chat else { return }
+            if chat.conversation.isDirty {
+                sendingState = .analyzingPlan
+                try await syncConversationContext()
+            }
+            sendingState = .thinking
             let assistantMessage = makeMessage(
                 text: try await chatter.sendMessage(text, context: context, conversation: chat.conversation),
                 isFromUser: false
@@ -234,8 +243,8 @@ extension ChatViewModel {
         }
     }
 
-    private func syncConversationContextIfNeeded() async throws {
-        guard let chat = plan.chat, chat.conversation.isDirty else { return }
+    private func syncConversationContext() async throws {
+        guard let chat = plan.chat else { return }
         try await chatter.updateChatContext(conversation: chat.conversation)
         plan.chat = Project.Plan.Chat(
             id: chat.id,

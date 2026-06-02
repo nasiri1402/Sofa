@@ -84,7 +84,7 @@ struct GenerationResultView: View {
                 onTap: viewModel.didTapGenerateMoreButton
             )
             .confirmationDialog(
-                String(localized: "сhooseDfficultyDialogTitle"),
+                String(localized: "chooseDifficultyDialogTitle"),
                 isPresented: $viewModel.isDifficultyDialogPresented,
                 titleVisibility: .visible
             ) {

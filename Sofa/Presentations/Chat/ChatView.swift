@@ -129,13 +129,14 @@ struct ChatView: View {
                 MessageView(message)
                     .id(message.id)
             }
-            if viewModel.isSending {
-                ThinkingText()
+            if let sendingState = viewModel.sendingState {
+                SendingText(sendingState)
                     .padding(.top, 12.fitW)
             }
         }
         .animation(.easeInOut, value: viewModel.messages.count)
         .animation(.easeInOut, value: viewModel.isSending)
+        .animation(.easeInOut, value: viewModel.sendingState)
         .transition(.blurReplace.combined(with: .opacity))
     }
 
@@ -263,18 +264,19 @@ struct ChatView: View {
         .hapticFeedback()
     }
 
-    private func ThinkingText() -> some View {
-        Text(String(localized: "thinking") + "...")
+    private func SendingText(_ state: ChatModel.SendingState) -> some View {
+        Text(state.title + "...")
             .font(.system(size: 15.fitW))
             .foregroundStyle(.gray8E8E93)
             .overlay(alignment: .leading) {
-                Text(String(localized: "thinking") + "...")
+                Text(state.title + "...")
                     .font(.system(size: 15.fitW))
                     .foregroundStyle(.white.opacity(0.75))
                     .shimmering()
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .transition(.opacity.combined(with: .blurReplace))
+            .contentTransition(.numericText())
     }
 
     private func SendButton() -> some View {
