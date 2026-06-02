@@ -318,7 +318,8 @@ struct StepTreeView: View {
                 Text(String(localized: "needHelpWithPlanAskAIAssistant"))
                     .multilineMinimumScale()
                     .multilineTextAlignment(.leading)
-                    .font(.system(size: 13.fitW, weight: .semibold))
+                    .font(.system(size: 15.fitW))
+                    .foregroundStyle(viewModel.isPro ? .white : .yellowFFCC00)
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
             .frame(height: 46.fitW)
@@ -333,6 +334,10 @@ struct StepTreeView: View {
                     Capsule()
                         .fill(.gray787880.opacity(0.12))
                         .blur(radius: 30.fitW)
+                        .clipped()
+
+                    Capsule()
+                        .fill(.yellowFFCC00.opacity(viewModel.isPro ? 0 : 0.2))
                         .clipped()
                 }
             }

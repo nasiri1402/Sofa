@@ -22,6 +22,12 @@ final class StepTreeViewModel {
     var textFieldAlertItem: TextFieldAlertItem?
     var alertItem: AlertItem?
     var isWellDone = false
+
+    var isPro: Bool {
+//        storeManager.hasPurchasedProduct()
+        false
+    }
+
     var isPaywallPresented = false {
         didSet {
             guard oldValue != isPaywallPresented else { return }
@@ -255,14 +261,14 @@ extension StepTreeViewModel {
     }
 
     private func lockWeeks() {
-        selectedWeek = storeManager.hasPurchasedProduct() || project.hasLifetimeAccess
+        selectedWeek = isPro || project.hasLifetimeAccess
         ? plan.weeks.first { !$0.isCompleted } ?? plan.weeks.last
         : plan.weeks.min { $0.number < $1.number }
         lockedWeeks = plan.weeks.filter(isWeekLocked)
     }
 
     private func isWeekLocked(_ week: Project.Plan.Week) -> Bool {
-        guard !storeManager.hasPurchasedProduct(), !project.hasLifetimeAccess else { return false }
+        guard !isPro, !project.hasLifetimeAccess else { return false }
         return week.number != 1
     }
 
@@ -322,7 +328,7 @@ extension StepTreeViewModel {
     }
 
     private func openChatIfAvailable(step: Project.Plan.Step?) {
-        guard storeManager.hasPurchasedProduct() else {
+        guard isPro else {
             isPaywallPresented = true
             return
         }
