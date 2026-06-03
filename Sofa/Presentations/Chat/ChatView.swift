@@ -72,6 +72,7 @@ struct ChatView: View {
                     }
                 }
             }
+
         }
         .navigationTitle(String(localized: "aiAssistant"))
         .navigationBarTitleDisplayMode(.inline)
@@ -85,6 +86,7 @@ struct ChatView: View {
         .alert(item: $viewModel.alertItem) { item in
             item.alert()
         }
+        .toast(item: viewModel.toast)
         .onAppear {
             isTabBarHidden.wrappedValue = true
         }

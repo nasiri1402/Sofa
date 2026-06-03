@@ -21,6 +21,7 @@ final class ChatViewModel {
     private(set) var sendingState: ChatModel.SendingState?
     var selectedFailedMessage: Project.Plan.Chat.Message?
     var selectedActionsMessage: Project.Plan.Chat.Message?
+    var toast: ToastItem?
     var alertItem: AlertItem?
 
     var isSending: Bool {
@@ -42,12 +43,13 @@ final class ChatViewModel {
     private let dataStorage: DataStorage
     private let networkMonitor: NetworkMonitor
     private let chatter: Chatter
-    private let pasteboard: Pasteboard
+    private let clipboard: Clipboard
 
     private var project: Project
     private let onTapContext: (String) -> Void
 
     private var optimisticMessage: Project.Plan.Chat.Message?
+    @ObservationIgnored private var toastTask: Task<Void, Never>?
 
     // MARK: - Inits
 
@@ -56,7 +58,7 @@ final class ChatViewModel {
         dataStorage: DataStorage,
         networkMonitor: NetworkMonitor,
         chatter: Chatter,
-        pasteboard: Pasteboard,
+        clipboard: Clipboard,
         project: Project,
         plan: Project.Plan,
         step: Project.Plan.Step?,
@@ -66,7 +68,7 @@ final class ChatViewModel {
         self.dataStorage = dataStorage
         self.networkMonitor = networkMonitor
         self.chatter = chatter
-        self.pasteboard = pasteboard
+        self.clipboard = clipboard
         self.project = project
         self.plan = plan
         self.step = step
@@ -122,7 +124,7 @@ extension ChatViewModel {
         if message.isFromUser {
             selectedActionsMessage = message
         } else {
-            pasteboard.copy(message.text)
+            copyMessage(message)
         }
     }
 
@@ -152,7 +154,8 @@ extension ChatViewModel {
 
     func didTapCopyDialogButton() {
         guard let message = selectedActionsMessage else { return }
-        pasteboard.copy(message.text)
+        selectedActionsMessage = nil
+        copyMessage(message)
     }
 
     func didTapStepClearButton() {
@@ -314,6 +317,17 @@ extension ChatViewModel {
             isFailed: true,
             sentAt: message.sentAt
         )
+    }
+
+    private func copyMessage(_ message: Project.Plan.Chat.Message) {
+        clipboard.copy(message.text)
+        toastTask?.cancel()
+        toast = ToastItem(title: String(localized: "messageCopiedToClipboard"))
+        toastTask = Task { @MainActor [weak self] in
+            guard let self else { return }
+            try? await Task.sleep(for: .seconds(2))
+            toast = nil
+        }
     }
 
     private func removeMessage(id: UUID) throws {

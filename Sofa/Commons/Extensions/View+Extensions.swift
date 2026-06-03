@@ -68,6 +68,27 @@ extension View {
         }
     }
 
+    func toast(item: ToastItem?) -> some View {
+        self
+            .overlay(alignment: .top) {
+                if let item {
+                    Toast(item: item)
+                        .padding(.vertical, 12.fitW)
+                        .padding(.horizontal, 24.fitW)
+                        .transition(.asymmetric(
+                            insertion: .move(edge: .top)
+                                .combined(with: .scale(scale: 0.94, anchor: .top))
+                                .combined(with: .opacity),
+                            removal: .move(edge: .top)
+                                .combined(with: .scale(scale: 0.96, anchor: .top))
+                                .combined(with: .opacity)
+                        ))
+                        .zIndex(10)
+                }
+            }
+            .animation(.spring(duration: 0.35, bounce: 0.5), value: item?.id)
+    }
+
     func plainListRowStyle() -> some View {
         self
             .listRowInsets(EdgeInsets(top: .zero, leading: .zero, bottom: .zero, trailing: .zero))

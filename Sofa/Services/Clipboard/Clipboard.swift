@@ -1,5 +1,5 @@
 //
-//  Pasteboard.swift
+//  Clipboard.swift
 //  Sofa
 //
 //  Created by dukes on 6/3/26.
@@ -10,13 +10,13 @@ import UIKit
 
 // MARK: - Interfaces
 
-protocol Pasteboard {
+protocol Clipboard {
     func copy(_ text: String)
 }
 
 // MARK: - Implementations
 
-final class DefaultPasteboard: Pasteboard {
+final class DefaultClipboard: Clipboard {
 
     // MARK: - Private Properties
 

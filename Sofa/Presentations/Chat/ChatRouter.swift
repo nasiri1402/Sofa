@@ -50,7 +50,7 @@ extension ChatRouter: ViewFactory {
             dataStorage: ServiceLayer.dataStorage,
             networkMonitor: ServiceLayer.networkMonitor,
             chatter: ServiceLayer.chatter,
-            pasteboard: ServiceLayer.pasteboard,
+            clipboard: ServiceLayer.clipboard,
             project: project,
             plan: plan,
             step: step,

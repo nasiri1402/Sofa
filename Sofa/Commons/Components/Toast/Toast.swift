@@ -9,50 +9,27 @@ import SwiftUI
 
 struct Toast: View {
 
-    // MARK: - Style
-
-    enum Style {
-        case success
-
-        var icon: ImageResource {
-            switch self {
-            case .success: .check
-            }
-        }
-
-        var foregroundColor: ColorResource {
-            switch self {
-            case .success: .green34C759
-            }
-        }
-
-        var overlayColor: Color {
-            switch self {
-            case .success: .green34C759.opacity(0.2)
-            }
-        }
-    }
-
     // MARK: - Public Properties
 
-    let style: Style
-    let title: String
+    let item: ToastItem
 
     // MARK: - Body
 
     var body: some View {
-        HStack(spacing: 12.fitW) {
-            Image(style.icon)
+        HStack(spacing: 6.fitW) {
+            Image(item.style.icon)
                 .resizable()
                 .frame(width: 24.fitW, height: 24.fitW)
 
-            Text(title)
-                .font(.system(size: 16.fitW, weight: .semibold))
-                .foregroundStyle(Color(style.foregroundColor))
-                .frame(maxWidth: .infinity, alignment: .leading)
+            Text(item.title)
+                .multilineTextAlignment(.leading)
+                .font(.system(size: 13.fitW, weight: .semibold))
+                .foregroundStyle(item.style.foregroundColor)
+                .frame(maxWidth: 260.fitW, alignment: .leading)
+                .layoutPriority(1)
         }
-        .padding(.horizontal, 24.fitW)
-        .frame(height: 72.fitW)
+        .padding(12.fitW)
+        .fixedSize(horizontal: true, vertical: true)
         .background {
             ZStack {
                 Capsule()
@@ -65,7 +42,8 @@ struct Toast: View {
                     .clipped()
 
                 Capsule()
-                    .fill(style.overlayColor)
+                    .fill(item.style.backgroundColor)
+                    .clipped()
             }
         }
         .overlay {
@@ -76,15 +54,37 @@ struct Toast: View {
     }
 }
 
-#Preview {
-    ZStack {
-        Color.black090909
-            .ignoresSafeArea()
+// MARK: - ToastItem
 
-        Toast(
-            style: .success,
-            title: "Message copied to clipboard"
-        )
-        .padding(.horizontal, 24.fitW)
+struct ToastItem: Identifiable, Equatable {
+    let id = UUID()
+    var style: Style = .success
+    let title: String
+}
+
+extension ToastItem {
+
+    // MARK: - Style
+
+    enum Style: Equatable {
+        case success
+
+        var icon: ImageResource {
+            switch self {
+            case .success: .check
+            }
+        }
+
+        var foregroundColor: Color {
+            switch self {
+            case .success: .green34C759
+            }
+        }
+
+        var backgroundColor: Color {
+            switch self {
+            case .success: .green34C759.opacity(0.2)
+            }
+        }
     }
 }
