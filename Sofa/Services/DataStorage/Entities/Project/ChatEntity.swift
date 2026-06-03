@@ -16,7 +16,7 @@ final class ChatEntity {
     @Attribute(.unique)
     var id: UUID
     @Relationship(deleteRule: .cascade)
-    var conversation: ConversationEntity
+    var conversation: ConversationEntity?
     @Relationship(deleteRule: .cascade)
     var messages: [MessageEntity]
 
@@ -24,7 +24,7 @@ final class ChatEntity {
 
     init(from model: Project.Plan.Chat) {
         self.id = model.id
-        self.conversation = ConversationEntity(from: model.conversation)
+        self.conversation = model.conversation.map { ConversationEntity(from: $0) }
         self.messages = model.messages.map { MessageEntity(from: $0) }
     }
 
@@ -33,7 +33,7 @@ final class ChatEntity {
     func toChat() -> Project.Plan.Chat {
         Project.Plan.Chat(
             id: id,
-            conversation: conversation.toConversation(),
+            conversation: conversation?.toConversation(),
             messages: messages.map { $0.toMessage() }.sorted { $0.sentAt > $1.sentAt }
         )
     }

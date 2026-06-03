@@ -198,7 +198,7 @@ extension Project.Plan {
 
     struct Chat: Identifiable, Hashable {
         let id: UUID
-        let conversation: Conversation
+        var conversation: Conversation?
         var messages: [Message] = []
     }
 }
@@ -212,6 +212,7 @@ extension Project.Plan.Chat {
         let text: String
         let context: String?
         let isFromUser: Bool
+        let isFailed: Bool
         let sentAt: Date
     }
 

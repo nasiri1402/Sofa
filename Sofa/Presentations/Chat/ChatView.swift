@@ -126,8 +126,13 @@ struct ChatView: View {
     private func MessagesList() -> some View {
         LazyVStack(spacing: 12.fitW) {
             ForEach(viewModel.messages, id: \.id) { message in
-                MessageView(message)
-                    .id(message.id)
+                if message.isFromUser {
+                    UserMessageView(message)
+                        .id(message.id)
+                } else {
+                    AssistantMessageView(message)
+                        .id(message.id)
+                }
             }
             if let sendingState = viewModel.sendingState {
                 SendingText(sendingState)
@@ -140,31 +145,62 @@ struct ChatView: View {
         .transition(.blurReplace.combined(with: .opacity))
     }
 
-    @ViewBuilder
-    private func MessageView(_ message: Project.Plan.Chat.Message) -> some View {
-        if message.isFromUser {
-            VStack(alignment: .leading, spacing: 8.fitW) {
-                let context = viewModel.getContext(message) ?? ""
-                if !context.isEmpty {
-                    Button {
-                        viewModel.didTapMessageContext(message)
-                    } label: {
-                        StepText(context, lineLimit: 3)
-                    }
-                    .buttonStyle(.plain)
-                    .hapticFeedback()
-                    .padding(.vertical, 6.fitW)
+    private func UserMessageView(_ message: Project.Plan.Chat.Message) -> some View  {
+        VStack(alignment: .leading, spacing: 8.fitW) {
+            let context = viewModel.getContext(message) ?? ""
+            if !context.isEmpty {
+                Button {
+                    viewModel.didTapUserMessageContext(message)
+                } label: {
+                    StepText(context, lineLimit: 3)
                 }
-                HStack(spacing: .zero) {
-                    Spacer(minLength: 50.fitW)
+                .buttonStyle(.plain)
+                .hapticFeedback()
+                .padding(.vertical, 6.fitW)
+            }
+            HStack(spacing: .zero) {
+                Spacer(minLength: 30.fitW)
+                WarningButton(message)
+                    .padding(.trailing, 10.fitW)
+
+                Button {
+                    viewModel.didTapUserMessageButton(message)
+                } label: {
                     BubbleText(message)
                 }
+                .buttonStyle(.plain)
+                .hapticFeedback(isEnabled: message.isFailed)
+                .allowsHitTesting(message.isFailed)
             }
-        } else {
-            HStack(spacing: .zero) {
-                BubbleText(message)
-                Spacer(minLength: 50.fitW)
+        }
+        .confirmationDialog(
+            String(localized: "failedMessageDialogTitle"),
+            isPresented: Binding(
+                get: { viewModel.selectedFailedMessage != nil },
+                set: {
+                    if !$0 {
+                        viewModel.selectedFailedMessage = nil
+                    }
+                }
+            ),
+            titleVisibility: .visible
+        ) {
+            Button(String(localized: "tryAgain")) {
+                viewModel.didTapRetryDialogButton()
             }
+            Button(String(localized: "delete"), role: .destructive) {
+                viewModel.didTapDeleteDialogButton()
+            }
+            Button(String(localized: "cancel"), role: .cancel) {}
+        } message: {
+            Text(String(localized: "failedMessageDialogMessage"))
+        }
+    }
+
+    private func AssistantMessageView(_ message: Project.Plan.Chat.Message) -> some View {
+        HStack(spacing: .zero) {
+            BubbleText(message)
+            Spacer(minLength: 50.fitW)
         }
     }
 
@@ -178,6 +214,22 @@ struct ChatView: View {
             .padding(.horizontal, message.isFromUser ? 12.fitW : .zero)
             .background(message.isFromUser ? .blue007AFF : .clear)
             .clipShape(.rect(cornerRadius: 20.fitW))
+            .opacity(message.isFailed ? 0.55 : 1)
+    }
+
+    private func WarningButton(_ message: Project.Plan.Chat.Message) -> some View {
+        Button {
+            viewModel.didTapWarningButton(message)
+        } label: {
+            Image(.warning)
+                .resizable()
+                .frame(width: 24.fitW, height: 24.fitW)
+        }
+        .buttonStyle(.plain)
+        .hapticFeedback()
+        .opacity(message.isFailed ? 1 : 0)
+        .allowsHitTesting(message.isFailed)
+        .animation(.easeInOut, value: message.isFailed)
     }
 
     private func ComposerView() -> some View {

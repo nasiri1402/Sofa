@@ -18,6 +18,7 @@ final class MessageEntity {
     var text: String
     var context: String?
     var isFromUser: Bool
+    var isFailed: Bool = false
     var sentAt: Date
 
     // MARK: - Inits
@@ -27,6 +28,7 @@ final class MessageEntity {
         self.text = model.text
         self.context = model.context
         self.isFromUser = model.isFromUser
+        self.isFailed = model.isFailed
         self.sentAt = model.sentAt
     }
 
@@ -38,6 +40,7 @@ final class MessageEntity {
             text: text,
             context: context,
             isFromUser: isFromUser,
+            isFailed: isFailed,
             sentAt: sentAt
         )
     }

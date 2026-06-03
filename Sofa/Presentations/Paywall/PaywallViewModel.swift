@@ -165,10 +165,10 @@ extension PaywallViewModel {
                 subscriptions = products.compactMap { PaywallModel.Subscription(id: $0.id) }
                 guard subscriptions.isEmpty else { return }
                 guard networkMonitor.isConnected else {
-                    alertItem = .noInternetConnection { [weak self] in
+                    alertItem = .noInternetConnection(onRetry: { [weak self] in
                         guard let self else { return }
                         loadProducts()
-                    }
+                    })
                     return
                 }
                 alertItem = AlertItem(

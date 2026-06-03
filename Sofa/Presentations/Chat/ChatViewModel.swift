@@ -19,6 +19,7 @@ final class ChatViewModel {
     private(set) var step: Project.Plan.Step?
     var messageInput = ""
     private(set) var sendingState: ChatModel.SendingState?
+    var selectedFailedMessage: Project.Plan.Chat.Message?
     var alertItem: AlertItem?
 
     var isSending: Bool {
@@ -94,7 +95,7 @@ extension ChatViewModel {
         router.back()
     }
 
-    func didTapMessageContext(_ message: Project.Plan.Chat.Message) {
+    func didTapUserMessageContext(_ message: Project.Plan.Chat.Message) {
         guard let context = message.context else { return }
         guard canOpenMessageContext(context) else {
             alertItem = AlertItem(
@@ -108,6 +109,30 @@ extension ChatViewModel {
         router.back()
     }
 
+    func didTapUserMessageButton(_ message: Project.Plan.Chat.Message) {
+        selectedFailedMessage = message
+    }
+
+    func didTapWarningButton(_ message: Project.Plan.Chat.Message) {
+        selectedFailedMessage = message
+    }
+
+    func didTapRetryDialogButton() {
+        guard let message = selectedFailedMessage else { return }
+        selectedFailedMessage = nil
+        retryFailedMessage(message)
+    }
+
+    func didTapDeleteDialogButton() {
+        guard let message = selectedFailedMessage else { return }
+        selectedFailedMessage = nil
+        do {
+            try removeMessage(id: message.id)
+        } catch {
+            alertItem = .error(message: error.localizedDescription)
+        }
+    }
+
     func didTapStepClearButton() {
         step = nil
     }
@@ -117,10 +142,10 @@ extension ChatViewModel {
         let text = messageInput.trimmingCharacters(in: .whitespacesAndNewlines)
         let attachedStepTitle = step?.title
         guard networkMonitor.isConnected else {
-            alertItem = .noInternetConnection { [weak self] in
+            alertItem = .noInternetConnection(onRetry: { [weak self] in
                 guard let self else { return }
                 didTapSendButton()
-            }
+            })
             return
         }
         messageInput = ""
@@ -166,16 +191,20 @@ extension ChatViewModel {
 
     private func createChat() async throws {
         let chat = try await chatter.createChat(for: plan)
-        plan.chat = chat
+        plan.chat = Project.Plan.Chat(
+            id: plan.chat?.id ?? chat.id,
+            conversation: chat.conversation,
+            messages: plan.chat?.messages ?? []
+        )
         try saveProject()
     }
 
     private func clearChat() {
         guard networkMonitor.isConnected else {
-            alertItem = .noInternetConnection { [weak self] in
+            alertItem = .noInternetConnection(onRetry: { [weak self] in
                 guard let self else { return }
                 clearChat()
-            }
+            })
             return
         }
         messageInput = ""
@@ -193,6 +222,11 @@ extension ChatViewModel {
         }
     }
 
+    private func ensureChatExists() {
+        guard plan.chat == nil else { return }
+        plan.chat = Project.Plan.Chat(id: UUID(), conversation: nil, messages: [])
+    }
+
     private func sendMessage(_ text: String, context: String?) async {
         defer {
             optimisticMessage = nil
@@ -202,25 +236,29 @@ extension ChatViewModel {
         optimisticMessage = userMessage
         await Task.yield()
         do {
-            if plan.chat == nil {
+            if plan.chat?.conversation == nil {
                 sendingState = .initializingChat
                 try await createChat()
             }
-            guard let chat = plan.chat else { return }
-            if chat.conversation.isDirty {
+            guard let conversation = plan.chat?.conversation else { return }
+            if conversation.isDirty {
                 sendingState = .analyzingPlan
                 try await syncConversationContext()
             }
             sendingState = .thinking
             let assistantMessage = makeMessage(
-                text: try await chatter.sendMessage(text, context: context, conversation: chat.conversation),
+                text: try await chatter.sendMessage(text, context: context, conversation: conversation),
                 isFromUser: false
             )
             try addMessage(userMessage)
             try addMessage(assistantMessage)
         } catch {
-            try? removeMessage(id: userMessage.id)
-            alertItem = .error(message: error.localizedDescription)
+            do {
+                ensureChatExists()
+                try addMessage(failMessage(from: userMessage))
+            } catch {
+                alertItem = .error(message: error.localizedDescription)
+            }
         }
     }
 
@@ -232,20 +270,52 @@ extension ChatViewModel {
     private func makeMessage(
         text: String,
         context: String? = nil,
-        isFromUser: Bool = true
+        isFromUser: Bool = true,
+        isFailed: Bool = false
     ) -> Project.Plan.Chat.Message {
         Project.Plan.Chat.Message(
             id: UUID(),
             text: text,
             context: context,
             isFromUser: isFromUser,
+            isFailed: isFailed,
             sentAt: .now
+        )
+    }
+
+    private func failMessage(from message: Project.Plan.Chat.Message) -> Project.Plan.Chat.Message {
+        Project.Plan.Chat.Message(
+            id: message.id,
+            text: message.text,
+            context: message.context,
+            isFromUser: message.isFromUser,
+            isFailed: true,
+            sentAt: message.sentAt
         )
     }
 
     private func removeMessage(id: UUID) throws {
         plan.chat?.messages.removeAll { $0.id == id }
         try saveProject()
+    }
+
+    private func retryFailedMessage(_ message: Project.Plan.Chat.Message) {
+        guard networkMonitor.isConnected else {
+            alertItem = .noInternetConnection(onRetry: { [weak self] in
+                guard let self else { return }
+                retryFailedMessage(message)
+            })
+            return
+        }
+        do {
+            try removeMessage(id: message.id)
+        } catch {
+            alertItem = .error(message: error.localizedDescription)
+            return
+        }
+        Task { @MainActor in
+            await sendMessage(message.text, context: message.context)
+        }
     }
 
     private func canOpenMessageContext(_ context: String) -> Bool {
@@ -261,13 +331,13 @@ extension ChatViewModel {
     }
 
     private func syncConversationContext() async throws {
-        guard let chat = plan.chat else { return }
-        try await chatter.updateChatContext(conversation: chat.conversation)
+        guard let chat = plan.chat, let conversation = chat.conversation else { return }
+        try await chatter.updateChatContext(conversation: conversation)
         plan.chat = Project.Plan.Chat(
             id: chat.id,
             conversation: Project.Plan.Chat.Conversation(
-                id: chat.conversation.id,
-                context: chat.conversation.context,
+                id: conversation.id,
+                context: conversation.context,
                 isDirty: false
             ),
             messages: chat.messages

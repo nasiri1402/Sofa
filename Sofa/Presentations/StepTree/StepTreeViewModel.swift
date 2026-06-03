@@ -352,11 +352,13 @@ extension StepTreeViewModel {
         guard let chat = plan.chat else { return }
         plan.chat = Project.Plan.Chat(
             id: chat.id,
-            conversation: Project.Plan.Chat.Conversation(
-                id: chat.conversation.id,
-                context: chatter.createChatContext(for: plan),
-                isDirty: true
-            ),
+            conversation: chat.conversation.map {
+                Project.Plan.Chat.Conversation(
+                    id: $0.id,
+                    context: chatter.createChatContext(for: plan),
+                    isDirty: true
+                )
+            },
             messages: chat.messages
         )
     }
