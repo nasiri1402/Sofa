@@ -163,14 +163,8 @@ struct ChatView: View {
                 WarningButton(message)
                     .padding(.trailing, 10.fitW)
 
-                Button {
-                    viewModel.didTapUserMessageButton(message)
-                } label: {
-                    BubbleText(message)
-                }
-                .buttonStyle(.plain)
-                .hapticFeedback(isEnabled: message.isFailed)
-                .allowsHitTesting(message.isFailed)
+                BubbleText(message)
+                    .hapticFeedback(isEnabled: message.isFailed)
             }
         }
     }
@@ -192,6 +186,35 @@ struct ChatView: View {
             .padding(.horizontal, message.isFromUser ? 12.fitW : .zero)
             .background(message.isFromUser ? .blue007AFF : .clear)
             .clipShape(.rect(cornerRadius: 20.fitW))
+            .contentShape(.rect)
+            .onTapGesture {
+                viewModel.didTapMessage(message)
+            }
+            .onLongPressGesture {
+                viewModel.didLongPressMessage(message)
+            }
+            .confirmationDialog(
+                String(localized: "actionsOnMessageDialogTitle"),
+                isPresented: Binding(
+                    get: { viewModel.selectedActionsMessage == message },
+                    set: {
+                        if !$0 {
+                            viewModel.selectedActionsMessage = nil
+                        }
+                    }
+                ),
+                titleVisibility: .visible
+            ) {
+                Button(String(localized: "editMessage")) {
+                    viewModel.didTapEditDialogButton()
+                }
+                Button(String(localized: "copyMessage")) {
+                    viewModel.didTapCopyDialogButton()
+                }
+                Button(String(localized: "cancel"), role: .cancel) {}
+            } message: {
+                Text(String(localized: "actionsOnMessageDialogMessage"))
+            }
     }
 
     private func WarningButton(_ message: Project.Plan.Chat.Message) -> some View {

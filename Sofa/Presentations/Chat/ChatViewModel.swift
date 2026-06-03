@@ -20,6 +20,7 @@ final class ChatViewModel {
     var messageInput = ""
     private(set) var sendingState: ChatModel.SendingState?
     var selectedFailedMessage: Project.Plan.Chat.Message?
+    var selectedActionsMessage: Project.Plan.Chat.Message?
     var alertItem: AlertItem?
 
     var isSending: Bool {
@@ -41,6 +42,7 @@ final class ChatViewModel {
     private let dataStorage: DataStorage
     private let networkMonitor: NetworkMonitor
     private let chatter: Chatter
+    private let pasteboard: Pasteboard
 
     private var project: Project
     private let onTapContext: (String) -> Void
@@ -54,6 +56,7 @@ final class ChatViewModel {
         dataStorage: DataStorage,
         networkMonitor: NetworkMonitor,
         chatter: Chatter,
+        pasteboard: Pasteboard,
         project: Project,
         plan: Project.Plan,
         step: Project.Plan.Step?,
@@ -63,6 +66,7 @@ final class ChatViewModel {
         self.dataStorage = dataStorage
         self.networkMonitor = networkMonitor
         self.chatter = chatter
+        self.pasteboard = pasteboard
         self.project = project
         self.plan = plan
         self.step = step
@@ -109,8 +113,17 @@ extension ChatViewModel {
         router.back()
     }
 
-    func didTapUserMessageButton(_ message: Project.Plan.Chat.Message) {
+    func didTapMessage(_ message: Project.Plan.Chat.Message) {
+        guard message.isFromUser, message.isFailed else { return }
         selectedFailedMessage = message
+    }
+
+    func didLongPressMessage(_ message: Project.Plan.Chat.Message) {
+        if message.isFromUser {
+            selectedActionsMessage = message
+        } else {
+            pasteboard.copy(message.text)
+        }
     }
 
     func didTapWarningButton(_ message: Project.Plan.Chat.Message) {
@@ -131,6 +144,15 @@ extension ChatViewModel {
         } catch {
             alertItem = .error(message: error.localizedDescription)
         }
+    }
+
+    func didTapEditDialogButton() {
+        // TODO: Редактирование сообщений
+    }
+
+    func didTapCopyDialogButton() {
+        guard let message = selectedActionsMessage else { return }
+        pasteboard.copy(message.text)
     }
 
     func didTapStepClearButton() {
