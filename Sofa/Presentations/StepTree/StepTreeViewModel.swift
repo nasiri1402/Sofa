@@ -24,8 +24,7 @@ final class StepTreeViewModel {
     var isWellDone = false
 
     var isPro: Bool {
-//        storeManager.hasPurchasedProduct()
-        false
+        storeManager.hasPurchasedProduct()
     }
 
     var isPaywallPresented = false {
