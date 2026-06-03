@@ -145,7 +145,7 @@ struct ChatView: View {
         .transition(.blurReplace.combined(with: .opacity))
     }
 
-    private func UserMessageView(_ message: Project.Plan.Chat.Message) -> some View  {
+    private func UserMessageView(_ message: Project.Plan.Chat.Message) -> some View {
         VStack(alignment: .leading, spacing: 8.fitW) {
             let context = viewModel.getContext(message) ?? ""
             if !context.isEmpty {
@@ -173,28 +173,6 @@ struct ChatView: View {
                 .allowsHitTesting(message.isFailed)
             }
         }
-        .confirmationDialog(
-            String(localized: "failedMessageDialogTitle"),
-            isPresented: Binding(
-                get: { viewModel.selectedFailedMessage != nil },
-                set: {
-                    if !$0 {
-                        viewModel.selectedFailedMessage = nil
-                    }
-                }
-            ),
-            titleVisibility: .visible
-        ) {
-            Button(String(localized: "tryAgain")) {
-                viewModel.didTapRetryDialogButton()
-            }
-            Button(String(localized: "delete"), role: .destructive) {
-                viewModel.didTapDeleteDialogButton()
-            }
-            Button(String(localized: "cancel"), role: .cancel) {}
-        } message: {
-            Text(String(localized: "failedMessageDialogMessage"))
-        }
     }
 
     private func AssistantMessageView(_ message: Project.Plan.Chat.Message) -> some View {
@@ -214,7 +192,6 @@ struct ChatView: View {
             .padding(.horizontal, message.isFromUser ? 12.fitW : .zero)
             .background(message.isFromUser ? .blue007AFF : .clear)
             .clipShape(.rect(cornerRadius: 20.fitW))
-            .opacity(message.isFailed ? 0.55 : 1)
     }
 
     private func WarningButton(_ message: Project.Plan.Chat.Message) -> some View {
@@ -230,6 +207,28 @@ struct ChatView: View {
         .opacity(message.isFailed ? 1 : 0)
         .allowsHitTesting(message.isFailed)
         .animation(.easeInOut, value: message.isFailed)
+        .confirmationDialog(
+            String(localized: "failedMessageDialogTitle"),
+            isPresented: Binding(
+                get: { viewModel.selectedFailedMessage == message },
+                set: {
+                    if !$0 {
+                        viewModel.selectedFailedMessage = nil
+                    }
+                }
+            ),
+            titleVisibility: .visible
+        ) {
+            Button(String(localized: "tryAgain")) {
+                viewModel.didTapRetryDialogButton()
+            }
+            Button(String(localized: "delete"), role: .destructive) {
+                viewModel.didTapDeleteDialogButton()
+            }
+            Button(String(localized: "cancel"), role: .cancel) {}
+        } message: {
+            Text(String(localized: "failedMessageDialogMessage"))
+        }
     }
 
     private func ComposerView() -> some View {
