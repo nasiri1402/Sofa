@@ -154,7 +154,7 @@ struct ChatView: View {
                 Button {
                     viewModel.didTapUserMessageContext(message)
                 } label: {
-                    StepText(context, lineLimit: 3)
+                    ContextText(context, lineLimit: 3)
                 }
                 .buttonStyle(.plain)
                 .hapticFeedback()
@@ -258,16 +258,13 @@ struct ChatView: View {
 
     private func ComposerView() -> some View {
         VStack(alignment: .leading, spacing: .zero) {
+            if let message = viewModel.selectedEditedMessage {
+                ComposerContextView(message.text)
+                    .padding([.top, .horizontal], 6.fitW)
+            }
             if let step = viewModel.step {
-                HStack(spacing: .zero) {
-                    StepText(step.title, lineLimit: 1)
-                    Spacer(minLength: 6.fitW)
-                    StepClearButton()
-                }
-                .padding(6.fitW)
-                .background(.blue007AFF.opacity(0.15))
-                .clipShape(.capsule)
-                .padding([.top, .horizontal], 6.fitW)
+                ComposerContextView(step.title)
+                    .padding([.top, .horizontal], 6.fitW)
             }
             HStack(alignment: .bottom, spacing: 8.fitW) {
                 TextField(String(localized: "writeHere"), text: $viewModel.messageInput, axis: .vertical)
@@ -310,7 +307,29 @@ struct ChatView: View {
         .animation(.easeInOut(duration: 0.1), value: viewModel.messageInput.count)
     }
 
-    private func StepText(_ context: String, lineLimit: Int) -> some View {
+    private func ComposerContextView(_ title: String) -> some View {
+        HStack(spacing: .zero) {
+            ContextText(title, lineLimit: 1)
+            Spacer(minLength: 6.fitW)
+            Button {
+                isInputFocused = false
+                viewModel.didTapContextClearButton()
+            } label: {
+                Image(.cross)
+                    .resizable()
+                    .frame(width: 24.fitW, height: 24.fitW)
+                    .foregroundStyle(.blue007AFF)
+                    .contentShape(.rect)
+            }
+            .buttonStyle(.plain)
+            .hapticFeedback()
+        }
+        .padding(6.fitW)
+        .background(.blue007AFF.opacity(0.15))
+        .clipShape(.capsule)
+    }
+
+    private func ContextText(_ context: String, lineLimit: Int) -> some View {
         HStack(spacing: 6.fitW) {
             Image(.reply)
                 .resizable()
@@ -323,21 +342,6 @@ struct ChatView: View {
                 .multilineTextAlignment(.leading)
                 .frame(alignment: .leading)
         }
-    }
-
-    private func StepClearButton() -> some View {
-        Button {
-            isInputFocused = false
-            viewModel.didTapStepClearButton()
-        } label: {
-            Image(.cross)
-                .resizable()
-                .frame(width: 24.fitW, height: 24.fitW)
-                .foregroundStyle(.blue007AFF)
-                .contentShape(.rect)
-        }
-        .buttonStyle(.plain)
-        .hapticFeedback()
     }
 
     private func SendingText(_ state: ChatModel.SendingState) -> some View {

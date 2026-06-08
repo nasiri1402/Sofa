@@ -19,6 +19,7 @@ final class ChatViewModel {
     private(set) var step: Project.Plan.Step?
     var messageInput = ""
     private(set) var sendingState: ChatModel.SendingState?
+    private(set) var selectedEditedMessage: Project.Plan.Chat.Message?
     var selectedFailedMessage: Project.Plan.Chat.Message?
     var selectedActionsMessage: Project.Plan.Chat.Message?
     var toast: ToastItem?
@@ -149,7 +150,11 @@ extension ChatViewModel {
     }
 
     func didTapEditDialogButton() {
-        // TODO: Редактирование сообщений
+        guard let message = selectedActionsMessage else { return }
+        selectedActionsMessage = nil
+        messageInput = message.text
+        step = nil
+        selectedEditedMessage = message
     }
 
     func didTapCopyDialogButton() {
@@ -158,14 +163,16 @@ extension ChatViewModel {
         copyMessage(message)
     }
 
-    func didTapStepClearButton() {
+    func didTapContextClearButton() {
+        selectedEditedMessage = nil
         step = nil
     }
 
     func didTapSendButton() {
         guard canSendMessage else { return }
         let text = messageInput.trimmingCharacters(in: .whitespacesAndNewlines)
-        let attachedStepTitle = step?.title
+        let attachedStep = step
+        let editedMessage = selectedEditedMessage
         guard networkMonitor.isConnected else {
             alertItem = .noInternetConnection(onRetry: { [weak self] in
                 guard let self else { return }
@@ -174,10 +181,11 @@ extension ChatViewModel {
             return
         }
         messageInput = ""
+        selectedEditedMessage = nil
         step = nil
 
         Task { @MainActor in
-            await sendMessage(text, context: attachedStepTitle)
+            await sendMessage(text: text, context: attachedStep?.title, editedMessage: editedMessage)
         }
     }
 
@@ -252,7 +260,11 @@ extension ChatViewModel {
         plan.chat = Project.Plan.Chat(id: UUID(), conversation: nil, messages: [])
     }
 
-    private func sendMessage(_ text: String, context: String?) async {
+    private func sendMessage(
+        text: String,
+        context: String?,
+        editedMessage: Project.Plan.Chat.Message?
+    ) async {
         defer {
             optimisticMessage = nil
             sendingState = nil
@@ -261,6 +273,9 @@ extension ChatViewModel {
         optimisticMessage = userMessage
         await Task.yield()
         do {
+            if let editedMessage {
+                try removeEditedMessage(editedMessage)
+            }
             if plan.chat?.conversation == nil {
                 sendingState = .initializingChat
                 try await createChat()
@@ -292,6 +307,22 @@ extension ChatViewModel {
         try saveProject()
     }
 
+    private func copyMessage(_ message: Project.Plan.Chat.Message) {
+        clipboard.copy(message.text)
+        toastTask?.cancel()
+        toast = ToastItem(title: String(localized: "messageCopiedToClipboard"))
+        toastTask = Task { @MainActor [weak self] in
+            guard let self else { return }
+            try? await Task.sleep(for: .seconds(2))
+            toast = nil
+        }
+    }
+
+    private func removeMessage(id: UUID) throws {
+        plan.chat?.messages.removeAll { $0.id == id }
+        try saveProject()
+    }
+
     private func makeMessage(
         text: String,
         context: String? = nil,
@@ -319,19 +350,19 @@ extension ChatViewModel {
         )
     }
 
-    private func copyMessage(_ message: Project.Plan.Chat.Message) {
-        clipboard.copy(message.text)
-        toastTask?.cancel()
-        toast = ToastItem(title: String(localized: "messageCopiedToClipboard"))
-        toastTask = Task { @MainActor [weak self] in
-            guard let self else { return }
-            try? await Task.sleep(for: .seconds(2))
-            toast = nil
+    private func removeEditedMessage(_ message: Project.Plan.Chat.Message) throws {
+        guard let messages = plan.chat?.messages,
+              let index = messages.firstIndex(where: { $0.id == message.id })
+        else { return }
+        var removedMessages = Set([message.id])
+        let nextIndex = messages.index(after: index)
+        if messages.indices.contains(nextIndex) {
+            let nextMessage = messages[nextIndex]
+            if !nextMessage.isFromUser {
+                removedMessages.insert(nextMessage.id)
+            }
         }
-    }
-
-    private func removeMessage(id: UUID) throws {
-        plan.chat?.messages.removeAll { $0.id == id }
+        plan.chat?.messages.removeAll { removedMessages.contains($0.id) }
         try saveProject()
     }
 
@@ -350,7 +381,7 @@ extension ChatViewModel {
             return
         }
         Task { @MainActor in
-            await sendMessage(message.text, context: message.context)
+            await sendMessage(text: message.text, context: message.context, editedMessage: nil)
         }
     }
 
