@@ -45,6 +45,7 @@ final class ChatViewModel {
     private let networkMonitor: NetworkMonitor
     private let chatter: Chatter
     private let clipboard: Clipboard
+    private let haptic: Haptic
 
     private var project: Project
     private let onTapContext: (String) -> Void
@@ -60,6 +61,7 @@ final class ChatViewModel {
         networkMonitor: NetworkMonitor,
         chatter: Chatter,
         clipboard: Clipboard,
+        haptic: Haptic,
         project: Project,
         plan: Project.Plan,
         step: Project.Plan.Step?,
@@ -70,6 +72,7 @@ final class ChatViewModel {
         self.networkMonitor = networkMonitor
         self.chatter = chatter
         self.clipboard = clipboard
+        self.haptic = haptic
         self.project = project
         self.plan = plan
         self.step = step
@@ -122,6 +125,7 @@ extension ChatViewModel {
     }
 
     func didLongPressMessage(_ message: Project.Plan.Chat.Message) {
+        haptic.trigger(.impact(.medium))
         if message.isFromUser {
             selectedActionsMessage = message
         } else {
@@ -274,7 +278,7 @@ extension ChatViewModel {
         await Task.yield()
         do {
             if let editedMessage {
-                try await removeEditedMessage(editedMessage)
+                try removeEditedMessage(editedMessage)
             }
             if plan.chat?.conversation == nil {
                 sendingState = .initializingChat
@@ -343,11 +347,10 @@ extension ChatViewModel {
         )
     }
 
-    private func removeEditedMessage(_ message: Project.Plan.Chat.Message) async throws {
+    private func removeEditedMessage(_ message: Project.Plan.Chat.Message) throws {
         guard let messages = plan.chat?.messages,
               let index = messages.firstIndex(where: { $0.id == message.id })
         else { return }
-        let conversation = plan.chat?.conversation
         var removedMessages = [messages[index]]
         let nextIndex = messages.index(after: index)
         if messages.indices.contains(nextIndex) {
@@ -356,15 +359,18 @@ extension ChatViewModel {
                 removedMessages.append(nextMessage)
             }
         }
-        if let conversation {
-            for removed in removedMessages {
-                guard let itemID = removed.itemID, !itemID.isEmpty else { continue }
-                try await chatter.deleteMessage(itemID, conversation: conversation)
-            }
-        }
         let ids = Set(removedMessages.map(\.id))
         plan.chat?.messages.removeAll { ids.contains($0.id) }
         try saveProject()
+        guard let conversation = plan.chat?.conversation else { return }
+        let itemIDs = removedMessages.compactMap(\.itemID).filter { !$0.isEmpty }
+        guard !itemIDs.isEmpty else { return }
+        Task.detached { [weak self] in
+            guard let self else { return }
+            for itemID in itemIDs {
+                try? await chatter.deleteMessage(itemID, conversation: conversation)
+            }
+        }
     }
 
     private func retryFailedMessage(_ message: Project.Plan.Chat.Message) {

@@ -51,6 +51,7 @@ extension ChatRouter: ViewFactory {
             networkMonitor: ServiceLayer.networkMonitor,
             chatter: ServiceLayer.chatter,
             clipboard: ServiceLayer.clipboard,
+            haptic: ServiceLayer.haptic,
             project: project,
             plan: plan,
             step: step,

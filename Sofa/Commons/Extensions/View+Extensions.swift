@@ -102,13 +102,13 @@ extension View {
 extension View {
     /// Добавляет тактильную отдачу к представлению в зависимости от указанного типа.
     /// - Parameters:
-    ///  - feedbackType: Тип тактильной отдачи. По умолчанию `impact.light`.
+    ///  - feedback: Тип тактильной отдачи. По умолчанию `impact.light`.
     ///  - isEnabled: Активна ли тактильная отдача. По умолчанию `true`.
     func hapticFeedback(
-        _ feedbackType: HapticFeedbackType = .impact(.light),
+        _ feedback: HapticFeedback = .impact(.light),
         isEnabled: Bool = true
     ) -> some View {
-        modifier(HapticFeedbackModifier(feedbackType: feedbackType, isEnabled: isEnabled))
+        modifier(HapticFeedbackModifier(feedback: feedback, isEnabled: isEnabled))
     }
 
     /// Отслеживает высоту клавиатуры и передает её в замыкание.

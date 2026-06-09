@@ -26,6 +26,7 @@ enum ServiceLayer {
         functionsClient: functionsClient,
         dataStorage: dataStorage
     )
+    static let haptic: Haptic = DefaultHaptic()
 
     // MARK: - Private Properties
 

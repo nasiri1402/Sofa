@@ -259,7 +259,7 @@ struct ChatView: View {
     private func ComposerView() -> some View {
         VStack(alignment: .leading, spacing: .zero) {
             if let message = viewModel.selectedEditedMessage {
-                ComposerContextView(message.text)
+                ComposerContextView(String(localized: "editMessage"))
                     .padding([.top, .horizontal], 6.fitW)
             }
             if let step = viewModel.step {
@@ -303,6 +303,7 @@ struct ChatView: View {
             isInputFocused = true
         }
         .animation(.easeInOut(duration: 0.25), value: viewModel.step == nil)
+        .animation(.easeInOut(duration: 0.25), value: viewModel.selectedEditedMessage == nil)
         .animation(.easeInOut(duration: 0.25), value: viewModel.canSendMessage)
         .animation(.easeInOut(duration: 0.1), value: viewModel.messageInput.count)
     }

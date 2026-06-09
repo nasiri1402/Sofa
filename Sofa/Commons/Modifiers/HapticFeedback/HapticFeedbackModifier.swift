@@ -7,17 +7,11 @@
 
 import SwiftUI
 
-enum HapticFeedbackType {
-    case impact(UIImpactFeedbackGenerator.FeedbackStyle)
-    case notification(UINotificationFeedbackGenerator.FeedbackType)
-    case selection
-}
-
 struct HapticFeedbackModifier: ViewModifier {
 
     // MARK: - Public Properties
 
-    let feedbackType: HapticFeedbackType
+    let feedback: HapticFeedback
     let isEnabled: Bool
 
     // MARK: - Private Properties
@@ -32,7 +26,7 @@ struct HapticFeedbackModifier: ViewModifier {
             .simultaneousGesture(
                 TapGesture().onEnded {
                     if isEnabled {
-                        switch feedbackType {
+                        switch feedback {
                         case .selection:
                             selectionFeedbackGenerator.prepare()
                             selectionFeedbackGenerator.selectionChanged()
