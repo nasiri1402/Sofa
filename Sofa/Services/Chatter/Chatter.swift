@@ -14,11 +14,15 @@ protocol Chatter {
     func closeChat(conversation: Project.Plan.Chat.Conversation) async throws
     func createChatContext(for plan: Project.Plan) -> String
     func updateChatContext(conversation: Project.Plan.Chat.Conversation) async throws
+    func deleteMessage(
+        _ itemID: String,
+        conversation: Project.Plan.Chat.Conversation
+    ) async throws
     func sendMessage(
         _ message: String,
         context: String?,
         conversation: Project.Plan.Chat.Conversation
-    ) async throws -> String
+    ) async throws -> SendMessageResult
 }
 
 // MARK: - Errors
@@ -27,6 +31,7 @@ enum ChatterError: LocalizedError {
     case chatCreationFailed
     case chatClosingFailed
     case contextUpdateFailed
+    case messageDeletionFailed
     case messageSendFailed
 
     var errorDescription: String? {
@@ -34,9 +39,18 @@ enum ChatterError: LocalizedError {
         case .chatCreationFailed: String(localized: "chatterErrorChatCreationFailed")
         case .chatClosingFailed: String(localized: "chatterErrorChatClosingFailed")
         case .contextUpdateFailed: String(localized: "chatterErrorContextUpdateFailed")
+        case .messageDeletionFailed: String(localized: "chatterErrorMessageDeletionFailed")
         case .messageSendFailed: String(localized: "chatterErrorMessageSendFailed")
         }
     }
+}
+
+// MARK: - Types
+
+struct SendMessageResult {
+    let message: String
+    let userItemID: String?
+    let assistantItemID: String?
 }
 
 // MARK: - Implementations
@@ -103,7 +117,7 @@ final class DefaultChatter: Chatter {
         _ message: String,
         context: String?,
         conversation: Project.Plan.Chat.Conversation
-    ) async throws -> String {
+    ) async throws -> SendMessageResult {
         do {
             let response = try await functionsClient.chatter(
                 request: ChatterRequest(action: .sendMessage(ChatterRequest.SendMessagePayload(
@@ -114,15 +128,42 @@ final class DefaultChatter: Chatter {
                 )))
             )
             switch response.action {
-            case .updateContext:
+            case .updateContext, .deleteMessage:
                 throw ChatterError.messageSendFailed
             case .sendMessage(let payload):
                 debugPrint("Message sent successfully")
-                return payload.message
+                return SendMessageResult(
+                    message: payload.message,
+                    userItemID: payload.userItemID,
+                    assistantItemID: payload.assistantItemID
+                )
             }
         } catch {
             debugPrint("Failed to send message to chat:", error.localizedDescription)
             throw ChatterError.messageSendFailed
+        }
+    }
+
+    func deleteMessage(
+        _ itemID: String,
+        conversation: Project.Plan.Chat.Conversation
+    ) async throws {
+        do {
+            let response = try await functionsClient.chatter(
+                request: ChatterRequest(action: .deleteMessage(ChatterRequest.DeleteMessagePayload(
+                    conversationID: conversation.id,
+                    itemID: itemID
+                )))
+            )
+            switch response.action {
+            case .deleteMessage:
+                debugPrint("Message deleted successfully. Item ID: \(itemID)")
+            case .updateContext, .sendMessage:
+                throw ChatterError.messageDeletionFailed
+            }
+        } catch {
+            debugPrint("Failed to delete message from chat:", error.localizedDescription)
+            throw ChatterError.messageDeletionFailed
         }
     }
 
@@ -137,7 +178,7 @@ final class DefaultChatter: Chatter {
             switch response.action {
             case .updateContext:
                 debugPrint("Chat context updated successfully. Conversation ID: \(conversation.id)")
-            case .sendMessage:
+            case .sendMessage, .deleteMessage:
                 throw ChatterError.contextUpdateFailed
             }
         } catch {

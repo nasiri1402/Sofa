@@ -17,6 +17,7 @@ type ChatterPayload = {
   message?: string;
   context?: string;
   instructions?: string;
+  item_id?: string;
 };
 
 type OpenAIResponse = {
@@ -24,6 +25,7 @@ type OpenAIResponse = {
 };
 
 type OpenAIResponseOutputItem = {
+  id?: string;
   type?: string;
   role?: string;
   content?: OpenAIResponseContentPart[];
@@ -32,6 +34,22 @@ type OpenAIResponseOutputItem = {
 type OpenAIResponseContentPart = {
   type?: string;
   text?: string;
+};
+
+type OpenAIConversationItem = {
+  id?: string;
+  type?: string;
+  role?: string;
+  content?: OpenAIConversationContentPart[] | string;
+};
+
+type OpenAIConversationContentPart = {
+  type?: string;
+  text?: string;
+};
+
+type OpenAIConversationItemsResponse = {
+  data?: OpenAIConversationItem[];
 };
 
 type OpenAIRequestDescriptor = {
@@ -137,6 +155,79 @@ function responseOutputText(response?: OpenAIResponse): string {
 }
 
 /**
+ * Returns conversation items from a list response.
+ * @param {unknown} response
+ * @return {OpenAIConversationItem[]}
+ */
+function conversationItems(response: unknown): OpenAIConversationItem[] {
+  if (Array.isArray(response)) {
+    return response as OpenAIConversationItem[];
+  }
+  if (
+    response &&
+    typeof response === "object" &&
+    "data" in response &&
+    Array.isArray((response as OpenAIConversationItemsResponse).data)
+  ) {
+    return (response as OpenAIConversationItemsResponse).data ?? [];
+  }
+  return [];
+}
+
+/**
+ * Extracts text content from a conversation item.
+ * @param {OpenAIConversationItem} item
+ * @return {string}
+ */
+function conversationItemText(item: OpenAIConversationItem): string {
+  if (typeof item.content === "string") {
+    return item.content.trim();
+  }
+  const content = Array.isArray(item.content) ? item.content : [];
+  return content
+    .map((part) => part.text?.trim() ?? "")
+    .filter(Boolean)
+    .join("\n\n")
+    .trim();
+}
+
+/**
+ * Lists conversation items for the given conversation id.
+ * @param {string} conversationID
+ * @return {Promise<OpenAIConversationItem[]>}
+ */
+async function listConversationItems(
+  conversationID: string,
+): Promise<OpenAIConversationItem[]> {
+  const response = await openAIRequest(
+    `/conversations/${conversationID}/items`,
+    {
+      method: "GET",
+    },
+  );
+  return conversationItems(response);
+}
+
+/**
+ * Returns the id of the last conversation item matching the predicate.
+ * @param {OpenAIConversationItem[]} items
+ * @param {Function} predicate
+ * @return {string | null}
+ */
+function lastMatchingConversationItemID(
+  items: OpenAIConversationItem[],
+  predicate: (item: OpenAIConversationItem) => boolean,
+): string | null {
+  for (let index = items.length - 1; index >= 0; index -= 1) {
+    const item = items[index];
+    if (item?.id && predicate(item)) {
+      return item.id;
+    }
+  }
+  return null;
+}
+
+/**
  * Returns the conversation context block
  * as it should be stored in conversation history.
  * @param {string} context
@@ -219,6 +310,57 @@ async function handleUpdateContext(
 }
 
 /**
+ * Handles delete message action.
+ * @param {FirebaseFirestore.DocumentReference} requestLogRef
+ * @param {string} action
+ * @param {string} conversationID
+ * @param {string} itemID
+ * @return {Promise<{action: string, payload: {deleted: boolean}}>}
+ */
+async function handleDeleteItem(
+  requestLogRef: FirebaseFirestore.DocumentReference,
+  action: string,
+  conversationID: string,
+  itemID: string,
+) {
+  if (!itemID) {
+    throw new HttpsError("invalid-argument", "Missing 'payload.item_id'.");
+  }
+
+  const requestJSON: OpenAIRequestDescriptor = {
+    method: "DELETE",
+    path: `/conversations/${conversationID}/items/${itemID}`,
+  };
+
+  const response = await openAIRequest(requestJSON.path, {
+    method: "DELETE",
+  });
+
+  await logSafely(
+    requestLogRef.set(
+      {
+        action,
+        status: "success",
+        conversation_id: conversationID,
+        request_json: requestJSON,
+        response_json: response,
+        updated_at: FieldValue.serverTimestamp(),
+        finished_at: FieldValue.serverTimestamp(),
+      },
+      {merge: true},
+    ),
+    "delete_message_success",
+  );
+
+  return {
+    action: "delete_message",
+    payload: {
+      deleted: true,
+    },
+  };
+}
+
+/**
  * Handles send message action.
  * @param {FirebaseFirestore.DocumentReference} requestLogRef
  * @param {string} action
@@ -240,6 +382,12 @@ async function handleSendMessage(
     throw new HttpsError("invalid-argument", "Missing 'payload.message'.");
   }
 
+  const inputJSON = makeUserMessage(message, context);
+  const itemsBefore = await listConversationItems(conversationID);
+  const itemIDsBefore = new Set(
+    itemsBefore.map((item) => item.id).filter(Boolean),
+  );
+
   const requestJSON: OpenAIRequestDescriptor = {
     method: "POST",
     path: "/responses",
@@ -250,7 +398,7 @@ async function handleSendMessage(
       input: [{
         type: "message",
         role: "user",
-        content: makeUserMessage(message, context),
+        content: inputJSON,
       }],
     },
   };
@@ -264,6 +412,29 @@ async function handleSendMessage(
   if (!assistantMessage) {
     throw new HttpsError("unknown", "Assistant response was empty.");
   }
+  const itemsAfter = await listConversationItems(conversationID);
+  const addedItems = itemsAfter.filter(
+    (item) => item.id && !itemIDsBefore.has(item.id),
+  );
+  const userItemID = lastMatchingConversationItemID(
+    addedItems,
+    (item) =>
+      item.type === "message" &&
+      item.role === "user" &&
+      conversationItemText(item) === inputJSON,
+  );
+  const assistantItemID =
+    response.output
+      ?.find((item) => item.type === "message" && item.role === "assistant")
+      ?.id ??
+    lastMatchingConversationItemID(
+      addedItems,
+      (item) =>
+        item.type === "message" &&
+        item.role === "assistant" &&
+        conversationItemText(item) === assistantMessage,
+    ) ??
+    null;
 
   await logSafely(
     requestLogRef.set(
@@ -286,6 +457,8 @@ async function handleSendMessage(
     action: "send_message",
     payload: {
       message: assistantMessage,
+      user_item_id: userItemID,
+      assistant_item_id: assistantItemID,
     },
   };
 }
@@ -318,6 +491,9 @@ export const chatter = onCall(
     const context = typeof payload.context === "string" ?
       payload.context.trim() :
       "";
+    const itemID = typeof payload.item_id === "string" ?
+      payload.item_id.trim() :
+      "";
     const instructions = typeof payload.instructions === "string" ?
       payload.instructions.trim() :
       "";
@@ -335,33 +511,45 @@ export const chatter = onCall(
 
     const requestLogRef = chatterRequestCollection(uid).doc();
     const now = FieldValue.serverTimestamp();
-    const requestJSON: OpenAIRequestDescriptor =
-      action === "update_context" ?
-        {
-          method: "POST",
-          path: `/conversations/${conversationID}/items`,
-          body: {
-            items: [{
+
+    let requestJSON: OpenAIRequestDescriptor;
+    if (action === "update_context") {
+      requestJSON = {
+        method: "POST",
+        path: `/conversations/${conversationID}/items`,
+        body: {
+          items: [
+            {
               type: "message",
               role: "user",
               content: makeThreadContextMessage(context),
-            }],
-          },
-        } :
-        {
-          method: "POST",
-          path: "/responses",
-          body: {
-            model: OPENAI_CHAT_MODEL,
-            conversation: conversationID,
-            instructions,
-            input: [{
+            },
+          ],
+        },
+      };
+    } else if (action === "delete_message") {
+      requestJSON = {
+        method: "DELETE",
+        path: `/conversations/${conversationID}/items/${itemID}`,
+      };
+    } else {
+      requestJSON = {
+        method: "POST",
+        path: "/responses",
+        body: {
+          model: OPENAI_CHAT_MODEL,
+          conversation: conversationID,
+          instructions,
+          input: [
+            {
               type: "message",
               role: "user",
               content: makeUserMessage(message, context),
-            }],
-          },
-        };
+            },
+          ],
+        },
+      };
+    }
 
     await logSafely(
       Promise.all([
@@ -392,6 +580,13 @@ export const chatter = onCall(
           action,
           conversationID,
           context,
+        );
+      case "delete_message":
+        return handleDeleteItem(
+          requestLogRef,
+          action,
+          conversationID,
+          itemID,
         );
       case "send_message":
         return handleSendMessage(

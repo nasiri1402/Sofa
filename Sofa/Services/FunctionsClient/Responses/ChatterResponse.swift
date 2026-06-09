@@ -19,6 +19,8 @@ struct ChatterResponse: Decodable {
         switch try container.decode(String.self, forKey: .action) {
         case "update_context":
             action = .updateContext(try container.decode(UpdateContextPayload.self, forKey: .payload))
+        case "delete_message":
+            action = .deleteMessage(try container.decode(DeleteMessagePayload.self, forKey: .payload))
         case "send_message":
             action = .sendMessage(try container.decode(SendMessagePayload.self, forKey: .payload))
         default:
@@ -37,6 +39,7 @@ extension ChatterResponse {
 
     enum Action {
         case updateContext(UpdateContextPayload)
+        case deleteMessage(DeleteMessagePayload)
         case sendMessage(SendMessagePayload)
     }
 
@@ -50,9 +53,25 @@ extension ChatterResponse {
         }
     }
 
+    struct DeleteMessagePayload: Decodable {
+        let isDeleted: Bool
+
+        private enum CodingKeys: String, CodingKey {
+            case isDeleted = "deleted"
+        }
+    }
+
     // MARK: - SendMessagePayload
 
     struct SendMessagePayload: Decodable {
         let message: String
+        let userItemID: String?
+        let assistantItemID: String?
+
+        private enum CodingKeys: String, CodingKey {
+            case message
+            case userItemID = "user_item_id"
+            case assistantItemID = "assistant_item_id"
+        }
     }
 }

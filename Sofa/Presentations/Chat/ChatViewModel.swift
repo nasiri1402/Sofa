@@ -274,7 +274,7 @@ extension ChatViewModel {
         await Task.yield()
         do {
             if let editedMessage {
-                try removeEditedMessage(editedMessage)
+                try await removeEditedMessage(editedMessage)
             }
             if plan.chat?.conversation == nil {
                 sendingState = .initializingChat
@@ -286,16 +286,18 @@ extension ChatViewModel {
                 try await syncConversationContext()
             }
             sendingState = .thinking
+            let payload = try await chatter.sendMessage(text, context: context, conversation: conversation)
             let assistantMessage = makeMessage(
-                text: try await chatter.sendMessage(text, context: context, conversation: conversation),
-                isFromUser: false
+                itemID: payload.assistantItemID,
+                text: payload.message,
+                isFromUser: false,
             )
-            try addMessage(userMessage)
+            try addMessage(userMessage.sent(itemID: payload.userItemID))
             try addMessage(assistantMessage)
         } catch {
             do {
                 ensureChatExists()
-                try addMessage(failMessage(from: userMessage))
+                try addMessage(userMessage.fail())
             } catch {
                 alertItem = .error(message: error.localizedDescription)
             }
@@ -324,6 +326,7 @@ extension ChatViewModel {
     }
 
     private func makeMessage(
+        itemID: String? = nil,
         text: String,
         context: String? = nil,
         isFromUser: Bool = true,
@@ -331,6 +334,7 @@ extension ChatViewModel {
     ) -> Project.Plan.Chat.Message {
         Project.Plan.Chat.Message(
             id: UUID(),
+            itemID: itemID,
             text: text,
             context: context,
             isFromUser: isFromUser,
@@ -339,30 +343,27 @@ extension ChatViewModel {
         )
     }
 
-    private func failMessage(from message: Project.Plan.Chat.Message) -> Project.Plan.Chat.Message {
-        Project.Plan.Chat.Message(
-            id: message.id,
-            text: message.text,
-            context: message.context,
-            isFromUser: message.isFromUser,
-            isFailed: true,
-            sentAt: message.sentAt
-        )
-    }
-
-    private func removeEditedMessage(_ message: Project.Plan.Chat.Message) throws {
+    private func removeEditedMessage(_ message: Project.Plan.Chat.Message) async throws {
         guard let messages = plan.chat?.messages,
               let index = messages.firstIndex(where: { $0.id == message.id })
         else { return }
-        var removedMessages = Set([message.id])
+        let conversation = plan.chat?.conversation
+        var removedMessages = [messages[index]]
         let nextIndex = messages.index(after: index)
         if messages.indices.contains(nextIndex) {
             let nextMessage = messages[nextIndex]
             if !nextMessage.isFromUser {
-                removedMessages.insert(nextMessage.id)
+                removedMessages.append(nextMessage)
             }
         }
-        plan.chat?.messages.removeAll { removedMessages.contains($0.id) }
+        if let conversation {
+            for removed in removedMessages {
+                guard let itemID = removed.itemID, !itemID.isEmpty else { continue }
+                try await chatter.deleteMessage(itemID, conversation: conversation)
+            }
+        }
+        let ids = Set(removedMessages.map(\.id))
+        plan.chat?.messages.removeAll { ids.contains($0.id) }
         try saveProject()
     }
 

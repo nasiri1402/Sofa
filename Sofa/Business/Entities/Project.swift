@@ -209,11 +209,36 @@ extension Project.Plan.Chat {
 
     struct Message: Identifiable, Hashable {
         let id: UUID
+        let itemID: String?
         let text: String
         let context: String?
         let isFromUser: Bool
         let isFailed: Bool
         let sentAt: Date
+
+        func sent(itemID: String?) -> Project.Plan.Chat.Message {
+            Project.Plan.Chat.Message(
+                id: id,
+                itemID: itemID,
+                text: text,
+                context: context,
+                isFromUser: isFromUser,
+                isFailed: isFailed,
+                sentAt: sentAt
+            )
+        }
+
+        func fail() -> Project.Plan.Chat.Message {
+            Project.Plan.Chat.Message(
+                id: id,
+                itemID: itemID,
+                text: text,
+                context: context,
+                isFromUser: isFromUser,
+                isFailed: true,
+                sentAt: sentAt
+            )
+        }
     }
 
     struct Conversation: Identifiable, Hashable {

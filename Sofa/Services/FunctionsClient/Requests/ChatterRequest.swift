@@ -20,6 +20,9 @@ struct ChatterRequest: Encodable {
         case .updateContext(let payload):
             try container.encode("update_context", forKey: .action)
             try container.encode(payload, forKey: .payload)
+        case .deleteMessage(let payload):
+            try container.encode("delete_message", forKey: .action)
+            try container.encode(payload, forKey: .payload)
         case .sendMessage(let payload):
             try container.encode("send_message", forKey: .action)
             try container.encode(payload, forKey: .payload)
@@ -33,6 +36,7 @@ extension ChatterRequest {
 
     enum Action {
         case updateContext(UpdateContextPayload)
+        case deleteMessage(DeleteMessagePayload)
         case sendMessage(SendMessagePayload)
     }
 
@@ -45,6 +49,16 @@ extension ChatterRequest {
         private enum CodingKeys: String, CodingKey {
             case conversationID = "conversation_id"
             case context
+        }
+    }
+
+    struct DeleteMessagePayload: Encodable {
+        let conversationID: String
+        let itemID: String
+
+        private enum CodingKeys: String, CodingKey {
+            case conversationID = "conversation_id"
+            case itemID = "item_id"
         }
     }
 
