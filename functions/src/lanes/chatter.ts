@@ -1,4 +1,8 @@
-import {onCall, HttpsError} from "firebase-functions/v2/https";
+import {
+  onCall,
+  HttpsError,
+  CallableResponse,
+} from "firebase-functions/v2/https";
 import {getApps, initializeApp} from "firebase-admin/app";
 import {FieldValue, getFirestore} from "firebase-admin/firestore";
 import {defineSecret} from "firebase-functions/params";
@@ -20,8 +24,18 @@ type ChatterPayload = {
   item_id?: string;
 };
 
+type ChatterStreamChunk = {
+  delta: string;
+};
+
 type OpenAIResponse = {
   output?: OpenAIResponseOutputItem[];
+};
+
+type OpenAIStreamEvent = {
+  type?: string;
+  delta?: string;
+  response?: OpenAIResponse;
 };
 
 type OpenAIResponseOutputItem = {
@@ -135,6 +149,93 @@ async function openAIRequest(
   }
 
   return parsedRaw;
+}
+
+/**
+ * Opens a streaming POST request to the OpenAI API.
+ * Throws an HttpsError with the same shape as openAIRequest on failure.
+ * @param {string} path
+ * @param {unknown} body
+ * @return {Promise<ReadableStream<Uint8Array>>}
+ */
+async function openAIStream(
+  path: string,
+  body: unknown,
+): Promise<ReadableStream<Uint8Array>> {
+  const response = await fetch(`${OPENAI_BASE_URL}${path}`, {
+    method: "POST",
+    headers: {
+      "Authorization": `Bearer ${OPENAI_API_KEY.value()}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  });
+
+  if (!response.ok || !response.body) {
+    const raw = await response.text();
+    let parsedRaw: unknown = raw;
+    try {
+      parsedRaw = JSON.parse(raw);
+    } catch {
+      parsedRaw = {raw};
+    }
+    console.error("OpenAI chatter stream error", {
+      path,
+      status: response.status,
+      statusText: response.statusText,
+      requestId: response.headers.get("x-request-id") ?? undefined,
+      body: parsedRaw,
+    });
+    throw new HttpsError(
+      "unknown",
+      "The service is temporarily unavailable.\nPlease try again shortly.",
+    );
+  }
+
+  return response.body;
+}
+
+/**
+ * Parses an OpenAI Responses SSE stream into decoded event objects.
+ * @param {ReadableStream<Uint8Array>} body
+ * @return {AsyncGenerator<OpenAIStreamEvent>}
+ */
+async function* parseResponsesSSE(
+  body: ReadableStream<Uint8Array>,
+): AsyncGenerator<OpenAIStreamEvent> {
+  const reader = body.getReader();
+  const decoder = new TextDecoder();
+  let buffer = "";
+
+  for (;;) {
+    const {done, value} = await reader.read();
+    if (done) {
+      break;
+    }
+    buffer += decoder.decode(value, {stream: true});
+
+    let separator = buffer.indexOf("\n\n");
+    while (separator !== -1) {
+      const rawEvent = buffer.slice(0, separator);
+      buffer = buffer.slice(separator + 2);
+
+      const data = rawEvent
+        .split("\n")
+        .filter((line) => line.startsWith("data:"))
+        .map((line) => line.slice(5).trim())
+        .join("\n");
+
+      if (data && data !== "[DONE]") {
+        try {
+          yield JSON.parse(data) as OpenAIStreamEvent;
+        } catch {
+          // Ignore keep-alive comments and malformed events.
+        }
+      }
+
+      separator = buffer.indexOf("\n\n");
+    }
+  }
 }
 
 /**
@@ -361,13 +462,17 @@ async function handleDeleteItem(
 }
 
 /**
- * Handles send message action.
+ * Handles send message action with live token streaming.
+ * Tokens are forwarded to the client through response.sendChunk while the
+ * full reply is accumulated for the final return value and Firestore log.
  * @param {FirebaseFirestore.DocumentReference} requestLogRef
  * @param {string} action
  * @param {string} conversationID
  * @param {string} message
  * @param {string} context
  * @param {string} instructions
+ * @param {boolean} acceptsStreaming
+ * @param {CallableResponse<ChatterStreamChunk>} streamResponse
  * @return {Promise<{action: string, payload: {message: string}}>}
  */
 async function handleSendMessage(
@@ -377,6 +482,8 @@ async function handleSendMessage(
   message: string,
   context: string,
   instructions: string,
+  acceptsStreaming: boolean,
+  streamResponse: CallableResponse<ChatterStreamChunk> | undefined,
 ) {
   if (!message) {
     throw new HttpsError("invalid-argument", "Missing 'payload.message'.");
@@ -395,6 +502,7 @@ async function handleSendMessage(
       model: OPENAI_CHAT_MODEL,
       conversation: conversationID,
       instructions,
+      stream: true,
       input: [{
         type: "message",
         role: "user",
@@ -403,12 +511,39 @@ async function handleSendMessage(
     },
   };
 
-  const response = await openAIRequest(requestJSON.path, {
-    method: "POST",
-    body: JSON.stringify(requestJSON.body),
-  }) as OpenAIResponse;
+  const body = await openAIStream(requestJSON.path, requestJSON.body);
 
-  const assistantMessage = responseOutputText(response);
+  let streamedText = "";
+  let finalResponse: OpenAIResponse | undefined;
+  for await (const event of parseResponsesSSE(body)) {
+    switch (event.type) {
+    case "response.output_text.delta": {
+      const delta = typeof event.delta === "string" ? event.delta : "";
+      if (delta) {
+        streamedText += delta;
+        if (acceptsStreaming) {
+          streamResponse?.sendChunk({delta});
+        }
+      }
+      break;
+    }
+    case "response.completed":
+      finalResponse = event.response;
+      break;
+    case "response.failed":
+    case "error":
+      throw new HttpsError(
+        "unknown",
+        "The service is temporarily unavailable.\nPlease try again shortly.",
+      );
+    default:
+      break;
+    }
+  }
+
+  const response: OpenAIResponse = finalResponse ?? {};
+  const assistantMessage = responseOutputText(finalResponse) ||
+    streamedText.trim();
   if (!assistantMessage) {
     throw new HttpsError("unknown", "Assistant response was empty.");
   }
@@ -472,7 +607,7 @@ export const chatter = onCall(
     secrets: [OPENAI_API_KEY],
     enforceAppCheck: true,
   },
-  async (request) => {
+  async (request, response) => {
     const uid = request.auth?.uid;
     if (!uid) {
       throw new HttpsError("unauthenticated", "Auth required.");
@@ -540,6 +675,7 @@ export const chatter = onCall(
           model: OPENAI_CHAT_MODEL,
           conversation: conversationID,
           instructions,
+          stream: true,
           input: [
             {
               type: "message",
@@ -596,6 +732,8 @@ export const chatter = onCall(
           message,
           context,
           instructions,
+          request.acceptsStreaming,
+          response,
         );
       default:
         throw new HttpsError(

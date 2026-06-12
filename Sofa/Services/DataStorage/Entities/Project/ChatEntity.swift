@@ -34,7 +34,7 @@ final class ChatEntity {
         Project.Plan.Chat(
             id: id,
             conversation: conversation?.toConversation(),
-            messages: messages.map { $0.toMessage() }.sorted { $0.sentAt > $1.sentAt }
+            messages: messages.map { $0.toMessage() }.sorted { $0.createdAt > $1.createdAt }
         )
     }
 }

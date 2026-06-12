@@ -65,6 +65,10 @@ struct ChatView: View {
                     guard oldValue != newValue, !viewModel.messages.isEmpty else { return }
                     scrollToBottom(reader)
                 }
+                .onChange(of: viewModel.streamingCharacterCount) { oldValue, newValue in
+                    guard newValue > oldValue else { return }
+                    scrollToBottom(reader, isAnimated: false)
+                }
                 .onChange(of: isInputFocused) { oldValue, newValue in
                     guard oldValue != newValue else { return }
                     if newValue, !viewModel.messages.isEmpty {
@@ -72,7 +76,6 @@ struct ChatView: View {
                     }
                 }
             }
-
         }
         .navigationTitle(String(localized: "aiAssistant"))
         .navigationBarTitleDisplayMode(.inline)
@@ -258,7 +261,7 @@ struct ChatView: View {
 
     private func ComposerView() -> some View {
         VStack(alignment: .leading, spacing: .zero) {
-            if let message = viewModel.selectedEditedMessage {
+            if viewModel.selectedEditedMessage != nil {
                 ComposerContextView(String(localized: "editMessage"))
                     .padding([.top, .horizontal], 6.fitW)
             }

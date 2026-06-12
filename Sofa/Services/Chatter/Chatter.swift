@@ -21,7 +21,8 @@ protocol Chatter {
     func sendMessage(
         _ message: String,
         context: String?,
-        conversation: Project.Plan.Chat.Conversation
+        conversation: Project.Plan.Chat.Conversation,
+        onDelta: @escaping (String) -> Void
     ) async throws -> SendMessageResult
 }
 
@@ -116,28 +117,38 @@ final class DefaultChatter: Chatter {
     func sendMessage(
         _ message: String,
         context: String?,
-        conversation: Project.Plan.Chat.Conversation
+        conversation: Project.Plan.Chat.Conversation,
+        onDelta: @escaping (String) -> Void
     ) async throws -> SendMessageResult {
         do {
-            let response = try await functionsClient.chatter(
-                request: ChatterRequest(action: .sendMessage(ChatterRequest.SendMessagePayload(
-                    conversationID: conversation.id,
-                    instructions: makeSendMessageInstructions(),
-                    message: message,
-                    context: context
-                )))
-            )
-            switch response.action {
-            case .updateContext, .deleteMessage:
-                throw ChatterError.messageSendFailed
-            case .sendMessage(let payload):
-                debugPrint("Message sent successfully")
-                return SendMessageResult(
-                    message: payload.message,
-                    userItemID: payload.userItemID,
-                    assistantItemID: payload.assistantItemID
-                )
+            let request = ChatterRequest(action: .sendMessage(ChatterRequest.SendMessagePayload(
+                conversationID: conversation.id,
+                instructions: makeSendMessageInstructions(),
+                message: message,
+                context: context
+            )))
+            var result: SendMessageResult?
+            for try await event in functionsClient.chatter(request: request) {
+                switch event {
+                case .delta(let text): onDelta(text)
+                case .result(let response):
+                    switch response.action {
+                    case .sendMessage(let payload):
+                        result = SendMessageResult(
+                            message: payload.message,
+                            userItemID: payload.userItemID,
+                            assistantItemID: payload.assistantItemID
+                        )
+                    case .updateContext, .deleteMessage:
+                        throw ChatterError.messageSendFailed
+                    }
+                }
             }
+            guard let result else {
+                throw ChatterError.messageSendFailed
+            }
+            debugPrint("Message streamed successfully")
+            return result
         } catch {
             debugPrint("Failed to send message to chat:", error.localizedDescription)
             throw ChatterError.messageSendFailed

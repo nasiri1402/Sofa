@@ -26,12 +26,16 @@ final class ChatViewModel {
     var alertItem: AlertItem?
 
     var isSending: Bool {
-        sendingState != nil
+        sendingState != nil || streamingMessage != nil
     }
 
     var messages: [Project.Plan.Chat.Message] {
-        ((plan.chat?.messages ?? []) + [optimisticMessage].compactMap(\.self))
-            .sorted { $0.sentAt < $1.sentAt }
+        ((plan.chat?.messages ?? []) + [optimisticMessage, streamingMessage].compactMap(\.self))
+            .sorted { $0.createdAt < $1.createdAt }
+    }
+
+    var streamingCharacterCount: Int {
+        streamingMessage?.text.count ?? 0
     }
 
     var canSendMessage: Bool {
@@ -51,6 +55,8 @@ final class ChatViewModel {
     private let onTapContext: (String) -> Void
 
     private var optimisticMessage: Project.Plan.Chat.Message?
+    private var streamingMessage: Project.Plan.Chat.Message?
+
     @ObservationIgnored private var toastTask: Task<Void, Never>?
 
     // MARK: - Inits
@@ -271,6 +277,7 @@ extension ChatViewModel {
     ) async {
         defer {
             optimisticMessage = nil
+            streamingMessage = nil
             sendingState = nil
         }
         let userMessage = makeMessage(text: text, context: context)
@@ -290,14 +297,32 @@ extension ChatViewModel {
                 try await syncConversationContext()
             }
             sendingState = .thinking
-            let payload = try await chatter.sendMessage(text, context: context, conversation: conversation)
-            let assistantMessage = makeMessage(
+            let assistantID = UUID()
+            let assistantCreatedAt = Date()
+            var streamedText = ""
+            let payload = try await chatter.sendMessage(
+                text,
+                context: context,
+                conversation: conversation
+            ) { [weak self] delta in
+                guard let self else { return }
+                streamedText += delta
+                sendingState = nil
+                streamingMessage = makeMessage(
+                    id: assistantID,
+                    text: streamedText,
+                    isFromUser: false,
+                    createdAt: assistantCreatedAt
+                )
+            }
+            try addMessage(userMessage.sent(itemID: payload.userItemID))
+            try addMessage(makeMessage(
+                id: assistantID,
                 itemID: payload.assistantItemID,
                 text: payload.message,
                 isFromUser: false,
-            )
-            try addMessage(userMessage.sent(itemID: payload.userItemID))
-            try addMessage(assistantMessage)
+                createdAt: assistantCreatedAt
+            ))
         } catch {
             do {
                 ensureChatExists()
@@ -330,20 +355,22 @@ extension ChatViewModel {
     }
 
     private func makeMessage(
+        id: UUID = UUID(),
         itemID: String? = nil,
         text: String,
         context: String? = nil,
         isFromUser: Bool = true,
-        isFailed: Bool = false
+        isFailed: Bool = false,
+        createdAt: Date = .now
     ) -> Project.Plan.Chat.Message {
         Project.Plan.Chat.Message(
-            id: UUID(),
+            id: id,
             itemID: itemID,
             text: text,
             context: context,
             isFromUser: isFromUser,
             isFailed: isFailed,
-            sentAt: .now
+            createdAt: createdAt
         )
     }
 

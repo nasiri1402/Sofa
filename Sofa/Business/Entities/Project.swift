@@ -214,7 +214,7 @@ extension Project.Plan.Chat {
         let context: String?
         let isFromUser: Bool
         let isFailed: Bool
-        let sentAt: Date
+        let createdAt: Date
 
         func sent(itemID: String?) -> Project.Plan.Chat.Message {
             Project.Plan.Chat.Message(
@@ -224,7 +224,7 @@ extension Project.Plan.Chat {
                 context: context,
                 isFromUser: isFromUser,
                 isFailed: isFailed,
-                sentAt: sentAt
+                createdAt: createdAt
             )
         }
 
@@ -236,7 +236,7 @@ extension Project.Plan.Chat {
                 context: context,
                 isFromUser: isFromUser,
                 isFailed: true,
-                sentAt: sentAt
+                createdAt: createdAt
             )
         }
     }

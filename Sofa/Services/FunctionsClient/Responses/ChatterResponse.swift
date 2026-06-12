@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ChatterResponse: Decodable {
+nonisolated struct ChatterResponse: Decodable, Sendable {
     let action: Action
 
     private enum CodingKeys: String, CodingKey {
@@ -37,7 +37,7 @@ extension ChatterResponse {
 
     // MARK: - Action
 
-    enum Action {
+    enum Action: Sendable {
         case updateContext(UpdateContextPayload)
         case deleteMessage(DeleteMessagePayload)
         case sendMessage(SendMessagePayload)
@@ -45,7 +45,7 @@ extension ChatterResponse {
 
     // MARK: - UpdateContextPayload
 
-    struct UpdateContextPayload: Decodable {
+    struct UpdateContextPayload: Decodable, Sendable {
         let isUpdated: Bool
 
         private enum CodingKeys: String, CodingKey {
@@ -53,7 +53,9 @@ extension ChatterResponse {
         }
     }
 
-    struct DeleteMessagePayload: Decodable {
+    // MARK: - DeleteMessagePayload
+
+    struct DeleteMessagePayload: Decodable, Sendable {
         let isDeleted: Bool
 
         private enum CodingKeys: String, CodingKey {
@@ -63,7 +65,7 @@ extension ChatterResponse {
 
     // MARK: - SendMessagePayload
 
-    struct SendMessagePayload: Decodable {
+    struct SendMessagePayload: Decodable, Sendable {
         let message: String
         let userItemID: String?
         let assistantItemID: String?
@@ -73,5 +75,18 @@ extension ChatterResponse {
             case userItemID = "user_item_id"
             case assistantItemID = "assistant_item_id"
         }
+    }
+
+    // MARK: - StreamEvent
+
+    enum StreamEvent {
+        case delta(String)
+        case result(ChatterResponse)
+    }
+
+    // MARK: - StreamChunk
+
+    nonisolated struct StreamChunk: Decodable, Sendable {
+        let delta: String
     }
 }

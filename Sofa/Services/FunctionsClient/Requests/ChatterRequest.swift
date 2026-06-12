@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ChatterRequest: Encodable {
+nonisolated struct ChatterRequest: Encodable, Sendable {
     let action: Action
 
     private enum CodingKeys: String, CodingKey {
@@ -34,7 +34,7 @@ extension ChatterRequest {
 
     // MARK: - Action
 
-    enum Action {
+    enum Action: Sendable {
         case updateContext(UpdateContextPayload)
         case deleteMessage(DeleteMessagePayload)
         case sendMessage(SendMessagePayload)
@@ -42,7 +42,7 @@ extension ChatterRequest {
 
     // MARK: - UpdateContextPayload
 
-    struct UpdateContextPayload: Encodable {
+    struct UpdateContextPayload: Encodable, Sendable {
         let conversationID: String
         let context: String
 
@@ -52,7 +52,7 @@ extension ChatterRequest {
         }
     }
 
-    struct DeleteMessagePayload: Encodable {
+    struct DeleteMessagePayload: Encodable, Sendable {
         let conversationID: String
         let itemID: String
 
@@ -64,7 +64,7 @@ extension ChatterRequest {
 
     // MARK: - SendMessagePayload
 
-    struct SendMessagePayload: Encodable {
+    struct SendMessagePayload: Encodable, Sendable {
         let conversationID: String
         let instructions: String
         let message: String
