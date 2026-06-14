@@ -62,12 +62,16 @@ struct ChatView: View {
                     }
                 }
                 .onChange(of: viewModel.isSending) { oldValue, newValue in
-                    guard oldValue != newValue, !viewModel.messages.isEmpty else { return }
-                    scrollToBottom(reader)
+                    guard oldValue != newValue else { return }
+                    if !viewModel.messages.isEmpty {
+                        scrollToBottom(reader)
+                    }
                 }
                 .onChange(of: viewModel.streamingCharacterCount) { oldValue, newValue in
-                    guard newValue > oldValue else { return }
-                    scrollToBottom(reader, isAnimated: false)
+                    guard oldValue != newValue else { return }
+                    if newValue > oldValue {
+                        scrollToBottom(reader, isAnimated: false)
+                    }
                 }
                 .onChange(of: isInputFocused) { oldValue, newValue in
                     guard oldValue != newValue else { return }
@@ -193,11 +197,14 @@ struct ChatView: View {
             .clipShape(.rect(cornerRadius: 20.fitW))
             .contentShape(.rect)
             .onTapGesture {
+                isInputFocused = false
                 viewModel.didTapMessage(message)
             }
             .onLongPressGesture {
                 viewModel.didLongPressMessage(message)
             }
+            .contentTransition(.numericText())
+            .animation(.easeInOut, value: message.text)
             .confirmationDialog(
                 String(localized: "actionsOnMessageDialogTitle"),
                 isPresented: Binding(
@@ -383,18 +390,10 @@ struct ChatView: View {
     // MARK: - Private Methods
 
     private func scrollToBottom(_ reader: ScrollViewProxy, isAnimated: Bool = true) {
-        let onScroll = {
-            reader.scrollTo(scrollBottomID, anchor: .bottom)
-        }
-        if isAnimated {
-            DispatchQueue.main.async {
-                withAnimation(.easeInOut) {
-                    onScroll()
-                }
-            }
-        } else {
-            DispatchQueue.main.async {
-                onScroll()
+        Task { @MainActor in
+            await Task.yield()
+            withAnimation(isAnimated ? .easeInOut : nil) {
+                reader.scrollTo(scrollBottomID, anchor: .bottom)
             }
         }
     }
