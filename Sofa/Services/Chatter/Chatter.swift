@@ -279,7 +279,7 @@ final class DefaultChatter: Chatter {
 
         OUTPUT:
         - No JSON. You may use markdown (bold, italic, bullet lists) when it makes the answer clearer. Do not use headers (#, ##).
-        - Reply in the same language the user writes in.
+        - Reply in the same language the user writes in. When referencing plan structure (weeks, steps, days, progress), translate those labels into the user's language — e.g. for Russian: "Неделя 1", "Шаг 2"; for Spanish: "Semana 1", "Paso 2". Your response must feel native to the user's language.
         - Keep it short and practical: 1-3 sentences by default. Use up to 5 bullets only when a list is genuinely clearer.
         - Do not greet or introduce yourself. Do not summarize the full plan unless asked.
         - If the question is outside your scope, say so in one sentence and stop.

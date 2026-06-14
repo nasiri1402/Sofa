@@ -202,7 +202,7 @@ struct ChatView: View {
             .onLongPressGesture {
                 viewModel.didLongPressMessage(message)
             }
-            .animation(.easeInOut(duration: 0.25), value: message.text)
+            .animation(.easeInOut(duration: 0.1), value: message.text)
             .confirmationDialog(
                 String(localized: "actionsOnMessageDialogTitle"),
                 isPresented: Binding(
