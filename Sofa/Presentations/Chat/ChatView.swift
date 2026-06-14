@@ -35,10 +35,6 @@ struct ChatView: View {
                         } else {
                             MessagesList()
                         }
-                        Color.black
-                            .opacity(0.001)
-                            .frame(height: 1)
-                            .id(scrollBottomID)
                     }
                     .animation(.easeInOut, value: viewModel.messages.isEmpty)
                     .padding(.horizontal, 16.fitW)
@@ -48,10 +44,6 @@ struct ChatView: View {
                 .scrollBounceBehavior(viewModel.messages.isEmpty ? .basedOnSize : .automatic)
                 .contentMargins(.top, 24.fitW, for: .scrollContent)
                 .contentMargins(.bottom, 16.fitW, for: .scrollContent)
-                .safeAreaInset(edge: .bottom) {
-                    ComposerView()
-                        .padding(16.fitW)
-                }
                 .onAppear {
                     scrollToBottom(reader, isAnimated: false)
                 }
@@ -64,13 +56,13 @@ struct ChatView: View {
                 .onChange(of: viewModel.isSending) { oldValue, newValue in
                     guard oldValue != newValue else { return }
                     if !viewModel.messages.isEmpty {
-                        scrollToBottom(reader, delay: 0.1)
+                        scrollToBottom(reader)
                     }
                 }
                 .onChange(of: viewModel.streamingCharacterCount) { oldValue, newValue in
                     guard oldValue != newValue else { return }
-                    if newValue > oldValue {
-                        scrollToBottom(reader, delay: 0.1, isAnimated: false)
+                    if newValue > oldValue, newValue.isMultiple(of: 5) {
+                        scrollToBottom(reader, isAnimated: false)
                     }
                 }
                 .onChange(of: isInputFocused) { oldValue, newValue in
@@ -89,6 +81,10 @@ struct ChatView: View {
         }
         .navigationBarTrailingButton(icon: .cross) {
             viewModel.didTapNavigationBarTrailingButton()
+        }
+        .safeAreaInset(edge: .bottom) {
+            ComposerView()
+                .padding(16.fitW)
         }
         .alert(item: $viewModel.alertItem) { item in
             item.alert()
@@ -133,7 +129,7 @@ struct ChatView: View {
     }
 
     private func MessagesList() -> some View {
-        LazyVStack(spacing: 12.fitW) {
+        VStack(spacing: 12.fitW) {
             ForEach(viewModel.messages, id: \.id) { message in
                 if message.isFromUser {
                     UserMessageView(message)
@@ -147,6 +143,9 @@ struct ChatView: View {
                 SendingText(sendingState)
                     .padding(.top, 12.fitW)
             }
+            Color.clear
+                .frame(height: 1)
+                .id(scrollBottomID)
         }
         .animation(.easeInOut, value: viewModel.messages.count)
         .animation(.easeInOut, value: viewModel.isSending)
@@ -390,15 +389,10 @@ struct ChatView: View {
 
     private func scrollToBottom(
         _ reader: ScrollViewProxy,
-        delay: TimeInterval = .zero,
         isAnimated: Bool = true
     ) {
         Task { @MainActor in
-            if delay > .zero {
-                try? await Task.sleep(for: .seconds(delay))
-            } else {
-                await Task.yield()
-            }
+            await Task.yield()
             withAnimation(isAnimated ? .easeInOut : nil) {
                 reader.scrollTo(scrollBottomID, anchor: .bottom)
             }
