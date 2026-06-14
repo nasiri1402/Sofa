@@ -64,13 +64,13 @@ struct ChatView: View {
                 .onChange(of: viewModel.isSending) { oldValue, newValue in
                     guard oldValue != newValue else { return }
                     if !viewModel.messages.isEmpty {
-                        scrollToBottom(reader)
+                        scrollToBottom(reader, delay: 0.1)
                     }
                 }
                 .onChange(of: viewModel.streamingCharacterCount) { oldValue, newValue in
                     guard oldValue != newValue else { return }
                     if newValue > oldValue {
-                        scrollToBottom(reader, isAnimated: false)
+                        scrollToBottom(reader, delay: 0.1, isAnimated: false)
                     }
                 }
                 .onChange(of: isInputFocused) { oldValue, newValue in
@@ -203,8 +203,7 @@ struct ChatView: View {
             .onLongPressGesture {
                 viewModel.didLongPressMessage(message)
             }
-            .contentTransition(.numericText())
-            .animation(.easeInOut, value: message.text)
+            .animation(.easeInOut(duration: 0.25), value: message.text)
             .confirmationDialog(
                 String(localized: "actionsOnMessageDialogTitle"),
                 isPresented: Binding(
@@ -389,9 +388,17 @@ struct ChatView: View {
 
     // MARK: - Private Methods
 
-    private func scrollToBottom(_ reader: ScrollViewProxy, isAnimated: Bool = true) {
+    private func scrollToBottom(
+        _ reader: ScrollViewProxy,
+        delay: TimeInterval = .zero,
+        isAnimated: Bool = true
+    ) {
         Task { @MainActor in
-            await Task.yield()
+            if delay > .zero {
+                try? await Task.sleep(for: .seconds(delay))
+            } else {
+                await Task.yield()
+            }
             withAnimation(isAnimated ? .easeInOut : nil) {
                 reader.scrollTo(scrollBottomID, anchor: .bottom)
             }
