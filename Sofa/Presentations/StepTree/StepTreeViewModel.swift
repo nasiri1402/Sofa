@@ -22,15 +22,13 @@ final class StepTreeViewModel {
     var textFieldAlertItem: TextFieldAlertItem?
     var alertItem: AlertItem?
     var isWellDone = false
-
-    var isPro: Bool {
-        storeManager.hasPurchasedProduct()
-    }
+    var isPro = false
 
     var isPaywallPresented = false {
         didSet {
             guard oldValue != isPaywallPresented else { return }
             if !isPaywallPresented {
+                isPro = storeManager.hasPurchasedProduct()
                 lockedWeeks = plan.weeks.filter(isWeekLocked)
             }
         }
@@ -200,6 +198,7 @@ extension StepTreeViewModel {
 extension StepTreeViewModel {
     private func initialize() {
         isWellDone = plan.isCompleted
+        isPro = storeManager.hasPurchasedProduct()
         lockWeeks()
     }
 
