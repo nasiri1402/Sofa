@@ -379,11 +379,11 @@ extension ChatViewModel {
               let index = messages.firstIndex(where: { $0.id == message.id })
         else { return }
         var removedMessages = [messages[index]]
-        let nextIndex = messages.index(after: index)
-        if messages.indices.contains(nextIndex) {
-            let nextMessage = messages[nextIndex]
-            if !nextMessage.isFromUser {
-                removedMessages.append(nextMessage)
+        if index > messages.startIndex {
+            let replyIndex = messages.index(before: index)
+            let replyMessage = messages[replyIndex]
+            if !replyMessage.isFromUser {
+                removedMessages.append(replyMessage)
             }
         }
         let ids = Set(removedMessages.map(\.id))
