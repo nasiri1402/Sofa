@@ -27,16 +27,30 @@ struct TypewriterTextField: View {
     // MARK: - Body
 
     var body: some View {
-        TextField(
-            placeholder + typewriterText,
-            text: $text,
-            axis: .vertical
-        )
-        .font(.system(size: 17.fitW))
-        .foregroundStyle(.grayE5E5EA)
-        .autocorrectionDisabled()
-        .focused($isFocused)
-        .lineLimit(7)
+        ZStack(alignment: .topLeading) {
+            if text.isEmpty {
+                Text(placeholder + typewriterText)
+                    .font(.system(size: 17.fitW))
+                    .foregroundStyle(.gray8E8E93)
+                    .multilineTextAlignment(.leading)
+                    .lineLimit(3)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .allowsHitTesting(false)
+            }
+
+            TextField(
+                "",
+                text: $text,
+                axis: .vertical
+            )
+            .font(.system(size: 17.fitW))
+            .foregroundStyle(.grayE5E5EA)
+            .autocorrectionDisabled()
+            .focused($isFocused)
+            .lineLimit(1...7)
+        }
+        .frame(maxWidth: .infinity, minHeight: 72.fitW, alignment: .topLeading)
         .task(id: text.isEmpty) {
             guard text.isEmpty else { return }
             await typeLoop()

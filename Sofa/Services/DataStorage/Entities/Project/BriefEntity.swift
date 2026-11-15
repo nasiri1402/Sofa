@@ -15,31 +15,44 @@ final class BriefEntity {
 
     @Attribute(.unique)
     var id: UUID
-    var idea: String
+    var categoryRaw: String?
+    var focus: String?
+    var target: String?
+    var currentState: String?
+    var preferences: String?
     var timeframeRaw: Int
-    var experienceRaw: Int
-    var startPoint: String
-    var resultGoalsRaw: Set<Int>
+
+    // These properties belong to the 1.2.0 schema. Keeping them optional makes
+    // the 1.2.1 schema additive, so SwiftData can preserve existing briefs.
+    var idea: String?
+    var experienceRaw: Int?
+    var startPoint: String?
+    var resultGoalsRaw: Set<Int>?
     var resultMoney: Int?
     var resultSubscribers: Int?
     var resultOption: String?
     var budget: Int?
-    var limits: String
+    var limits: String?
 
     // MARK: - Inits
 
     init(from model: Project.Brief) {
         self.id = model.id
-        self.idea = model.idea
+        self.categoryRaw = model.category.rawValue
+        self.focus = model.focus
+        self.target = model.target
+        self.currentState = model.currentState
+        self.preferences = model.preferences
         self.timeframeRaw = model.timeframe.rawValue
-        self.experienceRaw = model.experience.rawValue
-        self.startPoint = model.startPoint
-        self.resultGoalsRaw = Set(model.result.goals.map(\.rawValue))
-        self.resultMoney = model.result.money
-        self.resultSubscribers = model.result.subscribers
-        self.resultOption = model.result.option
-        self.budget = model.budget
-        self.limits = model.limits
+        self.idea = nil
+        self.experienceRaw = nil
+        self.startPoint = nil
+        self.resultGoalsRaw = nil
+        self.resultMoney = nil
+        self.resultSubscribers = nil
+        self.resultOption = nil
+        self.budget = nil
+        self.limits = nil
     }
 
     // MARK: - Public Methods
@@ -47,18 +60,44 @@ final class BriefEntity {
     func toBrief() -> Project.Brief {
         Project.Brief(
             id: id,
-            idea: idea,
-            timeframe: Project.Brief.Timeframe(rawValue: timeframeRaw) ?? .month1,
-            experience: Project.Brief.Experience(rawValue: experienceRaw) ?? .beginner,
-            startPoint: startPoint,
-            result: Project.Brief.Result(
-                goals: Set(resultGoalsRaw.map { Project.Brief.Goal(rawValue: $0) ?? .money }),
-                money: resultMoney,
-                subscribers: resultSubscribers,
-                option: resultOption
-            ),
-            budget: budget,
-            limits: limits
+            category: Project.Brief.Category(rawValue: categoryRaw ?? "") ?? .productivity,
+            focus: nonEmpty(focus) ?? nonEmpty(idea) ?? "",
+            target: nonEmpty(target) ?? legacyTarget,
+            currentState: nonEmpty(currentState) ?? nonEmpty(startPoint) ?? "",
+            preferences: nonEmpty(preferences) ?? legacyPreferences,
+            timeframe: Project.Brief.Timeframe(rawValue: timeframeRaw) ?? .month1
         )
+    }
+
+    // MARK: - Private Properties
+
+    private var legacyTarget: String {
+        if let resultOption = nonEmpty(resultOption) {
+            return resultOption
+        }
+        if let resultMoney {
+            return String(resultMoney)
+        }
+        if let resultSubscribers {
+            return String(resultSubscribers)
+        }
+        return nonEmpty(idea) ?? ""
+    }
+
+    private var legacyPreferences: String {
+        var components: [String] = []
+        if let limits = nonEmpty(limits) {
+            components.append(limits)
+        }
+        if let budget {
+            components.append("Budget: \(budget)")
+        }
+        return components.joined(separator: ", ")
+    }
+
+    private func nonEmpty(_ value: String?) -> String? {
+        guard let value else { return nil }
+        let trimmed = value.trimmingCharacters(in: .whitespacesAndNewlines)
+        return trimmed.isEmpty ? nil : trimmed
     }
 }

@@ -122,15 +122,17 @@ extension GiftPaywallView {
                     lineLimit: 2,
                     lineSpacing: -20.fitH
                 )
-                AdaptiveText(
-                    viewModel.formatOfferDiscount(),
-                    fonts: [76, 72, 68, 64, 60, 56].map {
-                        .system(size: $0, weight: .black)
-                    },
-                    color: .blue007AFF,
-                    lineLimit: 1,
-                    lineSpacing: -20.fitH
-                )
+                if let discount = viewModel.formatOfferDiscount() {
+                    AdaptiveText(
+                        discount,
+                        fonts: [76, 72, 68, 64, 60, 56].map {
+                            .system(size: $0, weight: .black)
+                        },
+                        color: .blue007AFF,
+                        lineLimit: 1,
+                        lineSpacing: -20.fitH
+                    )
+                }
             }
             AdaptiveText(
                 viewModel.state.subtitle,
@@ -173,21 +175,23 @@ extension GiftPaywallView {
                     .frame(height: 25.fitH)
                     .padding(.bottom, 2.fitH)
 
-                Text(viewModel.formatStandardPrice())
-                    .multilineMinimumScale()
-                    .font(.system(size: 15.fitW, weight: .semibold))
-                    .foregroundStyle(.gray8E8E93)
-                    .frame(height: 20.fitH)
+                if let badge = viewModel.formatDiscountBadge() {
+                    Text(viewModel.formatStandardPrice())
+                        .multilineMinimumScale()
+                        .font(.system(size: 15.fitW, weight: .semibold))
+                        .foregroundStyle(.gray8E8E93)
+                        .frame(height: 20.fitH)
 
-                Text(viewModel.formatDiscountBadge())
-                    .multilineMinimumScale()
-                    .font(.system(size: 15.fitW, weight: .semibold))
-                    .foregroundStyle(.black)
-                    .padding(.horizontal, 10.fitW)
-                    .frame(height: 32.fitH)
-                    .background(.green34C759)
-                    .clipShape(.rect(cornerRadius: 8.fitW))
-                    .padding(.top, 10.fitH)
+                    Text(badge)
+                        .multilineMinimumScale()
+                        .font(.system(size: 15.fitW, weight: .semibold))
+                        .foregroundStyle(.black)
+                        .padding(.horizontal, 10.fitW)
+                        .frame(height: 32.fitH)
+                        .background(.green34C759)
+                        .clipShape(.rect(cornerRadius: 8.fitW))
+                        .padding(.top, 10.fitH)
+                }
             }
             .frame(maxWidth: .infinity)
 

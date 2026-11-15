@@ -83,21 +83,13 @@ extension GeneratorRequest {
         }
 
         struct Brief: Encodable {
-            let idea: String
+            let category: String
+            let focus: String
+            let target: String
+            let currentState: String
+            let preferences: String
             let timeframe: String
-            let experience: String
             let difficulty: String
-            let startPoint: String
-            let result: Result
-            let budget: Int?
-            let limits: String
-        }
-
-        struct Result: Encodable {
-            let goals: [String]
-            let money: String?
-            let subscribers: String?
-            let option: String?
         }
     }
 }

@@ -28,6 +28,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Sources/Plists/Info.plist,
+				Sources/SupportingFiles/Sofa.storekit,
 			);
 			target = AB6285FA2EB8FA65008669A0 /* Sofa */;
 		};
@@ -211,7 +212,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${BUILD_DIR%/Build/*}/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run\"\n";
+			shellScript = "if [ \"$PLATFORM_NAME\" = \"iphonesimulator\" ]; then\n  echo \"Skipping Crashlytics symbol upload for local simulator build\"\n  exit 0\nfi\ncrashlytics_packages_dir=\"${SOFA_SOURCE_PACKAGES_DIRECTORY:-${BUILD_DIR%/Build/*}/SourcePackages}\"\n\"${crashlytics_packages_dir}/checkouts/firebase-ios-sdk/Crashlytics/run\"\n";
 		};
 		AB76B9792EB8FF3D00419E57 /* Run Swiftlint */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -375,8 +376,8 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Sofa/Sources/SupportingFiles/Sofa.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				CURRENT_PROJECT_VERSION = 11;
+				DEVELOPMENT_TEAM = HKY458R7FY;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Sofa/Sources/Plists/Info.plist;
@@ -392,7 +393,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.0;
+				MARKETING_VERSION = 1.2.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ajdar.ai.sofa;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -414,8 +415,8 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Sofa/Sources/SupportingFiles/Sofa.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				CURRENT_PROJECT_VERSION = 11;
+				DEVELOPMENT_TEAM = HKY458R7FY;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Sofa/Sources/Plists/Info.plist;
@@ -431,7 +432,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.0;
+				MARKETING_VERSION = 1.2.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ajdar.ai.sofa;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -474,8 +475,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
 			requirement = {
-				kind = upToNextMinorVersion;
-				minimumVersion = 12.14.0;
+				kind = exactVersion;
+				version = 12.19.3;
 			};
 		};
 		AB76B97A2EB8FFBE00419E57 /* XCRemoteSwiftPackageReference "SwiftLint" */ = {

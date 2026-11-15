@@ -30,5 +30,5 @@ enum ServiceLayer {
 
     // MARK: - Private Properties
 
-    private static let functionsClient: FunctionsClient = DefaultFunctionsClient()
+    private static let functionsClient: FunctionsClient = DefaultFunctionsClient(authService: authService)
 }

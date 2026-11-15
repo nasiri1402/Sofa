@@ -23,11 +23,13 @@ final class PaywallViewModel {
     private(set) var safariURL: URL?
     var isSafariPresented = false
     var alertItem: AlertItem?
+    private(set) var canStartMonthlyTrial = false
     var isTrialOn: Bool {
-        didSet {
-            guard oldValue != isTrialOn else { return }
-            selectedSubscription = isTrialOn ? .weekly : .yearly
-        }
+        selectedSubscription == .monthly && canStartMonthlyTrial
+    }
+
+    var canPurchase: Bool {
+        !isLoading && findProduct(for: selectedSubscription) != nil
     }
 
     // MARK: - Private Properties
@@ -52,8 +54,7 @@ final class PaywallViewModel {
         self.networkMonitor = networkMonitor
         self.analyticsManager = analyticsManager
         self.placement = placement
-        self.selectedSubscription = .weekly
-        self.isTrialOn = true
+        self.selectedSubscription = .yearly
 
         initialize()
     }
@@ -66,11 +67,13 @@ extension PaywallViewModel {
     // MARK: - Input
 
     func didTapRestoreButton() {
+        guard !isLoading else { return }
         isLoading = true
         Task { @MainActor in
             defer { isLoading = false }
             do {
                 let isRestored = try await storeManager.restorePurchasedProducts()
+                await refreshMonthlyTrialEligibility()
                 alertItem = AlertItem(
                     title: Text(
                         isRestored
@@ -96,13 +99,12 @@ extension PaywallViewModel {
     }
 
     func didTapSubscriptionButton(_ subscription: PaywallModel.Subscription) {
-        guard selectedSubscription.id != subscription.id else { return }
+        guard !isLoading, subscriptions.contains(subscription) else { return }
         selectedSubscription = subscription
-        isTrialOn = subscription.withTrial
     }
 
     func didTapContinueButton() {
-        guard let product = findProduct(for: selectedSubscription) else { return }
+        guard canPurchase, let product = findProduct(for: selectedSubscription) else { return }
         purchaseProduct(product)
     }
 
@@ -127,13 +129,15 @@ extension PaywallViewModel {
 
     func formatPrice(for subscription: PaywallModel.Subscription) -> String {
         guard let product = findProduct(for: subscription) else { return "" }
-        return product.price.formatted(product.priceFormatStyle)
+        return product.displayPrice
     }
 
     func formatPriceDescription(for subscription: PaywallModel.Subscription) -> String {
         let description = switch subscription {
-        case .yearly: String(localized: "just") + " " + getPricePerWeek(for: subscription)
-        case .weekly: String(localized: "cheaperThanCoffee") + " ☕"
+        case .yearly: String(localized: "just") + " " + getPricePerMonth(for: subscription)
+        case .monthly: canStartMonthlyTrial
+            ? String(localized: "try3DaysFree")
+            : String(localized: "cancelAnyTime")
         }
         return description.lowercased()
     }
@@ -159,10 +163,19 @@ extension PaywallViewModel {
     }
 
     private func loadProducts() {
+        guard !isLoading else { return }
+        isLoading = true
         Task { @MainActor in
+            defer { isLoading = false }
             do {
                 products = try await storeManager.getProducts()
-                subscriptions = products.compactMap { PaywallModel.Subscription(id: $0.id) }
+                subscriptions = PaywallModel.Subscription.allCases.filter { subscription in
+                    products.contains { $0.id == subscription.id }
+                }
+                if !subscriptions.contains(selectedSubscription), let first = subscriptions.first {
+                    selectedSubscription = first
+                }
+                await refreshMonthlyTrialEligibility()
                 guard subscriptions.isEmpty else { return }
                 guard networkMonitor.isConnected else {
                     alertItem = .noInternetConnection(onRetry: { [weak self] in
@@ -196,11 +209,33 @@ extension PaywallViewModel {
         products.first { subscription?.id == $0.id }
     }
 
+    private func refreshMonthlyTrialEligibility() async {
+        // Eligibility alone can be true even when no offer is configured.
+        // Never promise three free days unless StoreKit confirms both the
+        // configured duration and the customer's eligibility in this group.
+        guard let info = findProduct(for: .monthly)?.subscription,
+              let offer = info.introductoryOffer,
+              offer.paymentMode == .freeTrial,
+              offer.period.unit == .day,
+              offer.period.value == 3,
+              offer.periodCount == 1 else {
+            canStartMonthlyTrial = false
+            return
+        }
+        canStartMonthlyTrial = await info.isEligibleForIntroOffer
+    }
+
     private func purchaseProduct(_ product: Product) {
+        guard !isLoading else { return }
+        let wasTrialPromised = isTrialOn
         isLoading = true
         Task { @MainActor in
             defer { isLoading = false }
             do {
+                await refreshMonthlyTrialEligibility()
+                // If eligibility changed, update the visible terms and let the
+                // customer confirm again instead of silently charging them.
+                guard !wasTrialPromised || canStartMonthlyTrial else { return }
                 let transaction = try await storeManager.purchaseProduct(product)
                 analyticsManager.logTransaction(transaction, product: product, for: placement)
                 isGiftAvailable = false
@@ -213,16 +248,15 @@ extension PaywallViewModel {
         }
     }
 
-    private func getPricePerWeek(for subscription: PaywallModel.Subscription) -> String {
+    private func getPricePerMonth(for subscription: PaywallModel.Subscription) -> String {
         guard let product = findProduct(for: subscription) else { return "" }
         let productPrice = product.price
-        let pricePerWeek: Decimal = switch product.subscription?.subscriptionPeriod.unit {
-        case .day, .week: productPrice
-        case .month: productPrice / 4
-        case .year: productPrice / 52
+        let pricePerMonth: Decimal = switch product.subscription?.subscriptionPeriod.unit {
+        case .month: productPrice
+        case .year: productPrice / 12
         case .none, .some: .zero
         }
-        return pricePerWeek.formatted(product.priceFormatStyle) + "/" + String(localized: "week").lowercased()
+        return pricePerMonth.formatted(product.priceFormatStyle) + "/" + String(localized: "month").lowercased()
     }
 
     private func getPricePerDay(for subscription: PaywallModel.Subscription) -> String {

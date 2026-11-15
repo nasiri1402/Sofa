@@ -397,7 +397,7 @@ enum CountryModel {
         }
 
         var name: String {
-            Locale.current.localizedString(forRegionCode: isoCode) ?? isoCode
+            Locale.appLanguageLocale.localizedString(forRegionCode: isoCode) ?? isoCode
         }
 
         var flag: ImageResource {

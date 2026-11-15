@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-15",
+  "repository": "nasiri1402/Sofa",
+  "branch": "codex/current-2026-11-15",
+  "base_commit": "bdbc525b645bf2380e699c89cf41b04cebb7cce3",
+  "project": "Sofa.xcodeproj",
+  "scheme": "Sofa",
+  "source_version": "1.2.2",
+  "source_build": "11",
+  "bundle_id": "com.ajdar.ai.sofa",
+  "approved_non_sensitive_inputs": 703,
+  "manifest": "SOURCE-MANIFEST.json",
+  "release_notes": "README-CODEX-RELEASE.md",
+  "latest_fixes": [
+    "Authentication readiness and recoverable service error categories",
+    "Authoritative Product.displayPrice for full subscription prices",
+    "Country display localized from the persisted ISO code",
+    "Dynamic Type and accessible Settings/My Data field layouts"
+  ],
+  "previous_Apple_upload": {
+    "version": "1.2.2",
+    "build": "12",
+    "predates_latest_four_fixes": true,
+    "this_sync_is_a_new_binary": false
+  },
+  "prior_QA": "PARTIAL; authentication HTTP401 persists, native price agreement not verified",
+  "new_binary_or_runtime_QA_performed": false,
+  "maintenance_hold": true,
+  "automatic_build_runtime_simulator_recreation": false,
+  "Firebase_client_config": {
+    "path": "Sofa/Sources/Plists/GoogleService-Info.plist",
+    "inherited_tracking_unchanged": true,
+    "content_read_copied_or_reuploaded": false,
+    "materialized_in_this_checkout": false,
+    "excluded_from_703_content_comparison": true
+  }
+}

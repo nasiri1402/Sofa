@@ -28,17 +28,12 @@ struct BriefView: View {
 
             VStack(alignment: .leading, spacing: .zero) {
                 switch viewModel.currentStage {
-                case .idea: IdeaPage()
+                case .category: CategoryPage()
+                case .focus: FocusPage()
+                case .target: TargetPage()
+                case .currentState: CurrentStatePage()
+                case .preferences: PreferencesPage()
                 case .timeframe: TimeframePage()
-                case .experience: ExperiencePage()
-                case .startPoint: StartPointPage()
-                case .result: ResultPage()
-                case .resultMoney: ResultMoneyPage()
-                case .resultSubscribers: ResultSubscribersPage()
-                case .resultOption: ResultOptionPage()
-                case .hasBudget: HasBudgetPage()
-                case .budget: BudgetPage()
-                case .limits: LimitsPage()
                 }
             }
             .overlay(alignment: .top) {
@@ -108,12 +103,77 @@ struct BriefView: View {
 // MARK: - Pages
 
 extension BriefView {
-    private func IdeaPage() -> some View {
-        BriefIdeaPage(
-            ideaInput: $viewModel.idea,
+    private func CategoryPage() -> some View {
+        BriefCategoryPage(
+            selectedCategory: viewModel.category,
+            categories: Project.Brief.Category.allCases,
             isNextEnabled: $viewModel.isNextEnabled,
-            needsReveal: viewModel.needsReveal(for: .idea)
+            needsReveal: viewModel.needsReveal(for: .category),
+            onSelect: viewModel.selectCategory
         )
+    }
+
+    @ViewBuilder
+    private func FocusPage() -> some View {
+        if let category = viewModel.category {
+            BriefFocusPage(
+                category: category,
+                selectedFocus: viewModel.focus,
+                isPreviousEnabled: $viewModel.isPreviousEnabled,
+                isNextEnabled: $viewModel.isNextEnabled,
+                needsReveal: viewModel.needsReveal(for: .focus),
+                onSelect: viewModel.selectFocus
+            )
+        }
+    }
+
+    @ViewBuilder
+    private func TargetPage() -> some View {
+        if let category = viewModel.category {
+            BriefTextInputPage(
+                text: $viewModel.target,
+                title: category.targetQuestion,
+                tip: category.targetTip,
+                placeholder: placeholder,
+                typewriterOptions: category.targetExamples,
+                isPreviousEnabled: $viewModel.isPreviousEnabled,
+                isNextEnabled: $viewModel.isNextEnabled,
+                needsReveal: viewModel.needsReveal(for: .target)
+            )
+        }
+    }
+
+    @ViewBuilder
+    private func CurrentStatePage() -> some View {
+        if let category = viewModel.category {
+            BriefTextInputPage(
+                text: $viewModel.currentState,
+                title: category.currentStateQuestion,
+                tip: category.currentStateTip,
+                placeholder: placeholder,
+                typewriterOptions: category.currentStateExamples,
+                isPreviousEnabled: $viewModel.isPreviousEnabled,
+                isNextEnabled: $viewModel.isNextEnabled,
+                needsReveal: viewModel.needsReveal(for: .currentState)
+            )
+        }
+    }
+
+    @ViewBuilder
+    private func PreferencesPage() -> some View {
+        if let category = viewModel.category {
+            BriefPreferencesPage(
+                preferences: $viewModel.preferences,
+                tip: category.preferencesTip,
+                placeholder: placeholder,
+                typewriterOptions: category.preferenceExamples,
+                noPreferencesText: BriefLocalization.text(
+                    en: "I have no preferences", ru: "У меня нет пожеланий"),
+                isPreviousEnabled: $viewModel.isPreviousEnabled,
+                isNextEnabled: $viewModel.isNextEnabled,
+                needsReveal: viewModel.needsReveal(for: .preferences)
+            )
+        }
     }
 
     private func TimeframePage() -> some View {
@@ -126,87 +186,7 @@ extension BriefView {
         )
     }
 
-    private func ExperiencePage() -> some View {
-        BriefExperiencePage(
-            timeframe: viewModel.timeframe ?? .month1,
-            selectedExperience: $viewModel.experience,
-            experiences: Project.Brief.Experience.allCases,
-            isPreviousEnabled: $viewModel.isPreviousEnabled,
-            isNextEnabled: $viewModel.isNextEnabled,
-            needsReveal: viewModel.needsReveal(for: .experience)
-        )
-    }
-
-    private func StartPointPage() -> some View {
-        BriefStartPointPage(
-            startPointInput: $viewModel.startPoint,
-            isPreviousEnabled: $viewModel.isPreviousEnabled,
-            isNextEnabled: $viewModel.isNextEnabled,
-            needsReveal: viewModel.needsReveal(for: .startPoint)
-        )
-    }
-
-    private func ResultPage() -> some View {
-        BriefResultPage(
-            selectedGoals: $viewModel.goals,
-            goals: Project.Brief.Goal.allCases,
-            isPreviousEnabled: $viewModel.isPreviousEnabled,
-            isNextEnabled: $viewModel.isNextEnabled,
-            needsReveal: viewModel.needsReveal(for: .result)
-        )
-    }
-
-    private func ResultMoneyPage() -> some View {
-        BriefResultMoneyPage(
-            goalMoneyInput: $viewModel.goalMoney,
-            isPreviousEnabled: $viewModel.isPreviousEnabled,
-            isNextEnabled: $viewModel.isNextEnabled,
-            needsReveal: viewModel.needsReveal(for: .resultMoney)
-        )
-    }
-
-    private func ResultSubscribersPage() -> some View {
-        BriefResultSubscribersPage(
-            goalSubscribersInput: $viewModel.goalSubscribers,
-            isPreviousEnabled: $viewModel.isPreviousEnabled,
-            isNextEnabled: $viewModel.isNextEnabled,
-            needsReveal: viewModel.needsReveal(for: .resultSubscribers)
-        )
-    }
-
-    private func ResultOptionPage() -> some View {
-        BriefResultOptionPage(
-            goalOptionInput: $viewModel.goalOption,
-            isPreviousEnabled: $viewModel.isPreviousEnabled,
-            isNextEnabled: $viewModel.isNextEnabled
-        )
-    }
-
-    private func HasBudgetPage() -> some View {
-        BriefHasBudgetPage(
-            hasBudget: $viewModel.hasBudget,
-            isPreviousEnabled: $viewModel.isPreviousEnabled,
-            isNextEnabled: $viewModel.isNextEnabled,
-            needsReveal: viewModel.needsReveal(for: .hasBudget)
-        )
-    }
-
-    private func BudgetPage() -> some View {
-        BriefBudgetPage(
-            budgetInput: $viewModel.budget,
-            isPreviousEnabled: $viewModel.isPreviousEnabled,
-            isNextEnabled: $viewModel.isNextEnabled,
-            needsReveal: viewModel.needsReveal(for: .budget)
-        )
-    }
-
-    private func LimitsPage() -> some View {
-        BriefLimitsPage(
-            hasBudget: viewModel.hasBudget ?? false,
-            limitsInput: $viewModel.limits,
-            isPreviousEnabled: $viewModel.isPreviousEnabled,
-            isNextEnabled: $viewModel.isNextEnabled,
-            needsReveal: viewModel.needsReveal(for: .limits)
-        )
+    private var placeholder: String {
+        String(localized: "forExample") + ", "
     }
 }

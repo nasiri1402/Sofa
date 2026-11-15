@@ -27,9 +27,6 @@ struct PaywallView: View {
             FeaturesView()
                 .padding(.horizontal, 16.fitW)
 
-            TrialView()
-                .padding(.horizontal, 16.fitW)
-
             VStack(spacing: 10.fitH) {
                 ForEach(viewModel.subscriptions, id: \.id) { subscription in
                     SubscriptionButton(subscription)
@@ -39,6 +36,11 @@ struct PaywallView: View {
 
             VStack(spacing: 10.fitH) {
                 ContinueButton()
+                Text(String(localized: "renewsAutomatically", table: "SubscriptionTerms"))
+                    .font(.system(size: 12.fitW))
+                    .foregroundStyle(.grayD1D1D6)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
                 CancelAnytimeView()
             }
             .padding(.horizontal, 16.fitW)
@@ -138,30 +140,6 @@ extension PaywallView {
         .contentMargins(.horizontal, 38.fitW, for: .scrollContent)
     }
 
-    private func TrialView() -> some View {
-        HStack(spacing: .zero) {
-            Text(String(localized: "notSureYetEnableFreeTrial"))
-                .multilineMinimumScale()
-                .foregroundStyle(viewModel.isTrialOn ? .white : .gray8E8E93)
-                .font(.system(size: 13.fitW))
-                .animation(.easeInOut, value: viewModel.isTrialOn)
-
-            Spacer(minLength: 8.fitW)
-
-            Toggle(String(""), isOn: $viewModel.isTrialOn)
-                .toggleStyle(.switch)
-                .tint(.blue007AFF)
-                .scaleEffect(0.93)
-                .fixedSize(horizontal: true, vertical: false)
-                .hapticFeedback()
-        }
-        .padding(.horizontal, 20.fitW)
-        .frame(height: 51.fitW)
-        .background(.gray787880.opacity(0.12))
-        .clipShape(.rect(cornerRadius: 16.fitW))
-        .contentShape(.rect)
-    }
-
     private func SubscriptionButton(_ subscription: PaywallModel.Subscription) -> some View {
         Button {
             viewModel.didTapSubscriptionButton(subscription)
@@ -199,8 +177,10 @@ extension PaywallView {
                     .opacity(isSelected ? 1 : 0)
             }
         }
+        .disabled(viewModel.isLoading)
         .animation(.easeInOut, value: viewModel.selectedSubscription)
         .buttonStyle(.plain)
+        .accessibilityAddTraits(viewModel.selectedSubscription == subscription ? .isSelected : [])
         .hapticFeedback()
     }
 
@@ -250,19 +230,19 @@ extension PaywallView {
     }
 
     private func ContinueButton() -> some View {
-        let trialSubtitle = String(localized: "then")
-        + " "
-        + viewModel.formatPrice(for: viewModel.selectedSubscription)
+        let price = viewModel.formatPrice(for: viewModel.selectedSubscription)
         + "/"
         + viewModel.getUnit(for: viewModel.selectedSubscription).lowercased()
 
         return PrimaryButton(
-            title: viewModel.selectedSubscription.withTrial
+            title: viewModel.isTrialOn
             ? String(localized: "try3DaysFree")
-            : String(localized: "unlockUnlimitedAIGenerations"),
-            subtitle: viewModel.selectedSubscription.withTrial ? trialSubtitle : nil,
+            : String(localized: "continue"),
+            subtitle: viewModel.isTrialOn ? String(localized: "then") + " " + price : price,
             onTap: viewModel.didTapContinueButton
         )
+        .disabled(!viewModel.canPurchase)
+        .opacity(viewModel.canPurchase ? 1 : 0.5)
         .animation(.easeInOut, value: viewModel.selectedSubscription)
     }
 }

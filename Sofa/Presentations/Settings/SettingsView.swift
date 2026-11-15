@@ -17,6 +17,7 @@ struct SettingsView: View {
 
     @Environment(\.isTabBarHidden) private var isTabBarHidden
     @Environment(\.openURL) private var openURL
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     
     @AppStorage(SofaConstants.AppStorage.isNotificationsEnabled)
     private var isNotificationsEnabled = false
@@ -109,19 +110,31 @@ struct SettingsView: View {
     }
 
     private func FieldContent(_ field: SettingsModel.Field) -> some View {
-        HStack(spacing: 6.fitW) {
-            Image(field.icon)
-                .resizable()
-                .frame(width: 24.fitW, height: 24.fitW)
+        let layout = dynamicTypeSize.isAccessibilitySize
+            ? AnyLayout(VStackLayout(alignment: .leading, spacing: 12.fitW))
+            : AnyLayout(HStackLayout(spacing: 6.fitW))
 
-            Text(field.title)
-                .font(.system(size: 16.fitW, weight: .semibold))
-                .foregroundStyle(Color(field.foregroundColor))
+        return layout {
+            HStack(spacing: 6.fitW) {
+                Image(field.icon)
+                    .resizable()
+                    .frame(width: 24.fitW, height: 24.fitW)
+                    .accessibilityHidden(true)
 
-            Spacer(minLength: .zero)
+                Text(field.title)
+                    .font(.callout.weight(.semibold))
+                    .foregroundStyle(Color(field.foregroundColor))
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            .layoutPriority(1)
+
+            if !dynamicTypeSize.isAccessibilitySize {
+                Spacer(minLength: .zero)
+            }
 
             FieldAccessory(field)
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
         .padding(20.fitW)
         .background(field == .pro ? .yellowFFCC00 : .gray787880.opacity(0.12))
         .clipShape(.rect(cornerRadius: 16.fitW))
@@ -136,8 +149,9 @@ struct SettingsView: View {
             case .language:
                 if let language = Locale.currentLanguageName?.capitalized {
                     Text(language)
-                        .font(.system(size: 16.fitW))
+                        .font(.callout)
                         .foregroundStyle(.gray8E8E93)
+                        .fixedSize(horizontal: false, vertical: true)
                 }
             default: EmptyView()
             }
@@ -152,6 +166,7 @@ struct SettingsView: View {
                     }
                 ))
                 .labelsHidden()
+                .accessibilityLabel(field.title)
                 .tint(.blue007AFF)
                 .fixedSize(horizontal: true, vertical: false)
 
@@ -166,7 +181,7 @@ struct SettingsView: View {
             format: String(localized: "appVersionFormat"),
             SofaConstants.AppInfo.shortVersion
         ).replacingOccurrences(of: ":", with: ""))
-        .font(.system(size: 17.fitW))
+        .font(.body)
         .foregroundStyle(.white.opacity(0.4))
     }
 

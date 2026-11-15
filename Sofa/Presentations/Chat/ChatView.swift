@@ -76,11 +76,11 @@ struct ChatView: View {
         .navigationTitle(String(localized: "aiAssistant"))
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden()
-        .navigationBarLeadingButton(icon: .timeArrow) {
-            viewModel.didTapNavigationBarLeadingButton()
+        .navigationBarLeadingButton(icon: .back) {
+            viewModel.didTapBackButton()
         }
-        .navigationBarTrailingButton(icon: .cross) {
-            viewModel.didTapNavigationBarTrailingButton()
+        .navigationBarTrailingButton(icon: .timeArrow) {
+            viewModel.didTapResetChatButton()
         }
         .safeAreaInset(edge: .bottom) {
             ComposerView()

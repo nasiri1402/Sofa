@@ -25,10 +25,11 @@ struct Tip: View {
             Text(text)
                 .font(.system(size: 13.fitW))
                 .foregroundStyle(.grayE5E5EA)
+                .lineLimit(nil)
+                .fixedSize(horizontal: false, vertical: true)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .frame(minHeight: 24.fitW)
-
-            Spacer(minLength: .zero)
+                .layoutPriority(1)
         }
         .padding(.horizontal, 20.fitW)
         .padding(.vertical, 14.fitW)

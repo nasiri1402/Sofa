@@ -94,7 +94,11 @@ extension ChatViewModel {
 
     // MARK: - Input
 
-    func didTapNavigationBarLeadingButton() {
+    func didTapBackButton() {
+        router.back()
+    }
+
+    func didTapResetChatButton() {
         guard !isSending else { return }
         alertItem = AlertItem(
             title: Text(String(localized: "clearTheEntireChat")),
@@ -105,10 +109,6 @@ extension ChatViewModel {
             },
             secondaryButton: .cancel(Text(String(localized: "cancel")))
         )
-    }
-
-    func didTapNavigationBarTrailingButton() {
-        router.back()
     }
 
     func didTapUserMessageContext(_ message: Project.Plan.Chat.Message) {

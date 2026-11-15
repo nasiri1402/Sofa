@@ -27,8 +27,8 @@ enum SofaConstants {
 
     enum AppSupport {
         static let email = "avaitagency@gmail.com"
-        static let terms = "https://sofa-app.framer.website/terms-of-use"
-        static let privacy = "https://sofa-app.framer.website/privacy"
+        static let terms = "https://apps.nasiri1402.com/sofa/terms/"
+        static let privacy = "https://apps.nasiri1402.com/sofa/privacy/"
     }
 
     // MARK: - AppStorage

@@ -101,6 +101,8 @@ extension GenerationLoaderViewModel {
                 let resultProject = try mergePlansIfNeeded(with: generatedProject)
                 feedbackTrigger = UUID()
                 router.route(to: .generationResult(resultProject))
+            } catch is CancellationError {
+                return
             } catch {
                 alertItem = .error(message: error.localizedDescription) { [weak self] in
                     guard let self else { return }

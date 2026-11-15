@@ -1,0 +1,3526 @@
+{
+  "schema_version": 1,
+  "source_label": "Approved Codex Release export with 2026-11-14 fixes",
+  "approved_file_count": 703,
+  "source_version": "1.2.2",
+  "source_build": "11",
+  "candidate_sha256_manifest_digest": "2dccb27c63184dc426a6cd1875557cb907926aca00031a019881d1884d12570f",
+  "scope": "Non-sensitive approved inputs only; pre-existing Firebase client config excluded; added release documentation is outside this manifest",
+  "files": {
+    ".firebaserc": {
+      "sha256": "ca8f09b717cf31474862439c0b75d73f9fab3445c34c9fa89934b8581856dd64",
+      "git_blob_sha1": "622fcbb21ebbd3f13677801b9bee8dcb6b67f3a1",
+      "bytes": 53
+    },
+    ".gitignore": {
+      "sha256": "3c3ac93faadc6ff14a24babf49d52b5e41a4af7a7dad311335d65a4390ef2d46",
+      "git_blob_sha1": "8ee22f6b062c88cd4927a7b69e13978211b90d50",
+      "bytes": 6964
+    },
+    ".swiftlint.yml": {
+      "sha256": "8bc6e393de302e54e809252e47916f686839f19df86ab4b2b8e42d8a32cabd34",
+      "git_blob_sha1": "0f26fabfadc6a899135aebfd40b5b9489022b3aa",
+      "bytes": 2696
+    },
+    "README.md": {
+      "sha256": "8836c7cbcb30a275973dd202532d46dae761b53d898e5ce595037b554c30fa34",
+      "git_blob_sha1": "a37b4442907f2968c0087eaa5f17c8c6fa052d9c",
+      "bytes": 603
+    },
+    "Sofa/App/SofaApp.swift": {
+      "sha256": "cc22e695d63873e558e3397658a1147cd72abaf8a59bf6644447a83280af428d",
+      "git_blob_sha1": "2c2d4eab91a4fac9a58684c2b49092d48d9a6f39",
+      "bytes": 1443
+    },
+    "Sofa/App/SofaConstants.swift": {
+      "sha256": "2a22011a82afdc78719f6166071a3488fe40aa7ec46a68a02b3b982286ee8717",
+      "git_blob_sha1": "33e23dea58841518749d9276deaf4ac2a42b966c",
+      "bytes": 1755
+    },
+    "Sofa/Business/Entities/BriefLocalization.swift": {
+      "sha256": "9a57a5ec9d2aafb601373b19ac3702711cb63cfe2af085cbaad4b1aa3c2cf594",
+      "git_blob_sha1": "4d038da920493fd13c8a270bc9293c647b8cd073",
+      "bytes": 55153
+    },
+    "Sofa/Business/Entities/Profile.swift": {
+      "sha256": "da8acafccfdce55794229f6d5e6d0c3d36a89a95c2268aa5e9ce2e16c31696ea",
+      "git_blob_sha1": "2fe32f1a06beaa3308c8e3a34303b524b0b9ea47",
+      "bytes": 1898
+    },
+    "Sofa/Business/Entities/Project.swift": {
+      "sha256": "54b269aa4f5f6d319dd34c41703faf245360537ac3e5ad75a0b64360bf558aef",
+      "git_blob_sha1": "37baff098226b4dd1c5e0afe975db46b4ceeef90",
+      "bytes": 38645
+    },
+    "Sofa/Commons/Alerts/AlertItem.swift": {
+      "sha256": "6b63620126714118fe0323cc50bb84e30068d82685eb3dfad2880e2a7b8560ff",
+      "git_blob_sha1": "ae14fbe224129ef1db628e0f6e19ac80323e821a",
+      "bytes": 2118
+    },
+    "Sofa/Commons/Alerts/TextFieldAlertItem.swift": {
+      "sha256": "c0e76439c241e0748d3be64bca9488d1f88a921de457eff5af3682772ea00538",
+      "git_blob_sha1": "8486fee7d0f3e18b89304ed05105a911deae9870",
+      "bytes": 359
+    },
+    "Sofa/Commons/Components/ActivityIndicator/ActivityIndicator.swift": {
+      "sha256": "28e4e5cdaa1b31971d978fddc05def1abf7dd47bba266eac70c538c91067bce8",
+      "git_blob_sha1": "69e74cb29b301e7977d19c05cf9418b6868cd122",
+      "bytes": 692
+    },
+    "Sofa/Commons/Components/Bars/Progress/ProgressBar.swift": {
+      "sha256": "c6c6a3e4139c714edeed2d565013e1ea541718cb3ea84343072dc6ab4a02a8d9",
+      "git_blob_sha1": "0da54c42f0ad3cc924fcfe0180df213e05be4c7a",
+      "bytes": 821
+    },
+    "Sofa/Commons/Components/Bars/Search/SearchBar.swift": {
+      "sha256": "115a34237d035fc6b8a98a166c5c1a67174448088808232dcf8233eb2c52f42e",
+      "git_blob_sha1": "1fa87162af7fa19055f9c05ea3e8eaf7bd119806",
+      "bytes": 1685
+    },
+    "Sofa/Commons/Components/Buttons/Plan/PlanButton.swift": {
+      "sha256": "96c157671341ad6abf45ca53289b5eb3a1d72b90ed25bf2b723fcb6bb7939a20",
+      "git_blob_sha1": "b8699b0adcf2a2e8a80ca598ab77d56bff880f56",
+      "bytes": 1869
+    },
+    "Sofa/Commons/Components/Buttons/Primary/PrimaryButton.swift": {
+      "sha256": "ec1037c8ae0ef804d01785f19e80dad91bdc4ef94876aeb82eb038aed8c0e66c",
+      "git_blob_sha1": "16974d20e05921c595276751fdb550d9e1f5aab3",
+      "bytes": 1624
+    },
+    "Sofa/Commons/Components/DifficultyStepsView/DifficultyStepsView.swift": {
+      "sha256": "fdaccba262d9ec0c0e2747d3ff529a1678d0613c8b529a8a55b2984c42ec15b4",
+      "git_blob_sha1": "9a564885bf29ea88128b1b3a7b28cfa502ddd551",
+      "bytes": 829
+    },
+    "Sofa/Commons/Components/DoneProgress/DoneProgress.swift": {
+      "sha256": "74cc9ddd87e800d81ba1126fcb4af963fb536efc56e7d0fb2e3cb581f5f68b42",
+      "git_blob_sha1": "f89cd39164990a7bb0cd787a3cf64ff04558f037",
+      "bytes": 943
+    },
+    "Sofa/Commons/Components/MailView/MailView.swift": {
+      "sha256": "450857a8dd79bc62b28aabf32bedbe1e53eaa031a707477749a1a0e367b64ce5",
+      "git_blob_sha1": "429231c017097ce20aafbc21dcdd0864314c7caa",
+      "bytes": 1645
+    },
+    "Sofa/Commons/Components/SafariView/SafariView.swift": {
+      "sha256": "7dba6ca46b74cc7042e7e82b31c53f831cb1110faa96c2f1b9fedaa2faf0fa0a",
+      "git_blob_sha1": "b26179e56a5e9abc44739110c0da5914a34242bd",
+      "bytes": 699
+    },
+    "Sofa/Commons/Components/ShareView/ShareView.swift": {
+      "sha256": "42eeaaf10e076359f690ffcc565a7e05252a7df293f8409101cc571113538bc6",
+      "git_blob_sha1": "c86d2a796a104cd4963c21f879dad87852f79473",
+      "bytes": 805
+    },
+    "Sofa/Commons/Components/TextFields/Typewriter/TypewriterTextField.swift": {
+      "sha256": "18eda64d553b83366838c111f4eb2cc9eedb57a82c940b5e2a1a9b3413f03c2d",
+      "git_blob_sha1": "f5f73a519462ac42c46a352ae08ba62c0108817d",
+      "bytes": 2184
+    },
+    "Sofa/Commons/Components/Tip/Tip.swift": {
+      "sha256": "4d09ecb855d46ab6f1215db8da6b1cd8665d9a2b76285917a8f0e38ec78923c9",
+      "git_blob_sha1": "cefc3be8953af59a349d6ec74b08bc3179df0dd3",
+      "bytes": 952
+    },
+    "Sofa/Commons/Components/Toast/Toast.swift": {
+      "sha256": "40edeba75c3c57fdf7d82f800c1ac3c009c101cd072eec967ed3f009ad8a3f08",
+      "git_blob_sha1": "3b50c7ee71736b794f1e08f4a8984fb0718ba1d0",
+      "bytes": 1993
+    },
+    "Sofa/Commons/Components/WordRevealText/WordRevealText.swift": {
+      "sha256": "402a14c5bd97996a946e63cc7dd5b44e7d1363e3475edde62cd30e6247b33aac",
+      "git_blob_sha1": "4576aa819171de8381a41e418eed9ce307d856bc",
+      "bytes": 4297
+    },
+    "Sofa/Commons/EnvironmentKeys/TabBarHidden.swift": {
+      "sha256": "822737d3e41fe83d43082f86bec53dbfbc1826cb8ed8702227879d8a6310b610",
+      "git_blob_sha1": "b7be398efa1be51b6a23940641e1e635d4613a15",
+      "bytes": 471
+    },
+    "Sofa/Commons/Extensions/Array+Extensions.swift": {
+      "sha256": "c2d11147f41e667fbc6ecf127fceff56570736c4e14c854be886ac9c13a5ede6",
+      "git_blob_sha1": "7aff6e17395a51fc48718f49a1282102cb69cef3",
+      "bytes": 221
+    },
+    "Sofa/Commons/Extensions/Int+Extensions.swift": {
+      "sha256": "4c687c85fbf3e50864a8792218b58ede7bbdb29101e9dd06a39a1d15337bb5b8",
+      "git_blob_sha1": "57944fc4330b9c30cbe2927fe96d7c8ee15d40ef",
+      "bytes": 535
+    },
+    "Sofa/Commons/Extensions/Locale+Extensions.swift": {
+      "sha256": "bee872d9c2e69f49453ca6749c9323288e7cfe1ae4c0ce621cd8c54d3923655c",
+      "git_blob_sha1": "dae082587472cf8bf504d5f8492374b5ef71aef6",
+      "bytes": 464
+    },
+    "Sofa/Commons/Extensions/Text+Extensions.swift": {
+      "sha256": "5ab39a319e34ca6b7404d783e6e32f17c2080383186a4d1c27a924beda56805f",
+      "git_blob_sha1": "368166067f23fb260e895a5d49537d3819d4acef",
+      "bytes": 307
+    },
+    "Sofa/Commons/Extensions/View+Extensions.swift": {
+      "sha256": "5654f039b0e36053855a61fb753b393e7f8be1ef99c1f41e79853185c3726f48",
+      "git_blob_sha1": "6f823d0be522a2d8f44e38268533d25166241b39",
+      "bytes": 6170
+    },
+    "Sofa/Commons/Modifiers/HapticFeedback/HapticFeedbackModifier.swift": {
+      "sha256": "f402af9d215e17571616e566d26d426ae797c8630e24ab07fd168b6357ec5960",
+      "git_blob_sha1": "9af613ffc2459c502155682f62b8fdd912da9062",
+      "bytes": 1381
+    },
+    "Sofa/Commons/Modifiers/KeyboardHeight/KeyboardHeightModifier.swift": {
+      "sha256": "082da2e1d7502e3bbe51cd865c5410e1687573805be0124052a787497bb89b56",
+      "git_blob_sha1": "f60bdf6361aa79c28cb170d367d60a30d0320ae3",
+      "bytes": 1095
+    },
+    "Sofa/Commons/Modifiers/Shemmer/ShimmerModifier.swift": {
+      "sha256": "0ac56ff001634991ad448575ea75474223a205fa01ab80445a484b6a3abdef00",
+      "git_blob_sha1": "3f02921009c67aa241dc26fe0a2b1779f73f2a2e",
+      "bytes": 1544
+    },
+    "Sofa/Commons/Modifiers/WakeLockModifier/WakeLockModifier.swift": {
+      "sha256": "10f2c3077d21ace3409576b3ad69c7444aa5fd718f06b6bbdfab3e984b12913f",
+      "git_blob_sha1": "7650faccdfc2d2445f2cacf0799fe235160e4af5",
+      "bytes": 507
+    },
+    "Sofa/Commons/Routing/AnyRouter.swift": {
+      "sha256": "c1de7f9848f09753a7d89492d13c3ff8521796760027a846167db671906e76b3",
+      "git_blob_sha1": "4cbd3a3a8b5c224416db799a02487e421b814d1d",
+      "bytes": 859
+    },
+    "Sofa/Commons/Routing/HashableRouter.swift": {
+      "sha256": "745de813a18f20e93e8cb2ac91b2fe7906c6d17c2b2f57ff0adb965e5c0662d7",
+      "git_blob_sha1": "5307dff276ce1db39c25efaf12dc3a65bfdb92a4",
+      "bytes": 426
+    },
+    "Sofa/Commons/Routing/Navigator.swift": {
+      "sha256": "e3eef4e7c41aa28d7cf2a4aff7e93c407f62564764bc424fe1a1170f1ef8cf41",
+      "git_blob_sha1": "5eca2912d544dd65c42f0ecda59bc58a67b06986",
+      "bytes": 239
+    },
+    "Sofa/Commons/Routing/ViewFactory.swift": {
+      "sha256": "1a11cec0965d21ab0db46693517f7c817120a973cb555253a1104a6251ab7b96",
+      "git_blob_sha1": "d44bc4be8800ab4b1eae1c7d4cac1568eb7d62d3",
+      "bytes": 186
+    },
+    "Sofa/Presentations/Age/AgeRouter.swift": {
+      "sha256": "3603b3b760ac96223454b0bdf2a53d621b7daddebedc719f547c5871cdaea078",
+      "git_blob_sha1": "96151b3b8ffb3ac4b717182890363ab02528d233",
+      "bytes": 649
+    },
+    "Sofa/Presentations/Age/AgeView.swift": {
+      "sha256": "a9e12a500f752b90bd2d5b0c96829cc4d340e7d2d9dfa907328300ff96b56be5",
+      "git_blob_sha1": "636733858f8bb1116c7f69a79e423da6e6880ebf",
+      "bytes": 2128
+    },
+    "Sofa/Presentations/Age/AgeViewModel.swift": {
+      "sha256": "e0c9aed74b71644e0bb47c52008a14d520bf6409e6e334d99dc75444e635d773",
+      "git_blob_sha1": "20e3d9255f1b10c2d32fa426abe529dde495a085",
+      "bytes": 1777
+    },
+    "Sofa/Presentations/Brief/BriefModel.swift": {
+      "sha256": "f69a1c27c0c0582b5a4e39986abea79806f428820bd763045ca2d6575b369074",
+      "git_blob_sha1": "30aa407e8703aa113d667bf240f218e357b7f2db",
+      "bytes": 946
+    },
+    "Sofa/Presentations/Brief/BriefRouter.swift": {
+      "sha256": "0c74108c0c630c72ce29905296428e913bd59b465990e9490c6f2b4d93c9e342",
+      "git_blob_sha1": "4f1efc658bc28b2073adb5091fc8f45aa70c62c4",
+      "bytes": 1388
+    },
+    "Sofa/Presentations/Brief/BriefView.swift": {
+      "sha256": "26b4b089dbfbcfaf02386dfff0a697c02c17b02d6acaabb0173bf5f8e4f5c57f",
+      "git_blob_sha1": "40fb90f824f92396bdcc24783f68e6c1c6be8862",
+      "bytes": 6364
+    },
+    "Sofa/Presentations/Brief/BriefViewModel.swift": {
+      "sha256": "6a9768de39b4463905d77e08075921cb8863f5194a2403a193aca02994b539be",
+      "git_blob_sha1": "693f749073fdbc8d10d3cbb3bfb2186edcceeaaf",
+      "bytes": 7127
+    },
+    "Sofa/Presentations/Brief/Pages/BriefCategoryPage.swift": {
+      "sha256": "ca346a0d58b5059f937b88ae577f30a24a30ed49349754f77027dc363eff2ea9",
+      "git_blob_sha1": "57de9927ad0d27223eeba15e5590cddf26e13ac5",
+      "bytes": 4826
+    },
+    "Sofa/Presentations/Brief/Pages/BriefFocusPage.swift": {
+      "sha256": "98dd4d15a0603c456acc4231c6505e47b879846e79b3b086694ac5e5adb746e2",
+      "git_blob_sha1": "9d91359450980890787a16bf8bb3b3543d3b2400",
+      "bytes": 4350
+    },
+    "Sofa/Presentations/Brief/Pages/BriefPreferencesPage.swift": {
+      "sha256": "4c396369353f08b758e9f01e86c3de164e637e0ead361a4df3481d768dacd82e",
+      "git_blob_sha1": "a64205621fa06e635586136d89a71afb37d9dbe7",
+      "bytes": 4604
+    },
+    "Sofa/Presentations/Brief/Pages/BriefTextInputPage.swift": {
+      "sha256": "2847a5abc32424e84e8c5b06ac6e40da7d802f625d72b44083451fc0117ebe51",
+      "git_blob_sha1": "6436b891aaead4728f353e6173ad2e5147947cee",
+      "bytes": 3429
+    },
+    "Sofa/Presentations/Brief/Pages/BriefTimeframePage.swift": {
+      "sha256": "32fae1149316c7f6970940aa385c8abdaa83e079c6817fd2f81a3b3651a845b7",
+      "git_blob_sha1": "771c60612a7e20e96578fd7622c976166d563429",
+      "bytes": 4423
+    },
+    "Sofa/Presentations/Chat/ChatModel.swift": {
+      "sha256": "249728b40d28ec02d752e46b36f5ea6b06c9d2f4f75c68997de0914f8eb2a486",
+      "git_blob_sha1": "a46f32198233d108994edca08f9d80b6f89dbbff",
+      "bytes": 514
+    },
+    "Sofa/Presentations/Chat/ChatRouter.swift": {
+      "sha256": "0e35c29e66047123ed9b7989cfd15e5487f6a6f2bff4e28ec0100cf35abe8a1f",
+      "git_blob_sha1": "cdf8a9378a6a1ecd8032ed1990c46f599a661e53",
+      "bytes": 1442
+    },
+    "Sofa/Presentations/Chat/ChatView.swift": {
+      "sha256": "1b57870b1b064a89e2fb7d656ad7a52dfece86464cf4f46faf7f516346b4fe0a",
+      "git_blob_sha1": "ea5bd8cc0bca6f8a8d9371f442725a8875453012",
+      "bytes": 14413
+    },
+    "Sofa/Presentations/Chat/ChatViewModel.swift": {
+      "sha256": "0091ed4ce8cbc286b580b0771bfee4d1c3a777c9d4a3c0cdfeb89ea11e5df271",
+      "git_blob_sha1": "7830172e310e6a3e12dc8909088952d4de62c5ae",
+      "bytes": 14452
+    },
+    "Sofa/Presentations/Country/CountryModel.swift": {
+      "sha256": "9ce8f338a6099a58e84a32d491e29a926d3f307a0b2d7f9796827bab0aaddffb",
+      "git_blob_sha1": "89755ddcb65527654062e4e90b5470195707750b",
+      "bytes": 18277
+    },
+    "Sofa/Presentations/Country/CountryRouter.swift": {
+      "sha256": "d664b5026c955770fc9ecf0517c1c446b92a73df7bc3f8b7d9a23702dc6dd7b1",
+      "git_blob_sha1": "fb218c619fa1d872445da5893909d1583fba8c20",
+      "bytes": 669
+    },
+    "Sofa/Presentations/Country/CountryView.swift": {
+      "sha256": "0fc976e06d1418b2bb4e7fdfd6e0bab3a8bb21b0b2bfbfd0b85c0d4da77bd055",
+      "git_blob_sha1": "c2035872b054e0e5e19be9932f7fbb3c0ff66e5e",
+      "bytes": 5302
+    },
+    "Sofa/Presentations/Country/CountryViewModel.swift": {
+      "sha256": "a40198bd1a2523433dcf7a225c2e8b880b9a59b1088b9182cc87d1c28364f3c3",
+      "git_blob_sha1": "7a9a7a8bf13d4a4d228b5aa23fdbe4a60279357a",
+      "bytes": 2760
+    },
+    "Sofa/Presentations/Gender/GenderRouter.swift": {
+      "sha256": "8caa84683764ffb4aa96b31838704cfbbc912c0c950e0fc829aa2943e746af2a",
+      "git_blob_sha1": "bfad9379aac0b5f2bfe6d1ce84d6f7d821b60953",
+      "bytes": 664
+    },
+    "Sofa/Presentations/Gender/GenderView.swift": {
+      "sha256": "5d28dd57395a78becde80fb6634d598e7998cfb44073500cec5f937fe9771b93",
+      "git_blob_sha1": "7b9c62619d21bbda3de4155b9fdf260d1816ebc1",
+      "bytes": 2892
+    },
+    "Sofa/Presentations/Gender/GenderViewModel.swift": {
+      "sha256": "1987c7cacc5d8edebfac0d9ace21b76db72d8b334eed91eb003467ce070154d6",
+      "git_blob_sha1": "0f6eb8a198dac7f40b66cdccfef0f55ec8887dc3",
+      "bytes": 1874
+    },
+    "Sofa/Presentations/GenerationLoader/GenerationLoaderModel.swift": {
+      "sha256": "611d2aa00909e0a918f3edc0100fdc94aeba6b3b9467b1833fae9ed0db73bfde",
+      "git_blob_sha1": "a83c06d20db9a9b6260da1dfff2f8ff7c653f056",
+      "bytes": 1285
+    },
+    "Sofa/Presentations/GenerationLoader/GenerationLoaderRouter.swift": {
+      "sha256": "359d27fbb30b6d06054f867bbc438738870a4c993c8e358b9880168f7724d277",
+      "git_blob_sha1": "c1117f132f3d5d9506af88677a6bf72a78377bde",
+      "bytes": 1649
+    },
+    "Sofa/Presentations/GenerationLoader/GenerationLoaderView.swift": {
+      "sha256": "795422fe3d5fea1da0f8a12fd64d3805512de9f3779a378690a11edf63771995",
+      "git_blob_sha1": "80460b922be2479b6ddc8c699cba75fa578a45d2",
+      "bytes": 1833
+    },
+    "Sofa/Presentations/GenerationLoader/GenerationLoaderViewModel.swift": {
+      "sha256": "d92f891d3b7ecff9dd8f3c79a20b2ac3ef02324eae4ee618b1590c01345a5e1c",
+      "git_blob_sha1": "5f7dac244e1beb264c6f3cc7542e614e7902e60d",
+      "bytes": 4204
+    },
+    "Sofa/Presentations/GenerationResult/GenerationResultRouter.swift": {
+      "sha256": "60366d57bd134591e1d6be87b392ecb67ec2b0878969be3dde5de3853aa96087",
+      "git_blob_sha1": "3d82816a39b8309dc56250dd5017e85a4d607aa3",
+      "bytes": 1963
+    },
+    "Sofa/Presentations/GenerationResult/GenerationResultView.swift": {
+      "sha256": "4dcb50c5efee78015b3ca83b0fbc8f66068f40f09bd9cf71237667198918223f",
+      "git_blob_sha1": "e16c8a46b35cc0929ea3effde2f55bc57ce06d98",
+      "bytes": 5283
+    },
+    "Sofa/Presentations/GenerationResult/GenerationResultViewModel.swift": {
+      "sha256": "3cc0378a3b452fbd89cf6ce0a0afd5dd9d325cd5464170afee67f1e24b8d0bf7",
+      "git_blob_sha1": "5dcb5b5eade6f6e90426836104ae3c809e2a62cb",
+      "bytes": 2992
+    },
+    "Sofa/Presentations/Generator/GeneratorModel.swift": {
+      "sha256": "6f435708ea17b6ae90857546bd3f562f1b3971d366f249940874030a944568ff",
+      "git_blob_sha1": "f31f10b341084c5775a6106026296b6d9a3aabe6",
+      "bytes": 941
+    },
+    "Sofa/Presentations/Generator/GeneratorRouter.swift": {
+      "sha256": "97124483f72a01984cf60e9890dffdb10d9b6286a1b40683568c5fd7300b14d9",
+      "git_blob_sha1": "92033137a84a083411b5356b537983798e047bb3",
+      "bytes": 1073
+    },
+    "Sofa/Presentations/Generator/GeneratorView.swift": {
+      "sha256": "8040b23168be31b19c8c9d053ef60abd8c96b9e3652fb78383a24b6be259ef29",
+      "git_blob_sha1": "b87a94166ffdda4a6faccf1516d60c4c98d370bc",
+      "bytes": 7201
+    },
+    "Sofa/Presentations/Generator/GeneratorViewModel.swift": {
+      "sha256": "33a31d69f4fdd051235d576a1588d7de47f30ba4bbfc9de2f282fb656a1499c6",
+      "git_blob_sha1": "51b298e35e0cc6f721042c12c79bf165c4d29d84",
+      "bytes": 3984
+    },
+    "Sofa/Presentations/GiftPaywall/GiftPaywallModel.swift": {
+      "sha256": "d29813df532d4a916978109911bc984c73194080f18595cdada2d42fdcead92a",
+      "git_blob_sha1": "4add1429ecff93256d3e4f6c9cb379d139bbdccf",
+      "bytes": 1030
+    },
+    "Sofa/Presentations/GiftPaywall/GiftPaywallView.swift": {
+      "sha256": "0af7bad7d862802b43779317116614b6c7cfd51cabb4353088aa030f47bcce4f",
+      "git_blob_sha1": "95d8e97a19063df2a22dd44ec7765e0895578897",
+      "bytes": 8418
+    },
+    "Sofa/Presentations/GiftPaywall/GiftPaywallViewModel.swift": {
+      "sha256": "2fc97be7a98831b9a102476774ae3c52a801897ce4192d7410ce90a5e55f0fe6",
+      "git_blob_sha1": "5558bd8bc4e67480588fb492bb89119f2ee535aa",
+      "bytes": 7311
+    },
+    "Sofa/Presentations/Launch/LaunchModel.swift": {
+      "sha256": "98bf7b467470444bdcfc1954fc769ccf00c0dc66795f3c218de7afcf5748b0f1",
+      "git_blob_sha1": "49b720d6cd275fa7110ac016e0a8da241feee545",
+      "bytes": 209
+    },
+    "Sofa/Presentations/Launch/LaunchScreen.storyboard": {
+      "sha256": "a87d1b0fd5f2e21e3f08e43cdde9a664ae290f4841515dd7f2f3a8209726046f",
+      "git_blob_sha1": "0b82ce4fdc1d5313d108bf4284a2bb096726bd3f",
+      "bytes": 2884
+    },
+    "Sofa/Presentations/Launch/LaunchView.swift": {
+      "sha256": "07996ef695d5986f97f228e724e0d61b4b9b14bb5b3314f88c267c3d76c8b647",
+      "git_blob_sha1": "c9c6a1b069041471f806e64032e00e63614a8900",
+      "bytes": 1416
+    },
+    "Sofa/Presentations/Launch/LaunchViewModel.swift": {
+      "sha256": "5e890d7e598c05bbd2674c7d2533fe2fcc3f7238c29fe7a66b96b24f5fb64f17",
+      "git_blob_sha1": "f414981294917ff3fec354926ac21bec093ff106",
+      "bytes": 953
+    },
+    "Sofa/Presentations/MyData/MyDataModel.swift": {
+      "sha256": "d7dc4eb7155c3f1d64d528fc2d1a6e733028363305b2517f8f931854061b148d",
+      "git_blob_sha1": "e204305e9d29d179e121f5e583b03d0dd9842377",
+      "bytes": 511
+    },
+    "Sofa/Presentations/MyData/MyDataRouter.swift": {
+      "sha256": "9f87ea71887ced29a604cc11062827de04564d26972f683eaacd92c8abaa940b",
+      "git_blob_sha1": "d1b3227ebea6560d1649044a0e7842e8b0426919",
+      "bytes": 1098
+    },
+    "Sofa/Presentations/MyData/MyDataView.swift": {
+      "sha256": "e451dbec884154c886326b53ad5df6de292d1afd0dbc3fe13f860ee35ff732c4",
+      "git_blob_sha1": "3fa228ba6f81a61533f2c21b121fe79ed1a4120d",
+      "bytes": 2858
+    },
+    "Sofa/Presentations/MyData/MyDataViewModel.swift": {
+      "sha256": "4ff5d8373c5e34e6cbeef52ac75a1e4f1db80f81e0ff7d5659486c7cbe5e7105",
+      "git_blob_sha1": "3e330c451ddc223f966d91c7216d0bac5737bc4b",
+      "bytes": 1904
+    },
+    "Sofa/Presentations/Name/NameRouter.swift": {
+      "sha256": "acaeaa9304a0d20b5ed5f3c9f5d65ff2400dd570906cdc4f6e6ba01369353aa8",
+      "git_blob_sha1": "12313519bcc5d2f9212a6b376712eac367862286",
+      "bytes": 654
+    },
+    "Sofa/Presentations/Name/NameView.swift": {
+      "sha256": "16082ca93e0262304a7220e1453e2b32ec3523e55426bed2a0e8945d3e27a88d",
+      "git_blob_sha1": "8ea06408329aab3f249936f9f583e87689ce271d",
+      "bytes": 2740
+    },
+    "Sofa/Presentations/Name/NameViewModel.swift": {
+      "sha256": "f008262fd1bbf286f398ca6ad06c525ed3bdcd8d0c1933595d6f54437f94d019",
+      "git_blob_sha1": "d2707fc40fd6a865e31b8c4d0462b8ae644a0a00",
+      "bytes": 1942
+    },
+    "Sofa/Presentations/Onboarding/OnboardingModel.swift": {
+      "sha256": "0cdbc0b470923a7a78f5fbaa940bca95d45d5633e28cf1f53d3967ba03513d94",
+      "git_blob_sha1": "e1f7ec271af86bfcee372b0251d27c2fa0509043",
+      "bytes": 1505
+    },
+    "Sofa/Presentations/Onboarding/OnboardingView.swift": {
+      "sha256": "02176d8fa66b04f046de8591fbd45ded68011bc534fc05fadec7e3a3bdb4f347",
+      "git_blob_sha1": "d14dba091ff70d6044d483c9c905871448c79f9e",
+      "bytes": 6503
+    },
+    "Sofa/Presentations/Onboarding/OnboardingViewModel.swift": {
+      "sha256": "00b106960597d5fc146bb8e40990af0b143326f807172400b68e4bf32e4d5eaa",
+      "git_blob_sha1": "be916fb69337395b7874da298a9c55ea07c2e890",
+      "bytes": 7089
+    },
+    "Sofa/Presentations/Onboarding/Pages/OnboardingAboutUsOtherPage.swift": {
+      "sha256": "b1ccfa4791aeb56e20896dee20927aef78b5e0ec6e4ac2b835df0317c5bb35ed",
+      "git_blob_sha1": "5cfea84f5fd6f6b809050330b670fdef7a3460f7",
+      "bytes": 2134
+    },
+    "Sofa/Presentations/Onboarding/Pages/OnboardingAboutUsPage.swift": {
+      "sha256": "067bf68edf55bedd08ef2d1a44a0b860f9966c61bda72daa347f38982a607f9f",
+      "git_blob_sha1": "246d346b9196a962b0f3e2f84f1ceec64cf94f6c",
+      "bytes": 4348
+    },
+    "Sofa/Presentations/Onboarding/Pages/OnboardingAgePage.swift": {
+      "sha256": "a144b3b49855599af07c6b19531300e94c0a5850fcd6ea115a1474b1d2a5f2b4",
+      "git_blob_sha1": "71100f89f22a604f4fefa3235858cf3b80d7a622",
+      "bytes": 3020
+    },
+    "Sofa/Presentations/Onboarding/Pages/OnboardingCountryPage.swift": {
+      "sha256": "be3e7e86492e5972f55b4d7b2a6db2a28f8caecfb7ead6a76688300875c0721f",
+      "git_blob_sha1": "8e044f955e67ffb74c32e9220c38a75cbdd482f3",
+      "bytes": 6306
+    },
+    "Sofa/Presentations/Onboarding/Pages/OnboardingGenderPage.swift": {
+      "sha256": "faceda4ae05c7c55a162f4f864fb27cbbb0b012bff5d84d560c9a655e50190fb",
+      "git_blob_sha1": "7a2270c0125d7901814d5f298c1d8e918fdbdfa6",
+      "bytes": 4599
+    },
+    "Sofa/Presentations/Onboarding/Pages/OnboardingLetsAsk.swift": {
+      "sha256": "03c8b8a1ae5a9a4c152f1eed6040a7617d55a9b59d22ee602f2dd752a948bf85",
+      "git_blob_sha1": "7cdde850f0461686722500387d3e2381582a9891",
+      "bytes": 1325
+    },
+    "Sofa/Presentations/Onboarding/Pages/OnboardingLetsBeginPage.swift": {
+      "sha256": "47d719590568cf40425ac6f3e23ae86155d9033a7d5bdb9e3b57f078b8b7b23c",
+      "git_blob_sha1": "c64cc2c5a219ed901af27a1d8cd829bbe15e9822",
+      "bytes": 969
+    },
+    "Sofa/Presentations/Onboarding/Pages/OnboardingNamePage.swift": {
+      "sha256": "169695a592774a7a90c0e1505017699ebb21f5e3bb29b1673dfc8240dab1b209",
+      "git_blob_sha1": "5864b9dea7119ad1ead2eebf539de7c36475b756",
+      "bytes": 3207
+    },
+    "Sofa/Presentations/Onboarding/Pages/OnboardingPrivacyPage.swift": {
+      "sha256": "1ea50754db2a094057be54f00f70b30cca6845a5732088fd287b7d57961f05fd",
+      "git_blob_sha1": "1775cd410344f7ee39051812dabc9852c00f4471",
+      "bytes": 4509
+    },
+    "Sofa/Presentations/Onboarding/Pages/OnboardingRateUsPage.swift": {
+      "sha256": "cadfd028c955cb30fbbd9e0bb65695bb72d3e6de8c1dc76db72a1d0344e0d540",
+      "git_blob_sha1": "3bfb736c9ad56e5bd069b14ad6e47bed2b88e408",
+      "bytes": 1345
+    },
+    "Sofa/Presentations/Paywall/PaywallModel.swift": {
+      "sha256": "1c91425227b7b2da5e41c33398a00bc5328d9072ba42ff4e098f2dafe90379c8",
+      "git_blob_sha1": "9b6d4a0ee2ad6a228485d1213366c0dd2a6a099b",
+      "bytes": 1362
+    },
+    "Sofa/Presentations/Paywall/PaywallView.swift": {
+      "sha256": "efa9a91c13a985ae55ed090b88331ea0880fd057faa73d2c2952850a418325bd",
+      "git_blob_sha1": "eaae7b8209319393e17b9526e3a34a78932e79e2",
+      "bytes": 8725
+    },
+    "Sofa/Presentations/Paywall/PaywallViewModel.swift": {
+      "sha256": "68c05032325aba404fabc1ca3c5b8b75044fc5afd254da6125605420aa960ed1",
+      "git_blob_sha1": "fdb64d27efafae633ac924eb4fe104d568ff1e48",
+      "bytes": 10168
+    },
+    "Sofa/Presentations/Plans/PlansModel.swift": {
+      "sha256": "b2171f8804858d29a8bd93432fc48077146a793ee04520522943ac375b6a8d92",
+      "git_blob_sha1": "96c836ae40832c243d483de4db92b7a6f3268888",
+      "bytes": 977
+    },
+    "Sofa/Presentations/Plans/PlansRouter.swift": {
+      "sha256": "c878162e71b4318ec95fff9e243d09f1dc082a66b1220dd81cd5178d889e5648",
+      "git_blob_sha1": "29d4cd9745d55cc9d05c60d62757bfc0b3f984c3",
+      "bytes": 930
+    },
+    "Sofa/Presentations/Plans/PlansView.swift": {
+      "sha256": "f046317854f6aa2a2b8fc65bac2138ea13ff7cd3fb15b7e0759dc8730f0ca88c",
+      "git_blob_sha1": "59f08b28dbce5a356dfe6aae0c0899bc9d31d33b",
+      "bytes": 3157
+    },
+    "Sofa/Presentations/Plans/PlansViewModel.swift": {
+      "sha256": "3cae1b250a9286ee6a49b26d928ddd9af386ce7e60b5fa936828b5217eefe396",
+      "git_blob_sha1": "883c8817f496021676543f7b9a61a64cecd5af10",
+      "bytes": 2373
+    },
+    "Sofa/Presentations/Settings/SettingsModel.swift": {
+      "sha256": "deee8c1aad9c120713aea38a7e8a74ed1e5afa7b615b03ad36528192009a0389",
+      "git_blob_sha1": "aa2dd064f1afb1b2abe6b6b25111f3352032b346",
+      "bytes": 2103
+    },
+    "Sofa/Presentations/Settings/SettingsRouter.swift": {
+      "sha256": "2d1cf594f0ac2a89b93ae644e4610dcee73ef4bae7c040392d7af3ca63da1c58",
+      "git_blob_sha1": "b2e59cff0206192a57a9b71f74f62f3071dcd4f3",
+      "bytes": 863
+    },
+    "Sofa/Presentations/Settings/SettingsView.swift": {
+      "sha256": "f841abf2d991f191f14e5b565ab58c770a4bbbae71bf117612f3ebc2f9cf14e4",
+      "git_blob_sha1": "cea67d92e45a2108a30ee8546a6d04a1c1b1c3e4",
+      "bytes": 6696
+    },
+    "Sofa/Presentations/Settings/SettingsViewModel.swift": {
+      "sha256": "b2e6f7732e6b909f03b122587eefe4d858c021b209b86adfaf39426ea23337a4",
+      "git_blob_sha1": "aa21ad91fae3bb77e074ced2d03dc80df30d01d3",
+      "bytes": 5383
+    },
+    "Sofa/Presentations/Splash/SplashView.swift": {
+      "sha256": "7052e6d48ef1ebfd125e75fb008607575884c44d6e3021c16e358d8635f637d1",
+      "git_blob_sha1": "75efc036c0ae35ac9cc0fccc4f3aecbb51e40218",
+      "bytes": 731
+    },
+    "Sofa/Presentations/StepTree/StepTreeRouter.swift": {
+      "sha256": "e26068a10d51e66dd0568c3a45d5671c38515e2238e523508ffac6582029e457",
+      "git_blob_sha1": "fa89804d16727c1abb9725c029af6d42be4384a8",
+      "bytes": 1561
+    },
+    "Sofa/Presentations/StepTree/StepTreeView.swift": {
+      "sha256": "fd592ee33a187960251f1ed9a81a288958fea70be0d88ee4c6306397f6db1e8f",
+      "git_blob_sha1": "e12c88964ef0a484fe758fd9ba124e0356d2409d",
+      "bytes": 13873
+    },
+    "Sofa/Presentations/StepTree/StepTreeViewModel.swift": {
+      "sha256": "e3f80564de14e333d94c5c080bc7bb26dfc940bd07441a4fc9d9a6bb047620bd",
+      "git_blob_sha1": "3fd329d1e7e361f066a4ea6b5de493ebd22c6702",
+      "bytes": 11576
+    },
+    "Sofa/Presentations/Stories/StoriesModel.swift": {
+      "sha256": "44db2223df3624dca8d25a5223670b0a9ab77fe237ac0a7dbaeacb0c75af704f",
+      "git_blob_sha1": "07686c80918f65ffb3da02e0064d02dc02419035",
+      "bytes": 892
+    },
+    "Sofa/Presentations/Stories/StoriesView.swift": {
+      "sha256": "c7bfb235dccc7d8cf655019c44bd36645bcc2d4c0689077c76a20fdcecd571c4",
+      "git_blob_sha1": "71f0dd744e31e4f0ebd4637ba8cd4aeea7d62b6a",
+      "bytes": 3280
+    },
+    "Sofa/Presentations/Stories/StoriesViewModel.swift": {
+      "sha256": "3600e0730f15e3c13064d5f45e047d8f094d653412145c7098273251eba5cf80",
+      "git_blob_sha1": "6ef45860055aeeb106cb224f0e6b68179cfc8d65",
+      "bytes": 4994
+    },
+    "Sofa/Presentations/TabBar/TabBarModel.swift": {
+      "sha256": "33e943fbb88595a4b534b68657266ecda8e504d647c88568faf7c99a87a87ccd",
+      "git_blob_sha1": "da9f8e5eaa1654c91da52e81bd9b51a5a92c282e",
+      "bytes": 905
+    },
+    "Sofa/Presentations/TabBar/TabBarView.swift": {
+      "sha256": "b01931670ef527f54fde626e1b35042e498fb21a99029a9b807e7fe014717605",
+      "git_blob_sha1": "31ee896f94ab897ab045cbd5ffb6eff4fac487f4",
+      "bytes": 3314
+    },
+    "Sofa/Presentations/TabBar/TabBarViewModel.swift": {
+      "sha256": "018775c3b743efa4519276d7e195acc6aa839d131837f77520edc215ee9c2d2e",
+      "git_blob_sha1": "c004a1287ec210b6fe4c688020a1e17583b77b5e",
+      "bytes": 275
+    },
+    "Sofa/Presentations/Welcome/WelcomeView.swift": {
+      "sha256": "7b9b461da6ceb8961ae2a18148889c960d4ce756280c78b1fdbcef35cce5c629",
+      "git_blob_sha1": "971dc1bc53902bdae49001d6c6e66dac2afeefaf",
+      "bytes": 1506
+    },
+    "Sofa/Services/AnalyticsManager/AnalyticsManager.swift": {
+      "sha256": "0fcf6c0f19a569f44bead1c67d70a85e91bce842b5cd48efca12c1d33e29a1be",
+      "git_blob_sha1": "59a161b8f161ac12e4c295fd525d9697f7e9e1f3",
+      "bytes": 8032
+    },
+    "Sofa/Services/AppChecker/AppChecker.swift": {
+      "sha256": "bae2dffc61c530cda48936f806253c73bf34485085f0f9fd4fde22a3f1a48e95",
+      "git_blob_sha1": "9d52e8acc75fe57ecb8d3a387297974539f4d4a8",
+      "bytes": 991
+    },
+    "Sofa/Services/AuthService/AuthService.swift": {
+      "sha256": "d4cd315539ba965b2d3e27991c4053f6b1d2d08037e9ef91b1001ca4a5e5d278",
+      "git_blob_sha1": "a43895f6c66aebdf71f709a7551fa847055988ff",
+      "bytes": 1946
+    },
+    "Sofa/Services/AuthService/AuthenticationReadiness.swift": {
+      "sha256": "5a12635f8b50cd6422eaa4c821013e147f0b2a845b90c07368cccc59ccccef4c",
+      "git_blob_sha1": "9cb6edda6719cbfcbbd85bcd1a77cd15fe519ae3",
+      "bytes": 1338
+    },
+    "Sofa/Services/AuthService/ServiceDiagnostics.swift": {
+      "sha256": "b36f05029e1b8cade52ed562ce331713b3dcd0b7f328875f560df1223f075053",
+      "git_blob_sha1": "4031df9c4a488d7535e34a64e5d6b5d78a658366",
+      "bytes": 4223
+    },
+    "Sofa/Services/Chatter/Chatter.swift": {
+      "sha256": "d47d77da90ef3efb3593d68b6abb57c132fa4e044baa2844d9f90b856731b097",
+      "git_blob_sha1": "277b58b21f270bc4135cff7514abf3f9dceadda8",
+      "bytes": 11725
+    },
+    "Sofa/Services/Clipboard/Clipboard.swift": {
+      "sha256": "dd6351388c4a6eb2a93ea4643913b6dc4a3dd4f24618376763bfe44e5e4eccd6",
+      "git_blob_sha1": "5afd142db86761702970517a1d1aa3417b20a4af",
+      "bytes": 443
+    },
+    "Sofa/Services/DataStorage/DataStorage.swift": {
+      "sha256": "9e53a773f982e2047c5e7f6c6e0011ddcae9e2ec3c49b98e3fabec035a9cd4c8",
+      "git_blob_sha1": "966c97adca7d5b87dfc6e44998bb8f9a47be7269",
+      "bytes": 6277
+    },
+    "Sofa/Services/DataStorage/Entities/Profile/ProfileEntity.swift": {
+      "sha256": "00f253f4502a7ab609828e338de3c684c2fdc5c8670ed105a3f045688ae222ec",
+      "git_blob_sha1": "249a5a397b6fe27d9cdd7b1fe76f891ea09f08d8",
+      "bytes": 1301
+    },
+    "Sofa/Services/DataStorage/Entities/Project/BriefEntity.swift": {
+      "sha256": "69b110e20fddad4f5097886693d5fd83b98ec3464630f89c936fc96a53265ae6",
+      "git_blob_sha1": "59b0ea9cb73c8ef91402ea51b15b6b306644cd30",
+      "bytes": 2910
+    },
+    "Sofa/Services/DataStorage/Entities/Project/ChatEntity.swift": {
+      "sha256": "35dd6ee4633888dcb68983c06a003550b5c1662f3929ee5ee22d8e42c221bb96",
+      "git_blob_sha1": "4486bc2bef554cc0f8ac0b4958245163b8af5fe5",
+      "bytes": 915
+    },
+    "Sofa/Services/DataStorage/Entities/Project/ConversationEntity.swift": {
+      "sha256": "12c382502d0c66d011493ac58e3836b0a846dab61e60df0679397252e4dffb02",
+      "git_blob_sha1": "944e5976b62b1c7400b103edb166dd18f1cb0156",
+      "bytes": 697
+    },
+    "Sofa/Services/DataStorage/Entities/Project/MessageEntity.swift": {
+      "sha256": "663b8d73a289711b7df679c025064fdff9b7fcb20ceb6a78c69e660b52f8fe4a",
+      "git_blob_sha1": "c6ba923a250cc37c5b47f451fedb1a3ffb823818",
+      "bytes": 1045
+    },
+    "Sofa/Services/DataStorage/Entities/Project/PlanEntity.swift": {
+      "sha256": "e5f09f4e5063d3b55f786ff6f8adad9573e467a74b4974237c4d1b64549d4a48",
+      "git_blob_sha1": "18bb977ae4f0058d3f198ef3409286e309532d50",
+      "bytes": 1621
+    },
+    "Sofa/Services/DataStorage/Entities/Project/ProjectEntity.swift": {
+      "sha256": "ab675a62c34237bf7693745f04cc7b46933b8bf4a2b499b8593ca23d4570da4e",
+      "git_blob_sha1": "5f1ec1295f8a2d2dc289d2eb9585e505e7159ac4",
+      "bytes": 1231
+    },
+    "Sofa/Services/DataStorage/Entities/Project/StepEntity.swift": {
+      "sha256": "d4abb26405a08965760649fe5a0bfb8b3d35cf1b32d4b3ca7b9eae4c4ff76159",
+      "git_blob_sha1": "f929a1b2af72e04374ce4aa6e925db06a54ea033",
+      "bytes": 725
+    },
+    "Sofa/Services/DataStorage/Entities/Project/WeekEntity.swift": {
+      "sha256": "619f2b87380de3c087b78f0aea3e1e2d257fdd29915803fec3f4154264ad43df",
+      "git_blob_sha1": "b057288e5e3c0a3e70a0f7fbc93cff3daa840da6",
+      "bytes": 744
+    },
+    "Sofa/Services/FunctionsClient/FunctionsClient.swift": {
+      "sha256": "9122530003b7ba92fbaabda03f735f6df6bee49fad8d74a999e45a794cda7549",
+      "git_blob_sha1": "5a0ce8b06dba5b60d99587b96a0d7e1ddef1028b",
+      "bytes": 4825
+    },
+    "Sofa/Services/FunctionsClient/Requests/ChatterRequest.swift": {
+      "sha256": "8ad26fd99f8dc7f0365922ecd45e086d696411bd7eed2d34a24e5a3265543656",
+      "git_blob_sha1": "6cf0a128589fec4cdc570dd05925dbdd11ec3ae9",
+      "bytes": 2118
+    },
+    "Sofa/Services/FunctionsClient/Requests/ConverserRequest.swift": {
+      "sha256": "379327b2e2dc168af448619a4ae732dc573ae06ee3feb326a53bff5ba4a63998",
+      "git_blob_sha1": "a2c8a7b2f02075f36f82d012d10a2a30aeeaa1a5",
+      "bytes": 1138
+    },
+    "Sofa/Services/FunctionsClient/Requests/GeneratorRequest.swift": {
+      "sha256": "aac4550b753a2b8a3b163a07ed3de89287aceb28a86d34e48e820dadf1382285",
+      "git_blob_sha1": "f246624ef4d3d4aeeeee445fafb1d4850ab218d7",
+      "bytes": 2146
+    },
+    "Sofa/Services/FunctionsClient/Responses/ChatterResponse.swift": {
+      "sha256": "beb8d4ab02607dea95c90fc52675aa3c868766bcfaabe33295de748123f0ec24",
+      "git_blob_sha1": "95daa980a174e370b2a00d986d47549799208711",
+      "bytes": 2393
+    },
+    "Sofa/Services/FunctionsClient/Responses/ConverserResponse.swift": {
+      "sha256": "bb73d825b93196313b051286dddd136e2930571eb8d5b3eb3f7a41490e06e0cd",
+      "git_blob_sha1": "cf073b92a97ee288bf9becf63e2c467fd51fc7e3",
+      "bytes": 1455
+    },
+    "Sofa/Services/FunctionsClient/Responses/GeneratorResponse.swift": {
+      "sha256": "01cbf6e5ccc258dd4eaa3c7cd8a17ffe262c9a34680d850d455cdb6a5c376e9e",
+      "git_blob_sha1": "95663c04540edddd4199f630acb73a5be0a821f4",
+      "bytes": 1143
+    },
+    "Sofa/Services/Haptic/HapticManager.swift": {
+      "sha256": "48762264d4509cd1ccc7d9275314b9235c5921f3e60e9a9bf95ac3a20301e63f",
+      "git_blob_sha1": "57fe67691be359185cb1ba6b853961fb863cf528",
+      "bytes": 1228
+    },
+    "Sofa/Services/NetworkMonitor/NetworkMonitor.swift": {
+      "sha256": "6ef04afa154c9b39b09b02e91565bbf051a505bd6656aec9daa36143b93230c9",
+      "git_blob_sha1": "83c490881b63bd8a2f4b260855655c24b37a111f",
+      "bytes": 973
+    },
+    "Sofa/Services/NotificationManager/NotificationManager.swift": {
+      "sha256": "458558812ee64f93b00af86869616205c5d453e35f34346095085e6dff4e8ebd",
+      "git_blob_sha1": "9ca555970b8b4ac17f4c5db69517dc2fdb1639ea",
+      "bytes": 6068
+    },
+    "Sofa/Services/PermissionManager/PermissionManager.swift": {
+      "sha256": "b314f0969d946baa10fc3219f6d8436fe240d8630ce74699739a43288255875a",
+      "git_blob_sha1": "f0a62c230a52ce009bee4e4aad6209a3f66a2202",
+      "bytes": 735
+    },
+    "Sofa/Services/ProjectGenerator/ProjectGenerator.swift": {
+      "sha256": "2208ba1f288031e8115b6f76443618defb2ce87e10ede9f2e524ca7c635924e2",
+      "git_blob_sha1": "02853380684c4df60e586084d7d1218863f06403",
+      "bytes": 29508
+    },
+    "Sofa/Services/RemoteStorage/Documents/OnboardingResponsesDocument.swift": {
+      "sha256": "cdcae3974e00b6644f976a3d6b68f0089c2a9fcb00c487147cb38c30514d07ee",
+      "git_blob_sha1": "7cc97e8d8d3f816534b86a4077f1643177feabd0",
+      "bytes": 542
+    },
+    "Sofa/Services/RemoteStorage/RemoteStorage.swift": {
+      "sha256": "9d499c6c782c2ab0b40f5a7d3b37b2757950db1c7dd34a1dfe3ade56103c45cc",
+      "git_blob_sha1": "469676a6bbeff6e54908f946bbd9067caf52ad8e",
+      "bytes": 2587
+    },
+    "Sofa/Services/ServiceLayer.swift": {
+      "sha256": "d7555cdac01aaf2f56c3318aa74a3cb6e70554d40202f042e5ebf6fe899fc6cb",
+      "git_blob_sha1": "f9f6db482e9294c3a5e82c61d9887bbd6cdc34c2",
+      "bytes": 1312
+    },
+    "Sofa/Services/StoreManager/StoreManager.swift": {
+      "sha256": "eb8d39333855342de3f9166b0007cb6fba327075a31115cc89e86b86d4bb275b",
+      "git_blob_sha1": "c159945418c8162fcd2b878a98c483b7e5bfd24f",
+      "bytes": 5346
+    },
+    "Sofa/Sources/Localizable/Localizable.xcstrings": {
+      "sha256": "57e1d1ba5d390495fc84fb2bac40d666003416ebbb7cd0c6ae405ef140ed53d4",
+      "git_blob_sha1": "129bad6fd96dec8c2171872a5ba28789537d21d5",
+      "bytes": 743284
+    },
+    "Sofa/Sources/Localizable/SubscriptionTerms.xcstrings": {
+      "sha256": "a6e62ee21b85f43c297e784a8d82f33d094f0139409b0868cb0dbc597d74019a",
+      "git_blob_sha1": "3ffa448cbcded473299bbf940b10276b82cfdffe",
+      "bytes": 2473
+    },
+    "Sofa/Sources/Plists/Info.plist": {
+      "sha256": "82fd3b51d125b27948086361a78509e551a9168201c358a35eae18965121c8b8",
+      "git_blob_sha1": "4342660d09c4d8d6061e6e2249261cb2ff5bd27f",
+      "bytes": 277
+    },
+    "Sofa/Sources/Resources/Animations/empty-state.json": {
+      "sha256": "11c89214c3f1cc360ac19de8e4653be8e87b4d4d5d2bab782776008c05b4f157",
+      "git_blob_sha1": "d93b2e0e6730c79267e6e45dc83581f1440f1b6f",
+      "bytes": 23558
+    },
+    "Sofa/Sources/Resources/Animations/generation-loading.json": {
+      "sha256": "874a18d277b4810755c662b05e17daf3ece2765ae15064df327c07a661ecb050",
+      "git_blob_sha1": "b4c4775a28513d285af47f3b599d253c7ba70d2b",
+      "bytes": 7082
+    },
+    "Sofa/Sources/Resources/Animations/reviewing.json": {
+      "sha256": "10fd438faa8aa4c91e164e50c0a60f48417f33478af917625d5ceda525cca2b3",
+      "git_blob_sha1": "e0cf542c37ed743105bce436cd6dc0f17a1933b0",
+      "bytes": 30582
+    },
+    "Sofa/Sources/Resources/Animations/searching.json": {
+      "sha256": "862901a96926e8622812dadfe59adcc4867a7f778132955e33990b8c8e572b79",
+      "git_blob_sha1": "e743e18633a845071b7590540ad9dbe82a0139a6",
+      "bytes": 3633
+    },
+    "Sofa/Sources/Resources/Animations/well-done.json": {
+      "sha256": "8dd930a627654bad47fee274f488cfabd02d6733d53d2d132353a5be143202d8",
+      "git_blob_sha1": "e7d805dcb924c992ba948a8eda6da86eaeaa4f32",
+      "bytes": 20664
+    },
+    "Sofa/Sources/Resources/AppIcons/AppIcon.icon/Assets/app Icon.jpg": {
+      "sha256": "b0af98a0c9c7079b9de2f9fa053dc612d33eddac4cf9c9e26b8f558ddc5fcb71",
+      "git_blob_sha1": "19a44d323383ffbc53f87a4b396982dca05c85ca",
+      "bytes": 178989
+    },
+    "Sofa/Sources/Resources/AppIcons/AppIcon.icon/icon.json": {
+      "sha256": "ae11b8eb4d9c2be29dba151ec43a20d031dc8dbac836c8d1e8af0c6037d92b77",
+      "git_blob_sha1": "5fb91ae7cbc0b96ba78f7d88327faad31dc5892d",
+      "bytes": 716
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/AccentColor.colorset/Contents.json": {
+      "sha256": "9af65086fa30b49252fae1a1225731691de794f7775af74d71befeb507d12b7c",
+      "git_blob_sha1": "eb8789700816459c1e1480e0b34781d9fb78a1ca",
+      "bytes": 123
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/AppIcon.appiconset/Contents.json": {
+      "sha256": "21b9b003b31381b081163d47102a8d199886d8355be9c9a7e60ba2f9a0148d59",
+      "git_blob_sha1": "6cf5e31a6d8ee2ba38f7034c4f468ac236237c4e",
+      "bytes": 212
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/AppIcon.appiconset/app Icon.jpg": {
+      "sha256": "b0af98a0c9c7079b9de2f9fa053dc612d33eddac4cf9c9e26b8f558ddc5fcb71",
+      "git_blob_sha1": "19a44d323383ffbc53f87a4b396982dca05c85ca",
+      "bytes": 178989
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Contents.json": {
+      "sha256": "0fd49ba3c3585c709678e0046a821c3c60685ec7063720d30d3a3448be3a208b",
+      "git_blob_sha1": "73c00596a7fca3f3d4bdd64053b69d86745f9e10",
+      "bytes": 63
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/Algeria.imageset/Algeria.png": {
+      "sha256": "94ac664e92d725431e8a4b814a4ae7f2c882c4848de9721caa7b1908afeeeaec",
+      "git_blob_sha1": "24dc399473e66706ae77bed640d29f53e036b506",
+      "bytes": 2010
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/Algeria.imageset/Contents.json": {
+      "sha256": "33e0bd29d1d91659a9fc790e5193f8119c916617a03b4c815c3f487ca9d84c78",
+      "git_blob_sha1": "9d1cb28b6469b20d9f8c8712d9ab99de6320d4ec",
+      "bytes": 157
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/Contents.json": {
+      "sha256": "0fd49ba3c3585c709678e0046a821c3c60685ec7063720d30d3a3448be3a208b",
+      "git_blob_sha1": "73c00596a7fca3f3d4bdd64053b69d86745f9e10",
+      "bytes": 63
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/albania.imageset/Contents.json": {
+      "sha256": "0cc39e35e61fc16f97eb4b6f0ede5d969dbcbe699a05f3e893e097606bf44834",
+      "git_blob_sha1": "f7229e83f99da5a56d81f7224ec53b4ea50b7884",
+      "bytes": 157
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/albania.imageset/albania.png": {
+      "sha256": "fc7c3bb7dcd15e01daa165211dfca1a848a91acbfeefe217d1e7c9643cb1267a",
+      "git_blob_sha1": "a080cb3d917659af15b6feb395f719544ed1ee6d",
+      "bytes": 1797
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/andorra.imageset/Contents.json": {
+      "sha256": "be7dff227bb217de3330924a4bef39e38dfc78493ebb94c1f841847a63466ed1",
+      "git_blob_sha1": "a2f4cb59b11d059b96be9f8210acd206355ecc26",
+      "bytes": 157
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/andorra.imageset/andorra.png": {
+      "sha256": "b0b875146689cf9fda5a4a2e40303c3ce568f194ed6ca903d075181cc2d6c2f7",
+      "git_blob_sha1": "77966896a57033fd4cbfc8971d7840422a4bf05f",
+      "bytes": 1817
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/angola.imageset/Contents.json": {
+      "sha256": "441ccafedeaef3c0ba211bdc87f7d6c13a52022c18c17875a9e72d0847c449c0",
+      "git_blob_sha1": "2251c35e094e881f010c13fc5b8334d00785a97f",
+      "bytes": 156
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/angola.imageset/angola.png": {
+      "sha256": "07a0a7a755ab6d5fc831d912b0f97b96fa8446028454a07e8f6cac9674063db2",
+      "git_blob_sha1": "ea2030f6cf26b579265bd5a883076131b7e45098",
+      "bytes": 2120
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/antigua and barbuda.imageset/Contents.json": {
+      "sha256": "506dc1989655f4c76baab9f6ec2b4b825dd21a1c34a237f9f54637823f903c51",
+      "git_blob_sha1": "c3f392ef61086920f4cf24bc4af829183c6a618c",
+      "bytes": 169
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/antigua and barbuda.imageset/antigua and barbuda.png": {
+      "sha256": "b1f9fbb23a212acaaab2be7da2f10c8372261f6ff55cbaae583f66f12f4af8b6",
+      "git_blob_sha1": "440cc245d988eabc699f6b06e815c4a5cd5a971a",
+      "bytes": 1902
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/argentina.imageset/Contents.json": {
+      "sha256": "4ff42a293aca508b3c17db17fd075176310f9b1e61b57ec6f03128a47635435c",
+      "git_blob_sha1": "ddc811076750e2b4b2da8c1ce7350ea0e7018761",
+      "bytes": 159
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/argentina.imageset/argentina.png": {
+      "sha256": "b9307129f39a4eadd5c1ec9424e89260405cb40cd85207786d2332fbb2cb6dbc",
+      "git_blob_sha1": "376193f57d0a252ff51f132bbc4914c8dd40277c",
+      "bytes": 1784
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/armenia.imageset/Contents.json": {
+      "sha256": "c09c573fbf6d312f4e418cc6da6f23d222c78b41e978ea0c8e3ab78fd71e52ca",
+      "git_blob_sha1": "79fdf939d16658f91baefd66cfe13c29521ab393",
+      "bytes": 157
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/armenia.imageset/armenia.png": {
+      "sha256": "e94cf24542d3f4ccf54f4465b2e7884782045ee7fe2c00a6933354780c4db796",
+      "git_blob_sha1": "398595812e78e4bea0b89ef9cd28159a7f287491",
+      "bytes": 1268
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/australia.imageset/Contents.json": {
+      "sha256": "526fbe187eddcc85afac2a881617ff63c7bd92f394196a47c57837d6d0dd65ea",
+      "git_blob_sha1": "b05921fa929dec8db0f1d27151e1d7964184c0c4",
+      "bytes": 159
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/australia.imageset/australia.png": {
+      "sha256": "2067d2ec25f8552d6f2b3cefee4156be800b80bbdd56bf3ad8ccc55ffbaf4e6e",
+      "git_blob_sha1": "f61db724db2b63163db4a8593b13dfa14454694a",
+      "bytes": 2304
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/austria.imageset/Contents.json": {
+      "sha256": "92cc6b085c029fa1417223f8d1aa75f346b60df23cc34281f043d13574aa2b8a",
+      "git_blob_sha1": "66c80b68eef8e2782415832ae9883553bb90703d",
+      "bytes": 157
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/austria.imageset/austria.png": {
+      "sha256": "791487e9ab4ed5c8a1b5b07776607415f6c500ec76ab65e1db9027027233d3a6",
+      "git_blob_sha1": "0be0693d52beebc972d4406b34054f664448c1da",
+      "bytes": 1205
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/azerbaijan.imageset/Contents.json": {
+      "sha256": "7e21451a0fe9ea081cd0dd4259a86f79f36c63ba718a41b550e9bde098e517e5",
+      "git_blob_sha1": "582c4ab648b3d16b4142a8d0bd410f57cca14e66",
+      "bytes": 160
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/azerbaijan.imageset/azerbaijan.png": {
+      "sha256": "30377e01844289e95bc91c9a077892dc25475ade5ecc89b82a6504449b6ed35f",
+      "git_blob_sha1": "f58a935672cd1506a7e444f2b66ab011f05cde46",
+      "bytes": 2028
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/bahamas.imageset/Contents.json": {
+      "sha256": "e1721c1e64f0fdeac2f0576777e4a67ffe2c52a6c246f9fe26f4452b4349e45e",
+      "git_blob_sha1": "a70be0f0e494a918cbe66ed711155e1f60d7be97",
+      "bytes": 157
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/bahamas.imageset/bahamas.png": {
+      "sha256": "dbcc37615d4ac4fed2fd68963005db18b7542e88f8931e2355db95e5f404d739",
+      "git_blob_sha1": "3fda8a7ed3db99482f7df18e5782511d32a3b8e3",
+      "bytes": 1549
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/bahrain.imageset/Contents.json": {
+      "sha256": "825ad30ea04879b82b219d80634179f26135b56af02b4694eb97985e3543c713",
+      "git_blob_sha1": "bb1586128220b4997e28d63b7cf0a9487be8265b",
+      "bytes": 157
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/bahrain.imageset/bahrain.png": {
+      "sha256": "8ed5c4f5e7d9e0207b2e414307c9e90ebc5b7d4af6f759d95bcc546aa106e08b",
+      "git_blob_sha1": "4e642acaf85304fedc1a5aebfde1b827bc0e6619",
+      "bytes": 1534
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/bangladesh.imageset/Contents.json": {
+      "sha256": "7c01633e54aec4cc071a67c2915263830d3d5dc182bbb69826a9240afb909fa0",
+      "git_blob_sha1": "5416ce1e7868e7b8e92186019c93044d781541cd",
+      "bytes": 160
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/bangladesh.imageset/bangladesh.png": {
+      "sha256": "a793801dfaf15c9fd23dc1b9f89821c2171a9cb4fa483a5354c29724202ae1da",
+      "git_blob_sha1": "4e6a0f7cd6d8e8d701e2487cbf6ffe3800892dcc",
+      "bytes": 1803
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/barbados.imageset/Contents.json": {
+      "sha256": "be3293ada2cd13d2bda2168e5a4457956f1001be7f2631c5e5984f40fcb2263b",
+      "git_blob_sha1": "f020b3a0744d78c00f9c34683cb8faaad81fd00a",
+      "bytes": 158
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/barbados.imageset/barbados.png": {
+      "sha256": "e806f0969dfc4efb08787e9f9d7757d8f1aa69f9ef2926caf19307c61a8a9ea2",
+      "git_blob_sha1": "9e0a2e736aceafcb298b5d53b9fc85a702bde3b0",
+      "bytes": 1727
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/belarus.imageset/Contents.json": {
+      "sha256": "a50343558cc102e9240e5e3184e16b21d712718d2a9b6c800618e9b264efaac6",
+      "git_blob_sha1": "fb0bbe87dcb6ea600d78fcfb07a345eebca7aab7",
+      "bytes": 157
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/belarus.imageset/belarus.png": {
+      "sha256": "7f6b45b577c146ec771a438982338b1aad47b838db9dc541df0c76907964d0c7",
+      "git_blob_sha1": "26cb3e4335cc1370eb33ba38447e101c513d3c53",
+      "bytes": 2066
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/belgium.imageset/Contents.json": {
+      "sha256": "171fdba19750690a734099a22a7aebee28f7a8b4e8263e4241d4ff22b83f652d",
+      "git_blob_sha1": "054a531bf354e2dbd761922d91a3959974375ceb",
+      "bytes": 157
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/belgium.imageset/belgium.png": {
+      "sha256": "4b2311249c5d00f963e5e31f7613f624287d839a870a1b3e51cebb8c1fa600fd",
+      "git_blob_sha1": "5645cfb47e0988d692eb1e62acf79e8c9ed08b0d",
+      "bytes": 1227
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/belize.imageset/Contents.json": {
+      "sha256": "f8fc87496d51ea88eaf7e82a9541a92e7a4b0cc284f728e7074fec31e34b2920",
+      "git_blob_sha1": "10fceb37364523581c9e2a4cbe536a7411604fb6",
+      "bytes": 156
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/belize.imageset/belize.png": {
+      "sha256": "305d890fc75361b55f736030c35bc5d5324a135bbb330019e163c9bb4ddd7e31",
+      "git_blob_sha1": "696b289bad8f4e7f6eb106610bedc420a7d92791",
+      "bytes": 2600
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/benin.imageset/Contents.json": {
+      "sha256": "d775cb226233e6f009758b7f68112c943a301cdeafd05c4c2c1b518a3ad34362",
+      "git_blob_sha1": "2e51abeb049d2a5f7a49a7032711376d598f8130",
+      "bytes": 155
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/benin.imageset/benin.png": {
+      "sha256": "fcef816dfa650c691937c79e23949fbe56982ba6bea933355df38287cfb4749c",
+      "git_blob_sha1": "d6cb893dba068a2d256e1da45219393ea29ab9cf",
+      "bytes": 1367
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/bhutan.imageset/Contents.json": {
+      "sha256": "81c4e4c7a736223b47e7f50d4bc89f741f6d438c3d9ad8200c41c0c47591f2cd",
+      "git_blob_sha1": "ea2d73ec73d85e3f3118e44fa338a52bfa1d5c1f",
+      "bytes": 156
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/bhutan.imageset/bhutan.png": {
+      "sha256": "50fff5e130772d84663efbff142650b43f3ef4546b8756481c60413874336a60",
+      "git_blob_sha1": "878dae8da310c92aef4fdb1c7df579192878dd62",
+      "bytes": 2667
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/bolivia.imageset/Contents.json": {
+      "sha256": "135eb1037a1fe4f512ef53b84be5859d978b259cf16723bf994bd3774a49f8ab",
+      "git_blob_sha1": "026890ec84b850feca6ef9fde0596a1981eb427f",
+      "bytes": 157
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/bolivia.imageset/bolivia.png": {
+      "sha256": "4fc37e9884bd03733920e81a4912473d05a5f6e1e8639ef575b830df1c75c075",
+      "git_blob_sha1": "e4a4d51b7c70544171a91d3666759d0eeae29b4c",
+      "bytes": 1337
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/bosnia and herzegovina.imageset/Contents.json": {
+      "sha256": "27a5208daf0f0c791acaa6fa7bb708f85a171db9feb5e0ff72ecb773353bfea0",
+      "git_blob_sha1": "1f6f95a47de38026313a279174817745c15ee69c",
+      "bytes": 172
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/bosnia and herzegovina.imageset/bosnia and herzegovina.png": {
+      "sha256": "bc1e7e1c14737985d906ba7018673dedad27279402a46a5b44a418effeb3eda5",
+      "git_blob_sha1": "8a9277718716f0d8ae384c75b8d66dc74cf0c719",
+      "bytes": 2253
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/botswana.imageset/Contents.json": {
+      "sha256": "d814007b60ebfb2fb8ac5a9e36e9a5fe517348da71b47219e773270036fc3110",
+      "git_blob_sha1": "29689d0ae52da7c8956efbcf699cc04d5b5190ad",
+      "bytes": 158
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/botswana.imageset/botswana.png": {
+      "sha256": "dc7d4f247add7abe8dd0a2936898cfe79251fb4179e8e6eb950f289023eb3add",
+      "git_blob_sha1": "f9188b4efcd8c74bb50fd23a7ca0bccb196712db",
+      "bytes": 1298
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/brazil.imageset/Contents.json": {
+      "sha256": "69d31ac139c2f63eb204c2d3cabab0e0389faf36c615fd5ce1a2a3ef7b9a60e1",
+      "git_blob_sha1": "c8e4b607aaf5e62f2a486da388a06001055a6ce6",
+      "bytes": 156
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/brazil.imageset/brazil.png": {
+      "sha256": "8e8a8f73df95a4f249e798f658d83f5b35164d8bbd6af046a8311a5cc6cb8cfe",
+      "git_blob_sha1": "5ab80bef4ae4442a47cc59ad0bea858409dfffe4",
+      "bytes": 2722
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/brunei.imageset/Contents.json": {
+      "sha256": "ecfbeb959c47acfbb3d1fb4322a1ef49bd054a724ac387898e1d673afd1aaa0b",
+      "git_blob_sha1": "6c8fcaa2dd1a821c98c9e15cd850c54e9db2bfe9",
+      "bytes": 156
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/brunei.imageset/brunei.png": {
+      "sha256": "9b3c840d9b94f35f8be0d840f71aee77429d43c474b8ca6692383ce611bfccff",
+      "git_blob_sha1": "bd41269b2db8d290caf47394e4bbb4f9c0e06262",
+      "bytes": 2600
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/bulgaria.imageset/Contents.json": {
+      "sha256": "63fc326ea28e43a2cd8b070a57782f7c43d5b4fe060caac2019ab84cae51969e",
+      "git_blob_sha1": "7bb1b52603b281f0af7e41c70072f04e06d57081",
+      "bytes": 158
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/bulgaria.imageset/bulgaria.png": {
+      "sha256": "6cdcf860520cf953893ebcc843053ec4df1c2e25622b2974c31fafb94fce0dc2",
+      "git_blob_sha1": "706b248da7c530031be935550ec73ba94ef16781",
+      "bytes": 1259
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/burkina faso.imageset/Contents.json": {
+      "sha256": "911cfdb079e4479e48ad1a0b290696de4337df14c821be8d136b93dab453af8d",
+      "git_blob_sha1": "c2a83f1646f39e97c14758c0afc61601c8f6fda9",
+      "bytes": 162
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/burkina faso.imageset/burkina faso.png": {
+      "sha256": "75013a78d2b1cd22f32a07c83575d6949c2d20040d9cf4c3506bd289d4a4ce0b",
+      "git_blob_sha1": "e96e9fb77a55f367f4841f0014baa999554e6fbc",
+      "bytes": 1709
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/burundi.imageset/Contents.json": {
+      "sha256": "3742ea744bba4552148cd452899e052d9f8747f9862d710c38d49c607cddf6d1",
+      "git_blob_sha1": "35f727b7783c41e830848ae2d206c1540b56cab7",
+      "bytes": 157
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/burundi.imageset/burundi.png": {
+      "sha256": "322bd1357906a78c1625525c3254dc4b9cd120166d03392b8ee548046cefea03",
+      "git_blob_sha1": "d6bea874615f2db4d5068b56ddf50f93dbcb2a83",
+      "bytes": 2447
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/cambodia.imageset/Contents.json": {
+      "sha256": "db6df861782e624afa4d68a6bfee4d2041d6436fbf20e699a1413c68edcbdb45",
+      "git_blob_sha1": "83b164a80979aee6905c238da27d3e958404cd4b",
+      "bytes": 158
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/cambodia.imageset/cambodia.png": {
+      "sha256": "da7179f91f9c0d0117e9c4ac26a309f38cf84858eb750f4f94849156f2c1a445",
+      "git_blob_sha1": "2cea9d149d6b1ee65f08e33622ed6d2f4143458b",
+      "bytes": 1517
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/cameroon.imageset/Contents.json": {
+      "sha256": "992c181da0649f66a48294b8e7cc2fc342b50ade4e6411461f91a29b40826f9a",
+      "git_blob_sha1": "7fe26f4c34a7922cbe00273e8b2db3f3a794ae44",
+      "bytes": 158
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/cameroon.imageset/cameroon.png": {
+      "sha256": "8581a07519ea5ee9fea8232d8ee4e669d32933838871040b987a4ad149531724",
+      "git_blob_sha1": "36782e139854cab0ec455a146a4b7d3613815861",
+      "bytes": 1755
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/canada.imageset/Contents.json": {
+      "sha256": "f0ad469460ff8d58143a1effd4587f84ddbceae5e6c2e489e46c741e5bad2df7",
+      "git_blob_sha1": "aefb5969cec63ec7d896b21c48bd41b294ad42d5",
+      "bytes": 156
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/canada.imageset/canada.png": {
+      "sha256": "fab5b2e9195c7f6325e280d49810a0f1c0606a04cac6b7bd04801392be1e461d",
+      "git_blob_sha1": "84f0c467e082f5114dd5e33a485a160e3c68ed0e",
+      "bytes": 1666
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/central african republic.imageset/Contents.json": {
+      "sha256": "4e87be48cde9481ee5004aa15a2879e8647d1102a3d91a9bd013d6e06c1f96d5",
+      "git_blob_sha1": "aa617c2aff43c12b7a4372d123a0710fa4020b1a",
+      "bytes": 174
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/central african republic.imageset/central african republic.png": {
+      "sha256": "ee983b726bb76156206842609657b47a7e1580a79827f4c974834d89bffd4fe5",
+      "git_blob_sha1": "5611172e1fc3d9599eced60d2652ef80190af3ab",
+      "bytes": 1681
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/chad.imageset/Contents.json": {
+      "sha256": "209a32f5d2c47aad9008ffbc8020d895a2f0f22ae39e69462f24d4ac12e46c1d",
+      "git_blob_sha1": "11a96d79cc98b748da6fa2b7e09eaf2743611b81",
+      "bytes": 154
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/chad.imageset/chad.png": {
+      "sha256": "54a758b3fcb8be6d21ede28036af2a01dd82b7737dd5e453a8a9bd7cb8a598b4",
+      "git_blob_sha1": "5588d473b7bce18ee45b69b071c621f72b55a17f",
+      "bytes": 1337
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/chile.imageset/Contents.json": {
+      "sha256": "09273f9ec7a9d08795d5abcb6035a009cacc14afa9c7ffbdf90c3bdc04c3f6a6",
+      "git_blob_sha1": "956009f4a13152040c0acc0ca5621b77266c6c3c",
+      "bytes": 155
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/chile.imageset/chile.png": {
+      "sha256": "fcfa2c0ed28552926cf8eedf4e05bd497fdbabc2e50397d52de5213e7a77e8c1",
+      "git_blob_sha1": "dd0ef887cc4eaa3cb12b6198032fa0bbed50dd0e",
+      "bytes": 1597
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/china.imageset/Contents.json": {
+      "sha256": "1e0e06fc31f30326f140b2551664d8bf8ba99a7eb074cdac6b58b654805ac160",
+      "git_blob_sha1": "4c0a94f0c57b4cfc049dd16c1b66b10c7edaa5fd",
+      "bytes": 155
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/china.imageset/china.png": {
+      "sha256": "ae6315429b90b08c91373e2c74aec0e58ebc32ad3ba88daeda6ea37490bf995b",
+      "git_blob_sha1": "13ea05bb65f278f24ef04fea5286623b2eb44d87",
+      "bytes": 2180
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/colombia.imageset/Contents.json": {
+      "sha256": "bb7d2cfa1cad68bb0a5bc48887078b7665a3a22d86c3007eaa083bd946eb4616",
+      "git_blob_sha1": "cadf4218421061bb6ee3937aa92762d3b872aa30",
+      "bytes": 158
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/colombia.imageset/colombia.png": {
+      "sha256": "82779d60aa353f02734391ae67338bedafd2a864cfc829fc05e83344eb09d817",
+      "git_blob_sha1": "5448ee31d79756f6cc1bfc094572aed0be328661",
+      "bytes": 1271
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/comoros.imageset/Contents.json": {
+      "sha256": "707220a42963ea12275c9ecf83237ae7bd1d07ae5fe6e61a7d545e5dbc3fe5a4",
+      "git_blob_sha1": "756ba56e0b21808e876fa37ce6c66de2b814eb7b",
+      "bytes": 157
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/comoros.imageset/comoros.png": {
+      "sha256": "67e708b34256dfe3a136b154d149a44a3f4593294dc0f8e1781c8d96f10eee0a",
+      "git_blob_sha1": "5df68a9bed64bb9d50f014516d37c93e78beceb3",
+      "bytes": 2251
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/congo democratic republic.imageset/Contents.json": {
+      "sha256": "30c925b97f3d3dbbe4042eb03e065cb12bb6f5e36eef20e9ea33205bf18b0f71",
+      "git_blob_sha1": "07242c99029948dd62eb68cf35942aba0ba7af00",
+      "bytes": 178
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/congo democratic republic.imageset/democratic republic of congo.png": {
+      "sha256": "1b0966e4b8b8cd14fee38e23174d8e39a471b5c5a5325e4238f7fbdb92b506c7",
+      "git_blob_sha1": "0c0a079d05f35249fcb9a287a933373484c7c07d",
+      "bytes": 1840
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/congo.imageset/Contents.json": {
+      "sha256": "df1b3ba4e506985f234eff42c511100c10e7c1c738be9b62fcc7547727a366b1",
+      "git_blob_sha1": "598fd6114b7c41276e439d7a8fa21918c70ed184",
+      "bytes": 171
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/congo.imageset/republic of the congo.png": {
+      "sha256": "51bf49e759994f104c8be65fdc97ea2dc34e3cbb3dad80b23fa89006be9c080d",
+      "git_blob_sha1": "3b9795d3f1735d80875739828fceeaee30ad7632",
+      "bytes": 1507
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/costa rica.imageset/Contents.json": {
+      "sha256": "93256053e212aac13058f60ea89286157e4cfee17fd8b16059c3b752ff91476c",
+      "git_blob_sha1": "144b7ed68bd7454c37841edec0a42760a27297d4",
+      "bytes": 160
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/costa rica.imageset/costa rica.png": {
+      "sha256": "3570b7d3dff89a3f68562e92c988cb1091e55aba4300c5c94299e153d2a52be3",
+      "git_blob_sha1": "3a18fd12db84176df207e7b58540db6ce17424b1",
+      "bytes": 1248
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/croatia.imageset/Contents.json": {
+      "sha256": "cafb9f826bcd3a9ec14b5c3231458da309ec243038d56c7a40c5c97aee35f16e",
+      "git_blob_sha1": "95f4f2aac84a2bac3e5d6f7446a1de3273373f65",
+      "bytes": 157
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/croatia.imageset/croatia.png": {
+      "sha256": "bfda188e6e6fec82a43658228ca363580a286a62db4bf80dd5fecbc8493f4613",
+      "git_blob_sha1": "ab38b00730a6e7cf9c23d4f82282838c5284e634",
+      "bytes": 1893
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/cuba.imageset/Contents.json": {
+      "sha256": "ce8016a8a1c843e85e5022d466e654c9a647111a4243d25e9eb95b78bbcfff9f",
+      "git_blob_sha1": "d8a6f828932c1d2980c549dc329a292ed5aaf553",
+      "bytes": 154
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/cuba.imageset/cuba.png": {
+      "sha256": "b99f4762292b1eea9a0b79e536ec3779d6c4701b46dd5c6b2549e5196ed11960",
+      "git_blob_sha1": "4a9c4637895fc26581634cfde106356278aabb37",
+      "bytes": 1790
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/cyprus.imageset/Contents.json": {
+      "sha256": "1ff1cc013c52575c1f5336399657ba403cebf411f5d8c15640462490eb636a40",
+      "git_blob_sha1": "6abedc5fafe1c91133bf58b070f3c05061911068",
+      "bytes": 156
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/cyprus.imageset/cyprus.png": {
+      "sha256": "4ca27edfd17e3c256ecf0eb5222b6e27bf6efe2685edef92b2f8a1e43d9f6507",
+      "git_blob_sha1": "eb84a6fc9f3c54b2133359dda69a9be7d3e176ae",
+      "bytes": 2122
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/czech republic.imageset/Contents.json": {
+      "sha256": "eebfb8b8fa7261785f578e994279f9cccebb5f226a6b33326b961bd082a7567d",
+      "git_blob_sha1": "1d94fa03c5dfca636bbc8f96a1f044dd30e4ae85",
+      "bytes": 164
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/czech republic.imageset/czech republic.png": {
+      "sha256": "00206399b2556a00d7b00698120e43b1d238eb95d10f87d329e654a6baaa2f0c",
+      "git_blob_sha1": "fcfad24927c6104b2ad941aebfab69353cba7efc",
+      "bytes": 1425
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/denmark.imageset/Contents.json": {
+      "sha256": "2e3b4b36b47bf16acce4d539aefdad5cd9661ee467c9218cb9ef2128959b0985",
+      "git_blob_sha1": "54b68aac2eb339fd3f1e8d0bed1b426376f01c95",
+      "bytes": 157
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/denmark.imageset/denmark.png": {
+      "sha256": "b87475e1e16ef4ac3be1fd0ee09f93ac5781e3af854565ddc507e2c5517e71bc",
+      "git_blob_sha1": "41961f1e97a77da676a24f05fb968cd3f5cfe281",
+      "bytes": 1395
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/djibouti.imageset/Contents.json": {
+      "sha256": "2c2f4e2b0c685f378d76fa2e8c61cf7df92fbf74867ef15f5e94920b68fbf13b",
+      "git_blob_sha1": "100b6dc12bf703cc3da22a08a0d977ce333427fd",
+      "bytes": 158
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/djibouti.imageset/djibouti.png": {
+      "sha256": "9cb7c47062e8c4d75fb0635abed3b6d11d168458ff1a970b3cb4778b31de683e",
+      "git_blob_sha1": "51885017940af6bf633d788b5a7514ea9769c5d4",
+      "bytes": 1812
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/dominica.imageset/Contents.json": {
+      "sha256": "3acccd679c20d31c2676efbd2b95de632b07fb7bfcac7e6fa08a97cbb0041093",
+      "git_blob_sha1": "fb9a9a073fe65334766edb28e86038384e01ac1c",
+      "bytes": 158
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/dominica.imageset/dominica.png": {
+      "sha256": "2b94331452fbef4ec4f48eeb55b74845b2c0ad7bf92269c71ce2734e02a0a736",
+      "git_blob_sha1": "25a50046aad8cb0b63a7db1659e073f40ce16384",
+      "bytes": 2907
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/dominican republic.imageset/Contents.json": {
+      "sha256": "e641db3884d218702ebcbb2dc7a59ccfe7991be5994445464aeaa40c6184cc10",
+      "git_blob_sha1": "75a5003e3cbfeacd38b912db0e729493b155571a",
+      "bytes": 168
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/dominican republic.imageset/dominican republic.png": {
+      "sha256": "35cc0dac20f86f0509d5f9da26752ddd2ab4819411a5a157ba2434d917da8964",
+      "git_blob_sha1": "d67824376ea9f58a80561234a5e6d309b3522fbe",
+      "bytes": 1882
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/ecuador.imageset/Contents.json": {
+      "sha256": "3de6f5402a67ce8cd04b31638378c0c83b36a0cc3fd7dc8eab0b0ffac7769f84",
+      "git_blob_sha1": "e807999aa517bed5c22fefb921a061b4fae9ccab",
+      "bytes": 157
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/ecuador.imageset/ecuador.png": {
+      "sha256": "4868e04b1cd22644e2b7c7428087d6929eb18fceb5dfbf1e852df95608e5bfd3",
+      "git_blob_sha1": "5a073e1d1cb51a16a6e36d5c02ffdf2c3feb3e68",
+      "bytes": 1918
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/egypt.imageset/Contents.json": {
+      "sha256": "b3ab8c2e40370986f4565da8e015a5f96e77c5177792e7b8e5e1dbdf78d155f6",
+      "git_blob_sha1": "f7b0db1d6b9b7df07fb373e7c5b433b44605d975",
+      "bytes": 155
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/egypt.imageset/egypt.png": {
+      "sha256": "556895e8dbc44bcadbc1bb8d938aa480d08f0c295971cfcc102e8772ced33b1e",
+      "git_blob_sha1": "45abcaf95cad4668393ee5b059cb4fbce5cb0d1e",
+      "bytes": 1325
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/el salvador.imageset/Contents.json": {
+      "sha256": "cb35014bc88adf69c9f8908e769180a848118e36929e56928f4c91650788b34e",
+      "git_blob_sha1": "04d201fe13373b6bbe56906f347f4d125422bdde",
+      "bytes": 161
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/el salvador.imageset/el salvador.png": {
+      "sha256": "63311f0f7892fb0b86fa0d5db10fdf715a9791fe66067ef2d65a54775ba4c99d",
+      "git_blob_sha1": "b5dbd9d880007d25064a13ba049ceb971760e75a",
+      "bytes": 1810
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/equatorial guinea.imageset/Contents.json": {
+      "sha256": "ba66aa3dbc1ef0ac61be64871d34ba358027a599376bc32a24a9dc12d65754da",
+      "git_blob_sha1": "286b5ca9ee069d9934e91c7a5f692e356c5ee34b",
+      "bytes": 167
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/equatorial guinea.imageset/equatorial guinea.png": {
+      "sha256": "7fe136e0118ce238f5bccf4f2b28abc3cdb219427b5e0168f70e5b21a77bff38",
+      "git_blob_sha1": "dbe6e141e3bb87234d88408719af90e0f2142153",
+      "bytes": 1905
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/eritrea.imageset/Contents.json": {
+      "sha256": "19472c72d4a66a44e122ed8ce1ca987a9d31dc3c79afb98123fc886b4b8754e0",
+      "git_blob_sha1": "50e4ddd3717b108aa88fa4484f04fa07bacde26a",
+      "bytes": 157
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/eritrea.imageset/eritrea.png": {
+      "sha256": "98800d740188fae21cb80f531af129d1929d26d6b0097d9791c74d28f9bf93a2",
+      "git_blob_sha1": "6b7dc175afc86f8556f03185c9557b6623f7cbe6",
+      "bytes": 2620
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/estonia.imageset/Contents.json": {
+      "sha256": "96182e8be5a549b1f3e55316303dee80ef3e8cb6ec75b0631d157edf223f3216",
+      "git_blob_sha1": "e7a4a6957a2edc6373f9053b8505aa3945c4cb7b",
+      "bytes": 157
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/estonia.imageset/estonia.png": {
+      "sha256": "9e0db5969f88723decb78fdcab837ff9daa1ea3ab61a75878b7a755da8ead51e",
+      "git_blob_sha1": "34a71c3433ce967e4968f2bbf1a0588eba408527",
+      "bytes": 1164
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/ethiopia.imageset/Contents.json": {
+      "sha256": "cea03be5cd14f19593569d08bd41f7612c1ceccba6b03cea15cafd6254698f65",
+      "git_blob_sha1": "eb4f1078607644a1f2107cc14aad3aca89506370",
+      "bytes": 158
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/ethiopia.imageset/ethiopia.png": {
+      "sha256": "c012dce6d45e9dd18df684dbbd08e95b70e4c8374cfd4a3c3608eb7e30561388",
+      "git_blob_sha1": "a1eed7c8ed96e33a393b81171408d5e4e4de0da4",
+      "bytes": 2397
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/fiji.imageset/Contents.json": {
+      "sha256": "72a18c061ec4566baf2f827df8be5fd0d1533b5d0e03b87e1b2187cca71d4310",
+      "git_blob_sha1": "8b33bbd0f471c7a83f7373e2b8a27c2a9022df34",
+      "bytes": 154
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/fiji.imageset/fiji.png": {
+      "sha256": "c18cfd1192ae77d98fa776257bcc62f6b115afa6090a81fe9942f19a8f7dc368",
+      "git_blob_sha1": "42cb2c1ef422ac9382ca9c80f48126909c98bd25",
+      "bytes": 1917
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/finland.imageset/Contents.json": {
+      "sha256": "cffd931671983b5182a87fe9b98a18d807064f5e7a71de55d6aec53abfad8220",
+      "git_blob_sha1": "e2daff4ba11f541bdb8c600b6482a8c0633b2971",
+      "bytes": 157
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/finland.imageset/finland.png": {
+      "sha256": "84ac4bdc4bed1c8e5187b4edb4d957055587af7493fdb29b775915c874fcb079",
+      "git_blob_sha1": "841bbc488df1adf7df8b36a9bf34e2663bd3e1a0",
+      "bytes": 1295
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/france.imageset/Contents.json": {
+      "sha256": "3de30b30ee1ac801387bcaca939da4f460de4833a296fed198cc256e14b2035f",
+      "git_blob_sha1": "a2f37fbdcd6bab28e4c8df5838beacd456fb2dc0",
+      "bytes": 156
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/france.imageset/france.png": {
+      "sha256": "fc91dfd8baf2855b935a9d2e73540e3e57d03f5503964993dd5e099f7c7056a8",
+      "git_blob_sha1": "59d86b3f01a7d0f64c2185bc6fb9f37d38e8eaf8",
+      "bytes": 1330
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/gabon.imageset/Contents.json": {
+      "sha256": "6cf5ba488ba33bf67bc3ce419f65335ac8846f7b4a31c398ea4e32dfa6fe497a",
+      "git_blob_sha1": "519bdb83a585de344bc90732dbc8a7064b7c09b3",
+      "bytes": 155
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/gabon.imageset/gabon.png": {
+      "sha256": "9e7a4d5c8d213a51bb956a8b4939567bab0fbc0105e6c08b195739d7fffe3fe9",
+      "git_blob_sha1": "5f0506c31a7f6b00c98c62ef0c0a31861f7ee689",
+      "bytes": 1340
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/gambia.imageset/Contents.json": {
+      "sha256": "ab22e5cf966cb4ceececb74c229871d347252c456f67b974497a1a0cda2bc0c3",
+      "git_blob_sha1": "93383c819c5978cc6d7b7516204c826f73c592d0",
+      "bytes": 156
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/gambia.imageset/gambia.png": {
+      "sha256": "3bd6dab9287f66ead3919c289c21df3f925e5774a8b8bb532e2d59959d0414cb",
+      "git_blob_sha1": "e546d5b28f65626aea5612d5be355626e6365928",
+      "bytes": 1396
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/georgia.imageset/Contents.json": {
+      "sha256": "54032f6b03bcf9e8b36ad96fc3cdfd96086cc8b95a647373eaa6a1d84f1b117a",
+      "git_blob_sha1": "a94bf181ec542f65e68efa810738021460eb54a4",
+      "bytes": 157
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/georgia.imageset/georgia.png": {
+      "sha256": "9219321f322cd8422b3efa0c18400f3eb5ca4b005aaf5c0c64e87665ad098805",
+      "git_blob_sha1": "3d1eb9eb17022b9262b62305db13eea8f1e8c99c",
+      "bytes": 1704
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/germany.imageset/Contents.json": {
+      "sha256": "1ababb517d3d2701a113f70b8a2330c0d365391dfdddeadb0639e34898a0ff21",
+      "git_blob_sha1": "d726d85b2f4b7221bc29900eeeb692a882f38204",
+      "bytes": 157
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/germany.imageset/germany.png": {
+      "sha256": "23163b60beb462a1f70d174c4dc23edba2aac053b35816a1dc2c0a71f927ab36",
+      "git_blob_sha1": "d21c4b94941b31ae790cf649be49c40d91e61ee2",
+      "bytes": 1129
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/ghana.imageset/Contents.json": {
+      "sha256": "9eda1bab10ecb3a37c0eceef4aeae167ca47602b5708e5c4b3b0ca04d0fa71a3",
+      "git_blob_sha1": "46e207bfb2d2f066283c46709cb192681f60cd5a",
+      "bytes": 155
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/ghana.imageset/ghana.png": {
+      "sha256": "efe1c5819c37c85b7217479cac0c4f9b1d3800d91231bc277cc80ec443ef279f",
+      "git_blob_sha1": "a8cfd131b87fcfae1169f1b24ea8b9eaa35f4ca4",
+      "bytes": 1758
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/greece.imageset/Contents.json": {
+      "sha256": "1eef7201d5082857bc54169f71e3f5ce17d7c587d0117fc01c5f2236177e548f",
+      "git_blob_sha1": "f483b52b481a64f1338d25c58e52161fb04a66e5",
+      "bytes": 156
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/greece.imageset/greece.png": {
+      "sha256": "ca508d7209a975559af9816610c6ea9632ab473735a2d13150e2d8e0b8407b21",
+      "git_blob_sha1": "7272abd1dc9499d53e0a7fd14bee717f91562c24",
+      "bytes": 1529
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/grenada.imageset/Contents.json": {
+      "sha256": "291e226c76e8cac1e617111ea6f34235970c4fb9c375ed2d644e630daf8660fc",
+      "git_blob_sha1": "08051ac25f8ce9c784829b4382a87af44c903251",
+      "bytes": 157
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/grenada.imageset/grenada.png": {
+      "sha256": "7196086ebe0eaf10718fe5d7742fdb614a369f2856262c6893409cee1fb6078b",
+      "git_blob_sha1": "a19ea3f897251acb44ece7c32dc192cc2225fe75",
+      "bytes": 3020
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/guatemala.imageset/Contents.json": {
+      "sha256": "fd224e6747cb543dd04cf806be6dcdc133bd1fa845f4153666b9934b48b8a28a",
+      "git_blob_sha1": "03d3d40af92470e0c9fe627d9e69a151979fa86e",
+      "bytes": 159
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/guatemala.imageset/guatemala.png": {
+      "sha256": "efc9958af2644cde9167c8c0d522fc638acc730a5b6b79409a0f7957f2f07096",
+      "git_blob_sha1": "8b6d4c01fdb4013c949c20bacf49b8927c3a868b",
+      "bytes": 2035
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/guinea bissau.imageset/Contents.json": {
+      "sha256": "6f897526ccaa6582baae2c306eeae36a28677a5464a95117309b929a3d8cf052",
+      "git_blob_sha1": "d74f672c4e6c78006e937dcf75bf275272cfddd4",
+      "bytes": 163
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/guinea bissau.imageset/guinea bissau.png": {
+      "sha256": "d43553898cb2351c1c189b6f231c5e234a030fa2e1da241ee41f63320110e52d",
+      "git_blob_sha1": "48a6c6db4ec8487c2439ef63982b8e6cc16f94b5",
+      "bytes": 1685
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/guinea.imageset/Contents.json": {
+      "sha256": "03658b5df8f2dd2c69b9416e7820d3f1ae874c98905b115b0234a25920a2fd6e",
+      "git_blob_sha1": "e808f9e21206d1173558f865a76c6cd550642636",
+      "bytes": 156
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/guinea.imageset/guinea.png": {
+      "sha256": "1b919314ecad2c777e722b983808e77dde59f094affca911781b14b4b571e502",
+      "git_blob_sha1": "27243e9ae63f6a66b05c286cc1693b87c109de2d",
+      "bytes": 1373
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/guyana.imageset/Contents.json": {
+      "sha256": "7a6ce544e718e6ea95b8dec6432796806d36f72b952f88c80cfbbb19a4721644",
+      "git_blob_sha1": "4bf7e34d9333fce2d35da15bf2ac07ee1f673b74",
+      "bytes": 156
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/guyana.imageset/guyana.png": {
+      "sha256": "95b5bf0edba63becb5ee5e26f96038dfde588b31cb84f6eb85e4d20116b75f41",
+      "git_blob_sha1": "72b3cabe683e9983fe25fbc001677a47459ef7da",
+      "bytes": 2427
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/haiti.imageset/Contents.json": {
+      "sha256": "34c057fb3b3f1a06adef00012318647f5755772c1fe6d7a51613557d4f8a32e7",
+      "git_blob_sha1": "796b62fa0b21502716cab9222d16604602db3a02",
+      "bytes": 155
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/haiti.imageset/haiti.png": {
+      "sha256": "35f93e8482b60f1e283ef987cbb86a74ea313d29ca9451da5e4891f2b4c99a03",
+      "git_blob_sha1": "2bdc20ade652a52d283f9f3149cb2e7d3d057ed3",
+      "bytes": 1811
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/honduras.imageset/Contents.json": {
+      "sha256": "c3aa1fc73424daddc58456b31fc40fe68875044d1e1fa4585ca72c8362cdffcc",
+      "git_blob_sha1": "546719fb65139fab8d59dcbf15420360a90d23f1",
+      "bytes": 158
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/honduras.imageset/honduras.png": {
+      "sha256": "79f618ee7b59da4ec6c8075247d3464f6cc5b89eab48ce380504664f50c5e1fd",
+      "git_blob_sha1": "92347d9383920d17b21d308d0f2e848d6e24f408",
+      "bytes": 2011
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/hungary.imageset/Contents.json": {
+      "sha256": "4e173eee0990a32e0af9d18e49dfcdc42b81b30bc162a92dedeb30b328396703",
+      "git_blob_sha1": "51afc9f71d421fe6a2e8a2637fd07387761123f2",
+      "bytes": 157
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/hungary.imageset/hungary.png": {
+      "sha256": "6c58633eca636245b6e278b806effc16aed3637c3e115381959be35bc8884e4b",
+      "git_blob_sha1": "96bef9e3b8949e1ff2b370c680389216ac709578",
+      "bytes": 1340
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/iceland.imageset/Contents.json": {
+      "sha256": "3bd8430c7689c122e30bd6f4a6484e2efba79870c772fee96359f4258ead2126",
+      "git_blob_sha1": "b675421ed8af826704e85c3e04ed47ab52e6182d",
+      "bytes": 157
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/iceland.imageset/iceland.png": {
+      "sha256": "57c0ce8ec90dc33b8a437658d7fe67be593d31fb5aa1f204a1a89bc8211ffb02",
+      "git_blob_sha1": "b804bf8746a72c2b04c41df7a308a6de4af72a89",
+      "bytes": 1536
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/india.imageset/Contents.json": {
+      "sha256": "3b7089b0e3acd2c4d21bab4f149f1bd8b0df48ac419ffcedf886d1080c97f45a",
+      "git_blob_sha1": "e84ec67c84de8e6a9260315b30c1447defd8c003",
+      "bytes": 155
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/india.imageset/india.png": {
+      "sha256": "8546884b5d16678e434062b8976b5da02bf6caf1ff149caf868da3d8712b7d00",
+      "git_blob_sha1": "87d042cd9bb3221ee24a12b65aa9b8606db7c325",
+      "bytes": 1345
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/indonesia.imageset/Contents.json": {
+      "sha256": "1ad2ee663a8829b8ffa204b37b324823e3bf88b8a7942e1f58392e3ab758979c",
+      "git_blob_sha1": "d82cf6f5b7644ce9258d9f74cc3ecb80d7581388",
+      "bytes": 159
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/indonesia.imageset/indonesia.png": {
+      "sha256": "b69e0980cd861f6a99de1f743b75637c451af2a0aefcb3cbfd7cd8d0ca850135",
+      "git_blob_sha1": "2a6dda346ed360f9e118133313b511a9f161b048",
+      "bytes": 1213
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/iran.imageset/Contents.json": {
+      "sha256": "b3e0bfd31a6b2512497c27a4b71ed39d3766880230c01f6a0771e0c29a24b946",
+      "git_blob_sha1": "6369a0bd712d03d5e8f81cc0898727b89ea1c4e7",
+      "bytes": 154
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/iran.imageset/iran.png": {
+      "sha256": "09de8456f968ecc894ac069aae3accdab70abc12f87d19c243bbaff832862f0b",
+      "git_blob_sha1": "470a16cd807e272b0749a6bf0712a948164f7434",
+      "bytes": 2067
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/iraq.imageset/Contents.json": {
+      "sha256": "d14583d6e5601264406609f6e748374da039b7daa1a87b74207e5f8d1c196348",
+      "git_blob_sha1": "bab45a9263536f2845a7d321ce16c37d27eed573",
+      "bytes": 154
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/iraq.imageset/iraq.png": {
+      "sha256": "0ac15edf78590571613218702f58752943bd8808a2efa5e2572bd19d854b52b5",
+      "git_blob_sha1": "2d67556d5b74458acd346020dff4ba17adbe9727",
+      "bytes": 1488
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/ireland.imageset/Contents.json": {
+      "sha256": "aae9a0f467b7db27fcdb9583934aa8756367e1b7a7251e717bdb301d70b16a0d",
+      "git_blob_sha1": "d428fa2f513b7aeaef89f2e4cddc53053cab6eab",
+      "bytes": 157
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/ireland.imageset/ireland.png": {
+      "sha256": "710efeea7991010855b51721cb2bbc5e5252fd9fbef3a1e85c5c0809f4e844a2",
+      "git_blob_sha1": "df1ef953038ff382266079ada4ad8406cd582233",
+      "bytes": 1347
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/israel.imageset/Contents.json": {
+      "sha256": "9012fb523b831cab44edede5260cf530dfd3278d518a725bbbd7ca3513ce65ac",
+      "git_blob_sha1": "834532f7020ec2c40e0ec8d18faa8f77d64094bb",
+      "bytes": 156
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/israel.imageset/israel.png": {
+      "sha256": "2e139c73e296f42a214df0972a6b3a9cd9c3010736c11a5aac09eb73abfa522f",
+      "git_blob_sha1": "03c0fd73273e164ff3721de6ea6095227d851b39",
+      "bytes": 1781
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/italy.imageset/Contents.json": {
+      "sha256": "3905b629f3bd699419bf1752d280cdc5580fb181a012df8eb03d9d65cd8f8e3c",
+      "git_blob_sha1": "a39f03848769dd69b7c827847546ba342852a72b",
+      "bytes": 155
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/italy.imageset/italy.png": {
+      "sha256": "8025e2f12e63e5ca2d98e67b99eac564d813da05f167a1955470c49dc9587540",
+      "git_blob_sha1": "a4187a64222dc9ff6df76de928dfd818ab95e7bb",
+      "bytes": 1351
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/jamaica.imageset/Contents.json": {
+      "sha256": "3d503ebb4919596dfc48ab4b0055f08a96b0807e7963807c04b2cbcb75e5c5a2",
+      "git_blob_sha1": "763a831d8a193b139f2e6501383816314d2efdd1",
+      "bytes": 157
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/jamaica.imageset/jamaica.png": {
+      "sha256": "5ed69da55779d1c88b31d011cf50fd4e15cf7e894f17a78654eff0653b322597",
+      "git_blob_sha1": "f644346d54f7bab854ec09e3eae0a232cb3ec6f3",
+      "bytes": 1735
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/japan.imageset/Contents.json": {
+      "sha256": "d4f557dc69ad81795cf9efbd8fbe1b8a2ddbe13389dd001027054b8ab5923e46",
+      "git_blob_sha1": "282e3ffe27a960d3d0a87585c28e574ca20a9e30",
+      "bytes": 155
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/japan.imageset/japan.png": {
+      "sha256": "97eb5ddab665388410a0e63bea0e59cc439a91f115306e36ab2a7009ad2f7fc9",
+      "git_blob_sha1": "44f8fcb02d090ddd1a7d2bbd0b6b52c4e7ec1817",
+      "bytes": 1487
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/jordan.imageset/Contents.json": {
+      "sha256": "e7d72771d25c8bce28cc558f9caf70b85109f8c68a5eea577559716db0627265",
+      "git_blob_sha1": "7abb7919c5204d4dc984a6460a54b43c0279a5b5",
+      "bytes": 156
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/jordan.imageset/jordan.png": {
+      "sha256": "462bb416f48c08104b9914dfe4d23721d7d1a542ee76e5ec319e590492e2aa62",
+      "git_blob_sha1": "eff979b6276bc77f5381da0625baa43984e5831b",
+      "bytes": 1778
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/kazakhstan.imageset/Contents.json": {
+      "sha256": "012fe4fb5842953ecd5c6c957e6cb75d587f7d40b4fe811aab172d48e53c9988",
+      "git_blob_sha1": "6507b3a69a2093eab36c888517201d4674872055",
+      "bytes": 160
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/kazakhstan.imageset/kazakhstan.png": {
+      "sha256": "0da66e113f421424abef8166b4ea6d268c27b76688584879c6ccbe8642d12811",
+      "git_blob_sha1": "e8e9845a3ef37cfe20c8eb64aaed0574873a96af",
+      "bytes": 2017
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/kenya.imageset/Contents.json": {
+      "sha256": "3e3767057f5991f1e2184c046f23724cf740702df22f88250e7652090dec303a",
+      "git_blob_sha1": "c8513a7bed0abdfb7babc534f5a8a4160a819e44",
+      "bytes": 155
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/kenya.imageset/kenya.png": {
+      "sha256": "789b3c60041023f355ad8dfdd98b96eed7cfa44b5a8ef28d37b27d6a24f75895",
+      "git_blob_sha1": "234682b1976adf08505ae5893fbaf3ba771e1aba",
+      "bytes": 2070
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/kiribati.imageset/Contents.json": {
+      "sha256": "877c5a9089783cff3d3391d2196c8357b890f034809c3de87c41bfc965c3778e",
+      "git_blob_sha1": "1cda3919ff87ec155e7a75453bfe8c5b56d6d090",
+      "bytes": 158
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/kiribati.imageset/kiribati.png": {
+      "sha256": "ea6721453c3e3bae39d3202dabdf2b1d287c96bcb121739e675d6a3e0db7cf73",
+      "git_blob_sha1": "841111f892d562cb70f3f21fd0f6cd57fec07852",
+      "bytes": 2313
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/kuwait.imageset/Contents.json": {
+      "sha256": "33fccddfe23a4d547317d33ba351c207ee5d0f36a76e829c061565ba98cb26ba",
+      "git_blob_sha1": "d07b73833216a44e3db57b81f51453ed390b40ef",
+      "bytes": 156
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/kuwait.imageset/kuwait.png": {
+      "sha256": "a610a0c55239733b3e53d76260730c30f8e9dfcec634e7480f8b435ca650b9cc",
+      "git_blob_sha1": "5055e83278de12eca11ad07f73216a2268e8d380",
+      "bytes": 1429
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/kyrgyzstan.imageset/Contents.json": {
+      "sha256": "ec17ba375b82e894b4a45be81f141d0af1e1ecc32ac5910e967d8770f9df8cca",
+      "git_blob_sha1": "e8bbe9329904fc0dc0f6ad43d37d75a64fc89802",
+      "bytes": 160
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/kyrgyzstan.imageset/kyrgyzstan.png": {
+      "sha256": "4b957a6584e8bceec7a4115d507fd44febe7cabd0e117bd3354441f8db6e2e47",
+      "git_blob_sha1": "b52cea4f7ab4a58e4b9b50956001b3d31aec53d6",
+      "bytes": 2366
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/laos.imageset/Contents.json": {
+      "sha256": "10f28c0ad8de7f529d4f4a4e6372634ae63bbb109ee629e140fd74b1650bf6a7",
+      "git_blob_sha1": "d504b509de63cdfd7bf99fb01ebfbae57a4c4af9",
+      "bytes": 154
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/laos.imageset/laos.png": {
+      "sha256": "909a0798a7670ce69f7c3fa42cb9ac1a6046bdd105b4e24f3933d48f897beebe",
+      "git_blob_sha1": "2c092215d98e38d922f8163f8ebf894a03b1578a",
+      "bytes": 1573
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/latvia.imageset/Contents.json": {
+      "sha256": "ede5807399f7376438daf3daaea18ff6d54e4f992ed7a1949088b145b67b3f7f",
+      "git_blob_sha1": "29098dd2585fef48e863a1642342070e75cf3058",
+      "bytes": 156
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/latvia.imageset/latvia.png": {
+      "sha256": "08dce4d8b1ef3623b6c433aa5ad1773e058910b525afcf13a6e2de02fdae837f",
+      "git_blob_sha1": "6b7997528490da2131d4c6a2fc5ff95577fa2f20",
+      "bytes": 1269
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/lebanon.imageset/Contents.json": {
+      "sha256": "42ae875242665c88ff67be8c81a6416e27ecc6a344e2d45af5ef74a499873b55",
+      "git_blob_sha1": "1c8dde58bb530d0fcad6d518f9a35895f4c514b7",
+      "bytes": 157
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/lebanon.imageset/lebanon.png": {
+      "sha256": "e0bb42dfd5df3b2bea1ce173f5b8fd6f8a50ce108d03bf723fd0cdd0c9d971aa",
+      "git_blob_sha1": "f11c0db1183168e6540bdfc668de664dcfb58631",
+      "bytes": 1467
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/lesotho.imageset/Contents.json": {
+      "sha256": "125115bb87f5e26742863f935972f69a74fd638bc4e75a4872e9c5ac04ca7d16",
+      "git_blob_sha1": "4b16f209b471c0b93859721c825d5adaf8119529",
+      "bytes": 157
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/lesotho.imageset/lesotho.png": {
+      "sha256": "b768855bbdbd3a1d6c7f3dece7d4de9484a29e59eb504ae334a74450b9148ba9",
+      "git_blob_sha1": "a701718edc557d0350a2db1c05561a3535a6eaa5",
+      "bytes": 1495
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/liberia.imageset/Contents.json": {
+      "sha256": "6ddd63034a64f879d715cdc5788a456b0ecc747493e1119fcb3e530241e22872",
+      "git_blob_sha1": "aa2151d3f779702e22171ebd5108e2c3d79c37c1",
+      "bytes": 157
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/liberia.imageset/liberia.png": {
+      "sha256": "f501d53f2786d1e622dd72bc9fe1ecb8acb40485b4ea04aa9d64e7539e7aa5a9",
+      "git_blob_sha1": "959a2fcd7d40ea0670702fa5aae4185cfba0773f",
+      "bytes": 1790
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/libya.imageset/Contents.json": {
+      "sha256": "b96c7234b2f292c68d26f265e9f3f592eacc7f2a59d452922ec8bfd95291ecce",
+      "git_blob_sha1": "5d47851e7fc8d3c079b3e47dc069a7d7ae8eefc4",
+      "bytes": 155
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/libya.imageset/libya.png": {
+      "sha256": "136fe61e461305985dac03558dc2acd0eb53792d7c6bb9561135d1f6abf1fbcc",
+      "git_blob_sha1": "796f2bf0b781da1b9598becb7ffffb7af58ddf9d",
+      "bytes": 1734
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/liechtenstein.imageset/Contents.json": {
+      "sha256": "01099190adbad3ea89474f107059e7e15e4b7ffc6ba03940d20c2b96110ea7ba",
+      "git_blob_sha1": "d61b26b9870049c2f2f66501cb9d5f6a1884def8",
+      "bytes": 163
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/liechtenstein.imageset/liechtenstein.png": {
+      "sha256": "bc6adc01be496d9fffc1e62f53fbc3b0283cc3eb7871a83b1e0d8b46218a6383",
+      "git_blob_sha1": "1079adc009233423c3a7cfc09008096811e0c650",
+      "bytes": 1474
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/lithuania.imageset/Contents.json": {
+      "sha256": "c41bd26e3c51c7be71e2d959a11dcb77e706f0f835db54f32f05e4a474a3566b",
+      "git_blob_sha1": "12e9524bee1cfa2f79ce0e50cba165bbee15dcd1",
+      "bytes": 159
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/lithuania.imageset/lithuania.png": {
+      "sha256": "724b71ce96c7d66c58a06bdbe9f1876d6afbc3a9cd0a98bf281576f4736e872a",
+      "git_blob_sha1": "b692b37d9d76e734c69b9cc65a81e1ad1aa6a502",
+      "bytes": 1307
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/luxembourg.imageset/Contents.json": {
+      "sha256": "d55e57cb96fb406f8cc187f9be5817385af34dd3850a5f02f1e909f418591af7",
+      "git_blob_sha1": "47fff09bffe57e0021858d9ea340ccfd3f6f70ca",
+      "bytes": 160
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/luxembourg.imageset/luxembourg.png": {
+      "sha256": "d69a84c1ab6c2bc9d245f07f563f734f8d1ea81e48a289e3638e1024a8aeb491",
+      "git_blob_sha1": "1378d88c9c6dbe997b082fabc7d22803751c1a9b",
+      "bytes": 1306
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/madagascar.imageset/Contents.json": {
+      "sha256": "3d48368c604f7ca6e8841fd0e1c48a3b6e8af60393776d05665ef1494f06de40",
+      "git_blob_sha1": "73e0b6b045abc06f4ef9f4847ea623b2c5a72626",
+      "bytes": 160
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/madagascar.imageset/madagascar.png": {
+      "sha256": "5ecdcf34d1a34eb07e9b5eaca65c21e38e9d82a865a41bd0f765b9edc0aee804",
+      "git_blob_sha1": "7bd7d369b4a9ab5208cc2f15803990d586bb6075",
+      "bytes": 1327
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/malawi.imageset/Contents.json": {
+      "sha256": "32cc0dec292845b4dc43e6b39ede1474ce41ea29276bb8bb8c73441d0c459122",
+      "git_blob_sha1": "07095599af25fcc28ff5c532da0635fcbd491be4",
+      "bytes": 156
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/malawi.imageset/malawi.png": {
+      "sha256": "86f3dc62889fb07d73fde3ad068edc6426492e15e2dca501848c9833a4ee5974",
+      "git_blob_sha1": "aec72f01c2f15e5b85755ce79113ea87c3058979",
+      "bytes": 1427
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/malaysia.imageset/Contents.json": {
+      "sha256": "d5cfb6bbe261476ae50e5363aa7eb6a3da33345648ce46749390812ea1315986",
+      "git_blob_sha1": "3b3285a175096732b710abc08228185ef7c5e1d9",
+      "bytes": 158
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/malaysia.imageset/malaysia.png": {
+      "sha256": "64adc031b12133a3fe491d7ebb18d6ee81451a7c0fbbcf1d670122cf387487d9",
+      "git_blob_sha1": "1be865f49f71de32c2fe73bc43346b7c5becf62b",
+      "bytes": 1986
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/maldives.imageset/Contents.json": {
+      "sha256": "bb6633f1b57fb964968d6539c7f570080893fddb1418bd897bc5597c61b7fa1f",
+      "git_blob_sha1": "e2aa8eb43539d3d8c79e19b6798f37c44850387a",
+      "bytes": 158
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/maldives.imageset/maldives.png": {
+      "sha256": "5c967f845178effcd9889a7490f91555012f83a7b383a19af963b9c9dea3218a",
+      "git_blob_sha1": "4a69b3f9478e23476dede379a3a3e25703eb9504",
+      "bytes": 1704
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/mali.imageset/Contents.json": {
+      "sha256": "3404ae3949fee8713174004525e6b6e108d77c1abb90614455c4471716ab805a",
+      "git_blob_sha1": "0aba6b8fe95929dbea0bec402aa07b19653a1ff7",
+      "bytes": 154
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/mali.imageset/mali.png": {
+      "sha256": "b83c9658fa82d41e40fc6d7a10e00a13a8287ade64cf4b536f423ec8e540c796",
+      "git_blob_sha1": "6b99564c5120252bad9eb8394e5ac7c376eeeb63",
+      "bytes": 1383
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/malta.imageset/Contents.json": {
+      "sha256": "f6abe4b7386dbdddd2e461ad203b0d67e58d24b456f5935eb9e8f7f316fbd84a",
+      "git_blob_sha1": "95984328e2444302a4328222fc7c9ec1f81e1dfc",
+      "bytes": 155
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/malta.imageset/malta.png": {
+      "sha256": "a4ccc810b2a99fffdf2bcf14a1747d21890738b0035ba358db2b0027baf800fa",
+      "git_blob_sha1": "96c53abf92937b4e1a849cad9ba9e5a6cb87caa7",
+      "bytes": 1352
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/marshall islands.imageset/Contents.json": {
+      "sha256": "87250aaeeb7b9f2b2916bb0a1f78a2d01ece1f2a8c990364b7641ee3a351a045",
+      "git_blob_sha1": "416db0e39fa3306d4d2afe8b4345c8aeb191c6d7",
+      "bytes": 165
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/marshall islands.imageset/marshall island.png": {
+      "sha256": "cfa3d45afca9d2b46d8a5554b0f7f5fec30638a814401035e952392bcbac0c90",
+      "git_blob_sha1": "eaacf0d8b7ab95248e7c7c188cc7a0bf66b6fbcd",
+      "bytes": 2365
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/mauritania.imageset/Contents.json": {
+      "sha256": "53739175cf6a1c8807b00dd113d1470b4cc3c0f0d77f1f91f7816c47f1f9736f",
+      "git_blob_sha1": "865ad52f0a583e72d472d269197579764f7415fc",
+      "bytes": 160
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/mauritania.imageset/mauritania.png": {
+      "sha256": "e7b2a359010394c2befd83c8be46c1d0a820bd33e8f166ee6723cc4a207d02a9",
+      "git_blob_sha1": "fda96166d5b89e47e32d8b7a9d13e8e3c4be1557",
+      "bytes": 1857
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/mauritius.imageset/Contents.json": {
+      "sha256": "d2ac2e27d15aedd9bf927d161489afc82c7c747877746229f517e0765e3efdd1",
+      "git_blob_sha1": "fb04843082c9c72e2aa3ffd95268558561750e6a",
+      "bytes": 159
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/mauritius.imageset/mauritius.png": {
+      "sha256": "b777d005e525d66f537411bbc914f16b8bd529087e1c7a4c2670e2a943789049",
+      "git_blob_sha1": "0acbcbf6ac804efd981185a329519d2619c2dafe",
+      "bytes": 1349
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/mexico.imageset/Contents.json": {
+      "sha256": "19ddb0b4de2f1d7bb7d8076738c46fe8f415cbe1389c1ed82f10c162e5be40a1",
+      "git_blob_sha1": "f27caef973161ec4ac203071ec1c351eb8449284",
+      "bytes": 156
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/mexico.imageset/mexico.png": {
+      "sha256": "3a6c9ed914708b8094db9dae2f3bc5088b8928323be9bd8b0ece493a38ce0f80",
+      "git_blob_sha1": "a5f81fe68f8dc22247427fe435f65b55f730d7d4",
+      "bytes": 1768
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/micronesia.imageset/Contents.json": {
+      "sha256": "0bba668da6053b61220a27b3f0e656e36e6242d6657eb2ff2d7a421a748ceb17",
+      "git_blob_sha1": "76901757ebd149bdc09c09acac0edd362ef7315f",
+      "bytes": 160
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/micronesia.imageset/micronesia.png": {
+      "sha256": "78fd2f2068324d5d7855930149e619ab0c319e773cd31cfb1bda340611aa8330",
+      "git_blob_sha1": "cd186097899787a9ffa301527f04bab4ff746c3e",
+      "bytes": 2007
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/moldova.imageset/Contents.json": {
+      "sha256": "c079c26dd9dfa48b0a0388f5dd20531463da49eb5cc39ce2905da78d7fac9743",
+      "git_blob_sha1": "8e0f4e5909716353d82fcb8a3d22df4882f2afef",
+      "bytes": 157
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/moldova.imageset/moldova.png": {
+      "sha256": "f4cf740a99dfbe9e6b555f171a79455b6f92e9c1ab25f3592068a6d8d85411fb",
+      "git_blob_sha1": "0737aa6707a09474e2729fa28d70831b25967012",
+      "bytes": 1701
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/monaco.imageset/Contents.json": {
+      "sha256": "90306a4d293f7c4b9b03d8f330f10f4abb22ecce27ff0a90cfbb68a84a502023",
+      "git_blob_sha1": "b578f8606542a90aa473f62e834b58d15d6e0f14",
+      "bytes": 156
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/monaco.imageset/monaco.png": {
+      "sha256": "40ef81991946736bbf83fa79c70b10370f630fe6bd88b0c7ef68733f916bcec5",
+      "git_blob_sha1": "5de13819810fdd2c7eb11fbef56acb9cfb50637d",
+      "bytes": 1186
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/mongolia.imageset/Contents.json": {
+      "sha256": "b45c061d6392dbb30da8386827f2cce579c9a4273df5755d7b3f2d7e7bda1e29",
+      "git_blob_sha1": "255869ea43734fd1f11ffa386335403f401c53d4",
+      "bytes": 158
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/mongolia.imageset/mongolia.png": {
+      "sha256": "18282e7e32eb8aa6c93624a4dd1c5d7458199bb1b5e5a9f4b934c9a76425e4cf",
+      "git_blob_sha1": "85b3f943cbf65b7c1ce14db42517f181591957dc",
+      "bytes": 1823
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/montenegro.imageset/Contents.json": {
+      "sha256": "bba2bd860a58355a474541f6362fe9e1158153b2d8e5df237057f4849b2d3e69",
+      "git_blob_sha1": "6461a1077ed3bc1233f02eb4916f016f1755b8b6",
+      "bytes": 160
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/montenegro.imageset/montenegro.png": {
+      "sha256": "1556854e43412c10a1437590afa25cb0ef2e37503434d79cc1e1c84593b2489b",
+      "git_blob_sha1": "6553e284e199179d4c90639af5752d0a4c17681b",
+      "bytes": 2092
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/morocco.imageset/Contents.json": {
+      "sha256": "a5f76d47602ee997038aba6dd1cabd253fd60f8adbca4adf34e83283fb58e406",
+      "git_blob_sha1": "9fccfa9350000f3cb09a983cd3ebca27bf53e2eb",
+      "bytes": 157
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/morocco.imageset/morocco.png": {
+      "sha256": "52955166c25102e27000bdae2560f8ca6f50ec59df9ee3b7f47708e42fe25806",
+      "git_blob_sha1": "854a5311a8af028aeeb100fd91fe3a7615ba3cd3",
+      "bytes": 2250
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/mozambique.imageset/Contents.json": {
+      "sha256": "01b7f14f01f3b17c711bfe8f543dc53a1886967eaad50c2b90d77b0163131e76",
+      "git_blob_sha1": "90a8aff9eed30ee0446dd6dc5de83d0b5129ce55",
+      "bytes": 160
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/mozambique.imageset/mozambique.png": {
+      "sha256": "174cabbf52ab180762db9f6da5f7c5f8bea87c1cae440cc6d827092333525c77",
+      "git_blob_sha1": "ca354cf1a0ff35e4e1e2f01164c553b01252ddc3",
+      "bytes": 2261
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/myanmar.imageset/Contents.json": {
+      "sha256": "53e5bdd594886d9606088ce661809be121c85fea9439f48198541f13ab0a6926",
+      "git_blob_sha1": "46b7f2a28a64bb30c7f218439b456d904adc117d",
+      "bytes": 157
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/myanmar.imageset/myanmar.png": {
+      "sha256": "eaf9f82a56f1c7c0ea54ecb45933a3710db7b84d091b1c849b2ecb5efdbb9c54",
+      "git_blob_sha1": "9d4359ddca7f6f417dff878c6c31c78eba2b7d15",
+      "bytes": 2135
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/namibia.imageset/Contents.json": {
+      "sha256": "a79630c88be853d7f939ac1ec71cf40085657d5bfacc1a6b80fe86d4737b7265",
+      "git_blob_sha1": "6d005e2cef9c9d883c5d9008122b4fe8c29abc1f",
+      "bytes": 157
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/namibia.imageset/namibia.png": {
+      "sha256": "4999dce45043cfd0b94532999fc617ad655e2703389464591863112c2bf217b9",
+      "git_blob_sha1": "9efafe4ae3ec0b5459e70aa3d3aff4d47ac79fcf",
+      "bytes": 2010
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/nauru.imageset/Contents.json": {
+      "sha256": "194da2dba0bfbe721baf3edca2430f57b1c229802141596a87eb08e1a48c5e94",
+      "git_blob_sha1": "663ff20d4a4a1746b09a80ddb489b651c9470790",
+      "bytes": 155
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/nauru.imageset/nauru.png": {
+      "sha256": "c1d3a71519bbe2f96a86ff461e4f378795a71448e19926428942c19c3049efaf",
+      "git_blob_sha1": "f2ee7431e5957a4fc8f7d7c18bd4b7309a79a554",
+      "bytes": 1657
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/nepal.imageset/Contents.json": {
+      "sha256": "2f9f35b30a69ffe9babd120130706f48edbf580ea51b5a86e67427a94d0b05c9",
+      "git_blob_sha1": "fc1279064a765208662eaff702ec297757cafc21",
+      "bytes": 155
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/nepal.imageset/nepal.png": {
+      "sha256": "518d860fb2f9309df73cd547294508c057af6d203392958c855b2247902c2a61",
+      "git_blob_sha1": "561d9a9c17b17029c88623bdeb787dc4f4e97d34",
+      "bytes": 2218
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/netherlands.imageset/Contents.json": {
+      "sha256": "989aa381fdae6a58b4b5bf574b439946501bc6c972627b59c1bacbe7552e19b7",
+      "git_blob_sha1": "c9689c333e227bb827d59d472ae1bfc23cbbcfa3",
+      "bytes": 161
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/netherlands.imageset/netherlands.png": {
+      "sha256": "6318153a63b8fd15dab7805c4f4e441a16b71437e177116033f74aaa55ee9cc9",
+      "git_blob_sha1": "1244515b60ce8cc04e6ebaf6b54f00292db86272",
+      "bytes": 1280
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/new zealand.imageset/Contents.json": {
+      "sha256": "680928c4e9433970c69f82b9c8f0ff95fac556d90655a134725654b2c11675b6",
+      "git_blob_sha1": "4bc5de76390f4d4074d6cbb8f6b4638bd92568a4",
+      "bytes": 161
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/new zealand.imageset/new zealand.png": {
+      "sha256": "a6a5cc0c8c15c8fbacc897c244eb277c3750b691f7202da3c2c059014239bdd9",
+      "git_blob_sha1": "8fa7cab392a74e7c28b83999e23530941fe1b019",
+      "bytes": 2049
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/nicaragua.imageset/Contents.json": {
+      "sha256": "b9c92cfda87c154e97b7cc07dd72ecc1378a100092e3db7709ed2f55f8d3d6a5",
+      "git_blob_sha1": "8680557ba7fe522695cbcab193825d53f719f173",
+      "bytes": 159
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/nicaragua.imageset/nicaragua.png": {
+      "sha256": "b13f3a99a25cb2da4933186c6e0738b66935d81bf8bebefb9527bfe90cebe5da",
+      "git_blob_sha1": "34e5d440bffc49333a5b452435d44322e7ffae03",
+      "bytes": 2021
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/niger.imageset/Contents.json": {
+      "sha256": "f97712ad8a70bacf4f27ca01de3c66e565cc22461beb219be550ceef5601905a",
+      "git_blob_sha1": "441afe6be5a92c7ad8b6097cfed435be19676b18",
+      "bytes": 155
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/niger.imageset/niger.png": {
+      "sha256": "d04aa96f6f33a087071ef13bc5b4adfb55015d34b4cc2964a1e43ba2db5e57e4",
+      "git_blob_sha1": "db3826d1282808b2930ff8bc1e415231fad2aa11",
+      "bytes": 1668
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/nigeria.imageset/Contents.json": {
+      "sha256": "0d4e8cc2a3fae234e15c2b029d20b8dec43f1312aece12d2b4112b4445c57cc4",
+      "git_blob_sha1": "2dd4ed9f1d692ba4d5da717c8921970beaaa216b",
+      "bytes": 157
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/nigeria.imageset/nigeria.png": {
+      "sha256": "a643e9b00a524bf8a10e2ed4c12a9631c7a6ec3dac0850c090089d966124b40b",
+      "git_blob_sha1": "8e740ea697e345afc00051cc80f0e398f04a0e46",
+      "bytes": 1359
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/north korea.imageset/Contents.json": {
+      "sha256": "cebaa3a02a47c35a137db7d225363a1046245158ddf08773f83e6f18fd02fa79",
+      "git_blob_sha1": "966330b284e8b5fb046a98ccc6eeb9b96c2931bd",
+      "bytes": 161
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/north korea.imageset/north korea.png": {
+      "sha256": "6f12bd3e4010bb28c54cd7e318b75092605d24ad23b2312c9c125c5b2b60a34e",
+      "git_blob_sha1": "bf96d5c89e03ecf2df23e52335cc603727d373fc",
+      "bytes": 1966
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/north macedonia.imageset/Contents.json": {
+      "sha256": "863b70bd1520628e7e63a8b797fcbe24cc6c7c13cdc431142bf3708c542adf8f",
+      "git_blob_sha1": "27e7e6c83e8128747f7e4ed5702980cc47a58060",
+      "bytes": 171
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/north macedonia.imageset/republic of macedonia.png": {
+      "sha256": "a8d66094b35803d4f983954a5379c1c9feb1c05f717823e091fad145d7c39f8d",
+      "git_blob_sha1": "fd9e14616dd1255d263bc91db08843714cdd0fc9",
+      "bytes": 3083
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/norway.imageset/Contents.json": {
+      "sha256": "08a51f8c332cbced69abce44e3b72bb6b1b6cf6f2dbb0994210c1b6883d65abc",
+      "git_blob_sha1": "c87150b57c08352ba506e51bbb90963f2e016630",
+      "bytes": 156
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/norway.imageset/norway.png": {
+      "sha256": "aebc1994936a5f553706013fcfb07318312f43dc59cea77f53736cc7dfa40df9",
+      "git_blob_sha1": "5ec7c8a136ad36958eaa4766c495be48def05b82",
+      "bytes": 1535
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/oman.imageset/Contents.json": {
+      "sha256": "4288bdc65937660fa56045b6b3be2542a2a7141a64a69b0a8b6fcbf071012b12",
+      "git_blob_sha1": "c0d7aeef5c66582fa5b71dd95db43bb228428048",
+      "bytes": 154
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/oman.imageset/oman.png": {
+      "sha256": "a483643e22f30bfb4d33c5538a37f394bf276cbcc293b8c477a7e04055edf819",
+      "git_blob_sha1": "c82f3044389cc51de9a9b5ca27208696b7877f9e",
+      "bytes": 1638
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/pakistan.imageset/Contents.json": {
+      "sha256": "4eca55015b925c092b6bb99cb5a6ed72906331179f2e2754e571c1056aaf5543",
+      "git_blob_sha1": "ce3703c0e2b9f701dbe18104a5481722ab5078fd",
+      "bytes": 158
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/pakistan.imageset/pakistan.png": {
+      "sha256": "185bb2f070a8b9e119f60dec7ff6d01c830332750446da8682ba188030de6cee",
+      "git_blob_sha1": "af91d058ee182baafba107e85363f7fc563765a1",
+      "bytes": 2018
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/palau.imageset/Contents.json": {
+      "sha256": "42b858a3d0cb20c8e7404646a48efd2e78aa2f3daab6a9e5409d285d91151641",
+      "git_blob_sha1": "ac3378fa3ade4f76dc833894ce6952ac54971999",
+      "bytes": 155
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/palau.imageset/palau.png": {
+      "sha256": "a5df1ec7e5d8c25fc685b37d5f33918e8963eecf9dc86c903227d491d2356c65",
+      "git_blob_sha1": "2aa11f2635a111d92f97fef8a49697e82cf0bb2c",
+      "bytes": 1727
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/palestine.imageset/Contents.json": {
+      "sha256": "c2da9cb0e5fc50fd3f9b4fa07afb14e1be230856cdc01bbdee429e0994a81a9d",
+      "git_blob_sha1": "8db8c9bd829b0da865a5ecaa21f029961b402a1a",
+      "bytes": 159
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/palestine.imageset/palestine.png": {
+      "sha256": "8b681aada7be70d70065d64ce928463b2b5b47a0a4eee1e18bf8d8e5478b3414",
+      "git_blob_sha1": "0f3e2bba31dbabce0ec3bc71449f61f54162eeef",
+      "bytes": 1470
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/panama.imageset/Contents.json": {
+      "sha256": "98ce2b7c83af0bc458b6646f4707c9d67feac21b10b5ccaa5cf2d64ed7b3c485",
+      "git_blob_sha1": "3413006b955f79d2697f19b7e8eb28faf6b3be32",
+      "bytes": 156
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/panama.imageset/panama.png": {
+      "sha256": "09a681a450dface13d14c1799dae02895a274ffddc6b654d646a6f8dabd905b1",
+      "git_blob_sha1": "ee7c850c18fc0b0d8121e79c5cf2a8b5d099eba0",
+      "bytes": 1915
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/papua new guinea.imageset/Contents.json": {
+      "sha256": "eb8e6fc927d1df1096b814a986f22a4d8607b2a5fff428f58905e6bd320501aa",
+      "git_blob_sha1": "5e38ce8b3e67dc897530128441c9e505ae0ca584",
+      "bytes": 166
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/papua new guinea.imageset/papua new guinea.png": {
+      "sha256": "e3d82d85096cca200bc7a33a35e075c0c09244d21298deb385bb7d4f9b83dd6b",
+      "git_blob_sha1": "a12f71fd9690a4493d78476a113d2d5a0ae7d881",
+      "bytes": 2435
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/paraguay.imageset/Contents.json": {
+      "sha256": "06d68a0d1bf47db3c6bc58bae9df400f25e86f2a7d34255cb468d382e5155d18",
+      "git_blob_sha1": "7a862137c7b6078ca14156d3a52b021c741c622a",
+      "bytes": 158
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/paraguay.imageset/paraguay.png": {
+      "sha256": "95ef8a7ce353f6bdb8a547ad9b37bfa9327ed44198aace3837f41f6f4b6e621d",
+      "git_blob_sha1": "489970c47dcc40d8af2295ae3215d49796cc02ed",
+      "bytes": 1915
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/peru.imageset/Contents.json": {
+      "sha256": "e1263d4fca236764bb2bd0a0a33fd2da205b9ab61e901561f116dd822a7e85b4",
+      "git_blob_sha1": "b217472726d2cc1afb0d3d7884d1c5b9af7b4213",
+      "bytes": 154
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/peru.imageset/peru.png": {
+      "sha256": "7db68bb371d03ff2b593298cd91f6f5a6e6d0f00c82af6193b4232219dc89e49",
+      "git_blob_sha1": "a8630ce125386ccfe844ef6fe19e5b3a5824e554",
+      "bytes": 1337
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/philippines.imageset/Contents.json": {
+      "sha256": "f0e2b0a18b4edd459f6d795ceaaeb8c230cc0644f7848c37b4f47ad117d7ab01",
+      "git_blob_sha1": "df38d2eb626d162d74346ba5a78910f9691a9d1a",
+      "bytes": 161
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/philippines.imageset/philippines.png": {
+      "sha256": "749c4b56c0965a68a4923e4e46129bef0b3a7e66a54cf8e51bc3568e24083d33",
+      "git_blob_sha1": "48145e80996e47792b71f8ce4ab1548df5f2266f",
+      "bytes": 2177
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/poland.imageset/Contents.json": {
+      "sha256": "daeee71e45401db90cc39a355c64fd20677171771d3cde7f0fb4fbee3c15b572",
+      "git_blob_sha1": "461e76692d83d24a5bb7d102f2d9d39e2cb848bf",
+      "bytes": 156
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/poland.imageset/poland.png": {
+      "sha256": "34d31396160fcf230a3702d5df10c118f2d624401e23b22f835b05b0fb136cb0",
+      "git_blob_sha1": "96d4fcd4deb7a40e299282354d3b711cbc6b8595",
+      "bytes": 1195
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/portugal.imageset/Contents.json": {
+      "sha256": "81fed0be8589fd36f38410db2272d4ea28e691b3812dd620c05f97c998a1c4b4",
+      "git_blob_sha1": "55a27dc730462bee28836e75e77da27763148c0f",
+      "bytes": 158
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/portugal.imageset/portugal.png": {
+      "sha256": "da8b747319aecadf3a12864cbb0b2b7fe1e7141faaa0964e0332827e38058f0f",
+      "git_blob_sha1": "08b32480c87aa64843ae2afaa58334ad6883013c",
+      "bytes": 1948
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/qatar.imageset/Contents.json": {
+      "sha256": "1696b3fc426142c516182b6587859fd2231e868dabe46e196bcac41ccab1fe0a",
+      "git_blob_sha1": "baaa6ed147b68bb41034abbdcf67dc571d8e0915",
+      "bytes": 155
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/qatar.imageset/qatar.png": {
+      "sha256": "242aa4987b05dd8d0068abc5c7d6c00b6486ef1600fe809966914b1afdecc653",
+      "git_blob_sha1": "009ae8f5c742c96d0cac15e7e748ab38b6ac4b5f",
+      "bytes": 1768
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/romania.imageset/Contents.json": {
+      "sha256": "8e3626150f02bee7b1d4897aa6cd3bb96ce7a4a73c14e5adaea7ade86b1d29e0",
+      "git_blob_sha1": "2a5d1ea54bb9077ba6106a567aa882f6002572e8",
+      "bytes": 157
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/romania.imageset/romania.png": {
+      "sha256": "97361e42e60e9008ef066a6d31df3dde9c50dc9e7eacb0fd6dcc1ebb4b4e86bb",
+      "git_blob_sha1": "f3a32fbf3c9333a3d421b081fad4195271046af4",
+      "bytes": 1341
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/russia.imageset/Contents.json": {
+      "sha256": "744b30b03244d445dc22781d087a320c4d5306543b61689d06487685a8778077",
+      "git_blob_sha1": "fdab741395fcab2022dbe1cf9ed4d5bb135ba433",
+      "bytes": 156
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/russia.imageset/russia.png": {
+      "sha256": "8e36c8966045688d18fb359dbe7f7c4da3d7e48973b84ed0a9bdccf2caed7a16",
+      "git_blob_sha1": "07cc2a83c519c99fe0023f6beafd6745e579781f",
+      "bytes": 1246
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/rwanda.imageset/Contents.json": {
+      "sha256": "5ecc82b097255de2d07e9628dbf36c1bb9d77c59240ed41cfc4ad94c76c0620b",
+      "git_blob_sha1": "6cf05c28db1ffd7a528971b683442624e929b310",
+      "bytes": 156
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/rwanda.imageset/rwanda.png": {
+      "sha256": "fef33cda0e57a5a3e90a815bbd53b56cee9ae9b5424155722fc83b7629a2cc63",
+      "git_blob_sha1": "4f45ef551b87e57e4c8df9e6bcbd1c2b157411f7",
+      "bytes": 1767
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/saint kitts and nevis.imageset/Contents.json": {
+      "sha256": "2e565978f7105bddbf1a49cb9b5a1a1a301726ba164fd35a41f43af85692f80a",
+      "git_blob_sha1": "137a8f584059e7d4f7ac26570bcd2fdc54bacc99",
+      "bytes": 171
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/saint kitts and nevis.imageset/saint kitts and nevis.png": {
+      "sha256": "a68d8725277730dbbc22791b7e65eccaabbc6153daeb2d431483098be2e910b5",
+      "git_blob_sha1": "7b7fb4157e90e9fb606eca53e5e8c304783ebdfb",
+      "bytes": 1872
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/saint lucia.imageset/Contents.json": {
+      "sha256": "99fd2dacf2ba66b35c03e07a8bb9317aecc7045fc2156ff0a1dc3a0cb6d15f9b",
+      "git_blob_sha1": "c3482a467703010852176ebd3c73e0f9b31ec435",
+      "bytes": 158
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/saint lucia.imageset/st lucia.png": {
+      "sha256": "96e9365790208e11c7105d381bb09850d3e4d82af23ff50d56843a9d4978195e",
+      "git_blob_sha1": "c144b8397cc57010a0ee4f646fd1c69a45a56c07",
+      "bytes": 1817
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/saint vincent and the grenadines.imageset/Contents.json": {
+      "sha256": "a379a2acbb1fdd5f76c3fbf76299d554ffe6a7607474447985a204181cdd81b9",
+      "git_blob_sha1": "6c173bcabed1097f7fb0a2b9c4e81e5c536c295f",
+      "bytes": 179
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/saint vincent and the grenadines.imageset/st vincent and the grenadines.png": {
+      "sha256": "1fcd806aa58c218b585f371c8eee26864c8206444277edcaca3dc3047bd2df94",
+      "git_blob_sha1": "9c3ce3cc4ba268e32ad26248b67fbe265e2f0c93",
+      "bytes": 1774
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/samoa.imageset/Contents.json": {
+      "sha256": "d979ef67bcd8787b9a3863e2d685be3e054c47de6d2e0481813d6bd8dbd5ac89",
+      "git_blob_sha1": "f969a17aee80400d40323d503a547f029e159799",
+      "bytes": 155
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/samoa.imageset/samoa.png": {
+      "sha256": "4998617e77e06451e42966d69addc26f97c21522f576673bf2234bb9c3df888f",
+      "git_blob_sha1": "9d860daa6e847acba1f97d97d3679145b3b45e0b",
+      "bytes": 1824
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/san marino.imageset/Contents.json": {
+      "sha256": "6a8af1870027b836833fc2038d949c188b94318ac1c8ab750d5a3039010ff27f",
+      "git_blob_sha1": "295a49cb44a9d4673f0c2848dfe4f3f2e5e6cbfe",
+      "bytes": 160
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/san marino.imageset/san marino.png": {
+      "sha256": "9f09e49ba601f53b92910da0187a1b1dea11cdfaefb34a46a722bafcab049bd6",
+      "git_blob_sha1": "1e7dc20f028ef6fa8c70eccc657c3567bdb3f805",
+      "bytes": 2415
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/sao tome and principe.imageset/Contents.json": {
+      "sha256": "06968dc1b2aa78b6a60910fb41bee4db6d9e7dd6ad5133ae85cc9cb19e1798d8",
+      "git_blob_sha1": "d0e60b9346131a31582fa59bf79a9b124c4d291b",
+      "bytes": 169
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/sao tome and principe.imageset/sao tome and prince.png": {
+      "sha256": "c568f6b6072b3b4b561208e488450602484aa709872376babf8467ef2131bf29",
+      "git_blob_sha1": "39c06ae79f598650f90949b1de68388cf3a08cb8",
+      "bytes": 2006
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/saudi arabia.imageset/Contents.json": {
+      "sha256": "6a180f535cdbcb317fcab9a93a0eb8075b6c7f3a24883009305fc967bf1a2926",
+      "git_blob_sha1": "b8f500a950c338adb74ecccf45ba945cbb563858",
+      "bytes": 162
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/saudi arabia.imageset/saudi arabia.png": {
+      "sha256": "adb4328fdd8a54b31fe28498dd5351121a3361c65ef6fa3371dc83b709c3912d",
+      "git_blob_sha1": "ad8efeff1be04e3818cc2905eaa4edc82da20e9d",
+      "bytes": 2015
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/senegal.imageset/Contents.json": {
+      "sha256": "0fd3ecd2c8ce8720177a96a2fc40a189701089a56fa24085cc5eb4dbb1ae4d79",
+      "git_blob_sha1": "f9c0f36e34450c6114b60818d6dfac2bef4e3be8",
+      "bytes": 157
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/senegal.imageset/senegal.png": {
+      "sha256": "6d0d34cc1cd1a82af3e85cec0f9925f1c4a65244f44c43170fe219af629b4fdd",
+      "git_blob_sha1": "8f00103cbc7c2268d47ea960d81b69c8f134c2d0",
+      "bytes": 1743
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/serbia.imageset/Contents.json": {
+      "sha256": "8fa6777de929859e739b169a37ec003fa5c2db9bb320a523d7cf57d8df486081",
+      "git_blob_sha1": "dbbdcb857e4fb1592b5c92056ef236ab0c39f679",
+      "bytes": 156
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/serbia.imageset/serbia.png": {
+      "sha256": "d21e9877a59573ea38539668978b36ad387b0067ab8e899e291a676180dcde3d",
+      "git_blob_sha1": "a27c80e5037cbd134124fcebe3dd0a941996f34d",
+      "bytes": 2099
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/seychelles.imageset/Contents.json": {
+      "sha256": "295363c2c431c642bbea2ad02d046cb321819682d70a09511e860ad1d97535eb",
+      "git_blob_sha1": "af9f803eef8d3a81d24dd98c657b52f8bc57322a",
+      "bytes": 160
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/seychelles.imageset/seychelles.png": {
+      "sha256": "d4d785bb6ba63d94e00ffdd28e62c3e6e23eefb4914c60edd5108b2a06ee87fb",
+      "git_blob_sha1": "6f85d0627c110520095804b93d8303b3564ac7c0",
+      "bytes": 2121
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/sierra leone.imageset/Contents.json": {
+      "sha256": "ebfa9fa5b994e33207ca04fe788a2e95a35bed061c45035d3bb89f76788d2d78",
+      "git_blob_sha1": "19d3ebd0836fa389a4823b9f7a53924d0a3b68b9",
+      "bytes": 162
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/sierra leone.imageset/sierra leone.png": {
+      "sha256": "48df852682302599157d233f5755683d97c3c14af823b01429d229881ce02e05",
+      "git_blob_sha1": "cfe044045d802cdc9810be86ea522a840f172d5a",
+      "bytes": 1353
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/singapore.imageset/Contents.json": {
+      "sha256": "7ac3f8d94755ba81ccc2d1f2156af790bf90ad1065f525aa20213f93adbc9407",
+      "git_blob_sha1": "582ea07bbb982d056ccc9a3d81fa5dc8f82c6a41",
+      "bytes": 159
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/singapore.imageset/singapore.png": {
+      "sha256": "8ece338d802d2d41f84fa0df09fa8ef0999482819c628ad476df141026b573bf",
+      "git_blob_sha1": "5490d55f3504315886cf3f4410ee68a6859d0c06",
+      "bytes": 1890
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/slovakia.imageset/Contents.json": {
+      "sha256": "cb4508e17de1145976ed1cff90d0916e900855a91182ca1ac60d90bdee972f49",
+      "git_blob_sha1": "c88567aeaf82be1f03a19345e63df553ad666448",
+      "bytes": 158
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/slovakia.imageset/slovakia.png": {
+      "sha256": "12dcd0cb399cd09bd23e322bcf284d05e82fa7c6af13983c32f9035438ad23f6",
+      "git_blob_sha1": "8daa5b28b17b7fc6e6d9fef1a31215345d17d9f7",
+      "bytes": 1953
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/slovenia.imageset/Contents.json": {
+      "sha256": "cfb229fe67a6f9913a78e139d4f03ad90933831b40fbc320ff3167a68ef3416b",
+      "git_blob_sha1": "d278ee85aad82d83601a85affb6ec9afbd08b486",
+      "bytes": 158
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/slovenia.imageset/slovenia.png": {
+      "sha256": "437f1e1e4deb1e3ed625b5369a9ccf8e35cbeeba8d9f3445bb3c7307963c07d7",
+      "git_blob_sha1": "4c8d92ffe6b843e29c07a5f9d750a04930b53473",
+      "bytes": 1562
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/solomon islands.imageset/Contents.json": {
+      "sha256": "c5719e7a5c1399bf371335dfb717663f59c4fe30b5d6e571309eae522664f981",
+      "git_blob_sha1": "38554c5c6db04cb6098458bf81d8bb4555dfcb7b",
+      "bytes": 165
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/solomon islands.imageset/solomon islands.png": {
+      "sha256": "ac6f2b0b082d767f7722d461a5caa4c1498e1ed6e9d391085bafc3e502038671",
+      "git_blob_sha1": "267fa936fe4a0bdf1894a6eaceed492b44c91f0d",
+      "bytes": 1959
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/somalia.imageset/Contents.json": {
+      "sha256": "2a8b79f5ae0f9d53936ff070a37927ddbaab566ec7f337c625201e23d281e8a9",
+      "git_blob_sha1": "99df9ac951357eb43dfbf7bc75fb8857fef7e275",
+      "bytes": 157
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/somalia.imageset/somalia.png": {
+      "sha256": "a9efffd160c8e5436a23a735f1f0e5938937c4e3f2fb332f5ffaccb5422b0f72",
+      "git_blob_sha1": "d0bbfb186775009eb131f4a21706cd8836a92950",
+      "bytes": 1759
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/south africa.imageset/Contents.json": {
+      "sha256": "ac1f240a78cb412665a362d6e3cf3a7d7566d043c9d534b73dbee611c3a7f199",
+      "git_blob_sha1": "34ba80859e503ee6019edf5844ab290ce38ccb66",
+      "bytes": 162
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/south africa.imageset/south africa.png": {
+      "sha256": "c27b31196ca2b36a15caa9bb13a3258b60cfb9be2030549940581d72769d5e50",
+      "git_blob_sha1": "cbdf011b2b777d4b6cf5c4a5d770bed28ad53396",
+      "bytes": 1754
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/south korea.imageset/Contents.json": {
+      "sha256": "2a56872a3f110c98d3a7eadcda1344753be84fe647ad0382c82684f8d5702c14",
+      "git_blob_sha1": "1f006ccfa07e8b7b609a97f12122413a29305f86",
+      "bytes": 161
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/south korea.imageset/south korea.png": {
+      "sha256": "592134bbcd279842e3a1474989833d34cf81f64aaab33ee0aaf2114655a3c0ba",
+      "git_blob_sha1": "d89bd0a54b46117a5c6c2cd9ab0adde009bf2511",
+      "bytes": 2192
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/south sudan.imageset/Contents.json": {
+      "sha256": "cf093db3c1e5a42070ac4136906fefc2ed848af7915b42541566d80297a937ed",
+      "git_blob_sha1": "2b5ca083c9b59343af56aa105e6e1889c72ff9d1",
+      "bytes": 161
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/south sudan.imageset/south sudan.png": {
+      "sha256": "a850a8ab9b26b3923408de8c9668adc3878c5ce9bc9600a2714a6638f32cd254",
+      "git_blob_sha1": "e7130d3f2242bda673511c186787b1de57a89dbf",
+      "bytes": 1796
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/spain.imageset/Contents.json": {
+      "sha256": "64a2029c7022f245d5773d7a4e03c9d25de767b895ebf02c830a422153bfa0b9",
+      "git_blob_sha1": "fff81f835cbc8617626882fbcea692dcab51952a",
+      "bytes": 155
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/spain.imageset/spain.png": {
+      "sha256": "4b3cd35beec3bf12a5d38c430f0272750da52a7083a42b3e9a7286d2c6f0b91f",
+      "git_blob_sha1": "6b9a906205049105f88854fd1b4daa119879e010",
+      "bytes": 1232
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/sri lanka.imageset/Contents.json": {
+      "sha256": "50905601ba675b81b2b5b73195bd9f531f23413df247678eda07edc3c0475177",
+      "git_blob_sha1": "1a935f247b329166f4d336dfdb30f97b371b0b53",
+      "bytes": 159
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/sri lanka.imageset/sri lanka.png": {
+      "sha256": "a745e801a864c097f20e45a93fed66fed8bcf905c8ff6272f3ec6b0064ba3c45",
+      "git_blob_sha1": "d8b5d1817e62785120095eb4b55ebf38915448fd",
+      "bytes": 1821
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/sudan.imageset/Contents.json": {
+      "sha256": "41db16e6533399098cdf18204c31ef0b8b0041fed07be854f4529ba663bf4570",
+      "git_blob_sha1": "26bde4f408fd6dcb4a18338ab9c500b1aa760eff",
+      "bytes": 155
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/sudan.imageset/sudan.png": {
+      "sha256": "a8da0cfe4b7c5d5224dd4745c079a823f3cad81f3fcfbb7055a04227c8d5c6c4",
+      "git_blob_sha1": "b673bad24d8bf00989deadbaa04dc3f856983dae",
+      "bytes": 1441
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/suriname.imageset/Contents.json": {
+      "sha256": "07a92d3c1538856ec969fe3b6752cd7f7b7f72811a0795c9e5daa20cec3759ad",
+      "git_blob_sha1": "471a5f594a31e1ee933fc4fb9acdb816586d0845",
+      "bytes": 158
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/suriname.imageset/suriname.png": {
+      "sha256": "a20a087967d8efd4bef7517026ca92b80c0ab5c3897180718579ed6bc50ae812",
+      "git_blob_sha1": "e68e51f4cea6fb618eeb96d392174bed5084b0d1",
+      "bytes": 1936
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/sweden.imageset/Contents.json": {
+      "sha256": "a6cd62e8c15cc125aca54e90beff42d7f73ca23af40ea6b1b0614a1b91aeb266",
+      "git_blob_sha1": "85759ef0c15dd1c977f0ef3ccb636430f75f7ccb",
+      "bytes": 156
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/sweden.imageset/sweden.png": {
+      "sha256": "727ba17cc8cc50cb86c74d6840c386c4780920c9da70843e826a6a44c38ab011",
+      "git_blob_sha1": "4e95fb6842decbdeae98fcbe3fbdcaab7d0b7044",
+      "bytes": 1422
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/switzerland.imageset/Contents.json": {
+      "sha256": "0e26ca1c9eb8e2f6c6b1a69bb4c288b5321a852a3a20378ef9cf4c80198e64b8",
+      "git_blob_sha1": "f5d806ff58ffee7bcffd7ed55d6d9c0c9ed48c06",
+      "bytes": 161
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/switzerland.imageset/switzerland.png": {
+      "sha256": "1d84817724f4c7bd202bdbb209561cf3f7ec83cca0fe4d7850c9a1bc14a400ad",
+      "git_blob_sha1": "671b16167a807379ab5dd06e1904aa66f1464999",
+      "bytes": 1317
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/syria.imageset/Contents.json": {
+      "sha256": "e4840a7760e12d9e0d3e0da52ada0ae941ac34549b886f4151a4732ba1877c5d",
+      "git_blob_sha1": "a18d168a347734ad9efaf389f67ad28fb4782924",
+      "bytes": 155
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/syria.imageset/syria.png": {
+      "sha256": "24c5e3a20a99d8b92c2fc10cec1073df8b32a538cd4785b7ec8f1876ad21b62a",
+      "git_blob_sha1": "812349400823e98b1973ef3ce6da1d80b078cda9",
+      "bytes": 1479
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/tajikistan.imageset/Contents.json": {
+      "sha256": "3bd8f688e3c2800a38715acb4d23f979a764c71779fc0188ca1dbd01ccd72254",
+      "git_blob_sha1": "321ef21832975045455f4b1cbb585fd4cf529d9c",
+      "bytes": 160
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/tajikistan.imageset/tajikistan.png": {
+      "sha256": "78de8d213bf889d5a60887bc8364c5029ce5ca27fee9a56e75e8888f3f66fbcc",
+      "git_blob_sha1": "6991e4cdfad46bf2cd006cc6673fca00d04357c0",
+      "bytes": 1857
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/tanzania.imageset/Contents.json": {
+      "sha256": "d6a7156522e3fb090f71b9b3237f96d65ad2529bd902b2103a82454946c2fde1",
+      "git_blob_sha1": "29b3ec53681565a0c56d3bb4e773814a5e757580",
+      "bytes": 158
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/tanzania.imageset/tanzania.png": {
+      "sha256": "fb3e4c781769ed50a94033030add92d8fb1d2b181631867dc2294f5f7dfb36b4",
+      "git_blob_sha1": "5bd6a325895ad58c6220e4b24d2e5e576db1fc65",
+      "bytes": 1590
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/thailand.imageset/Contents.json": {
+      "sha256": "7137cc0b53298825bad40f54a4295855e535d99f7c010a8977f8028f45632433",
+      "git_blob_sha1": "6bc64baa98df19aa5b097e84639fe454cdefc1a9",
+      "bytes": 158
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/thailand.imageset/thailand.png": {
+      "sha256": "82a0451ae7f4431172fe31b333d661e356116d5d2d319805400d248cc4ff9d1b",
+      "git_blob_sha1": "e7a2cf33da8fde023917609c9aa64c3b72dd2d28",
+      "bytes": 1267
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/togo.imageset/Contents.json": {
+      "sha256": "70d0f733cfae8616f392b1ef8f5c665fbde5fcc9d381ab56e28f6007c4ba3c79",
+      "git_blob_sha1": "7fa64270131569023c887a24f770e08ed5633351",
+      "bytes": 154
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/togo.imageset/togo.png": {
+      "sha256": "aba0b93746a4e855e2aab29478e446c834da5b681e805b147beae1c5edb4a3e0",
+      "git_blob_sha1": "75e35c7668a38b0f0f67fbcee72f7bf40e0eb82e",
+      "bytes": 1746
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/tonga.imageset/Contents.json": {
+      "sha256": "8919ff9d32ab3dfc6e4ac96ca3fb8d75c1f65c2b6065f563d606e56cffdf68aa",
+      "git_blob_sha1": "8e1883d1b34cc1b065976a2fed538c6152bb1eb7",
+      "bytes": 155
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/tonga.imageset/tonga.png": {
+      "sha256": "b227ea04abbd7bc895af5d6c43a67d1aa720974f8a305fe18a7fecc04a01db13",
+      "git_blob_sha1": "82b09b75cc63dfca4b5582865f007dc260786176",
+      "bytes": 1412
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/trinidad and tobago.imageset/Contents.json": {
+      "sha256": "a0c12bd4abccc8e0ee3f0be8194402d080beb402ce315b387eb7ff1eac22bc56",
+      "git_blob_sha1": "0f15253253b9b63ceb525df84af36fe79fcd2fdc",
+      "bytes": 169
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/trinidad and tobago.imageset/trinidad and tobago.png": {
+      "sha256": "00553cc7884b4032a2194c35d73a580e497424f6dd5ded81bddac976fd655f88",
+      "git_blob_sha1": "828b44a8141063a550f53f820832de67c12c266d",
+      "bytes": 1592
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/tunisia.imageset/Contents.json": {
+      "sha256": "f6fdd363061ed944ff79b1801edbc22d745f2375934b1feaf510cb4bdf2e00cd",
+      "git_blob_sha1": "95e8563272ae051ebf76759c52552371913d6f8f",
+      "bytes": 157
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/tunisia.imageset/tunisia.png": {
+      "sha256": "c25d96a8f02921027a08c77ce6be2f57f470ed4ba100a9fbde7ea3483657e87f",
+      "git_blob_sha1": "e9b1ef849193745073b3ca6c33f0bac49725c437",
+      "bytes": 2115
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/turkey.imageset/Contents.json": {
+      "sha256": "c099122b18acdd87acdc9889ab5e70646b640d711ca660e19f82055ba740a174",
+      "git_blob_sha1": "ba0376937b74cbeae7ed8bf1b1944ba6714883f3",
+      "bytes": 156
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/turkey.imageset/turkey.png": {
+      "sha256": "8a7bcdfd4a60f3bc3c919514397dc653e4c19ff633e4fe73054ebbf406539b1e",
+      "git_blob_sha1": "b6fe25cf8c7f11a2e1febcbddaf4bf65804ce569",
+      "bytes": 1800
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/turkmenistan.imageset/Contents.json": {
+      "sha256": "f7b4d6f4e43505169a9f88b35855648bab7273a21597274902a7fdea2f3f43de",
+      "git_blob_sha1": "934ae15bbdcb4b08747cfe867e17d352435446ed",
+      "bytes": 162
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/turkmenistan.imageset/turkmenistan.png": {
+      "sha256": "5b5bf8124ca424eace4b6fe11f302fbba237bf8069b7cdd15ee7f4d5b79bca04",
+      "git_blob_sha1": "e1ab676d0b09fe97719ec34cc2438f334bec28a5",
+      "bytes": 3104
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/tuvalu.imageset/Contents.json": {
+      "sha256": "16ca7f08e144d20c0edc5f38e47e06fbc1f9e05721a0b87b6c233cee579d1fb1",
+      "git_blob_sha1": "0f4896122f99572ee5d8a8ff0b3080c914029543",
+      "bytes": 156
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/tuvalu.imageset/tuvalu.png": {
+      "sha256": "7e9e260db511c51a51d79c491e185cc4b5f4b7599260d0d032ba0ca9cf04eb16",
+      "git_blob_sha1": "33d11e9108aaa32212ab65e8397ec3895555b932",
+      "bytes": 2310
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/uganda.imageset/Contents.json": {
+      "sha256": "d50c9dfb987806816e32aa0d1479c9984ebba510bd1a6cc4ad732c2699dc3933",
+      "git_blob_sha1": "76d7f1d122e2fd12ef747d7a12fcb8b26cde351a",
+      "bytes": 156
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/uganda.imageset/uganda.png": {
+      "sha256": "aea6a2ce6ed0dcced984120ed36e1654f08ce73b81c73ec21c1b0ddaeff937c3",
+      "git_blob_sha1": "fc6fd03908808a4bdc3a9cc6f96badab02a8d1c1",
+      "bytes": 1699
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/ukraine.imageset/Contents.json": {
+      "sha256": "10a0d7a7cc77f6ea962332347279b11cc61625288e7a8c09e6b11cc061c1cc03",
+      "git_blob_sha1": "1f558c2298f29bd338501780563db51ac6756b00",
+      "bytes": 157
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/ukraine.imageset/ukraine.png": {
+      "sha256": "12ca77b7fb4076e0a5ace0dc4036fc19d70989d122f5892c126a372f8428eba5",
+      "git_blob_sha1": "96978253ac91a99c86cf05024785dec3fe1c8dc1",
+      "bytes": 1318
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/united arab emirates.imageset/Contents.json": {
+      "sha256": "c8a630def6a6a499b5f13a91b27f5016762e9a4aa0730d0b996a6e2da33c5f2a",
+      "git_blob_sha1": "619c5b942f5c7433517d5a479222c5dc3690ef15",
+      "bytes": 170
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/united arab emirates.imageset/united arab emirates.png": {
+      "sha256": "cb908a38bc36e5176fd9f38bb0a6b8cbed9e7038a7377be5d5ebd296d8d31b95",
+      "git_blob_sha1": "1ff1e7341c84ef18a2bdaf49da850de458d1af40",
+      "bytes": 1397
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/united kingdom.imageset/Contents.json": {
+      "sha256": "180d9c482d509bfc0df70ee6d13515993b26a157b26ce4aef5cc1e589a39b160",
+      "git_blob_sha1": "10bda66e6ca52baadc12aec161d4a842105af683",
+      "bytes": 164
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/united kingdom.imageset/united kingdom.png": {
+      "sha256": "c00fef6574bc3e3fe3291d873c0a0d035967daeba30466afcc1e1b866f872413",
+      "git_blob_sha1": "98fe730bc45bc39ab50ba1848e375f47a2dd8a8f",
+      "bytes": 1905
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/united states.imageset/Contents.json": {
+      "sha256": "4129072e5f2cfd39b9cc8786a8def01d06b4e62133d87b83e9b051c1c42ef545",
+      "git_blob_sha1": "0b389b8b266b1bdb08e54f45318db52617379a84",
+      "bytes": 163
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/united states.imageset/united states.png": {
+      "sha256": "52818635f2ae98ee7c8b5d978deab64b468d82b589081f016830c59b66953778",
+      "git_blob_sha1": "d003ff17cc829b8ff687a9f0998b4d4e0bb2cbdb",
+      "bytes": 2082
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/uruguay.imageset/Contents.json": {
+      "sha256": "b9ca51f62746af6e15b189639763ca9b349fb21c86332a189cbe03e2b5405637",
+      "git_blob_sha1": "fbc5fbe3aa2ce00a3173288d498f7eb99d7eafe0",
+      "bytes": 157
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/uruguay.imageset/uruguay.png": {
+      "sha256": "63d28cef9c545a9b053dc07a5afd4d3cc2fb888c31cbb58d8c7f901ebc3e899f",
+      "git_blob_sha1": "a1e38f9ca67a12424e1bc1789e6d467e8bb233b9",
+      "bytes": 1813
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/uzbekistan.imageset/Contents.json": {
+      "sha256": "668d4158de36ba25d2e18d8f0002fefc61749d79ecbcadf2b9b4a0c48fd72a61",
+      "git_blob_sha1": "7098c084ed62805c36151f855d2159ebd636fd89",
+      "bytes": 160
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/uzbekistan.imageset/uzbekistan.png": {
+      "sha256": "6649aa243cc10200c036bb5761888e4360ffe30ec6a4e971ed7f30be0c132efc",
+      "git_blob_sha1": "ce42851391dc29864c26ca16b6d4f26be4fb5f04",
+      "bytes": 1976
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/vanuatu.imageset/Contents.json": {
+      "sha256": "136bee0055a3501f56c7b3d96a7484a5a529f36795b243625d2bae08df9c4202",
+      "git_blob_sha1": "6ddca511d4d83bb34f5b5483b3e41a69dee18e68",
+      "bytes": 157
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/vanuatu.imageset/vanuatu.png": {
+      "sha256": "ba628519be1fd7d940ef54f218f6d9751b3315c378b70792245548c53ac13b80",
+      "git_blob_sha1": "8efec96da58aed6a028a50f23c9e6c39cd87cd51",
+      "bytes": 1951
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/vatican city.imageset/Contents.json": {
+      "sha256": "4a9899d329f35c4f43f834d715eb720795700a40862489773aab9d6d99fe5927",
+      "git_blob_sha1": "7cfbe18cf48866faac388f5376bff166192b9833",
+      "bytes": 162
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/vatican city.imageset/vatican city.png": {
+      "sha256": "accb981ff05ea7f0c531c0a915d5f3032e7c56167f905bbea4b393633d587045",
+      "git_blob_sha1": "457472f99027598f2bdc30fb1e3d1598e3a49629",
+      "bytes": 2063
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/venezuela.imageset/Contents.json": {
+      "sha256": "f569d7bfddcfb668629958856ea37ba9ab1ccaf2b4f966fafe15c7fb5ab919a8",
+      "git_blob_sha1": "52b10c13d1fd6c9ed584cd27c7deb56c91781df9",
+      "bytes": 159
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/venezuela.imageset/venezuela.png": {
+      "sha256": "3f7c32c699a114b274440cc5e5f28fdf1f225a61cdbcee450ddcbec080863c60",
+      "git_blob_sha1": "65c920c672b2fec04da537dc113ec35210df30fe",
+      "bytes": 2006
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/vietnam.imageset/Contents.json": {
+      "sha256": "9034acff7b1ea0bdfee9ef0f76c4a9815428d615a1ed5fb189fa799e62319783",
+      "git_blob_sha1": "c679c46fc37aebac21e362eabb3c0cb65a0060b5",
+      "bytes": 157
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/vietnam.imageset/vietnam.png": {
+      "sha256": "c9b46d6e9bc83ac355d95886a24bd4530c747a9afa11f0a4c69c784101259689",
+      "git_blob_sha1": "e4b4b2d5a4ed75bba30f86431395b4e0748c6cd8",
+      "bytes": 1651
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/yemen.imageset/Contents.json": {
+      "sha256": "851336bd322a65e2b8bd3a87e96b157a6e2689be0f5d2f77cff8e5df62cfe612",
+      "git_blob_sha1": "8b5993d9de4da3d4e31eeb4548b515bb64e595df",
+      "bytes": 155
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/yemen.imageset/yemen.png": {
+      "sha256": "62322959bfb998a7158cfb796e5cb40716193405da12bf0457f527e29e5133ec",
+      "git_blob_sha1": "988dfa705147ba5520148f7247c2d8a5f661da33",
+      "bytes": 1061
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/zambia.imageset/Contents.json": {
+      "sha256": "f83e7e9014031b785dcca9b1c3f0116a36f1e97b4e24e4394d91d52afeb910c9",
+      "git_blob_sha1": "a33fe54f00f8d8d782491f6a901c9fce7ce1fa71",
+      "bytes": 156
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/zambia.imageset/zambia.png": {
+      "sha256": "618a14e20d5ff66a3d813cf2c95f8c9559078e0d538831fa0280c47665367603",
+      "git_blob_sha1": "4ea37acacef77f5beadc3a0044ee963e22ba6ec0",
+      "bytes": 1584
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/zimbabwe.imageset/Contents.json": {
+      "sha256": "80ce23bb6d21a227902a5d67e6b62692e225e443c0976919e82d959cdd127000",
+      "git_blob_sha1": "eae949c9bd76d81c49a062f0516d0116d41da80d",
+      "bytes": 158
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Flags/zimbabwe.imageset/zimbabwe.png": {
+      "sha256": "ff52b03770415113ffd88bff996cb5c066d00d7b484beef580c1dd04487080a7",
+      "git_blob_sha1": "9c09693a089ee1915e18eb46dfafe8ee1596b163",
+      "bytes": 2128
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/Contents.json": {
+      "sha256": "0fd49ba3c3585c709678e0046a821c3c60685ec7063720d30d3a3448be3a208b",
+      "git_blob_sha1": "73c00596a7fca3f3d4bdd64053b69d86745f9e10",
+      "bytes": 63
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/arrow-right.imageset/Contents.json": {
+      "sha256": "eb3d227f948007486f9dc579789d232813cb1b0360b1041ded3b8e0b4d3135a4",
+      "git_blob_sha1": "a8661a62476fac08687dfb2e9cd8c0500bdaad0e",
+      "bytes": 230
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/arrow-right.imageset/arrow-right.svg": {
+      "sha256": "cab411e92e2529245efc6b168bff9ffb7ab2ba62ff9c78867fb31565846181a4",
+      "git_blob_sha1": "42751cf5724d8f187a79f806141b8cd15c86fd18",
+      "bytes": 1308
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/arrow-top.imageset/Contents.json": {
+      "sha256": "f2ad19553086b23768ace5f13913e151adc4eee2a7553e50ea3daef3988a0c43",
+      "git_blob_sha1": "7f186d718486a0be2cd751eb28e546959a0632aa",
+      "bytes": 228
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/arrow-top.imageset/arrow-top.svg": {
+      "sha256": "dc6451557ea87b23d42526b4ac67efdb44a5a62ace9c1f1a4f9dbe9df671a064",
+      "git_blob_sha1": "c2b9d68f5f7bfeed3508b0355ac6a96f0ef106e4",
+      "bytes": 1335
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/back-circle.imageset/Contents.json": {
+      "sha256": "429640ddde3e588c3056bc2b763a1f9453d593fef5990ead7dce08d3ff1808b4",
+      "git_blob_sha1": "30ba738961111e75989af1893192bcf3d07aeb5b",
+      "bytes": 230
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/back-circle.imageset/back-circle.svg": {
+      "sha256": "01ed72475c4dd8712f89b63ad7880b0896856d5b4740fccb50faf2916136fd16",
+      "git_blob_sha1": "5c36e1e7b4ed65d8deba96d4faa1ab9fdb272321",
+      "bytes": 1374
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/back.imageset/Contents.json": {
+      "sha256": "46d045d769b033afb913c79f7f8972e8992a1fdec745d93414c24e7f7149176c",
+      "git_blob_sha1": "8d2959067c5a4f07ae43f67c0a15b212aac8da4c",
+      "bytes": 223
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/back.imageset/back.svg": {
+      "sha256": "4fa082e0bb1c11fbd920153cb547764b66ffb8e3ddbf91ec9fd3b3110427178f",
+      "git_blob_sha1": "08d2badb55d729205c9ee885fb7e974669beaf93",
+      "bytes": 1301
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/budget.imageset/Contents.json": {
+      "sha256": "140a4df416dd1679f0ce73ee4799bc2354d745a0fcbbcfa88007aa2121066a6c",
+      "git_blob_sha1": "d8abb371c258eb594b690bf66fd5840cf76b9361",
+      "bytes": 156
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/budget.imageset/budget.png": {
+      "sha256": "d60be4d07fbf8a4cd86bc8f219d5025aec43137bd2881e56fce062a3635781fb",
+      "git_blob_sha1": "1bc05e28c02e8ebcd6a2b7ca7b2398038b0fab53",
+      "bytes": 4325
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/change-input.imageset/Contents.json": {
+      "sha256": "dd14cf151be3015c2280a35a44de35e958995ca95fa024c7e16c27c4833c0c89",
+      "git_blob_sha1": "31dfa23c4417d209c5d8268fc5bccd3809f09485",
+      "bytes": 268
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/change-input.imageset/pen.svg": {
+      "sha256": "e4a1a2053664375aea2ccb846aff9f7025826df0faff2c6fd51d14a1cab8a891",
+      "git_blob_sha1": "dbd5ce2478064e801573be49ad7037fb2ea93938",
+      "bytes": 589
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/check.imageset/Contents.json": {
+      "sha256": "66fd45b218ac298d312dc39cedb357bfefddd2f876a4f931b348753a3dbdba83",
+      "git_blob_sha1": "cdaeb04a44c23a6ac333d3ed154db35eb9540de2",
+      "bytes": 224
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/check.imageset/check.svg": {
+      "sha256": "5bbba81ff77200dc8e5b6a68541b6f00f63f453ac1ca63d143ec4f9a11be67bc",
+      "git_blob_sha1": "00b4fe077d5382b3dc8f539174091d89ffba4b4b",
+      "bytes": 821
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/checkbox-circle-selected-white.imageset/Contents.json": {
+      "sha256": "bc3de67768e15d943370347edf78bec09238e63f1990e3e231808665cc1ec060",
+      "git_blob_sha1": "5f228b48ca10c69d76852e8871da91285d18a400",
+      "bytes": 249
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/checkbox-circle-selected-white.imageset/checkbox-circle-selected-white.svg": {
+      "sha256": "17c2d8ce329cd4d6d22ce5aaee86120989675e0062577bc9c2901fcdf2554640",
+      "git_blob_sha1": "716702bd9b00ce94c6d6ac3f66f6b4d26483c2f5",
+      "bytes": 2372
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/checkbox-circle-selected-yellow.imageset/Contents.json": {
+      "sha256": "8b0da96eda68c46c93b96a3e14a2beafdbaac62559c554de5ade909785244ca6",
+      "git_blob_sha1": "9ece294b004e29b0855375fdb9462e17d19266f9",
+      "bytes": 250
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/checkbox-circle-selected-yellow.imageset/checkbox-circle-selected-yellow.svg": {
+      "sha256": "b438c939efdd3caf288bce6152a607838ab19b3ad9873710bde4b6867ce3a04e",
+      "git_blob_sha1": "2b70597824cba9004af26d83482b189deaf16391",
+      "bytes": 1697
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/checkbox-circle-unselected.imageset/Contents.json": {
+      "sha256": "d0878d4509183747c8d4c24e33b883aaec4c7ffe6e393ceff72c7119c7b81432",
+      "git_blob_sha1": "66bf16d85b5b51d991e68b2e395080ae4246c64f",
+      "bytes": 245
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/checkbox-circle-unselected.imageset/checkbox-circle-unselected.svg": {
+      "sha256": "69f7098309201e51cde0fb38fdaec0d2ff42904358a962095e2973096e7e3118",
+      "git_blob_sha1": "9c3298ca503ad302f4e53abf977dd2e52c6768dc",
+      "bytes": 1678
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/checkbox-rect-selected-blue.imageset/Contents.json": {
+      "sha256": "70e76972336690d228aa07aba5cbabfb473fb2b6a2308c58e7090ae1bd86278d",
+      "git_blob_sha1": "ea27e7db0ff4dd177bf6c144bcd53bee6f00f002",
+      "bytes": 246
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/checkbox-rect-selected-blue.imageset/checkbox-rect-selected-blue.svg": {
+      "sha256": "e763d8d184c452c288a4311d73e55ee167d33f136dd8be6d73d6023a661a8f12",
+      "git_blob_sha1": "f5b06bd15aa9b69e7584f43c8c766af93ddd515d",
+      "bytes": 1350
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/checkbox-rect-selected-white.imageset/Contents.json": {
+      "sha256": "b30205bb7f24eeab369e95c3c424631eb4468d78823c3998cf350b3e8b482803",
+      "git_blob_sha1": "c68c05bb77b94c819b470b0f3c98774768342a77",
+      "bytes": 247
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/checkbox-rect-selected-white.imageset/checkbox-rect-selected-white.svg": {
+      "sha256": "80d096dce5b1139026a182790137a3b24689b8515918af71e0eaf7145181adcc",
+      "git_blob_sha1": "2cc20cca5c0bebdf5374a4830c45a5562729c46e",
+      "bytes": 1541
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/checkbox-rect-unselected.imageset/Contents.json": {
+      "sha256": "24f3340438fa1b5b79b8e15f1a67eba702d6b77b7f416460879490fbcea47934",
+      "git_blob_sha1": "c3efaeac211f61f7b55842288fe788514c4dddbb",
+      "bytes": 289
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/checkbox-rect-unselected.imageset/checkbox-rect-unselected.svg": {
+      "sha256": "57098b325b6a3788cd4b186259b7f4770d752176dfe8e555e44b8ef9fdd4598c",
+      "git_blob_sha1": "a9ed4caad3df01f7b8ce12ee9db4d58a8d9edfbc",
+      "bytes": 982
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/contact-us.imageset/Contents.json": {
+      "sha256": "1304789c12bb287f3008dc2146d34c98cc8029ab9b16ee8b77db682f544ef25c",
+      "git_blob_sha1": "9efad928e79b97f90eb7cdadc86370d6990ba0b0",
+      "bytes": 229
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/contact-us.imageset/contact-us.svg": {
+      "sha256": "2f5c2508aaa7a424bf57e03e333252d95dd0363a1763be06ccd72afde2c30391",
+      "git_blob_sha1": "96f8dcdd96489b0832c24d39de0ac455f046d1d4",
+      "bytes": 2521
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/cross-circle.imageset/Contents.json": {
+      "sha256": "a70c45c69998c16adc199e8dd3e3f6145aa8f02d3d0cc005b7b60d1f70557fbb",
+      "git_blob_sha1": "bf76dbe2c86225d2f73f30bda52c4ad88c979ddd",
+      "bytes": 231
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/cross-circle.imageset/cross-circle.svg": {
+      "sha256": "67499142ba4420eddb3b872f0b35746f962652d4c74b3903de9b6afc011ae459",
+      "git_blob_sha1": "a50f80a9105f6bf1b4e6d56f800b02280365ec44",
+      "bytes": 1427
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/cross.imageset/Contents.json": {
+      "sha256": "2f099e5af8d5095774046aa4b094832c4e636dbf0b46357cf71751b297e0e0c9",
+      "git_blob_sha1": "967bc66c5d50ed855f7214ab0eb658741c3618b3",
+      "bytes": 270
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/cross.imageset/cross.svg": {
+      "sha256": "22d512f2e08ca15f077064cd9b0adc6275f65a217c6dd886932c7f9a7843864b",
+      "git_blob_sha1": "348f90a96bc6d807cd30f72092361ad4a614dd41",
+      "bytes": 1361
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/crown-black.imageset/Contents.json": {
+      "sha256": "378e287eeeecd9efdb44e7f71faa2d49dece3dc0dcac34359bd086f8ad249ee6",
+      "git_blob_sha1": "c8f6c623a6667baf20919b4637c0ff6db74e599f",
+      "bytes": 230
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/crown-black.imageset/crown-black.svg": {
+      "sha256": "df2740c75a1b4e72e6d76bb48a9031e9e6d4e947f3e932617cb1e08ea4249e58",
+      "git_blob_sha1": "2ab932c169f5130d3310d765ddd0b4c5992ba8ff",
+      "bytes": 2493
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/crown-yellow.imageset/Contents.json": {
+      "sha256": "179de9c7207f94d333989722ee0bee014847afedf8264fb4e178bb09114a935c",
+      "git_blob_sha1": "484737814e35bd1e6bac96227e1cb89d595bdaa3",
+      "bytes": 224
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/crown-yellow.imageset/crown.svg": {
+      "sha256": "59b95ef43c8af602bfa86bb6a647b6b9308c3e41181a3965070204a3ad4cb06d",
+      "git_blob_sha1": "34263e02e42a126584a2538e734caec5c97ef02b",
+      "bytes": 2492
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/first-results.imageset/Contents.json": {
+      "sha256": "fd36d57e5124d05d1571d171ecce22402e5378c0b296989a31acc7a81957ec25",
+      "git_blob_sha1": "d5edb76881f4a461096bc60dc2ae6d9a9533f0f1",
+      "bytes": 163
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/first-results.imageset/first-results.png": {
+      "sha256": "aae46ac3eac252ff30f3071d1bc69fbf6238b868f2fe2e99bbe61a33921a95b8",
+      "git_blob_sha1": "383e020cdf34ed70732ccfc7520bc3a337dd57ee",
+      "bytes": 4807
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/generate-more.imageset/Contents.json": {
+      "sha256": "450cf43894d3bbc8c5bc1446a0585e34672c22f4ae6d9ec775d7d19e77294e80",
+      "git_blob_sha1": "8812b09c803348d593b30e34fbb356e86b8d133d",
+      "bytes": 270
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/generate-more.imageset/stars.svg": {
+      "sha256": "2e50daa466278fc3910d14d010fd5775d0df5c4855f7c8b3f0cd3a344a1e0946",
+      "git_blob_sha1": "ba49541ee6c705b0b5b965a0d9695787efbb9ae6",
+      "bytes": 4236
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/generator-selected.imageset/Contents.json": {
+      "sha256": "f9822c0d7bd1daafe30dbdabbea2c0f60921d075d9b53a20da3d123b3d7b5b9e",
+      "git_blob_sha1": "b168b061e3676bca2acb00325b8f7f19250c888e",
+      "bytes": 237
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/generator-selected.imageset/generator-selected.svg": {
+      "sha256": "50f39a35a0928f678ad52bb0d74749ff968f48f2501ed5a0f0feb20b96f86e34",
+      "git_blob_sha1": "84ab429239a2ac4742e63cd4847ef2835bade16e",
+      "bytes": 4251
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/generator-unselected.imageset/Contents.json": {
+      "sha256": "0d25e0741aa8131a21806adb7677f427901e783fc2003b7151ebbb9f05ae55fa",
+      "git_blob_sha1": "307da8e8c502a997be5f1ae38e2eca269d6cab6a",
+      "bytes": 239
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/generator-unselected.imageset/generator-unselected.svg": {
+      "sha256": "9be03061e912aa236332a39497622a880b741d62c9ad6428c30ec3b1f52d8ae0",
+      "git_blob_sha1": "204349541a252a78fa0b90f2aabdde0b22948da4",
+      "bytes": 4251
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/infinity.imageset/Contents.json": {
+      "sha256": "cf835d83d3df511b1057f2b47c4f4182b0f08a45913f3c9d8dd68cd3ecfd67ca",
+      "git_blob_sha1": "dd5b7737c040ee8247ee529e89b2516837bd1cae",
+      "bytes": 227
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/infinity.imageset/infinity.svg": {
+      "sha256": "abe5086e64749191b8e8cc5d468b730aa13d4a2339d301d324785650cf7e3412",
+      "git_blob_sha1": "9ddff27c363a4b52745b1004382e0c8758fd6a37",
+      "bytes": 2206
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/lamp.imageset/Contents.json": {
+      "sha256": "4a84c4e95dd78197eaefcbc425ec3491382a9a3532ba4d31c4817fac2c0d1fda",
+      "git_blob_sha1": "ab0b6ad8292a737daa9a79d19b68901941af1940",
+      "bytes": 223
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/lamp.imageset/lamp.svg": {
+      "sha256": "76057c7813ca00d720d1a03ab7251e4d9b7030c8b052f9f58f565c3735e3cfb7",
+      "git_blob_sha1": "63cdaf7a14799299ea1f462078693cbe919df0e9",
+      "bytes": 1817
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/language.imageset/Contents.json": {
+      "sha256": "2a170b6e296f611224300f0744f3e5125c4fa08c7160a7efb53c806b51c895f2",
+      "git_blob_sha1": "24a3e8bddac3879fbdf767e918352e5cb3398140",
+      "bytes": 227
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/language.imageset/language.svg": {
+      "sha256": "5b253f859778f63605271902829f34b19a541869c05256cbe563a488a2fe7dd4",
+      "git_blob_sha1": "ef7f6125e3986e837b80a317d19b4f0dcdfcd224",
+      "bytes": 4074
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/like.imageset/Contents.json": {
+      "sha256": "3969cf4380773d8a7f9a30b8fe55d29641939ddef015790ae3745093bcf1098e",
+      "git_blob_sha1": "a78df22cd9caa1279efc545288cf7e906df38cf1",
+      "bytes": 223
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/like.imageset/like.svg": {
+      "sha256": "42bdddbb56225376bb1056d0b77d9696db9bd71ae721d382f7ef69c9839ddb83",
+      "git_blob_sha1": "ac4a354a226f3e5739ac0226fa211199dba362a4",
+      "bytes": 1167
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/menu.imageset/Contents.json": {
+      "sha256": "3cdc0d3c085264d0eb098fd37fb7481425b7e22b4014aa55005c773c3fb22786",
+      "git_blob_sha1": "4ca516e37b50d4074859d7e4609db27152a3e471",
+      "bytes": 223
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/menu.imageset/menu.svg": {
+      "sha256": "61176e0f60b1c8fba24cad196c28b41003e4d91f0cbb8f88f74d5f1448a78686",
+      "git_blob_sha1": "ee9547ac68cb97ae2c27592bf17f48cd3066bd75",
+      "bytes": 1067
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/my-data.imageset/Contents.json": {
+      "sha256": "202a96ee2151c5dcd02b4f729e09d937dbfde672f49b99b70b01d6d750a2a34b",
+      "git_blob_sha1": "387a5c317e0576b78dd6b9caac9040245649641e",
+      "bytes": 226
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/my-data.imageset/my-data.svg": {
+      "sha256": "1f1116d4d6d411925ff6fa80fc466c23ee352030d7bf037c1e8595f60b543a16",
+      "git_blob_sha1": "0570d70f4d71dbd97761b0f455e20fedb2cb59d8",
+      "bytes": 1288
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/notifications.imageset/Contents.json": {
+      "sha256": "54a3fbc4eaef459aa6a27c0bca169842ba9b1aba5b66241bcc62f6fa36b9b7a5",
+      "git_blob_sha1": "38f8288b0db6d7b40123efd48d7c364d6314c719",
+      "bytes": 232
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/notifications.imageset/notifications.svg": {
+      "sha256": "77a03d9709ded3ddea10b20f1080afa8ea06c2249aa58d5682268529d11d62be",
+      "git_blob_sha1": "e80ee9d5d9352df4c73f50572c8a6186b406dab8",
+      "bytes": 2517
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/plans-selected.imageset/Contents.json": {
+      "sha256": "e2b0885b288a7ddc6c4917aa90dd5ed981515726d22520590c0e7a4803b34501",
+      "git_blob_sha1": "6f04239dbaf8154f50aea0489bb8cc260e30a302",
+      "bytes": 238
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/plans-selected.imageset/in-process-selected.svg": {
+      "sha256": "ff07f366f47db93be9e9d3b02103ebe903b126a67ca5b0aed502f178848b63e4",
+      "git_blob_sha1": "216411061a5a66c8ee93242cb553a54ba6e526d9",
+      "bytes": 1053
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/plans-unselected.imageset/Contents.json": {
+      "sha256": "3a50ffce286a18cc742a20eecbe420071b2887971274c5f5bc16614668b3cd51",
+      "git_blob_sha1": "24f0dc2c0e4fec05ccedb8495f70df3b09f8348a",
+      "bytes": 241
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/plans-unselected.imageset/in-process-unseelected.svg": {
+      "sha256": "8ea34c51588c27833ed9498e74c364199d6aaee2578c5239271f648b783194d5",
+      "git_blob_sha1": "c66d996edbf7d1f32d51bc81c0d3192be492de19",
+      "bytes": 1053
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/plus-circle.imageset/Contents.json": {
+      "sha256": "ddebdd82a335dc99db74cc6dec1e0f1a436f8f810b11e18808fc7d963893a385",
+      "git_blob_sha1": "5761cb658829e1cd7741607d2edbe6756f081157",
+      "bytes": 230
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/plus-circle.imageset/plus-circle.svg": {
+      "sha256": "82a9bd69eff2651951c5c5b08b9b6eb5eaa021621b682e82097ed4a44fc148bd",
+      "git_blob_sha1": "010cb2bf3078a7ff8f1473fc75f43b14ff3611a6",
+      "bytes": 1745
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/privacy-policy.imageset/Contents.json": {
+      "sha256": "a3711627f590955b79f5f6c2def6f2546f523801b307e5dc14a12ecc574c59ab",
+      "git_blob_sha1": "0b4fa41c6f1e610846afb74b9b9ebfeca3da454d",
+      "bytes": 233
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/privacy-policy.imageset/privacy-policy.svg": {
+      "sha256": "ea9d5096da554522118be06e8988ef92891bf9256789a75f5486433b581d7a4b",
+      "git_blob_sha1": "86e64690768c8fcf10384a60b441804e4fe35a44",
+      "bytes": 1198
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/pro.imageset/Contents.json": {
+      "sha256": "660a047e0be28e239a011067798e423b1c5908540f45199e8ebc5db606b8f1ac",
+      "git_blob_sha1": "d8e3766cd7a7524a0885fc9ee5cdf9587e3c0e2d",
+      "bytes": 222
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/pro.imageset/pro.svg": {
+      "sha256": "df2740c75a1b4e72e6d76bb48a9031e9e6d4e947f3e932617cb1e08ea4249e58",
+      "git_blob_sha1": "2ab932c169f5130d3310d765ddd0b4c5992ba8ff",
+      "bytes": 2493
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/rate-us.imageset/Contents.json": {
+      "sha256": "f7997aaf4a439e0d038605f212208758d93ea4c270868d8ae245cef8c3540137",
+      "git_blob_sha1": "12dd970b483b120df7fd5f25f4c4b23da3489a37",
+      "bytes": 226
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/rate-us.imageset/rate-us.svg": {
+      "sha256": "26d1b949f09d9f9ab95ab0eff5df25142e932e147fe3d3511de6bad5bbaed8ed",
+      "git_blob_sha1": "c88957a017ebe75f12d8a9db2e70866a671b42da",
+      "bytes": 1237
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/reply.imageset/Contents.json": {
+      "sha256": "45fbfa60f90fa303ac4a36ed248916b6b59f1287dc3f2de0a754674aecce048d",
+      "git_blob_sha1": "92cf17719c228df62123fd635b06d57b2432c437",
+      "bytes": 224
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/reply.imageset/reply.svg": {
+      "sha256": "9c6f529d184bf7ba9931a1a37df121b59250d5d97b79917ede4674c02205e3ff",
+      "git_blob_sha1": "2774cf27789aebef957099f0ce0d9fbe515220c5",
+      "bytes": 1733
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/result.imageset/Contents.json": {
+      "sha256": "d5a702fed37262ac507eac4854c9c0477b4315cf806dd56f3f59262a455494b1",
+      "git_blob_sha1": "d4c233ad527aec74b6b6b560cd3329aad8a76d18",
+      "bytes": 156
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/result.imageset/result.png": {
+      "sha256": "4135bb2600320a8c61c552e374b88a05634ea068923bbf49d8f1a958d9e8a9b5",
+      "git_blob_sha1": "c14276553ac425683dac546cd82b74469e5218d7",
+      "bytes": 2549
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/settings-selected.imageset/Contents.json": {
+      "sha256": "ddf87863362ebe0b686694148bf3bc765597b3f6ed957413436674d35b5ab53a",
+      "git_blob_sha1": "3905c51b54ef2e490040b7b2bf5dce0ea0a83e81",
+      "bytes": 236
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/settings-selected.imageset/settings-selected.svg": {
+      "sha256": "4196bca14c30fe8bf63d8ed28ab9aad2a7e2de1e4c6724e83b5454e23cf3d320",
+      "git_blob_sha1": "e6b56dc50873c0a712ad5d185b5613a3fb4e0cf5",
+      "bytes": 3354
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/settings-unselected.imageset/Contents.json": {
+      "sha256": "0d25e0741aa8131a21806adb7677f427901e783fc2003b7151ebbb9f05ae55fa",
+      "git_blob_sha1": "307da8e8c502a997be5f1ae38e2eca269d6cab6a",
+      "bytes": 239
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/settings-unselected.imageset/generator-unselected.svg": {
+      "sha256": "2d0c11aef396b9388193c46216da1eb65bc750604c0530ce7f9ffc1f005b3af3",
+      "git_blob_sha1": "a7666460c16f787ea106b162127b2c7222c3b6b8",
+      "bytes": 3354
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/share.imageset/Contents.json": {
+      "sha256": "871cc357a75405d3170448be040418a706d5d1611f4bc1e52f4126326a8f8253",
+      "git_blob_sha1": "25ce149464ca0f4fe0869fe75d93c62b4a4ed7b7",
+      "bytes": 224
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/share.imageset/share.svg": {
+      "sha256": "b9bdcb2a428a120f895bd4752a867357ab80854a5053e3fba22d44360965dbd3",
+      "git_blob_sha1": "f296be2eef727d71922386aee2e29754893a63e3",
+      "bytes": 1594
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/shield-check.imageset/Contents.json": {
+      "sha256": "4c1085f362b0a4231ad6bba5226bd8e6ee4b768303a88ebac8dee71de00d4630",
+      "git_blob_sha1": "3b06084929fa5c932b1def9857018d2358aaa3ed",
+      "bytes": 231
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/shield-check.imageset/shield-check.svg": {
+      "sha256": "f5c7e43f4687aa4b17860489cc71c51de08dfd6c38800d063920ff2cc6e67ff4",
+      "git_blob_sha1": "ae7fc8f29080bab0a494284161e2f2b90198d82c",
+      "bytes": 2367
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/stars-blue.imageset/Contents.json": {
+      "sha256": "caed6b2146ae44378c10946b6818582c2a68da54925510391eb19882ef1078dc",
+      "git_blob_sha1": "fe21facb966c47d35ccd598323d84788cc5be6e4",
+      "bytes": 229
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/stars-blue.imageset/stars-blue.svg": {
+      "sha256": "551e199242e9f5b6d66794399bc4b6ff658018aa0f5983d6e6c7f4cd65beaa81",
+      "git_blob_sha1": "de27919a6c51b7b794810e1acbadb02cdb4ee975",
+      "bytes": 4251
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/terms-of-use.imageset/Contents.json": {
+      "sha256": "8285e5e663e9dc24b595f16bcec955735b6b2cbd37285a3c1796e21902b4f587",
+      "git_blob_sha1": "2f9d58c413102615510a4c61a43b8fe1d495b31d",
+      "bytes": 231
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/terms-of-use.imageset/terms-of-use.svg": {
+      "sha256": "f03c727bb8b029e54c68730c81c5882dbf98db69410667bc24320c48aa1fad65",
+      "git_blob_sha1": "a6e56a37ac73bfee035d2490d5ed83384686629d",
+      "bytes": 1624
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/time-arrow.imageset/Contents.json": {
+      "sha256": "06aba5986d8acf482b0bbceddf89d520973f9b3e04db21e79a877340e9e51c9c",
+      "git_blob_sha1": "c27a8cdcc14260923e08e3f3506f3d17f8ebafdb",
+      "bytes": 308
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/time-arrow.imageset/time-arrow.svg": {
+      "sha256": "6a2bafd3210c15b1646c4c97c9db1292b0e91fe0f93425eb0cf407837281e0e5",
+      "git_blob_sha1": "cf6cb229a0dc30754bf3dfd9db190d0f359c4f24",
+      "bytes": 2898
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/trash.imageset/Contents.json": {
+      "sha256": "a704ed7599d99b666ed45b0cd686dd7faeb88282e8af132e9d2a62e470fa074a",
+      "git_blob_sha1": "51727858de97f498ec52e4077dc45baebfd0c48f",
+      "bytes": 224
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/trash.imageset/trash.svg": {
+      "sha256": "f790600820f3fe2f2848e45a79d65cc498919248982561d6ce963d687e2c09b8",
+      "git_blob_sha1": "3690305a26ee5d5f8397ae8d444a746f1969160d",
+      "bytes": 2510
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/unlike.imageset/Contents.json": {
+      "sha256": "1bb328009f92ce633d1caeff4fc2e697b2cac744c0b256d984b49b66a84fb2c2",
+      "git_blob_sha1": "80e4699824f7dabbd0731e54a3d45a73660142a1",
+      "bytes": 225
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/unlike.imageset/unlike.svg": {
+      "sha256": "78ff2fed45f29ee8e644c86cc14972542486f0e36135661ef45ff2166325b004",
+      "git_blob_sha1": "a8b57e8129efa9f0e6ffef37451ccf74d59539d5",
+      "bytes": 2402
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/warning.imageset/Contents.json": {
+      "sha256": "343a4eb55d60e67a71e3cd59da6ee5e883f67354fe47c6ac88470502c3dd2ac7",
+      "git_blob_sha1": "86da0a6d6a40eb466151726f82e29262731c06be",
+      "bytes": 226
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Icons/warning.imageset/warning.svg": {
+      "sha256": "68b6580f954d50971e6feab58ffc64a3c9a6d5fb5f0d067101d9f7c301ec2577",
+      "git_blob_sha1": "f4370aba37436aaa04b11f11f29b7b24db64403d",
+      "bytes": 1613
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Images/Contents.json": {
+      "sha256": "0fd49ba3c3585c709678e0046a821c3c60685ec7063720d30d3a3448be3a208b",
+      "git_blob_sha1": "73c00596a7fca3f3d4bdd64053b69d86745f9e10",
+      "bytes": 63
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Images/chat-aura.imageset/Contents.json": {
+      "sha256": "c61d1a599124458f6287eec93eb5d2ae53daa5186fe290746cb31507a9edcb87",
+      "git_blob_sha1": "313a79cfa9906b42f78aafa71670be5c8b3ddacf",
+      "bytes": 159
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Images/chat-aura.imageset/chat-aura.png": {
+      "sha256": "a6e5b8c9f5b331d91423c93c09b70426e36d43039f9824c96fe09366b756f106",
+      "git_blob_sha1": "6e102be22405b5f739443aa3100df72f2be81b0e",
+      "bytes": 100027
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Images/gift-paywall-box.imageset/Contents.json": {
+      "sha256": "7fd0551039c0db339413700eba6e019e96eb268e84a5acb6a72a2a0b09b27077",
+      "git_blob_sha1": "7e42ab618b51684f0b4ffe1a8b2e5cb6a6756126",
+      "bytes": 166
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Images/gift-paywall-box.imageset/gift-paywall-box.png": {
+      "sha256": "49cadc4219b3b6a5ced603eb234fae7b5570ab6559a0813589d8c4e6f31aec51",
+      "git_blob_sha1": "6d23bf90e4e1726271fc72171f8c2dd144129eec",
+      "bytes": 224874
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Images/gift-paywall-wreath-left.imageset/Contents.json": {
+      "sha256": "6a053f5808c8a0fd51b17fc1ebe3a39cb400c070bf8dc3769ecd6fba8f20d7ee",
+      "git_blob_sha1": "700db4fa5255c3ba6953c485d60d5db981355886",
+      "bytes": 243
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Images/gift-paywall-wreath-left.imageset/gift-paywall-wreath-left.svg": {
+      "sha256": "1a506af671bd68b0cc43d89ec5cbcd65ff5528dad328f6b4ea112babda1e91d4",
+      "git_blob_sha1": "c12ed138af5b2a38c95426e069f0625b12de9a7a",
+      "bytes": 37978
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Images/gift-paywall-wreath-right.imageset/Contents.json": {
+      "sha256": "ad619d4226044ae5f877a062f6e3603cd5498f33e08979efc64d687047322b3e",
+      "git_blob_sha1": "be8607ca79d6fe1a4c142904e666571b0787a2d1",
+      "bytes": 244
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Images/gift-paywall-wreath-right.imageset/gift-paywall-wreath-right.svg": {
+      "sha256": "295057aaf0c36c72adb25ffbad85fa33f2289337ef55c786282e4eed9a5a410a",
+      "git_blob_sha1": "1b8d719f2e8a533d091296785e8d1c5e5eae4dea",
+      "bytes": 37927
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Images/paywall-review-1.imageset/Contents.json": {
+      "sha256": "79e36cc1f1123bd76b5903bca0ce2ad62e2858923adee1c72a69ab122aab66e7",
+      "git_blob_sha1": "42a120191c6e751a4ab2ef6fc75839160de149ff",
+      "bytes": 166
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Images/paywall-review-1.imageset/paywall-review-1.png": {
+      "sha256": "f32f5b20fbfd24fb09d66664736c61d1f5fdb5556a869d723c52612a8c94f5c6",
+      "git_blob_sha1": "4f46d7531b939c74c843fe75b9807abf256c8810",
+      "bytes": 74904
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Images/paywall-review-2.imageset/Contents.json": {
+      "sha256": "d7890e6f0c8b25548f620d184cfb8aa0da833a4b0ec413317cec77d3c39877db",
+      "git_blob_sha1": "3876cd6b6bed324fca960d454e652a222bec337f",
+      "bytes": 166
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Images/paywall-review-2.imageset/paywall-review-2.png": {
+      "sha256": "479143697c98068dbdd4a98a12f99fb9abe18f51887cb500eb16a0bef8c7e96a",
+      "git_blob_sha1": "c095d494955f6684f06152179f6918827c68384a",
+      "bytes": 65184
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Images/paywall-review-3.imageset/Contents.json": {
+      "sha256": "a1fb6d561f4f23d54da73719254118cc6c27cc3e69207c5f35f65fe5db52b877",
+      "git_blob_sha1": "ee39eb5d5cf364ec06d5d20d3cf5dd6d9e3cc01d",
+      "bytes": 166
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Images/paywall-review-3.imageset/paywall-review-3.png": {
+      "sha256": "b3e50acfe953a80a12cd67189aecff9f265c4447d5b6b9ff30b694d08996facf",
+      "git_blob_sha1": "222b9fd12d031c6217e175783246be80139c3def",
+      "bytes": 75335
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Images/splash-logo.imageset/Contents.json": {
+      "sha256": "d5d7fc4e255e31d534cfd18e572612d6e833be2164e2d8a42a12771676b8432f",
+      "git_blob_sha1": "70ce64c19557373ea0fcb6112b21fb5133f2f00a",
+      "bytes": 230
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Images/splash-logo.imageset/launch-logo.svg": {
+      "sha256": "d07f1c88da573ab70ed20c14ddab21dc0f70ad5bae70cf2e546c95e16ee52a7c",
+      "git_blob_sha1": "33069a283926b6e84207e94e0046fddcdecc1f9f",
+      "bytes": 4731
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Images/welcome-logo.imageset/Contents.json": {
+      "sha256": "d5d7fc4e255e31d534cfd18e572612d6e833be2164e2d8a42a12771676b8432f",
+      "git_blob_sha1": "70ce64c19557373ea0fcb6112b21fb5133f2f00a",
+      "bytes": 230
+    },
+    "Sofa/Sources/Resources/Assets.xcassets/Images/welcome-logo.imageset/launch-logo.svg": {
+      "sha256": "84f52ed41a4d54eace64282e91267566cb6d03e8ee6f055360787888f9ae2098",
+      "git_blob_sha1": "e2d62f2f724e2fcf72ac1b5ea34fc5ae1d19fece",
+      "bytes": 8099
+    },
+    "Sofa/Sources/Resources/Colors.xcassets/Contents.json": {
+      "sha256": "0fd49ba3c3585c709678e0046a821c3c60685ec7063720d30d3a3448be3a208b",
+      "git_blob_sha1": "73c00596a7fca3f3d4bdd64053b69d86745f9e10",
+      "bytes": 63
+    },
+    "Sofa/Sources/Resources/Colors.xcassets/black090909.colorset/Contents.json": {
+      "sha256": "00ffb1b824407cfdc247a9bd2cd1ff9c6699eedfbaa0a9a30fa2235c97f46e1b",
+      "git_blob_sha1": "8c402fb1d3f24264bf4c94affed88c2cf264e37c",
+      "bytes": 326
+    },
+    "Sofa/Sources/Resources/Colors.xcassets/blue007AFF.colorset/Contents.json": {
+      "sha256": "a59b8f2d3427c8c02b6caa5bc37a7903f3211732b49d4c7b8426b9df2fb01e53",
+      "git_blob_sha1": "ec1fcaf9a3e9607bdc39be3f8ebfd5f9b0184551",
+      "bytes": 326
+    },
+    "Sofa/Sources/Resources/Colors.xcassets/gray3C3C43.colorset/Contents.json": {
+      "sha256": "8e0297076c7cab986ca7956d384ec997851ee0d8290e08fd3090deb5f9d6dc9a",
+      "git_blob_sha1": "864d472e3e294bb35aac6e47c50d60815d78c3e2",
+      "bytes": 326
+    },
+    "Sofa/Sources/Resources/Colors.xcassets/gray545456.colorset/Contents.json": {
+      "sha256": "7c9f0e65ada97f2f389ef64ce70854c8cfc263f04b1d7c184ec820b8773981d0",
+      "git_blob_sha1": "cd1909ed839d1c96a371175aff2833342a8db19d",
+      "bytes": 326
+    },
+    "Sofa/Sources/Resources/Colors.xcassets/gray636366.colorset/Contents.json": {
+      "sha256": "9b5841635b650fcb50d8e99d42543f94a0011ffe926eaf57bbae4c5e36b20142",
+      "git_blob_sha1": "30b195397c8853d10f24e2d26eb7d9f2f9eb12dd",
+      "bytes": 326
+    },
+    "Sofa/Sources/Resources/Colors.xcassets/gray787880.colorset/Contents.json": {
+      "sha256": "bf99d7a0ca87360e315f3f203b82f0101efa523411ea25b7a55579d323fd7319",
+      "git_blob_sha1": "942c45c3320c5067728c7fef20656054f4e6434b",
+      "bytes": 326
+    },
+    "Sofa/Sources/Resources/Colors.xcassets/gray808080.colorset/Contents.json": {
+      "sha256": "cb4219795a59ec1acf225d1dd2c5f1af05502c85c993eaf8e58fe053dde8d359",
+      "git_blob_sha1": "e8140c0a104194aacddf9357d256cb5a337c1bb3",
+      "bytes": 326
+    },
+    "Sofa/Sources/Resources/Colors.xcassets/gray8E8E93.colorset/Contents.json": {
+      "sha256": "e6497c10ecf65111c53ee9f030050a8374781c4e0df0310398482e444dd1e7d2",
+      "git_blob_sha1": "11d344a1366b8f7bdd0b36fcae72ece88af15f92",
+      "bytes": 326
+    },
+    "Sofa/Sources/Resources/Colors.xcassets/grayD1D1D6.colorset/Contents.json": {
+      "sha256": "6ab8a40ab59e1add58fa60e425fe71df155d4dd877889969555438985d1827a1",
+      "git_blob_sha1": "055eeee8ade958289cc92d7207abee7a1e2d6e98",
+      "bytes": 326
+    },
+    "Sofa/Sources/Resources/Colors.xcassets/grayE5E5EA.colorset/Contents.json": {
+      "sha256": "7fc6e573e50f5e5f5ac12f3ed3787c1b9ef4b0dd5e8866ee411cb0df1702fd7b",
+      "git_blob_sha1": "d4a52c11f62c226c1edc38a2e8e4882148ffbe86",
+      "bytes": 326
+    },
+    "Sofa/Sources/Resources/Colors.xcassets/green34C759.colorset/Contents.json": {
+      "sha256": "e46a9fcb0149f795ca3ac2041efed5e488739c7bb2420a7f2cf913bdb214fadb",
+      "git_blob_sha1": "ccf9e4f771e428efec597faa18d4d502aee8c2a8",
+      "bytes": 326
+    },
+    "Sofa/Sources/Resources/Colors.xcassets/orangeFF9500.colorset/Contents.json": {
+      "sha256": "558bec4d01522b0b6fa66d18878cc2e4c27b71dd3da516bb5b44b15bd5ab2f71",
+      "git_blob_sha1": "4dfaa1709affba73be096ad1b144c05303ed3550",
+      "bytes": 326
+    },
+    "Sofa/Sources/Resources/Colors.xcassets/redFF3B30.colorset/Contents.json": {
+      "sha256": "0777c0bdbbbff0857cb601a3e8f83ce52766f8067bbcec8e9a06a1fbfbd7fd13",
+      "git_blob_sha1": "622f9df337aae724565235126e682bd808529b9f",
+      "bytes": 326
+    },
+    "Sofa/Sources/Resources/Colors.xcassets/yellowFFCC00.colorset/Contents.json": {
+      "sha256": "f9ebc9380539fd8613d00c2c12f602be20eb1f5e101bc2e3274b76d6a98e2e16",
+      "git_blob_sha1": "fd1a86f7e7c82ed55a299c1ec6dbcbb8905d6ec2",
+      "bytes": 326
+    },
+    "Sofa/Sources/SupportingFiles/Sofa.entitlements": {
+      "sha256": "982966c654b14e92b7d145d93c119c6debc84ba7449f36cdcb8ffb8d8cade0ed",
+      "git_blob_sha1": "70084b416f492b2df631c783d133b4b5204527e3",
+      "bytes": 284
+    },
+    "Sofa/Sources/SupportingFiles/Sofa.storekit": {
+      "sha256": "0460c5504e4e5d6725872332d35196459218d941077a0d09b6e68ffdb418396d",
+      "git_blob_sha1": "a0f8a7a88c381ec8391515b9f25d703ef113eeb1",
+      "bytes": 5504
+    },
+    "Sofa.xcodeproj/project.pbxproj": {
+      "sha256": "1cbbf57d4e246a2cceb3d3c7b24926206dd231d708e26818e627640186d3f8c4",
+      "git_blob_sha1": "01fe32c9b2ecfd1ecf631bb76320bd4c0d627493",
+      "bytes": 22023
+    },
+    "Sofa.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved": {
+      "sha256": "76a4492fcfc3aa532554731f613ccca32befa7b6c5d1b64c864e8abf95d03462",
+      "git_blob_sha1": "987e26653c2c47d7b2a98a84f4b74bf18efe2caf",
+      "bytes": 7068
+    },
+    "Sofa.xcodeproj/xcshareddata/xcschemes/Sofa.xcscheme": {
+      "sha256": "325a7f2767559164297f9d03549534f3364dd7fa8ce125bdeb0c259596c20122",
+      "git_blob_sha1": "c442ffaf2f1386ef1bd945b42cd1dba11b4b90f7",
+      "bytes": 3014
+    },
+    "firebase.json": {
+      "sha256": "b55d2c460bbed3a8e73ad239fa0306bb71b114f14e17edf67314dc27d7d815b9",
+      "git_blob_sha1": "c25db37804620e4aff992cc4d24c8e0fac052cde",
+      "bytes": 416
+    },
+    "functions/.eslintrc.js": {
+      "sha256": "b1edc14b559b62efa0a85bf3480be6aaba79ada7591cb56ee5b00917dd09abbb",
+      "git_blob_sha1": "0f8e2a9b7e8531d908ebeba6c72b7246a0c94d92",
+      "bytes": 699
+    },
+    "functions/.gitignore": {
+      "sha256": "efcf3d0efaa4287fef0d8170018c5ee5189a567d55d04098b36f82e5ed768b8e",
+      "git_blob_sha1": "9be0f014f4ee173a1493f89483748be60e556b34",
+      "bytes": 153
+    },
+    "functions/package-lock.json": {
+      "sha256": "c5054ec9fad0507601f3c0bd2e69245924368ebbc536aac225bfd0d9512f8c94",
+      "git_blob_sha1": "ee13b16e2c8715787724feb6e77a78f0df7f08e6",
+      "bytes": 350186
+    },
+    "functions/package.json": {
+      "sha256": "d8cf7262300c9f9a5f0a7259d0d7bab03688d04c1bc429e822a81747f8817517",
+      "git_blob_sha1": "a73e0414c0ec3396d86305e6f162b2f7a244f941",
+      "bytes": 856
+    },
+    "functions/src/index.ts": {
+      "sha256": "0cf134a5a105132b5fc4248bd780a4cde52ef05d0e0fe2f50d2801a95465612c",
+      "git_blob_sha1": "b88b6337c02805ff51c9b77da4fec6a1c5f9d765",
+      "bytes": 131
+    },
+    "functions/src/lanes/chatter.ts": {
+      "sha256": "498054305e57740ce8ec55f8096b78278234054ea7651d64039b806476119ed6",
+      "git_blob_sha1": "734b977d1a37aa79335616c144e75c71f5d94e5a",
+      "bytes": 19349
+    },
+    "functions/src/lanes/converser.ts": {
+      "sha256": "7e6ff2b1bf462d8168ea3ad0635af5ac67e7a571fd7d732d02cbd00d8673674d",
+      "git_blob_sha1": "72b393247dd022acf4a30b3007ced167fd9233d8",
+      "bytes": 7327
+    },
+    "functions/src/lanes/generator.ts": {
+      "sha256": "91c1c9af8141a148d6579e802a020513343846b1268a976f28e00248cd309e91",
+      "git_blob_sha1": "357ab14146172078bdf3653fb8471c8e324cd652",
+      "bytes": 4594
+    },
+    "functions/tsconfig.dev.json": {
+      "sha256": "d9bd21c0ba299132e8b752672aeb1fb0451eaa79b78857b24db3d1cbffe874cc",
+      "git_blob_sha1": "7560eed4ca12649b9490987855d2dd3356eb3661",
+      "bytes": 42
+    },
+    "functions/tsconfig.json": {
+      "sha256": "5cb8c0298665e9a3f50d7c999f4d06285c44092c24b73a779d3381156772e775",
+      "git_blob_sha1": "57b915f3cc9609af4b6d50ef31163e3631def89f",
+      "bytes": 323
+    },
+    "scripts/GENERATOR_QUALITY_REPORT.md": {
+      "sha256": "b13cc4d301b9276138a700ee6aed54fddecaaa9f489e04c48633b8f06b24e569",
+      "git_blob_sha1": "1225cc95780695d049d8bf3cc14929ecd210f731",
+      "bytes": 2198
+    },
+    "scripts/MONTHLY-YEARLY-RELEASE.txt": {
+      "sha256": "31b82cd6fc577b3ec5460ed86029773246ea1378a8ff2c73d066b41ac9ff416b",
+      "git_blob_sha1": "4effd6b70a9e13ad49416cd8b29accdcfd4b02b2",
+      "bytes": 3568
+    },
+    "scripts/country-regressions.swift": {
+      "sha256": "27aa03f0e476b50a28db9008f0d971fb22947c64c454c021eb185da00d634165",
+      "git_blob_sha1": "b67d4f3471e3db67cb7e5e1b1a4b349fa249084b",
+      "bytes": 1393
+    },
+    "scripts/generator-quality-benchmark.mjs": {
+      "sha256": "5024f88a618c42a04807dae3e1e673986b7efa6663394331ff0f1622d5d749f2",
+      "git_blob_sha1": "a1c88de41e55e87c5713d791c3dff849102764d7",
+      "bytes": 10255
+    },
+    "scripts/paywall-regressions.swift": {
+      "sha256": "64d92ba4a88de967f033200caad22b02402a56be693e13e94db791e300f4bf37",
+      "git_blob_sha1": "c97e87def8daf0f4c6f29a87c298b1199f8d946e",
+      "bytes": 10442
+    },
+    "scripts/paywall-smoke.swift": {
+      "sha256": "93ad7d227894318d7752686ff4216e48c1d6622d1639afc093ad43d69f2e24af",
+      "git_blob_sha1": "494da536a57b4f32b0393377d6177f63cea8372e",
+      "bytes": 5269
+    },
+    "scripts/validate-generator-contract.mjs": {
+      "sha256": "2d2e75dc238b0a35d7e57218325f55050f4de7087f16ca8c22f4512ea3e89c8b",
+      "git_blob_sha1": "42a86062b8d5ad53c4d16c3b03ac7eb5dc3cbbfc",
+      "bytes": 1628
+    },
+    "scripts/verify-monthly-paywall.mjs": {
+      "sha256": "a96693235ab588ea92661f5858679e0125e61176361b7e3bd96476378e358b7d",
+      "git_blob_sha1": "d1242ac9e0021913f33b34aa9a6f93f30daab647",
+      "bytes": 5951
+    }
+  }
+}

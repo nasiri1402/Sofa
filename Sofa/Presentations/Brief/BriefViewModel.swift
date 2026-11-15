@@ -14,35 +14,23 @@ final class BriefViewModel {
 
     // MARK: - Public Properties
 
-    private(set) var currentStage: BriefModel.Stage = .idea
+    private(set) var currentStage: BriefModel.Stage = .category
     var isPreviousEnabled = false
     var isNextEnabled = false
     private(set) var progress: Double = .zero
     var alertItem: AlertItem?
 
-    var idea = ""
-
+    var category: Project.Brief.Category?
+    var focus = ""
+    var target = ""
+    var currentState = ""
+    var preferences = ""
     var timeframe: Project.Brief.Timeframe?
-
-    var experience: Project.Brief.Experience?
-
-    var startPoint = ""
-
-    var goals: Set<Project.Brief.Goal> = []
-    var goalMoney = ""
-    var goalSubscribers = ""
-    var goalOption = ""
-
-    var hasBudget: Bool?
-    var budget = ""
-
-    var limits = ""
 
     // MARK: - Private Properties
 
     private let router: BriefRouter?
     private let projectGenerator: ProjectGenerator
-    private let initialBrief: Project.Brief?
 
     @ObservationIgnored @AppStorage(SofaConstants.AppStorage.isBeforeLaunched)
     private var isBeforeLaunched = false
@@ -57,27 +45,21 @@ final class BriefViewModel {
     ) {
         self.router = router
         self.projectGenerator = projectGenerator
-        self.initialBrief = brief
         self.isPreviousEnabled = isBeforeLaunched
-        self.isNextEnabled = brief?.idea != nil
+        self.isNextEnabled = brief != nil
 
         if let brief {
-            idea = brief.idea
+            category = brief.category
+            focus = brief.focus
+            target = brief.target
+            currentState = brief.currentState
+            preferences = brief.preferences
             timeframe = brief.timeframe
-            experience = brief.experience
-            startPoint = brief.startPoint
-            goals = brief.result.goals
-            goalMoney = brief.result.money?.description ?? ""
-            goalSubscribers = brief.result.subscribers?.description ?? ""
-            goalOption = brief.result.option ?? ""
-            hasBudget = brief.budget != nil
-            budget = brief.budget?.description ?? ""
-            limits = brief.limits
         }
     }
 }
 
-// MARK: - Public Properties
+// MARK: - Public Methods
 
 extension BriefViewModel {
 
@@ -89,34 +71,51 @@ extension BriefViewModel {
 
     func didTapBackButton() {
         switch currentStage {
-        case .idea: handleIdea(for: .previous)
+        case .category: handleCategory(for: .previous)
+        case .focus: handleFocus(for: .previous)
+        case .target: handleTarget(for: .previous)
+        case .currentState: handleCurrentState(for: .previous)
+        case .preferences: handlePreferences(for: .previous)
         case .timeframe: handleTimeframe(for: .previous)
-        case .experience: handleExperience(for: .previous)
-        case .startPoint: handleStartPoint(for: .previous)
-        case .result: handleResult(for: .previous)
-        case .resultMoney: handleResultMoney(for: .previous)
-        case .resultSubscribers: handleResultSubscribers(for: .previous)
-        case .resultOption: handleResultOption(for: .previous)
-        case .hasBudget: handleHasBudget(for: .previous)
-        case .budget: handleBudget(for: .previous)
-        case .limits: handleLimits(for: .previous)
         }
     }
 
     func didTapContinueButton() {
         switch currentStage {
-        case .idea: handleIdea(for: .next)
+        case .category: handleCategory(for: .next)
+        case .focus: handleFocus(for: .next)
+        case .target: handleTarget(for: .next)
+        case .currentState: handleCurrentState(for: .next)
+        case .preferences: handlePreferences(for: .next)
         case .timeframe: handleTimeframe(for: .next)
-        case .experience: handleExperience(for: .next)
-        case .startPoint: handleStartPoint(for: .next)
-        case .result: handleResult(for: .next)
-        case .resultMoney: handleResultMoney(for: .next)
-        case .resultSubscribers: handleResultSubscribers(for: .next)
-        case .resultOption: handleResultOption(for: .next)
-        case .hasBudget: handleHasBudget(for: .next)
-        case .budget: handleBudget(for: .next)
-        case .limits: handleLimits(for: .next)
         }
+    }
+
+    func selectCategory(_ category: Project.Brief.Category) {
+        guard self.category != category else {
+            isNextEnabled = true
+            return
+        }
+        self.category = category
+        focus.removeAll()
+        target.removeAll()
+        currentState.removeAll()
+        preferences.removeAll()
+        timeframe = nil
+        isNextEnabled = true
+    }
+
+    func selectFocus(_ focus: String) {
+        guard self.focus != focus else {
+            isNextEnabled = true
+            return
+        }
+        self.focus = focus
+        target.removeAll()
+        currentState.removeAll()
+        preferences.removeAll()
+        timeframe = nil
+        isNextEnabled = true
     }
 
     // MARK: - Output
@@ -129,16 +128,67 @@ extension BriefViewModel {
 // MARK: - Private Methods
 
 extension BriefViewModel {
-    private func handleIdea(for direction: BriefModel.Direction) {
+    private func handleCategory(for direction: BriefModel.Direction) {
         switch direction {
         case .next:
-            let trimmedIdea = idea.trimmingCharacters(in: .whitespacesAndNewlines)
-            guard !trimmedIdea.isEmpty else { return }
-            isNextEnabled = timeframe != nil
-            nextStage(.timeframe)
-            idea = trimmedIdea
+            guard category != nil else { return }
+            isNextEnabled = !focus.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+            nextStage(.focus)
         case .previous:
             router?.back()
+        }
+    }
+
+    private func handleFocus(for direction: BriefModel.Direction) {
+        switch direction {
+        case .next:
+            let trimmedFocus = focus.trimmingCharacters(in: .whitespacesAndNewlines)
+            guard !trimmedFocus.isEmpty else { return }
+            focus = trimmedFocus
+            isNextEnabled = !target.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+            nextStage(.target)
+        case .previous:
+            isPreviousEnabled = isBeforeLaunched
+            previousStage(.category)
+        }
+    }
+
+    private func handleTarget(for direction: BriefModel.Direction) {
+        switch direction {
+        case .next:
+            let trimmedTarget = target.trimmingCharacters(in: .whitespacesAndNewlines)
+            guard !trimmedTarget.isEmpty else { return }
+            target = trimmedTarget
+            isNextEnabled = !currentState.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+            nextStage(.currentState)
+        case .previous:
+            previousStage(.focus)
+        }
+    }
+
+    private func handleCurrentState(for direction: BriefModel.Direction) {
+        switch direction {
+        case .next:
+            let trimmedCurrentState = currentState.trimmingCharacters(in: .whitespacesAndNewlines)
+            guard !trimmedCurrentState.isEmpty else { return }
+            currentState = trimmedCurrentState
+            isNextEnabled = !preferences.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+            nextStage(.preferences)
+        case .previous:
+            previousStage(.target)
+        }
+    }
+
+    private func handlePreferences(for direction: BriefModel.Direction) {
+        switch direction {
+        case .next:
+            let trimmedPreferences = preferences.trimmingCharacters(in: .whitespacesAndNewlines)
+            guard !trimmedPreferences.isEmpty else { return }
+            preferences = trimmedPreferences
+            isNextEnabled = timeframe != nil
+            nextStage(.timeframe)
+        case .previous:
+            previousStage(.currentState)
         }
     }
 
@@ -146,161 +196,10 @@ extension BriefViewModel {
         switch direction {
         case .next:
             guard timeframe != nil else { return }
-            isNextEnabled = experience != nil
-            nextStage(.experience)
-        case .previous:
-            isPreviousEnabled = isBeforeLaunched
-            previousStage(.idea)
-            timeframe = nil
-        }
-    }
-
-    private func handleExperience(for direction: BriefModel.Direction) {
-        switch direction {
-        case .next:
-            guard experience != nil else { return }
-            isNextEnabled = !startPoint.isEmpty
-            nextStage(.startPoint)
-        case .previous:
-            previousStage(.timeframe)
-            experience = nil
-        }
-    }
-
-    private func handleStartPoint(for direction: BriefModel.Direction) {
-        switch direction {
-        case .next:
-            let trimmedStartPoint = startPoint.trimmingCharacters(in: .whitespacesAndNewlines)
-            guard !trimmedStartPoint.isEmpty else { return }
-            isNextEnabled = !goals.isEmpty
-            nextStage(.result)
-            startPoint = trimmedStartPoint
-        case .previous:
-            previousStage(.experience)
-            startPoint.removeAll()
-        }
-    }
-
-    private func handleResult(for direction: BriefModel.Direction) {
-        switch direction {
-        case .next:
-            guard !goals.isEmpty else { return }
-            switch true {
-            case goals.contains(.money):
-                isNextEnabled = !goalMoney.isEmpty
-                nextStage(.resultMoney)
-            case goals.contains(.subscribers):
-                isNextEnabled = !goalSubscribers.isEmpty
-                nextStage(.resultSubscribers)
-            case goals.contains(.option):
-                isNextEnabled = !goalOption.isEmpty
-                nextStage(.resultOption)
-            default:
-                isNextEnabled = hasBudget != nil
-                nextStage(.hasBudget)
-            }
-        case .previous:
-            previousStage(.startPoint)
-            goals.removeAll()
-        }
-    }
-
-    private func handleResultMoney(for direction: BriefModel.Direction) {
-        switch direction {
-        case .next:
-            guard Int(goalMoney) != nil else { return }
-            if goals.contains(.subscribers) {
-                isNextEnabled = !goalSubscribers.isEmpty
-                nextStage(.resultSubscribers)
-            } else {
-                isNextEnabled = hasBudget != nil
-                nextStage(.hasBudget)
-            }
-        case .previous:
-            previousStage(.result)
-            goalMoney.removeAll()
-        }
-    }
-
-    private func handleResultSubscribers(for direction: BriefModel.Direction) {
-        switch direction {
-        case .next:
-            guard Int(goalSubscribers) != nil else { return }
-            isNextEnabled = hasBudget != nil
-            nextStage(.hasBudget)
-        case .previous:
-            if goals.contains(.money) {
-                previousStage(.resultMoney)
-            } else {
-                previousStage(.result)
-            }
-            goalSubscribers.removeAll()
-        }
-    }
-
-    private func handleResultOption(for direction: BriefModel.Direction) {
-        switch direction {
-        case .next:
-            let trimmedGoalOption = goalOption.trimmingCharacters(in: .whitespacesAndNewlines)
-            guard !trimmedGoalOption.isEmpty else { return }
-            isNextEnabled = hasBudget != nil
-            nextStage(.hasBudget)
-            goalOption = trimmedGoalOption
-        case .previous:
-            previousStage(.result)
-            goalOption.removeAll()
-        }
-    }
-
-    private func handleHasBudget(for direction: BriefModel.Direction) {
-        switch direction {
-        case .next:
-            guard let hasBudget else { return }
-            if hasBudget {
-                isNextEnabled = !budget.isEmpty
-                nextStage(.budget)
-            } else {
-                isNextEnabled = !limits.isEmpty
-                nextStage(.limits)
-            }
-        case .previous:
-            switch true {
-            case goals.contains(.subscribers): previousStage(.resultSubscribers)
-            case goals.contains(.money): previousStage(.resultMoney)
-            case goals.contains(.option): previousStage(.resultOption)
-            default: previousStage(.result)
-            }
-            hasBudget = nil
-        }
-    }
-
-    private func handleBudget(for direction: BriefModel.Direction) {
-        switch direction {
-        case .next:
-            guard Int(budget) != nil else { return }
-            isNextEnabled = !limits.isEmpty
-            nextStage(.limits)
-        case .previous:
-            previousStage(.hasBudget)
-            budget.removeAll()
-        }
-    }
-
-    private func handleLimits(for direction: BriefModel.Direction) {
-        switch direction {
-        case .next:
-            let trimmedLimits = limits.trimmingCharacters(in: .whitespacesAndNewlines)
-            guard !trimmedLimits.isEmpty else { return }
-            limits = trimmedLimits
             revealedStages.insert(currentStage)
             startGeneration()
         case .previous:
-            if hasBudget == true {
-                previousStage(.budget)
-            } else {
-                previousStage(.hasBudget)
-            }
-            limits.removeAll()
+            previousStage(.preferences)
         }
     }
 
@@ -317,28 +216,22 @@ extension BriefViewModel {
         currentStage = stage
         updateProgress()
     }
-    
+
     private func updateProgress() {
-        let allCases = BriefModel.Stage.allCases.filter(\.isProgressable)
+        let allCases = BriefModel.Stage.allCases
         progress = max(0, min(1, Double(currentStage.number) / Double(allCases.count)))
     }
 
     private func startGeneration() {
-        guard let timeframe, let experience else { return }
+        guard let category, let timeframe else { return }
         let brief = Project.Brief(
             id: UUID(),
-            idea: idea,
-            timeframe: timeframe,
-            experience: experience,
-            startPoint: startPoint,
-            result: Project.Brief.Result(
-                goals: goals,
-                money: Int(goalMoney),
-                subscribers: Int(goalSubscribers),
-                option: goalOption
-            ),
-            budget: Int(budget),
-            limits: limits
+            category: category,
+            focus: focus,
+            target: target,
+            currentState: currentState,
+            preferences: preferences,
+            timeframe: timeframe
         )
         router?.route(to: .generationLoader(brief, difficulty: .average))
     }

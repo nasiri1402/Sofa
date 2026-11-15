@@ -5,7 +5,6 @@
 //  Created by dukes on 11/12/25.
 //
 
-import FirebaseAuth
 import FirebaseFunctions
 import FirebaseSharedSwift
 import Foundation
@@ -20,6 +19,8 @@ protocol FunctionsClient {
 final class DefaultFunctionsClient: FunctionsClient {
 
     // MARK: - Private Properties
+
+    private let authService: AuthService
 
     private lazy var functions: Functions = {
         Functions.functions(region: "us-central1")
@@ -37,6 +38,10 @@ final class DefaultFunctionsClient: FunctionsClient {
     }()
     private let decoder = JSONDecoder()
     private let streamDecoder = FirebaseDataDecoder()
+
+    init(authService: AuthService) {
+        self.authService = authService
+    }
 
     // MARK: - Public Methods
 
@@ -59,6 +64,8 @@ final class DefaultFunctionsClient: FunctionsClient {
         AsyncThrowingStream { continuation in
             let task = Task {
                 do {
+                    try await authService.ensureAuthenticated()
+                    try Task.checkCancellation()
                     let callable: Callable<ChatterRequest, StreamResponse<ChatterResponse.StreamChunk, ChatterResponse>> = functions.httpsCallable(
                         Function.chatter,
                         encoder: streamEncoder,
@@ -74,7 +81,10 @@ final class DefaultFunctionsClient: FunctionsClient {
                     }
                     continuation.finish()
                 } catch {
-                    continuation.finish(throwing: error)
+                    if !(error is CancellationError), !(error is AuthenticationServiceError) {
+                        ServiceDiagnostics.record(error, operation: .stream)
+                    }
+                    continuation.finish(throwing: mappedCallableError(error))
                 }
             }
             continuation.onTermination = { _ in
@@ -87,15 +97,29 @@ final class DefaultFunctionsClient: FunctionsClient {
 
     @discardableResult
     private func call<T: Encodable>(_ function: String, request: T) async throws -> Data {
+        try await authService.ensureAuthenticated()
+        try Task.checkCancellation()
         let request = try encoder.encode(request)
         let payload = try JSONSerialization.jsonObject(with: request)
-        let call = try await functions.httpsCallable(function).call(payload)
-        let data = try JSONSerialization.data(withJSONObject: call.data)
-        #if DEBUG
-        let jsonString = String(data: data, encoding: .utf8) ?? ""
-        debugPrint(jsonString)
-        #endif
-        return data
+
+        do {
+            let call = try await functions.httpsCallable(function).call(payload)
+            let data = try JSONSerialization.data(withJSONObject: call.data)
+            return data
+        } catch {
+            if !(error is CancellationError) {
+                ServiceDiagnostics.record(error, operation: .callable)
+            }
+            throw mappedCallableError(error)
+        }
+    }
+
+    private func mappedCallableError(_ error: Error) -> Error {
+        let nsError = error as NSError
+        if nsError.domain == "com.firebase.functions", nsError.code == 16 {
+            return AuthenticationServiceError(underlying: error)
+        }
+        return error
     }
 }
 

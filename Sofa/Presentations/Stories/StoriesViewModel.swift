@@ -41,15 +41,19 @@ extension StoriesViewModel {
     // MARK: - Input
 
     func didTapNextButton() {
+        moveToNextPage()
+    }
+
+    func didTapPreviousStoryArea() {
         guard let currentPageIndex else { return }
-        // Проверяем, последняя ли страница
-        if currentPageIndex == pages.count - 1 {
-            dismissTrigger = UUID()
-            return
-        }
+        guard currentPageIndex > .zero else { return }
         withAnimation {
-            self.currentPageIndex = currentPageIndex + 1
+            self.currentPageIndex = currentPageIndex - 1
         }
+    }
+
+    func didTapNextStoryArea() {
+        moveToNextPage()
     }
 }
 
@@ -115,6 +119,18 @@ extension StoriesViewModel {
         ]
         }
         currentPageIndex = .zero
+    }
+
+    private func moveToNextPage() {
+        guard let currentPageIndex else { return }
+        // Проверяем, последняя ли страница
+        if currentPageIndex == pages.count - 1 {
+            dismissTrigger = UUID()
+            return
+        }
+        withAnimation {
+            self.currentPageIndex = currentPageIndex + 1
+        }
     }
 
     private func updatePageCounter() {

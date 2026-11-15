@@ -54,6 +54,14 @@ extension Profile {
     struct Country: Hashable {
         let isoCode: String
         let name: String
+
+        func localizedName(in locale: Locale = .appLanguageLocale) -> String {
+            let code = isoCode.uppercased()
+            guard code.count == 2, Locale.Region.isoRegions.contains(where: { $0.identifier == code }) else {
+                return name
+            }
+            return locale.localizedString(forRegionCode: code) ?? name
+        }
     }
 
     // MARK: - Currency

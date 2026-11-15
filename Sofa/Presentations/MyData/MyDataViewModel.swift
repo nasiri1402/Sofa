@@ -66,7 +66,7 @@ extension MyDataViewModel {
         } else {
             ""
         }
-        case .country: profile.country?.name ?? ""
+        case .country: profile.country?.localizedName() ?? ""
         }
     }
 }

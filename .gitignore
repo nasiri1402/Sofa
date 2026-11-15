@@ -230,3 +230,7 @@ node_modules/
 lib/
 .env
 .runtimeconfig.json
+
+# Local Codex verification artifacts
+_codex_qa_audit_2026-07-13/
+README_BACKUP_DO_NOT_BUILD.txt

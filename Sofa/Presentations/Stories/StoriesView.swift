@@ -20,23 +20,26 @@ struct StoriesView: View {
     // MARK: - Body
 
     var body: some View {
-        ZStack {
-            viewModel.story.color
-                .ignoresSafeArea()
+        GeometryReader { proxy in
+            ZStack {
+                viewModel.story.color
+                    .ignoresSafeArea()
 
-            TabView(selection: $viewModel.currentPageIndex) {
-                ForEach(Array(viewModel.pages.enumerated()), id: \.offset) { index, page in
-                    PageView(page)
-                        .tag(index)
+                TabView(selection: $viewModel.currentPageIndex) {
+                    ForEach(Array(viewModel.pages.enumerated()), id: \.offset) { index, page in
+                        PageView(page)
+                            .tag(index)
+                    }
+                }
+                .tabViewStyle(.page(indexDisplayMode: .never))
+
+                VStack {
+                    Spacer()
+                    NextButton()
+                        .padding(16.fitW)
                 }
             }
-            .tabViewStyle(.page(indexDisplayMode: .never))
-
-            VStack {
-                Spacer()
-                NextButton()
-                    .padding(16.fitW)
-            }
+            .simultaneousGesture(StoryTapGesture(in: proxy.size))
         }
         .navigationTitle(viewModel.pageCounter)
         .navigationBarBackButtonHidden()
@@ -83,5 +86,25 @@ struct StoriesView: View {
             backgroundColor: .white,
             onTap: viewModel.didTapNextButton
         )
+    }
+
+    // MARK: - Gestures
+
+    private func StoryTapGesture(in size: CGSize) -> some Gesture {
+        SpatialTapGesture()
+            .onEnded { value in
+                handleStoryTap(value.location, in: size)
+            }
+    }
+
+    private func handleStoryTap(_ location: CGPoint, in size: CGSize) {
+        let bottomControlAreaHeight = 100.fitW
+        guard location.y < size.height - bottomControlAreaHeight else { return }
+
+        if location.x < size.width / 2 {
+            viewModel.didTapPreviousStoryArea()
+        } else {
+            viewModel.didTapNextStoryArea()
+        }
     }
 }

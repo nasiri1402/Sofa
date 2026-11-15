@@ -1,5 +1,5 @@
 //
-//  BriefExperiencePage.swift
+//  BriefFocusPage.swift
 //  Sofa
 //
 //  Created by dukes on 11/7/25.
@@ -7,50 +7,46 @@
 
 import SwiftUI
 
-struct BriefExperiencePage: View {
+struct BriefFocusPage: View {
 
     // MARK: - Public Properties
 
-    let timeframe: Project.Brief.Timeframe
-    @Binding var selectedExperience: Project.Brief.Experience?
-    let experiences: [Project.Brief.Experience]
+    let category: Project.Brief.Category
+    let selectedFocus: String
     @Binding var isPreviousEnabled: Bool
     @Binding var isNextEnabled: Bool
     let needsReveal: Bool
+    let onSelect: (String) -> Void
 
     // MARK: - Private Properties
 
     @State private var isSelectionEnabled = false
+    @State private var keyboardHeight: CGFloat = .zero
     @State private var topPadding: CGFloat = 256.fitH
     @State private var transitionTask: Task<Void, Never>?
 
     // MARK: - Body
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 32.fitW) {
+        VStack(alignment: .leading, spacing: 24.fitW) {
             if needsReveal {
                 WordRevealText(
-                    text: String(localized: "howExperiencedAreYou"),
+                    text: category.focusQuestion,
                     font: .system(size: 34.fitW, weight: .bold),
                     onFinished: completeTitleReveal
                 )
                 .multilineTextAlignment(.leading)
                 .frame(maxWidth: .infinity, alignment: .leading)
             } else {
-                Text(String(localized: "howExperiencedAreYou"))
+                Text(category.focusQuestion)
                     .font(.system(size: 34.fitW, weight: .bold))
                     .foregroundStyle(.white)
                     .multilineTextAlignment(.leading)
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
             if isSelectionEnabled {
-                VStack(alignment: .leading, spacing: 12.fitW) {
-                    ForEach(experiences, id: \.self) { experience in
-                        ExperienceButton(experience)
-                    }
-                }
-                .animation(.easeInOut, value: selectedExperience)
-                .transition(.move(edge: .bottom).combined(with: .opacity))
+                FocusScrollView()
+                    .transition(.move(edge: .bottom).combined(with: .opacity))
             }
             Spacer(minLength: .zero)
         }
@@ -69,32 +65,57 @@ struct BriefExperiencePage: View {
         .onDisappear {
             transitionTask?.cancel()
         }
-        .onChange(of: selectedExperience) { oldValue, newValue in
+        .onChange(of: selectedFocus) { oldValue, newValue in
             guard oldValue != newValue else { return }
-            isNextEnabled = newValue != nil
+            isNextEnabled = !newValue.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        }
+        .onChangeKeyboardHeight { newValue in
+            guard keyboardHeight != newValue else { return }
+            keyboardHeight = newValue
         }
     }
 
     // MARK: - Views
 
-    private func ExperienceButton(_ experience: Project.Brief.Experience) -> some View {
+    private func FocusScrollView() -> some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 12.fitW) {
+                ForEach(category.focusOptions, id: \.self) { focus in
+                    FocusButton(focus)
+                }
+            }
+            .animation(.easeInOut, value: selectedFocus)
+        }
+        .scrollIndicators(.hidden)
+        .scrollBounceBehavior(.basedOnSize)
+        .contentMargins(.top, 16.fitW, for: .scrollContent)
+        .contentMargins(
+            .bottom,
+            selectedFocus.isEmpty
+            ? 16.fitW
+            : keyboardHeight > .zero ? 84.fitW : 115.fitW,
+            for: .scrollContent
+        )
+    }
+
+    private func FocusButton(_ focus: String) -> some View {
         Button {
-            selectedExperience = experience
+            onSelect(focus)
         } label: {
-            Text(experience.name)
+            Text(focus)
                 .multilineMinimumScale()
                 .multilineTextAlignment(.center)
                 .font(.system(size: 15.fitW, weight: .semibold))
                 .foregroundStyle(.white)
                 .padding(.horizontal, 20.fitW)
-                .frame(height: 48.fitW)
+                .frame(height: 52.fitW)
                 .frame(maxWidth: .infinity, alignment: .center)
                 .background(.gray787880.opacity(0.12))
                 .clipShape(.capsule)
                 .overlay {
                     Capsule()
                         .strokeBorder(.blue007AFF, lineWidth: 1.fitW)
-                        .opacity(experience == selectedExperience ? 1 : 0)
+                        .opacity(focus == selectedFocus ? 1 : 0)
                 }
         }
         .buttonStyle(.plain)

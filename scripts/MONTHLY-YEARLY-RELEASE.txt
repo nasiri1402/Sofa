@@ -1,0 +1,57 @@
+SOFA monthly + annual paywall — release checklist
+Repository: nasiri1402/Sofa-Codex-Release-1.2.1 ONLY
+Branch: codex/monthly-yearly-paywall
+Base: 993537554af701989644b1e26b68b13a7565d7ee
+
+CODE
+- Offer com.ai.sofa.subscriptions.month and com.ai.sofa.subscriptions.year.
+- Select annual by default; show annual price first, monthly equivalent second.
+- Show 3 free days only when the monthly StoreKit product has a 3-day free
+  introductory offer and StoreKit confirms the customer's eligibility.
+- Otherwise show the monthly price without a trial claim.
+- Remove the trial toggle: the billing period changes only via plan cards.
+- Calculate Gift discount from actual comparable StoreKit prices. Hide the
+  percentage and reference price when either price is missing, currencies or
+  subscription periods differ, or Gift does not cost less. No fallback 30%.
+- Keep Gift purchasing and entitlement/restoration code unchanged. Legacy
+  weekly product support remains; do not remove that product from sale here.
+- Prices in production come from StoreKit, never from the local test fixture.
+
+APP STORE CONNECT — REQUIRED BEFORE ROLLOUT
+- Monthly product: com.ai.sofa.subscriptions.month (existing approved product).
+- US regular price: USD 4.99 per month.
+- Configure a free introductory offer: 3 days, followed by regular monthly
+  renewal. Check intended territories and actual effective date in Connect.
+- Keep standard annual USD 39.99/year and Gift USD 29.99/year in the US.
+- Other storefronts use their own localized prices; do not hardcode USD.
+- This Git change DOES NOT create a live introductory offer in Connect.
+- Do not automatically migrate, cancel or reprice existing weekly subscribers.
+
+VERIFICATION
+1. Run node scripts/verify-monthly-paywall.mjs (source/configuration checks).
+   Run scripts/paywall-smoke.swift with the Swift compiler command in its
+   header (runtime model tests with empty/failing stores, no real purchases).
+   Run scripts/paywall-regressions.swift with the command in its header
+   (actual view models, mocked products/transactions; not live StoreKit QA).
+2. Build the Sofa scheme for an iOS simulator and an archive destination.
+3. With the local Sofa.storekit configuration, test eligible monthly trial,
+   already-used trial, no offer configured, missing monthly/year product,
+   cancellation, pending payment, purchase error, successful purchase/restore.
+4. Restore an active legacy weekly subscription and confirm PRO access.
+5. Verify Gift still uses year.gift, no free trial, actual localized discount.
+6. Inspect paywall on small/large phones, English/Russian and long locales,
+   with larger text. Verify full price, period and renewal disclosure fit.
+7. TestFlight/sandbox must confirm the LIVE monthly offer after Connect setup.
+8. Compare paywall-to-paid conversion, trial-to-paid conversion, refunds,
+   monthly renewal and net revenue per install. Do not judge by trials alone.
+
+No production rollout or App Store submission is performed by this branch.
+
+KNOWN QA RISKS — RETAINED BY USER DECISION, 2026-10-30
+- Startup entitlement refresh still waits for the product catalog (#1).
+- Annual purchase still refreshes monthly trial eligibility (#3): explained;
+  proposed change awaits user approval and is NOT included.
+- Duplicate Gift buy actions can start multiple purchase requests (#5).
+  This was reproduced with mocks, not observed as actual double charges.
+- Simulator Release build and automated checks passed. Interactive visual QA
+  and live StoreKit purchase/restore verification remain release gates.

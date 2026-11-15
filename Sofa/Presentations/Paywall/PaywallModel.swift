@@ -18,40 +18,35 @@ enum PaywallModel {
     // MARK: - Subscription
 
     enum Subscription: Identifiable, CaseIterable {
-        case yearly, weekly
+        // Only these products are offered to new customers. Existing weekly
+        // entitlements are still handled by StoreManager independently.
+        case yearly, monthly
 
         var id: String {
             switch self {
             case .yearly: "com.ai.sofa.subscriptions.year"
-            case .weekly: "com.ai.sofa.subscriptions.week.3trial"
+            case .monthly: "com.ai.sofa.subscriptions.month"
             }
         }
 
         var title: String {
             switch self {
             case .yearly: String(format: String(localized: "yearsPluralFormat"), 1).capitalized
-            case .weekly: String(format: String(localized: "weeksPluralFormat"), 1).capitalized
+            case .monthly: String(format: String(localized: "monthsPluralFormat"), 1).capitalized
             }
         }
 
         var isBestValue: Bool {
             switch self {
             case .yearly: true
-            case .weekly: false
-            }
-        }
-
-        var withTrial: Bool {
-            switch self {
-            case .yearly: false
-            case .weekly: true
+            case .monthly: false
             }
         }
 
         init?(id: String) {
             switch id {
             case Subscription.yearly.id: self = .yearly
-            case Subscription.weekly.id: self = .weekly
+            case Subscription.monthly.id: self = .monthly
             default: return nil
             }
         }

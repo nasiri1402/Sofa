@@ -16,6 +16,8 @@ protocol AuthService {
 
     /// Возвращает текущего пользователя, если есть.
     func currentUser() -> User?
+
+    @MainActor func ensureAuthenticated() async throws
 }
 
 // MARK: - Implementations
@@ -26,6 +28,15 @@ final class DefaultAuthService: AuthService {
 
     private let analyticsManager: AnalyticsManager
 
+    @MainActor private var identifiedUserID: String?
+
+    @MainActor private lazy var readiness = AuthenticationReadiness(
+        isAuthenticated: { Auth.auth().currentUser != nil },
+        signIn: {
+            _ = try await Auth.auth().signInAnonymously()
+        }
+    )
+
     // MARK: - Inits
 
     init(analyticsManager: AnalyticsManager) {
@@ -35,8 +46,12 @@ final class DefaultAuthService: AuthService {
     // MARK: - Public Methods
 
     func configure() {
-        Task {
-            await signInAnonymously()
+        Task { @MainActor in
+            do {
+                try await ensureAuthenticated()
+            } catch {
+                // Requests await the same readiness and present a recoverable error.
+            }
         }
     }
 
@@ -44,18 +59,19 @@ final class DefaultAuthService: AuthService {
         Auth.auth().currentUser
     }
 
-    // MARK: - Private Methods
-
-    @MainActor @discardableResult
-    func signInAnonymously() async -> User? {
+    @MainActor
+    func ensureAuthenticated() async throws {
         do {
-            let result = try await Auth.auth().signInAnonymously()
-            debugPrint("✅ anonymous login successful, uid =", result.user.uid)
-            analyticsManager.identify(uid: result.user.uid)
-            return result.user
+            try await readiness.ensureAuthenticated()
+            if let user = Auth.auth().currentUser, identifiedUserID != user.uid {
+                analyticsManager.identify(uid: user.uid)
+                identifiedUserID = user.uid
+            }
+        } catch is CancellationError {
+            throw CancellationError()
         } catch {
-            debugPrint("❌ anonymous login failed:", error.localizedDescription)
-            return nil
+            ServiceDiagnostics.record(error, operation: .authentication)
+            throw AuthenticationServiceError(underlying: error)
         }
     }
 }

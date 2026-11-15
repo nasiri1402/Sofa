@@ -1,0 +1,26 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "renewsAutomatically" : {
+      "comment" : "Subscription disclosure. The full billing price and period are shown immediately above this text.",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Das Abo verlängert sich automatisch, sofern es nicht gekündigt wird." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Subscription renews automatically unless canceled." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "La suscripción se renueva automáticamente salvo que se cancele." } },
+        "es-MX" : { "stringUnit" : { "state" : "translated", "value" : "La suscripción se renueva automáticamente salvo que se cancele." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "L’abonnement est renouvelé automatiquement, sauf résiliation." } },
+        "fr-CA" : { "stringUnit" : { "state" : "translated", "value" : "L’abonnement se renouvelle automatiquement, sauf annulation." } },
+        "hi" : { "stringUnit" : { "state" : "translated", "value" : "रद्द न करने पर सदस्यता अपने आप नवीनीकृत हो जाती है।" } },
+        "id" : { "stringUnit" : { "state" : "translated", "value" : "Langganan diperpanjang otomatis kecuali dibatalkan." } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "L’abbonamento si rinnova automaticamente, salvo disdetta." } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "解約しない限り、サブスクリプションは自動更新されます。" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "취소하지 않으면 구독이 자동으로 갱신됩니다." } },
+        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "A assinatura é renovada automaticamente, a menos que seja cancelada." } },
+        "pt-PT" : { "stringUnit" : { "state" : "translated", "value" : "A assinatura é renovada automaticamente, salvo cancelamento." } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Подписка продлевается автоматически, если её не отменить." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "İptal edilmediği sürece abonelik otomatik olarak yenilenir." } }
+      }
+    }
+  },
+  "version" : "1.0"
+}

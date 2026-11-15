@@ -1,5 +1,5 @@
 //
-//  BriefResultPage.swift
+//  BriefCategoryPage.swift
 //  Sofa
 //
 //  Created by dukes on 11/7/25.
@@ -7,15 +7,15 @@
 
 import SwiftUI
 
-struct BriefResultPage: View {
+struct BriefCategoryPage: View {
 
     // MARK: - Public Properties
 
-    @Binding var selectedGoals: Set<Project.Brief.Goal>
-    let goals: [Project.Brief.Goal]
-    @Binding var isPreviousEnabled: Bool
+    let selectedCategory: Project.Brief.Category?
+    let categories: [Project.Brief.Category]
     @Binding var isNextEnabled: Bool
     let needsReveal: Bool
+    let onSelect: (Project.Brief.Category) -> Void
 
     // MARK: - Private Properties
 
@@ -27,30 +27,27 @@ struct BriefResultPage: View {
     // MARK: - Body
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 16.fitW) {
+        VStack(alignment: .leading, spacing: 18.fitW) {
             if needsReveal {
                 WordRevealText(
-                    text: String(localized: "whatDoesResultMeanToYou"),
+                    text: title,
                     font: .system(size: 34.fitW, weight: .bold),
                     onFinished: completeTitleReveal
                 )
                 .multilineTextAlignment(.leading)
                 .frame(maxWidth: .infinity, alignment: .leading)
             } else {
-                Text(String(localized: "whatDoesResultMeanToYou"))
+                Text(title)
                     .font(.system(size: 34.fitW, weight: .bold))
                     .foregroundStyle(.white)
                     .multilineTextAlignment(.leading)
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
             if isSelectionEnabled {
-                VStack(spacing: 16.fitW) {
-                    Tip(text: String(localized: "selectMultipleAnswersOrWriteYourOwn"))
-                    GoalsScrollView()
-                }
-                .transition(.move(edge: .bottom).combined(with: .opacity))
+                CategoriesScrollView()
+                    .transition(.move(edge: .bottom).combined(with: .opacity))
             }
-            Spacer()
+            Spacer(minLength: .zero)
         }
         .padding(.top, topPadding)
         .padding(.horizontal, 16.fitW)
@@ -67,9 +64,9 @@ struct BriefResultPage: View {
         .onDisappear {
             transitionTask?.cancel()
         }
-        .onChange(of: selectedGoals) { oldValue, newValue in
+        .onChange(of: selectedCategory) { oldValue, newValue in
             guard oldValue != newValue else { return }
-            isNextEnabled = !newValue.isEmpty
+            isNextEnabled = newValue != nil
         }
         .onChangeKeyboardHeight { newValue in
             guard keyboardHeight != newValue else { return }
@@ -79,62 +76,58 @@ struct BriefResultPage: View {
 
     // MARK: - Views
 
-    private func GoalsScrollView() -> some View {
+    private var title: String {
+        BriefLocalization.text(en: "What do you want to improve?", ru: "Что ты хочешь улучшить?")
+    }
+
+    private func CategoriesScrollView() -> some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 12.fitW) {
-                ForEach(goals, id: \.self) { goal in
-                    GoalButton(goal)
+                ForEach(categories, id: \.self) { category in
+                    CategoryButton(category)
                 }
             }
-            .animation(.easeInOut, value: selectedGoals)
+            .animation(.easeInOut, value: selectedCategory)
         }
         .scrollIndicators(.hidden)
         .scrollBounceBehavior(.basedOnSize)
-        .contentMargins(.top, 16.fitW, for: .scrollContent)
+        .contentMargins(.top, 14.fitW, for: .scrollContent)
         .contentMargins(
             .bottom,
-            selectedGoals.isEmpty
-            ? 16.fitW
-            : keyboardHeight > .zero ? 84.fitW : 115.fitW,
+            selectedCategory == nil
+                ? 16.fitW
+                : keyboardHeight > .zero ? 84.fitW : 115.fitW,
             for: .scrollContent
         )
     }
 
-    private func GoalButton(_ goal: Project.Brief.Goal) -> some View {
-        Button {
-            guard !selectedGoals.contains(goal) else {
-                selectedGoals.remove(goal)
-                return
-            }
-            if goal == .option {
-                selectedGoals.removeAll()
-            } else if selectedGoals.contains(.option) {
-                selectedGoals.remove(.option)
-            }
-            selectedGoals.insert(goal)
+    private func CategoryButton(_ category: Project.Brief.Category) -> some View {
+        let isSelected = category == selectedCategory
+
+        return Button {
+            onSelect(category)
         } label: {
-            HStack(spacing: 6.fitW) {
-                if selectedGoals.contains(goal), goal != .option {
-                    Image(.checkboxRectSelectedWhite)
-                        .resizable()
-                        .frame(width: 20.fitW, height: 20.fitW)
-                        .transition(.move(edge: .leading).combined(with: .opacity))
-                }
-                Text(goal.name)
-                    .multilineMinimumScale()
-                    .multilineTextAlignment(.center)
-                    .font(.system(size: 15.fitW, weight: .semibold))
+            VStack(alignment: .leading, spacing: 4.fitW) {
+                Text(category.title)
+                    .font(.system(size: 17.fitW, weight: .semibold))
                     .foregroundStyle(.white)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+
+                Text(category.subtitle)
+                    .font(.system(size: 13.fitW))
+                    .foregroundStyle(.gray8E8E93)
+                    .lineLimit(2)
+                    .frame(maxWidth: .infinity, alignment: .leading)
             }
             .padding(.horizontal, 20.fitW)
-            .frame(height: 48.fitW)
-            .frame(maxWidth: .infinity, alignment: .center)
+            .padding(.vertical, 16.fitW)
+            .frame(maxWidth: .infinity, alignment: .leading)
             .background(.gray787880.opacity(0.12))
-            .clipShape(.capsule)
+            .clipShape(.rect(cornerRadius: 16.fitW))
             .overlay {
-                Capsule()
+                RoundedRectangle(cornerRadius: 16.fitW)
                     .strokeBorder(.blue007AFF, lineWidth: 1.fitW)
-                    .opacity(selectedGoals.contains(goal) ? 1 : 0)
+                    .opacity(isSelected ? 1 : 0)
             }
         }
         .buttonStyle(.plain)
@@ -145,7 +138,6 @@ struct BriefResultPage: View {
 
     @MainActor
     private func completeTitleReveal() {
-        isPreviousEnabled = true
         transitionTask?.cancel()
         transitionTask = Task { @MainActor in
             withAnimation(.easeInOut) {

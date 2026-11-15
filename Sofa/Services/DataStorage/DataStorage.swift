@@ -8,6 +8,16 @@
 import Foundation
 import SwiftData
 
+// MARK: - Errors
+
+private enum DataStorageError: LocalizedError {
+    case containerUnavailable
+
+    var errorDescription: String? {
+        String(localized: "The local data could not be opened. Please restart the app and try again.")
+    }
+}
+
 // MARK: - Interfaces
 
 protocol DataStorage {
@@ -68,7 +78,12 @@ final class DefaultDataStorage: DataStorage {
 
     // MARK: - Private Properties
 
-    private var container: ModelContainer? = {
+    private let container: ModelContainer?
+    private let initializationError: Error?
+
+    // MARK: - Inits
+
+    init() {
         let schema = Schema([
             ProfileEntity.self,
             ProjectEntity.self,
@@ -81,14 +96,21 @@ final class DefaultDataStorage: DataStorage {
             StepEntity.self
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
-        return try? ModelContainer(for: schema, configurations: [modelConfiguration])
-    }()
+        do {
+            self.container = try ModelContainer(for: schema, configurations: [modelConfiguration])
+            self.initializationError = nil
+        } catch {
+            self.container = nil
+            self.initializationError = error
+            debugPrint("Failed to open SwiftData container:", error.localizedDescription)
+        }
+    }
 
     // MARK: - Public Methods
 
     @MainActor
     func fetchProjects() throws -> [Project] {
-        guard let context = container?.mainContext else { return [] }
+        let context = try mainContext()
         let descriptor = FetchDescriptor<ProjectEntity>(
             // Сортировка по убыванию
             sortBy: [.init(\.createdAt, order: .reverse)]
@@ -99,7 +121,7 @@ final class DefaultDataStorage: DataStorage {
 
     @MainActor
     func fetchProject(id: UUID) throws -> Project? {
-        guard let context = container?.mainContext else { return nil }
+        let context = try mainContext()
         let descriptor = FetchDescriptor<ProjectEntity>(
             predicate: #Predicate { $0.id == id },
             sortBy: []
@@ -110,7 +132,7 @@ final class DefaultDataStorage: DataStorage {
 
     @MainActor
     func saveProject(_ project: Project) throws {
-        guard let context = container?.mainContext else { return }
+        let context = try mainContext()
         let descriptor = FetchDescriptor<ProjectEntity>(sortBy: [])
         if let existingProject = try context.fetch(descriptor).first(where: { $0.id == project.id }) {
             // Если проект найден, то удаляем его
@@ -122,7 +144,7 @@ final class DefaultDataStorage: DataStorage {
 
     @MainActor
     func deleteProject(_ project: Project) throws {
-        guard let context = container?.mainContext else { return }
+        let context = try mainContext()
         let descriptor = FetchDescriptor<ProjectEntity>(sortBy: [])
         guard let project = try context.fetch(descriptor).first(where: { $0.id == project.id }) else {
             return
@@ -133,7 +155,7 @@ final class DefaultDataStorage: DataStorage {
 
     @MainActor
     func fetchProfile() throws -> Profile? {
-        guard let context = container?.mainContext else { return .mock }
+        let context = try mainContext()
         let descriptor = FetchDescriptor<ProfileEntity>(sortBy: [])
         let profiles = try context.fetch(descriptor)
         return profiles.map { $0.toProfile() }.first
@@ -141,7 +163,7 @@ final class DefaultDataStorage: DataStorage {
 
     @MainActor
     func saveProfile(_ profile: Profile) throws {
-        guard let context = container?.mainContext else { return }
+        let context = try mainContext()
         let descriptor = FetchDescriptor<ProfileEntity>(sortBy: [])
         if let existingProfile = try context.fetch(descriptor).first(where: { $0.id == profile.id }) {
             // Если рингтон найден, то удаляем его
@@ -149,5 +171,15 @@ final class DefaultDataStorage: DataStorage {
         }
         context.insert(ProfileEntity(from: profile))
         try context.save()
+    }
+
+    // MARK: - Private Methods
+
+    @MainActor
+    private func mainContext() throws -> ModelContext {
+        guard let container else {
+            throw initializationError ?? DataStorageError.containerUnavailable
+        }
+        return container.mainContext
     }
 }

@@ -1,5 +1,5 @@
 //
-//  BriefLimitsPage.swift
+//  BriefPreferencesPage.swift
 //  Sofa
 //
 //  Created by dukes on 11/7/25.
@@ -7,12 +7,15 @@
 
 import SwiftUI
 
-struct BriefLimitsPage: View {
+struct BriefPreferencesPage: View {
 
     // MARK: - Public Properties
 
-    let hasBudget: Bool
-    @Binding var limitsInput: String
+    @Binding var preferences: String
+    let tip: String
+    let placeholder: String
+    let typewriterOptions: [String]
+    let noPreferencesText: String
     @Binding var isPreviousEnabled: Bool
     @Binding var isNextEnabled: Bool
     let needsReveal: Bool
@@ -30,23 +33,28 @@ struct BriefLimitsPage: View {
         VStack(alignment: .leading, spacing: 16.fitW) {
             if needsReveal {
                 WordRevealText(
-                    text: String(localized: "whatAreTheLimitsOrRequests"),
+                    text: title,
                     font: .system(size: 34.fitW, weight: .bold),
                     onFinished: completeTitleReveal
                 )
                 .multilineTextAlignment(.leading)
+                .fixedSize(horizontal: false, vertical: true)
                 .frame(maxWidth: .infinity, alignment: .leading)
+                .layoutPriority(2)
             } else {
-                Text(String(localized: "whatAreTheLimitsOrRequests"))
+                Text(title)
                     .font(.system(size: 34.fitW, weight: .bold))
                     .foregroundStyle(.white)
                     .multilineTextAlignment(.leading)
+                    .fixedSize(horizontal: false, vertical: true)
                     .frame(maxWidth: .infinity, alignment: .leading)
+                    .layoutPriority(2)
             }
             if isInputEnabled {
-                VStack(spacing: 32.fitW) {
-                    Tip(text: String(localized: "weWillConsiderThemInThePlanGenerating"))
-                    LimitsTextField()
+                VStack(spacing: 24.fitW) {
+                    Tip(text: tip)
+                    InputField()
+                    NoPreferencesButton()
                 }
                 .transition(.move(edge: .bottom).combined(with: .opacity))
             }
@@ -67,7 +75,7 @@ struct BriefLimitsPage: View {
                 isInputEnabled = true
                 topPadding = 72.fitW
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                    isFocused = limitsInput.isEmpty
+                    isFocused = preferences.isEmpty
                 }
             }
         }
@@ -75,7 +83,7 @@ struct BriefLimitsPage: View {
             isFocused = false
             transitionTask?.cancel()
         }
-        .onChange(of: limitsInput) { oldValue, newValue in
+        .onChange(of: preferences) { oldValue, newValue in
             guard oldValue != newValue else { return }
             isNextEnabled = !newValue.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
         }
@@ -83,13 +91,42 @@ struct BriefLimitsPage: View {
 
     // MARK: - Views
 
-    private func LimitsTextField() -> some View {
-        TextField(String(localized: "writeDownTheDetails"), text: $limitsInput, axis: .vertical)
-            .font(.system(size: 17.fitW))
-            .foregroundStyle(.grayE5E5EA)
-            .autocorrectionDisabled()
-            .focused($isFocused)
-            .lineLimit(7)
+    private var title: String {
+        BriefLocalization.text(en: "Any preferences for your plan?", ru: "Есть пожелания к плану?")
+    }
+
+    private func InputField() -> some View {
+        TypewriterTextField(
+            text: $preferences,
+            placeholder: placeholder,
+            typewriterOptions: typewriterOptions,
+            isFocused: $isFocused
+        )
+    }
+
+    private func NoPreferencesButton() -> some View {
+        Button {
+            preferences = noPreferencesText
+            isFocused = false
+        } label: {
+            Text(noPreferencesText)
+                .multilineMinimumScale()
+                .multilineTextAlignment(.center)
+                .font(.system(size: 15.fitW, weight: .semibold))
+                .foregroundStyle(.white)
+                .padding(.horizontal, 20.fitW)
+                .frame(height: 48.fitW)
+                .frame(maxWidth: .infinity, alignment: .center)
+                .background(.gray787880.opacity(0.12))
+                .clipShape(.capsule)
+                .overlay {
+                    Capsule()
+                        .strokeBorder(.blue007AFF, lineWidth: 1.fitW)
+                        .opacity(preferences == noPreferencesText ? 1 : 0)
+                }
+        }
+        .buttonStyle(.plain)
+        .hapticFeedback()
     }
 
     // MARK: - Private Methods

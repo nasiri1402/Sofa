@@ -1,5 +1,5 @@
 //
-//  BriefStartPointPage.swift
+//  BriefTextInputPage.swift
 //  Sofa
 //
 //  Created by dukes on 11/7/25.
@@ -7,11 +7,15 @@
 
 import SwiftUI
 
-struct BriefStartPointPage: View {
+struct BriefTextInputPage: View {
 
     // MARK: - Public Properties
 
-    @Binding var startPointInput: String
+    @Binding var text: String
+    let title: String
+    let tip: String
+    let placeholder: String
+    let typewriterOptions: [String]
     @Binding var isPreviousEnabled: Bool
     @Binding var isNextEnabled: Bool
     let needsReveal: Bool
@@ -29,22 +33,29 @@ struct BriefStartPointPage: View {
         VStack(alignment: .leading, spacing: 16.fitW) {
             if needsReveal {
                 WordRevealText(
-                    text: String(localized: "whatDoYouHaveToStart"),
+                    text: title,
                     font: .system(size: 34.fitW, weight: .bold),
                     onFinished: completeTitleReveal
                 )
                 .multilineTextAlignment(.leading)
+                .fixedSize(horizontal: false, vertical: true)
                 .frame(maxWidth: .infinity, alignment: .leading)
+                .layoutPriority(2)
             } else {
-                Text(String(localized: "whatDoYouHaveToStart"))
+                Text(title)
                     .font(.system(size: 34.fitW, weight: .bold))
                     .foregroundStyle(.white)
                     .multilineTextAlignment(.leading)
+                    .fixedSize(horizontal: false, vertical: true)
                     .frame(maxWidth: .infinity, alignment: .leading)
+                    .layoutPriority(2)
             }
             if isInputEnabled {
-                StartPointTextField()
-                    .transition(.move(edge: .bottom).combined(with: .opacity))
+                VStack(spacing: 32.fitW) {
+                    Tip(text: tip)
+                    InputField()
+                }
+                .transition(.move(edge: .bottom).combined(with: .opacity))
             }
             Spacer()
         }
@@ -63,7 +74,7 @@ struct BriefStartPointPage: View {
                 isInputEnabled = true
                 topPadding = 72.fitW
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                    isFocused = startPointInput.isEmpty
+                    isFocused = text.isEmpty
                 }
             }
         }
@@ -71,7 +82,7 @@ struct BriefStartPointPage: View {
             isFocused = false
             transitionTask?.cancel()
         }
-        .onChange(of: startPointInput) { oldValue, newValue in
+        .onChange(of: text) { oldValue, newValue in
             guard oldValue != newValue else { return }
             isNextEnabled = !newValue.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
         }
@@ -79,17 +90,11 @@ struct BriefStartPointPage: View {
 
     // MARK: - Views
 
-    private func StartPointTextField() -> some View {
+    private func InputField() -> some View {
         TypewriterTextField(
-            text: $startPointInput,
-            placeholder: String(localized: "forExample") + ", ",
-            typewriterOptions: [
-                String(localized: "website"),
-                String(localized: "instagramAccount"),
-                String(localized: "goodAcquaintances").lowercased(),
-                String(localized: "richFriends").lowercased(),
-                String(localized: "youTubeChannel")
-            ],
+            text: $text,
+            placeholder: placeholder,
+            typewriterOptions: typewriterOptions,
             isFocused: $isFocused
         )
     }

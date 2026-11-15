@@ -67,16 +67,16 @@ extension GiftPaywallViewModel {
         )
     }
 
-    func formatOfferDiscount() -> String {
-        let percent = calculateDiscountFraction()
+    func formatOfferDiscount() -> String? {
+        guard let percent = calculateDiscountFraction() else { return nil }
         return String(
             format: String(localized: "percentOffFormat"),
             percent.formatted(.percent.precision(.fractionLength(0)))
         )
     }
 
-    func formatDiscountBadge() -> String {
-        let percent = calculateDiscountFraction()
+    func formatDiscountBadge() -> String? {
+        guard let percent = calculateDiscountFraction() else { return nil }
         return "-\(percent.formatted(.percent.precision(.fractionLength(0))))"
     }
 
@@ -204,24 +204,21 @@ extension GiftPaywallViewModel {
 
     private func formattedPrice(for product: Product?) -> String {
         guard let product else { return "" }
-        return product.price.formatted(product.priceFormatStyle)
+        return product.displayPrice
     }
 
-    private func calculateDiscountFraction() -> Decimal {
-        let defaultDiscount: Decimal = 0.3
-        guard let standardProduct, let giftProduct, standardProduct.price > .zero else { return defaultDiscount }
-        let discount = (standardProduct.price - giftProduct.price) / standardProduct.price
-        return max(discount, .zero)
-    }
-
-    private func calculateDiscountPercent() -> Int {
-        let defaultDiscount = 30
-        guard let standardProduct, let giftProduct, standardProduct.price > .zero else { return defaultDiscount }
-        let discount = (standardProduct.price - giftProduct.price) / standardProduct.price * 100
-        let roundedDiscount = NSDecimalNumber(decimal: discount)
-            .rounding(accordingToBehavior: nil)
-            .intValue
-        let maxDiscount = max(roundedDiscount, .zero)
-        return maxDiscount > .zero ? maxDiscount : defaultDiscount
+    private func calculateDiscountFraction() -> Decimal? {
+        // Compare actual StoreKit prices only. Missing, non-discounted or
+        // incompatible products must never produce an invented percentage.
+        guard let standardProduct, let giftProduct,
+              standardProduct.price > .zero,
+              giftProduct.price >= .zero,
+              giftProduct.price < standardProduct.price,
+              standardProduct.priceFormatStyle.currencyCode == giftProduct.priceFormatStyle.currencyCode,
+              let standardPeriod = standardProduct.subscription?.subscriptionPeriod,
+              let giftPeriod = giftProduct.subscription?.subscriptionPeriod,
+              standardPeriod.unit == giftPeriod.unit,
+              standardPeriod.value == giftPeriod.value else { return nil }
+        return (standardProduct.price - giftProduct.price) / standardProduct.price
     }
 }
